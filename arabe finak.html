@@ -522,6 +522,42 @@ const VOCAB = [
   {ar:"سُوق",tr:"sūq",es:"Mercado",cat:"Lugares"},
   {ar:"مَقْهَى",tr:"maqhā",es:"Cafetería",cat:"Lugares"},
   {ar:"مَكْتَب",tr:"maktab",es:"Oficina",cat:"Lugares"},
+  // ROPA
+  {ar:"فُسْتَان",tr:"fustān",es:"Vestido",cat:"Ropa"},
+  // NUEVOS ANIMALES
+  {ar:"ذُبَابَة",tr:"dhubāba",es:"Mosca",cat:"Animales"},
+  // NUEVOS CASA
+  {ar:"سُلَّم",tr:"sullam",es:"Escalera",cat:"Casa"},
+  {ar:"غَسَّالَة",tr:"ghassāla",es:"Lavadora",cat:"Casa"},
+  {ar:"لَوْحَة",tr:"lawḥa",es:"Cuadro",cat:"Casa"},
+  // NUEVOS COMIDA
+  {ar:"بَيْض",tr:"bayḍ",es:"Huevos",cat:"Comida"},
+  // NUEVOS FAMILIA
+  {ar:"عَائِلَة",tr:"'ā'ila",es:"Familia",cat:"Familia"},
+  // NUEVOS PROFESIONES
+  {ar:"ضَابِط",tr:"ḍābiṭ",es:"Agente",cat:"Profesiones"},
+  // NUEVOS OBJETOS
+  {ar:"حَاسُوب",tr:"ḥāsūb",es:"Ordenador",cat:"Objetos"},
+  {ar:"خَرِيطَة",tr:"kharīṭa",es:"Mapa",cat:"Objetos"},
+  {ar:"عَلَم",tr:"'alam",es:"Bandera",cat:"Objetos"},
+  {ar:"فُرْشَة",tr:"fursha",es:"Cepillo",cat:"Objetos"},
+  // MONEDAS
+  {ar:"دُولَار",tr:"dūlār",es:"Dólar",cat:"Monedas"},
+  {ar:"رِيَال",tr:"riyāl",es:"Rial",cat:"Monedas"},
+  // DEMOSTRATIVOS Y FRASES
+  {ar:"هَذَا كِتَاب",tr:"hādhā kitāb",es:"Esto es un libro",cat:"Frases"},
+  {ar:"هَذِهِ مَدْرَسَة",tr:"hādhihi madrasa",es:"Esta es una escuela",cat:"Frases"},
+  {ar:"مَا هَذَا؟",tr:"mā hādhā?",es:"¿Qué es esto? (masc.)",cat:"Frases"},
+  {ar:"مَا هَذِهِ؟",tr:"mā hādhihi?",es:"¿Qué es esta? (fem.)",cat:"Frases"},
+  {ar:"مَنْ هَذَا؟",tr:"man hādhā?",es:"¿Quién es este? (masc.)",cat:"Frases"},
+  {ar:"مَنْ هَذِهِ؟",tr:"man hādhihi?",es:"¿Quién es esta? (fem.)",cat:"Frases"},
+  {ar:"هَلْ هَذَا كِتَاب؟",tr:"hal hādhā kitāb?",es:"¿Es esto un libro?",cat:"Frases"},
+  {ar:"هَلْ هَذِهِ مَدْرَسَة؟",tr:"hal hādhihi madrasa?",es:"¿Es esta una escuela?",cat:"Frases"},
+  {ar:"هَذَا الْبَيْت",tr:"hādhā l-bayt",es:"Esta es la casa",cat:"Frases"},
+  {ar:"هَذِهِ الْغُرْفَة",tr:"hādhihi l-ghurfa",es:"Esta es la habitación",cat:"Frases"},
+  {ar:"هَلْ هَذَا طَبِيب؟",tr:"hal hādhā ṭabīb?",es:"¿Es este un médico?",cat:"Frases"},
+  {ar:"هَلْ هَذِهِ سَيَّارَة؟",tr:"hal hādhihi sayyāra?",es:"¿Es este un coche?",cat:"Frases"},
+
 ];
 
 const DETECT = [
@@ -540,6 +576,10 @@ const DETECT = [
   {ar:"أَخ",es:"hermano",ans:"Hamza ء",dis:["Ta marbuta ة","Alif maqsura ى","Shaddah ّ"],tip:"La أ inicial es hamza qat' sobre alif con fatha."},
   {ar:"فَلَّاح",es:"agricultor",ans:"Shaddah ّ",dis:["Ta marbuta ة","Hamza ء","Alif maqsura ى"],tip:"La shaddah sobre ل dobla la L: fallāḥ."},
   {ar:"مَكْتَبَة",es:"biblioteca",ans:"Ta marbuta ة",dis:["Shaddah ّ","Alif maqsura ى","Hamza ء"],tip:"La ة al final marca el femenino: maktaba."},
+  {ar:"هَذَا كِتَاب",es:"esto es un libro",ans:"Demostrativo هَذَا (masc.)",dis:["Demostrativo هَذِهِ (fem.)","Partícula هَلْ","Artículo ال"],tip:"هَذَا se usa con sustantivos masculinos."},
+  {ar:"هَذِهِ مَدْرَسَة",es:"esta es una escuela",ans:"Demostrativo هَذِهِ (fem.)",dis:["Demostrativo هَذَا (masc.)","Partícula هَلْ","Ta marbuta ة"],tip:"هَذِهِ se usa con sustantivos femeninos (muchos acaban en ة)."},
+  {ar:"هَلْ هَذَا كِتَاب؟",es:"¿es esto un libro?",ans:"Partícula هَلْ",dis:["Demostrativo هَذَا","Ta marbuta ة","Shaddah ّ"],tip:"هَلْ al inicio convierte la frase en pregunta de sí/no."},
+  {ar:"مَا هَذِهِ؟",es:"¿qué es esta?",ans:"Demostrativo هَذِهِ (fem.)",dis:["Demostrativo هَذَا (masc.)","Partícula هَلْ","Hamza ء"],tip:"مَا = qué. هَذِهِ = esta (fem.). Juntos forman la pregunta."},
 ];
 
 const GRAMMAR = [
@@ -582,6 +622,18 @@ const GRAMMAR = [
     {ar:"الشَّمْس",tr:"ash-shams",es:"el sol",note:"letra solar → ash-sh"},
     {ar:"الْبَيْت",tr:"al-bayt",es:"la casa",note:"letra lunar → al-b"},
     {ar:"النُّور",tr:"an-nūr",es:"la luz",note:"letra solar → an-n"},
+  ]},
+  {title:"Demostrativos — اسم الإشارة",desc:"Los demostrativos indican a qué objeto nos referimos. هَذَا para masculino y هَذِهِ para femenino. En árabe no hay verbo 'ser/estar' en el presente — se omite.",examples:[
+    {ar:"هَذَا كِتَاب",tr:"hādhā kitāb",es:"Esto es un libro",note:"هَذَا + sustantivo masc."},
+    {ar:"هَذِهِ مَدْرَسَة",tr:"hādhihi madrasa",es:"Esta es una escuela",note:"هَذِهِ + sustantivo fem."},
+    {ar:"هَذَا الْبَيْت",tr:"hādhā l-bayt",es:"Esta es la casa",note:"Con artículo ال"},
+    {ar:"هَذِهِ الْغُرْفَة",tr:"hādhihi l-ghurfa",es:"Esta es la habitación",note:"Con artículo ال"},
+  ]},
+  {title:"Preguntas con مَا، مَنْ y هَلْ",desc:"مَا = qué (para cosas). مَنْ = quién (para personas). هَلْ = partícula de pregunta sí/no, va siempre al inicio.",examples:[
+    {ar:"مَا هَذَا؟",tr:"mā hādhā?",es:"¿Qué es esto? (masc.)",note:"مَا + demostrativo"},
+    {ar:"مَا هَذِهِ؟",tr:"mā hādhihi?",es:"¿Qué es esta? (fem.)",note:"مَا + demostrativo"},
+    {ar:"مَنْ هَذَا؟",tr:"man hādhā?",es:"¿Quién es este?",note:"مَنْ para personas"},
+    {ar:"هَلْ هَذَا كِتَاب؟",tr:"hal hādhā kitāb?",es:"¿Es esto un libro?",note:"هَلْ al inicio = sí/no"},
   ]},
   {title:"Sufijos posesivos",desc:"En árabe el posesivo se añade directamente al final de la palabra como sufijo.",examples:[
     {ar:"بَيْتِي",tr:"baytī",es:"mi casa",note:"-ī → mío/a"},
