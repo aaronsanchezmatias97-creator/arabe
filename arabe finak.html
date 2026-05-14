@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>عربي — Árabe Interactivo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+:root{
+  --bg:#0D1B2A;--bg2:#152234;--bg3:#1C304A;
+  --gold:#C9A84C;--gold2:#E8C97A;
+  --teal:#1A9E8A;--teal2:#25BFAA;
+  --cream:#F2E8D5;--cream2:#C8B89A;
+  --red:#E05555;--green:#3DBF8A;
+  --r:16px;--shadow:0 8px 32px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--cream);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9A84C' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+#app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 0 110px;}
+
+/* HEADER */
+.header{text-align:center;padding:24px 20px 14px;border-bottom:1px solid rgba(201,168,76,.15);}
+.header-arabic{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:38px;color:var(--gold);line-height:1;}
+.header-title{font-size:10px;color:var(--cream2);letter-spacing:.2em;text-transform:uppercase;margin-top:3px;}
+.header-stats{display:flex;justify-content:center;gap:0;margin-top:12px;}
+.hstat{flex:1;text-align:center;padding:8px 4px;border-right:1px solid rgba(255,255,255,.06);}
+.hstat:last-child{border-right:none;}
+.hstat-n{font-size:18px;font-weight:700;color:var(--gold);}
+.hstat-l{font-size:9px;color:var(--cream2);letter-spacing:.05em;text-transform:uppercase;}
+
+/* SECTION */
+.section-label{font-size:10px;color:var(--cream2);letter-spacing:.15em;text-transform:uppercase;padding:16px 20px 8px;}
+
+/* CATEGORY FILTER */
+.cat-filter{display:flex;gap:6px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;}
+.cat-filter::-webkit-scrollbar{display:none;}
+.cat-chip{flex-shrink:0;padding:6px 14px;border-radius:99px;border:1px solid rgba(201,168,76,.25);background:transparent;color:var(--cream2);font-size:12px;cursor:pointer;transition:.15s;font-family:'DM Sans',sans-serif;}
+.cat-chip.active{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600;}
+
+/* FLIP CARD */
+.fc-wrap{padding:0 16px;}
+.fc-scene{width:100%;height:260px;perspective:800px;cursor:pointer;}
+.fc-scene:active .fc-inner:not(.flipped){transform:scale(.98);}
+.fc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);}
+.fc-inner.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(201,168,76,.2);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;}
+.fc-back-face{transform:rotateY(180deg);background:linear-gradient(135deg,var(--bg3),#0F2A1E);}
+.fc-cat{position:absolute;top:12px;left:14px;font-size:9px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;opacity:.7;}
+.fc-num{position:absolute;top:12px;right:14px;font-size:11px;color:var(--cream2);}
+.fc-star{position:absolute;bottom:12px;right:14px;font-size:18px;background:none;border:none;cursor:pointer;opacity:.4;transition:.2s;line-height:1;}
+.fc-star.on{opacity:1;}
+.fc-arabic-big{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:52px;direction:rtl;line-height:1.8;color:var(--cream);text-align:center;}
+.fc-hint{font-size:11px;color:var(--cream2);margin-top:12px;opacity:.5;}
+.fc-es-big{font-size:22px;font-weight:600;color:var(--gold2);text-align:center;margin-bottom:6px;}
+.fc-tr-big{font-size:14px;color:var(--teal2);font-style:italic;text-align:center;}
+.fc-bar{height:3px;background:rgba(255,255,255,.08);border-radius:99px;margin:10px 0 0;}
+.fc-bar-fill{height:3px;background:var(--gold);border-radius:99px;transition:width .4s;}
+.fc-controls{display:flex;gap:8px;margin-top:10px;}
+.fc-btn{flex:1;padding:13px;border-radius:var(--r);border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:.12s;}
+.fc-btn:active{transform:scale(.97);}
+.fc-skip{background:rgba(255,255,255,.06);color:var(--cream2);}
+.fc-know{background:var(--green);color:#fff;}
+.fc-audio-btn{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.25);padding:13px 16px;border-radius:var(--r);cursor:pointer;font-size:18px;flex-shrink:0;}
+.fc-mode-toggle{display:flex;gap:8px;padding:0 16px 0;margin-bottom:10px;}
+.fc-toggle-btn{flex:1;padding:8px;border-radius:99px;border:1px solid rgba(201,168,76,.2);background:transparent;color:var(--cream2);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s;}
+.fc-toggle-btn.active{background:rgba(201,168,76,.15);color:var(--gold);border-color:var(--gold);}
+
+/* QUIZ / DETECTA / ESCUCHA */
+.game-wrap{padding:0 16px;}
+.game-card{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(201,168,76,.2);border-radius:var(--r);padding:26px 20px 22px;text-align:center;box-shadow:var(--shadow);}
+.score-bar{display:flex;justify-content:center;gap:24px;margin-bottom:12px;}
+.sc-n{font-size:20px;font-weight:700;color:var(--gold);text-align:center;}
+.sc-l{font-size:9px;color:var(--cream2);text-transform:uppercase;letter-spacing:.05em;}
+.g-arabic{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:50px;direction:rtl;line-height:1.8;color:var(--cream);}
+.g-tr{font-size:13px;color:var(--teal2);font-style:italic;margin-top:2px;min-height:18px;}
+.g-es{font-size:16px;font-weight:500;color:var(--cream2);margin-bottom:6px;}
+.g-audio{margin:10px auto 0;display:block;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);color:var(--gold);border-radius:99px;padding:7px 20px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;}
+.opts.single{grid-template-columns:1fr;}
+.opt{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:14px 8px;font-size:14px;color:var(--cream);cursor:pointer;transition:.12s;font-family:'DM Sans',sans-serif;text-align:center;}
+.opt-arabic{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:24px;direction:rtl;line-height:1.7;}
+.opt:active:not(.locked){transform:scale(.97);}
+.opt.correct{background:rgba(61,191,138,.2);border-color:var(--green);color:var(--green);font-weight:600;}
+.opt.wrong{background:rgba(224,85,85,.15);border-color:var(--red);color:var(--red);}
+.opt.locked{cursor:default;}
+.g-feedback{text-align:center;margin-top:12px;font-size:14px;min-height:20px;font-weight:500;}
+.g-next{display:none;margin:12px auto 0;background:var(--teal);color:#fff;border:none;border-radius:99px;padding:11px 32px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.d-opts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;}
+.dopt{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:99px;padding:10px 16px;font-size:13px;color:var(--cream);cursor:pointer;transition:.12s;font-family:'DM Sans',sans-serif;}
+.dopt:active:not(.locked){transform:scale(.97);}
+.dopt.correct{background:rgba(61,191,138,.2);border-color:var(--green);color:var(--green);font-weight:600;}
+.dopt.wrong{background:rgba(224,85,85,.15);border-color:var(--red);color:var(--red);}
+.dopt.locked{cursor:default;}
+.g-tip{font-size:12px;color:var(--cream2);background:rgba(255,255,255,.04);border-radius:8px;padding:8px 12px;margin-top:10px;line-height:1.5;text-align:left;}
+
+/* ESCRITURA */
+.write-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.25);border-radius:var(--r);padding:14px 16px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:16px;margin-top:16px;outline:none;}
+.write-input:focus{border-color:var(--gold);}
+.write-submit{width:100%;margin-top:10px;background:var(--teal);color:#fff;border:none;border-radius:var(--r);padding:13px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.write-answer{display:none;margin-top:12px;padding:12px;border-radius:var(--r);font-size:14px;line-height:1.6;}
+.write-answer.show{display:block;}
+.write-answer.ok{background:rgba(61,191,138,.12);border:1px solid rgba(61,191,138,.3);color:var(--green);}
+.write-answer.no{background:rgba(224,85,85,.1);border:1px solid rgba(224,85,85,.25);color:var(--red);}
+.write-correct{font-size:13px;color:var(--teal2);margin-top:6px;}
+.self-assess{display:none;gap:10px;margin-top:10px;}
+.self-assess.show{display:flex;}
+.sa-btn{flex:1;padding:11px;border-radius:var(--r);border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;}
+.sa-yes{background:var(--green);color:#fff;}
+.sa-no{background:rgba(224,85,85,.3);color:var(--red);}
+
+/* RESULT */
+.result{display:none;text-align:center;padding:32px 20px;}
+.result.show{display:block;}
+.result-arabic{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:44px;color:var(--gold);direction:rtl;}
+.result-score{font-size:32px;font-weight:700;color:var(--cream);margin:10px 0;}
+.result-sub{font-size:14px;color:var(--cream2);}
+.result-btn{background:var(--gold);color:var(--bg);border:none;border-radius:99px;padding:13px 36px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:16px;}
+
+/* STATS */
+.stats-wrap{padding:0 16px;}
+.stat-card{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(201,168,76,.15);border-radius:var(--r);padding:18px 20px;margin-bottom:12px;}
+.stat-card-title{font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;}
+.big-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;}
+.big-stat{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(201,168,76,.15);border-radius:var(--r);padding:16px;text-align:center;}
+.big-stat-n{font-size:28px;font-weight:700;color:var(--gold);}
+.big-stat-l{font-size:10px;color:var(--cream2);text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+.cat-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.cat-row-name{font-size:13px;color:var(--cream);min-width:90px;}
+.cat-row-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;}
+.cat-row-fill{height:6px;background:var(--teal);border-radius:99px;transition:width .6s;}
+.cat-row-pct{font-size:12px;color:var(--cream2);min-width:34px;text-align:right;}
+.mastery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.mastery-item{text-align:center;padding:10px 4px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06);}
+.mastery-n{font-size:18px;font-weight:700;}
+.mastery-l{font-size:9px;color:var(--cream2);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+.m0{color:#666;}
+.m1{color:#C9A84C;}
+.m2{color:#25BFAA;}
+.m3{color:#3DBF8A;}
+
+/* VOCAB REF */
+.ref-wrap{padding:0 16px;}
+.ref-sec{margin-bottom:16px;}
+.ref-title{font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid rgba(201,168,76,.15);}
+.ref-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.03);margin-bottom:5px;border:1px solid rgba(255,255,255,.05);}
+.ref-ar{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:22px;direction:rtl;color:var(--cream);min-width:48px;text-align:right;}
+.ref-info{flex:1;}
+.ref-es{font-size:13px;font-weight:500;color:var(--cream);}
+.ref-tr{font-size:11px;color:var(--teal2);font-style:italic;}
+.ref-btns{display:flex;gap:4px;}
+.ref-spk,.ref-fav{background:none;border:none;font-size:16px;cursor:pointer;padding:4px;}
+.ref-fav{opacity:.3;transition:.2s;}
+.ref-fav.on{opacity:1;}
+
+/* GRAMÁTICA */
+.gram-wrap{padding:0 16px;}
+.gram-card{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(201,168,76,.15);border-radius:var(--r);padding:18px 20px;margin-bottom:12px;}
+.gram-title{font-size:14px;font-weight:600;color:var(--gold2);margin-bottom:4px;}
+.gram-desc{font-size:13px;color:var(--cream2);line-height:1.6;margin-bottom:12px;}
+.gram-examples{display:flex;flex-direction:column;gap:8px;}
+.gram-ex{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.04);border-radius:10px;padding:10px 14px;}
+.gram-ex-ar{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:24px;direction:rtl;color:var(--cream);}
+.gram-ex-info{text-align:left;flex:1;margin-left:12px;}
+.gram-ex-tr{font-size:12px;color:var(--teal2);font-style:italic;}
+.gram-ex-es{font-size:12px;color:var(--cream2);}
+.gram-ex-spk{background:none;border:none;color:var(--gold);font-size:15px;cursor:pointer;}
+.gram-highlight{display:inline;background:rgba(201,168,76,.2);border-radius:3px;padding:0 2px;color:var(--gold2);}
+
+/* NAV */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(13,27,42,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(201,168,76,.15);display:flex;overflow-x:auto;scrollbar-width:none;z-index:100;}
+.bottom-nav::-webkit-scrollbar{display:none;}
+.nav-btn{flex-shrink:0;min-width:64px;padding:11px 8px 13px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;color:var(--cream2);font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.04em;transition:.15s;text-transform:uppercase;}
+.nav-btn.active{color:var(--gold);}
+.nav-icon{font-size:18px;line-height:1;}
+
+/* TOAST */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-60px);background:var(--bg3);border:1px solid rgba(201,168,76,.3);color:var(--cream);padding:9px 18px;border-radius:99px;font-size:12px;z-index:999;transition:transform .3s;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.hidden{display:none!important;}
+
+/* MOBILE FIXES */
+@media (max-width: 420px) {
+  .fc-arabic-big { font-size: 40px; }
+  .g-arabic { font-size: 40px; }
+  .fc-es-big { font-size: 18px; }
+  .nav-btn { min-width: 52px; font-size: 8px; padding: 10px 4px 12px; }
+  .nav-icon { font-size: 16px; }
+  .game-card { padding: 18px 14px 16px; }
+  .opt { padding: 12px 6px; font-size: 13px; }
+  .dopt { padding: 9px 12px; font-size: 12px; }
+  .header-arabic { font-size: 32px; }
+  .hstat-n { font-size: 16px; }
+  .big-stat-n { font-size: 22px; }
+  .fc-scene { height: 220px; }
+  .result-arabic { font-size: 36px; }
+  .result-score { font-size: 26px; }
+  .gram-ex-ar { font-size: 20px; }
+  .write-input { font-size: 16px; }
+  .opts { gap: 6px; }
+  .d-opts { gap: 6px; }
+  .dopt { font-size: 12px; padding: 8px 10px; }
+  .score-bar { gap: 16px; margin-bottom: 10px; }
+  .sc-n { font-size: 18px; }
+  .ref-ar { font-size: 18px; min-width: 38px; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <div class="header-arabic">عَرَبِيّ</div>
+    <div class="header-title">Práctica Interactiva</div>
+    <div class="header-stats">
+      <div class="hstat"><div class="hstat-n" id="h-words">0</div><div class="hstat-l">palabras</div></div>
+      <div class="hstat"><div class="hstat-n" id="h-score">0</div><div class="hstat-l">aciertos</div></div>
+      <div class="hstat"><div class="hstat-n" id="h-streak">0</div><div class="hstat-l">racha</div></div>
+      <div class="hstat"><div class="hstat-n" id="h-mastery">0%</div><div class="hstat-l">dominio</div></div>
+    </div>
+  </div>
+
+  <!-- TARJETAS -->
+  <div id="page-tarjetas" class="page">
+    <div class="section-label">Tarjetas — toca para voltear</div>
+    <div class="fc-mode-toggle">
+      <button class="fc-toggle-btn active" id="fc-all-btn" onclick="setFcMode('all')">Todas</button>
+      <button class="fc-toggle-btn" id="fc-fav-btn" onclick="setFcMode('fav')">⭐ Favoritas</button>
+      <button class="fc-toggle-btn" id="fc-weak-btn" onclick="setFcMode('weak')">🔁 Por repasar</button>
+    </div>
+    <div class="cat-filter" id="fc-cats"></div>
+    <div class="fc-wrap" id="fc-wrap">
+      <div class="fc-scene" id="fc-scene" onclick="flipCard()">
+        <div class="fc-inner" id="fc-inner">
+          <div class="fc-face">
+            <div class="fc-cat" id="fc-cat"></div>
+            <div class="fc-num" id="fc-num"></div>
+            <button class="fc-star" id="fc-star" onclick="event.stopPropagation();toggleFav()">☆</button>
+            <div class="fc-arabic-big" id="fc-arabic"></div>
+            <div class="fc-hint">toca para ver significado</div>
+          </div>
+          <div class="fc-face fc-back-face">
+            <div class="fc-es-big" id="fc-es"></div>
+            <div class="fc-tr-big" id="fc-tr"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-bar"><div class="fc-bar-fill" id="fc-prog"></div></div>
+      <div class="fc-controls">
+        <button class="fc-audio-btn" onclick="speakCurrent()">🔊</button>
+        <button class="fc-btn fc-skip" onclick="nextCard(false)">← Repasar</button>
+        <button class="fc-btn fc-know" onclick="nextCard(true)">Lo sé ✓</button>
+      </div>
+    </div>
+    <div id="fc-result" class="result">
+      <div class="result-arabic">أَحْسَنْتَ!</div>
+      <div class="result-score" id="fc-score"></div>
+      <div class="result-sub">palabras dominadas</div>
+      <button class="result-btn" onclick="initFlashcards()">Otra ronda</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="page-quiz" class="page hidden">
+    <div class="section-label">Quiz — ¿qué significa?</div>
+    <div class="cat-filter" id="quiz-cats"></div>
+    <div class="game-wrap">
+      <div class="score-bar">
+        <div><div class="sc-n" id="q-c">0</div><div class="sc-l">correctas</div></div>
+        <div><div class="sc-n" id="q-w">0</div><div class="sc-l">errores</div></div>
+        <div><div class="sc-n" id="q-r">0</div><div class="sc-l">quedan</div></div>
+      </div>
+      <div class="game-card" id="quiz-card">
+        <div class="g-arabic" id="q-arabic"></div>
+        <div class="g-tr" id="q-tr"></div>
+        <button class="g-audio" onclick="speakCurrentQuiz()">🔊 Escuchar</button>
+        <div class="opts" id="q-opts"></div>
+        <div class="g-feedback" id="q-feedback"></div>
+        <button class="g-next" id="q-next" onclick="nextQuiz()">Siguiente →</button>
+      </div>
+      <div id="q-result" class="result">
+        <div class="result-arabic">مُمْتَاز!</div>
+        <div class="result-score" id="q-score"></div>
+        <div class="result-sub">correctas de <span id="q-total"></span></div>
+        <button class="result-btn" onclick="initQuiz()">Otro quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESCUCHA -->
+  <div id="page-escucha" class="page hidden">
+    <div class="section-label">Escucha — identifica lo que oyes</div>
+    <div class="game-wrap">
+      <div class="score-bar">
+        <div><div class="sc-n" id="e-c">0</div><div class="sc-l">correctas</div></div>
+        <div><div class="sc-n" id="e-w">0</div><div class="sc-l">errores</div></div>
+        <div><div class="sc-n" id="e-r">0</div><div class="sc-l">quedan</div></div>
+      </div>
+      <div class="game-card" id="escucha-card">
+        <div style="font-size:12px;color:var(--cream2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;">¿Cuál palabra has escuchado?</div>
+        <button class="g-audio" style="margin:0 auto 20px;font-size:16px;padding:14px 32px;" onclick="speakCurrentEscucha()">🔊 Escuchar de nuevo</button>
+        <div class="opts" id="e-opts"></div>
+        <div class="g-feedback" id="e-feedback"></div>
+        <button class="g-next" id="e-next" onclick="nextEscucha()">Siguiente →</button>
+      </div>
+      <div id="e-result" class="result">
+        <div class="result-arabic">رَائِع!</div>
+        <div class="result-score" id="e-score"></div>
+        <div class="result-sub">correctas de <span id="e-total"></span></div>
+        <button class="result-btn" onclick="initEscucha()">Otra ronda</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESCRIBE -->
+  <div id="page-escribe" class="page hidden">
+    <div class="section-label">Escribe — traduce al árabe</div>
+    <div class="cat-filter" id="escribe-cats"></div>
+    <div class="game-wrap">
+      <div class="score-bar">
+        <div><div class="sc-n" id="w-c">0</div><div class="sc-l">correctas</div></div>
+        <div><div class="sc-n" id="w-w">0</div><div class="sc-l">errores</div></div>
+        <div><div class="sc-n" id="w-r">0</div><div class="sc-l">quedan</div></div>
+      </div>
+      <div class="game-card" id="escribe-card">
+        <div style="font-size:11px;color:var(--cream2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">Escribe la transliteración</div>
+        <div class="g-es" id="w-es" style="font-size:22px;font-weight:700;color:var(--cream2);"></div>
+        <div class="g-arabic" id="w-arabic" style="margin-top:8px;font-size:36px;"></div>
+        <input class="write-input" id="w-input" type="text" placeholder="Escribe aquí la transliteración..." autocomplete="off" autocorrect="off" spellcheck="false">
+        <button class="write-submit" onclick="submitWrite()">Comprobar</button>
+        <div class="write-answer" id="w-answer">
+          <div id="w-answer-txt"></div>
+          <div class="write-correct" id="w-correct"></div>
+        </div>
+        <div class="self-assess" id="w-assess">
+          <button class="sa-btn sa-yes" onclick="assessWrite(true)">✓ Lo tenía</button>
+          <button class="sa-btn sa-no" onclick="assessWrite(false)">✗ Me equivoqué</button>
+        </div>
+      </div>
+      <div id="w-result" class="result">
+        <div class="result-arabic">مُمْتَاز!</div>
+        <div class="result-score" id="w-score"></div>
+        <div class="result-sub">correctas de <span id="w-total"></span></div>
+        <button class="result-btn" onclick="initEscribe()">Otra ronda</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETECTA -->
+  <div id="page-detecta" class="page hidden">
+    <div class="section-label">Detecta — identifica el elemento</div>
+    <div class="game-wrap">
+      <div class="score-bar">
+        <div><div class="sc-n" id="d-c">0</div><div class="sc-l">correctas</div></div>
+        <div><div class="sc-n" id="d-w">0</div><div class="sc-l">errores</div></div>
+        <div><div class="sc-n" id="d-r">0</div><div class="sc-l">quedan</div></div>
+      </div>
+      <div class="game-card" id="detect-card">
+        <div style="font-size:11px;color:var(--cream2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">¿Qué elemento especial contiene?</div>
+        <div class="g-arabic" id="d-arabic"></div>
+        <div class="g-tr" id="d-meaning" style="color:var(--cream2);"></div>
+        <button class="g-audio" onclick="speakCurrentDetect()">🔊 Escuchar</button>
+        <div class="d-opts" id="d-opts"></div>
+        <div class="g-feedback" id="d-feedback"></div>
+        <div class="g-tip" id="d-tip" style="display:none;"></div>
+        <button class="g-next" id="d-next" onclick="nextDetect()">Siguiente →</button>
+      </div>
+      <div id="d-result" class="result">
+        <div class="result-arabic">أَحْسَنْتَ!</div>
+        <div class="result-score" id="d-score"></div>
+        <div class="result-sub">correctas de <span id="d-total"></span></div>
+        <button class="result-btn" onclick="initDetect()">Otro ejercicio</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTADÍSTICAS -->
+  <div id="page-stats" class="page hidden">
+    <div class="section-label">Estadísticas</div>
+    <div class="stats-wrap">
+      <div class="big-stats">
+        <div class="big-stat"><div class="big-stat-n" id="st-total">0</div><div class="big-stat-l">respondidas</div></div>
+        <div class="big-stat"><div class="big-stat-n" id="st-pct">0%</div><div class="big-stat-l">aciertos</div></div>
+        <div class="big-stat"><div class="big-stat-n" id="st-best">0</div><div class="big-stat-l">mejor racha</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-title">Dominio por categoría</div>
+        <div id="st-cats"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-title">Nivel de dominio</div>
+        <div class="mastery-grid">
+          <div class="mastery-item"><div class="mastery-n m0" id="m0">0</div><div class="mastery-l">Sin ver</div></div>
+          <div class="mastery-item"><div class="mastery-n m1" id="m1">0</div><div class="mastery-l">Aprendiendo</div></div>
+          <div class="mastery-item"><div class="mastery-n m2" id="m2">0</div><div class="mastery-l">Conocida</div></div>
+          <div class="mastery-item"><div class="mastery-n m3" id="m3">0</div><div class="mastery-l">Dominada</div></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-title">Favoritas</div>
+        <div id="st-favs" style="font-size:13px;color:var(--cream2);"></div>
+      </div>
+      <button onclick="resetStats()" style="width:100%;padding:12px;border-radius:99px;border:1px solid rgba(224,85,85,.3);background:transparent;color:var(--red);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;margin-top:4px;">Reiniciar estadísticas</button>
+    </div>
+  </div>
+
+  <!-- VOCAB -->
+  <div id="page-vocab" class="page hidden">
+    <div class="section-label">Vocabulario completo</div>
+    <div class="cat-filter" id="vocab-cats"></div>
+    <div class="ref-wrap" id="ref-content"></div>
+  </div>
+
+  <!-- GRAMÁTICA -->
+  <div id="page-gram" class="page hidden">
+    <div class="section-label">Gramática visual</div>
+    <div class="gram-wrap" id="gram-content"></div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="showPage('tarjetas',this)"><span class="nav-icon">🃏</span>Tarjetas</button>
+  <button class="nav-btn" onclick="showPage('quiz',this)"><span class="nav-icon">❓</span>Quiz</button>
+  <button class="nav-btn" onclick="showPage('escucha',this)"><span class="nav-icon">👂</span>Escucha</button>
+  <button class="nav-btn" onclick="showPage('escribe',this)"><span class="nav-icon">✏️</span>Escribe</button>
+  <button class="nav-btn" onclick="showPage('detecta',this)"><span class="nav-icon">🔍</span>Detecta</button>
+  <button class="nav-btn" onclick="showPage('stats',this)"><span class="nav-icon">📊</span>Stats</button>
+  <button class="nav-btn" onclick="showPage('vocab',this)"><span class="nav-icon">📖</span>Vocab</button>
+  <button class="nav-btn" onclick="showPage('gram',this)"><span class="nav-icon">📚</span>Gram.</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+// VOCABULARIO
+// ══════════════════════════════════════
+const VOCAB = [
+  {ar:"مَرْحَبًا",tr:"marhaban",es:"Hola",cat:"Saludos"},
+  {ar:"اَلسَّلَامُ عَلَيْكُمْ",tr:"as-salāmu alaykum",es:"Hola (formal)",cat:"Saludos"},
+  {ar:"أَهْلًا",tr:"ahlan",es:"Hola (informal)",cat:"Saludos"},
+  {ar:"صَبَاحُ الْخَيْرِ",tr:"ṣabāḥu l-khayr",es:"Buenos días",cat:"Saludos"},
+  {ar:"مَسَاءُ الْخَيْرِ",tr:"masā'u l-khayr",es:"Buenas tardes",cat:"Saludos"},
+  {ar:"كَيْفَ الْحَال؟",tr:"kayfa l-ḥāl?",es:"¿Qué tal?",cat:"Saludos"},
+  {ar:"أَنَا بِخَيْر",tr:"anā bi-khayr",es:"Estoy bien",cat:"Saludos"},
+  {ar:"مَعَ السَّلَامَة",tr:"ma'a s-salāma",es:"Adiós",cat:"Saludos"},
+  {ar:"إِلَى اللِّقَاء",tr:"ilā l-liqā'",es:"Hasta luego",cat:"Saludos"},
+  {ar:"أُمّ",tr:"umm",es:"Madre",cat:"Familia"},
+  {ar:"أَب",tr:"ab",es:"Padre",cat:"Familia"},
+  {ar:"أَخ",tr:"akh",es:"Hermano",cat:"Familia"},
+  {ar:"أُخْت",tr:"ukht",es:"Hermana",cat:"Familia"},
+  {ar:"اِبْن",tr:"ibn",es:"Hijo",cat:"Familia"},
+  {ar:"وَلَد",tr:"walad",es:"Chico",cat:"Familia"},
+  {ar:"بِنْت",tr:"bint",es:"Chica / Hija",cat:"Familia"},
+  {ar:"حَبِيبِي",tr:"ḥabībī",es:"Cariño / Querido",cat:"Familia"},
+  {ar:"مُعَلِّم",tr:"mu'allim",es:"Profesor",cat:"Profesiones"},
+  {ar:"مُعَلِّمَة",tr:"mu'allima",es:"Profesora",cat:"Profesiones"},
+  {ar:"طَالِب",tr:"ṭālib",es:"Estudiante (masc.)",cat:"Profesiones"},
+  {ar:"طَالِبَة",tr:"ṭāliba",es:"Estudiante (fem.)",cat:"Profesiones"},
+  {ar:"مُدِير",tr:"mudīr",es:"Director",cat:"Profesiones"},
+  {ar:"طَبِيب",tr:"ṭabīb",es:"Médico",cat:"Profesiones"},
+  {ar:"مُهَنْدِس",tr:"muhandis",es:"Ingeniero",cat:"Profesiones"},
+  {ar:"شُرْطِيّ",tr:"shurṭiyy",es:"Policía",cat:"Profesiones"},
+  {ar:"مُمَرِّضَة",tr:"mumarriḍa",es:"Enfermera",cat:"Profesiones"},
+  {ar:"فَلَّاح",tr:"fallāḥ",es:"Agricultor",cat:"Profesiones"},
+  {ar:"مُحَامِي",tr:"muḥāmī",es:"Abogado",cat:"Profesiones"},
+  {ar:"مُوَظَّف",tr:"muwaẓẓaf",es:"Funcionario",cat:"Profesiones"},
+  {ar:"مَدْرَسَة",tr:"madrasa",es:"Escuela",cat:"Escuela"},
+  {ar:"مَكْتَبَة",tr:"maktaba",es:"Biblioteca",cat:"Escuela"},
+  {ar:"كِتَاب",tr:"kitāb",es:"Libro",cat:"Escuela"},
+  {ar:"دَفْتَر",tr:"daftar",es:"Cuaderno",cat:"Escuela"},
+  {ar:"قَلَم",tr:"qalam",es:"Bolígrafo",cat:"Escuela"},
+  {ar:"قَامُوس",tr:"qāmūs",es:"Diccionario",cat:"Escuela"},
+  {ar:"وَاجِب",tr:"wājib",es:"Tarea / Deber",cat:"Escuela"},
+  {ar:"بَيْت",tr:"bayt",es:"Casa",cat:"Casa"},
+  {ar:"غُرْفَة",tr:"ghurfa",es:"Habitación",cat:"Casa"},
+  {ar:"بَاب",tr:"bāb",es:"Puerta",cat:"Casa"},
+  {ar:"مَطْبَخ",tr:"maṭbakh",es:"Cocina",cat:"Casa"},
+  {ar:"مِفْتَاح",tr:"miftāḥ",es:"Llave",cat:"Casa"},
+  {ar:"طَبَق",tr:"ṭabaq",es:"Plato",cat:"Casa"},
+  {ar:"شَمْس",tr:"shams",es:"Sol",cat:"Naturaleza"},
+  {ar:"سَمَاء",tr:"samā'",es:"Cielo",cat:"Naturaleza"},
+  {ar:"مَاء",tr:"mā'",es:"Agua",cat:"Naturaleza"},
+  {ar:"وَرْدَة",tr:"warda",es:"Flor",cat:"Naturaleza"},
+  {ar:"نَهْر",tr:"nahr",es:"Río",cat:"Naturaleza"},
+  {ar:"شَارِع",tr:"shāri'",es:"Calle",cat:"Naturaleza"},
+  {ar:"كَلْب",tr:"kalb",es:"Perro",cat:"Animales"},
+  {ar:"قِطّ",tr:"qiṭṭ",es:"Gato",cat:"Animales"},
+  {ar:"أَسَد",tr:"asad",es:"León",cat:"Animales"},
+  {ar:"فِيل",tr:"fīl",es:"Elefante",cat:"Animales"},
+  {ar:"سَمَك",tr:"samak",es:"Pescado",cat:"Animales"},
+  {ar:"بَقَرَة",tr:"baqara",es:"Vaca",cat:"Animales"},
+  {ar:"زَرَافَة",tr:"zarāfa",es:"Jirafa",cat:"Animales"},
+  {ar:"خُبْز",tr:"khubz",es:"Pan",cat:"Comida"},
+  {ar:"شَاي",tr:"shāy",es:"Té",cat:"Comida"},
+  {ar:"جُبْنَة",tr:"jubna",es:"Queso",cat:"Comida"},
+  {ar:"مَوْز",tr:"mawz",es:"Banana",cat:"Comida"},
+  {ar:"تُفَّاحَة",tr:"tuffāḥa",es:"Manzana",cat:"Comida"},
+  {ar:"حَلِيب",tr:"ḥalīb",es:"Leche",cat:"Comida"},
+  {ar:"لَيْمُون",tr:"laymūn",es:"Limón",cat:"Comida"},
+  {ar:"زَيْتُون",tr:"zaytūn",es:"Aceitunas",cat:"Comida"},
+  {ar:"جَمِيل",tr:"jamīl",es:"Bonito",cat:"Adjetivos"},
+  {ar:"صَغِير",tr:"ṣaghīr",es:"Pequeño",cat:"Adjetivos"},
+  {ar:"نَظِيف",tr:"naẓīf",es:"Limpio",cat:"Adjetivos"},
+  {ar:"سَعِيد",tr:"sa'īd",es:"Feliz (masc.)",cat:"Adjetivos"},
+  {ar:"حَزِينَة",tr:"ḥazīna",es:"Triste (fem.)",cat:"Adjetivos"},
+  {ar:"قَرِيب",tr:"qarīb",es:"Cerca",cat:"Adjetivos"},
+  {ar:"بَعِيد",tr:"ba'īd",es:"Lejos",cat:"Adjetivos"},
+  {ar:"فَقِير",tr:"faqīr",es:"Pobre",cat:"Adjetivos"},
+  {ar:"غَنِيّ",tr:"ghaniyy",es:"Rico",cat:"Adjetivos"},
+  {ar:"حُبّ",tr:"ḥubb",es:"Amor",cat:"Conceptos"},
+  {ar:"سَلَام",tr:"salām",es:"Paz",cat:"Conceptos"},
+  {ar:"نَجَاح",tr:"najāḥ",es:"Éxito",cat:"Conceptos"},
+  {ar:"حَنِين",tr:"ḥanīn",es:"Nostalgia",cat:"Conceptos"},
+  {ar:"يَوْم",tr:"yawm",es:"Día",cat:"Conceptos"},
+  {ar:"سَنَة",tr:"sana",es:"Año",cat:"Conceptos"},
+  {ar:"صَبَاح",tr:"ṣabāḥ",es:"Mañana (por la mañana)",cat:"Conceptos"},
+  {ar:"غَدًا",tr:"ghadan",es:"Mañana (tomorrow)",cat:"Conceptos"},
+  {ar:"اِسْم",tr:"ism",es:"Nombre",cat:"Conceptos"},
+  {ar:"خَرَجَ",tr:"kharaja",es:"Salir",cat:"Verbos"},
+  {ar:"أُحِبّ",tr:"uḥibb",es:"Me gusta / Amo",cat:"Verbos"},
+  {ar:"رَأَى",tr:"ra'ā",es:"Ver",cat:"Verbos"},
+  {ar:"مُسْتَشْفَى",tr:"mustashfā",es:"Hospital",cat:"Lugares"},
+  {ar:"سُوق",tr:"sūq",es:"Mercado",cat:"Lugares"},
+  {ar:"مَقْهَى",tr:"maqhā",es:"Cafetería",cat:"Lugares"},
+  {ar:"مَكْتَب",tr:"maktab",es:"Oficina",cat:"Lugares"},
+];
+
+const DETECT = [
+  {ar:"مَدْرَسَة",es:"escuela",ans:"Ta marbuta ة",dis:["Shaddah ّ","Hamza ء","Alif maqsura ى"],tip:"La ة al final indica femenino. Se pronuncia -a."},
+  {ar:"حُبّ",es:"amor",ans:"Shaddah ّ",dis:["Ta marbuta ة","Alif maqsura ى","Hamza ء"],tip:"La shaddah sobre ب dobla la consonante: ḥubb."},
+  {ar:"مُوسِيقَى",es:"música",ans:"Alif maqsura ى",dis:["Ta marbuta ة","Shaddah ّ","Hamza ء"],tip:"La ى sin puntos al final es alif maqsura. Suena ā."},
+  {ar:"أُمّ",es:"madre",ans:"Hamza ء",dis:["Ta marbuta ة","Alif maqsura ى","Shaddah ّ"],tip:"La أ inicial es hamza sobre alif. Además tiene shaddah en م."},
+  {ar:"مُعَلِّمَة",es:"profesora",ans:"Shaddah ّ",dis:["Alif maqsura ى","Hamza ء","Ta marbuta ة"],tip:"Tiene shaddah en ل (dobla la L) Y ta marbuta al final."},
+  {ar:"مَقْهَى",es:"cafetería",ans:"Alif maqsura ى",dis:["Ta marbuta ة","Shaddah ّ","Hamza ء"],tip:"Termina en ى sin puntos: alif maqsura, sonido ā."},
+  {ar:"طَالِبَة",es:"estudiante fem.",ans:"Ta marbuta ة",dis:["Hamza ء","Alif maqsura ى","Shaddah ّ"],tip:"La ة convierte el masculino طالب en femenino."},
+  {ar:"قِطّ",es:"gato",ans:"Shaddah ّ",dis:["Ta marbuta ة","Hamza ء","Alif maqsura ى"],tip:"La shaddah sobre ط dobla la T: qiṭṭ."},
+  {ar:"غَدًا",es:"mañana (tomorrow)",ans:"Alif maqsura ى",dis:["Tanwin fath","Hamza ء","Ta marbuta ة"],tip:"Termina en alif maqsura con tanwin fath encima."},
+  {ar:"مُسْتَشْفَى",es:"hospital",ans:"Alif maqsura ى",dis:["Ta marbuta ة","Shaddah ّ","Hamza ء"],tip:"mustashfā termina en alif maqsura."},
+  {ar:"مُمَرِّضَة",es:"enfermera",ans:"Shaddah ّ",dis:["Solo ta marbuta ة","Alif maqsura ى","Hamza ء"],tip:"Tiene shaddah en ر Y ta marbuta al final."},
+  {ar:"وَرْدَة",es:"flor",ans:"Ta marbuta ة",dis:["Shaddah ّ","Hamza ء","Alif maqsura ى"],tip:"La ة al final: warda, palabra femenina."},
+  {ar:"أَخ",es:"hermano",ans:"Hamza ء",dis:["Ta marbuta ة","Alif maqsura ى","Shaddah ّ"],tip:"La أ inicial es hamza qat' sobre alif con fatha."},
+  {ar:"فَلَّاح",es:"agricultor",ans:"Shaddah ّ",dis:["Ta marbuta ة","Hamza ء","Alif maqsura ى"],tip:"La shaddah sobre ل dobla la L: fallāḥ."},
+  {ar:"مَكْتَبَة",es:"biblioteca",ans:"Ta marbuta ة",dis:["Shaddah ّ","Alif maqsura ى","Hamza ء"],tip:"La ة al final marca el femenino: maktaba."},
+];
+
+const GRAMMAR = [
+  {title:"Harakat — vocales cortas",desc:"Las vocales cortas se escriben como signos encima o debajo de las letras. Son fatha (a), kasra (i), damma (u) y sukun (sin vocal).",examples:[
+    {ar:"كَتَبَ",tr:"kataba",es:"escribió",note:"3 fatha seguidas"},
+    {ar:"كِتَاب",tr:"kitāb",es:"libro",note:"kasra + vocal larga ā"},
+    {ar:"كُتُب",tr:"kutub",es:"libros",note:"2 damma"},
+    {ar:"بَيْت",tr:"bayt",es:"casa",note:"fatha + sukun en ي"},
+  ]},
+  {title:"Vocales largas — المد",desc:"Las vocales largas son el doble de largas que las cortas. Se forman con alif (ā), waw (ū) y ya (ī). Siempre van precedidas de la vocal corta equivalente.",examples:[
+    {ar:"كِتَاب",tr:"kitāb",es:"libro",note:"alif larga → ā"},
+    {ar:"نُور",tr:"nūr",es:"luz",note:"waw larga → ū"},
+    {ar:"كَرِيم",tr:"karīm",es:"generoso",note:"ya larga → ī"},
+  ]},
+  {title:"Shaddah — الشدة",desc:"La shaddah (ّ) significa que la consonante se pronuncia doble. Equivale a escribir la misma letra dos veces.",examples:[
+    {ar:"حُبّ",tr:"ḥubb",es:"amor",note:"ب doble → bb"},
+    {ar:"مُعَلِّم",tr:"mu'allim",es:"profesor",note:"ل doble → ll"},
+    {ar:"قِطّ",tr:"qiṭṭ",es:"gato",note:"ط doble → ṭṭ"},
+    {ar:"فَلَّاح",tr:"fallāḥ",es:"agricultor",note:"ل doble → ll"},
+  ]},
+  {title:"Ta marbuta — التاء المربوطة",desc:"La ta marbuta (ة) aparece al final de palabras femeninas. Se pronuncia -a al leer y -at en cadena. Se distingue de la ta normal (ت) por los dos puntos y el círculo.",examples:[
+    {ar:"مَدْرَسَة",tr:"madrasa",es:"escuela (fem.)",note:"ة → -a"},
+    {ar:"طَالِبَة",tr:"ṭāliba",es:"estudiante (fem.)",note:"masc. طَالِب → fem. طَالِبَة"},
+    {ar:"غُرْفَة",tr:"ghurfa",es:"habitación",note:"ة al final"},
+  ]},
+  {title:"Hamza — الهمزة",desc:"La hamza (ء) es un golpe de glotis, como el corte entre las sílabas en 'uh-oh'. Puede escribirse sola o sobre alif (أ إ), waw (ؤ) o ya (ئ) según su posición.",examples:[
+    {ar:"أَب",tr:"ab",es:"padre",note:"hamza sobre alif con fatha"},
+    {ar:"إِبْل",tr:"ibil",es:"camello",note:"hamza bajo alif con kasra"},
+    {ar:"سُؤَال",tr:"su'āl",es:"pregunta",note:"hamza sobre waw"},
+    {ar:"بِئْر",tr:"bi'r",es:"pozo",note:"hamza sobre ya"},
+  ]},
+  {title:"Alif maqsura — الألف المقصورة",desc:"La alif maqsura (ى) es una forma especial de alif que aparece al final de palabras. Se escribe como ya pero sin puntos, y suena como una vocal larga ā.",examples:[
+    {ar:"مُوسِيقَى",tr:"mūsīqā",es:"música",note:"ى al final → ā"},
+    {ar:"مَقْهَى",tr:"maqhā",es:"cafetería",note:"ى al final → ā"},
+    {ar:"مُسْتَشْفَى",tr:"mustashfā",es:"hospital",note:"ى al final → ā"},
+    {ar:"غَدًا",tr:"ghadan",es:"mañana",note:"ى con tanwin fath"},
+  ]},
+  {title:"Artículo definido — ال",desc:"El artículo ال (al-) equivale a 'el/la/los/las'. Con letras solares, la L se asimila al sonido de la letra siguiente. Con letras lunares, se pronuncia al- completo.",examples:[
+    {ar:"الْكِتَاب",tr:"al-kitāb",es:"el libro",note:"letra lunar → al-k"},
+    {ar:"الشَّمْس",tr:"ash-shams",es:"el sol",note:"letra solar → ash-sh"},
+    {ar:"الْبَيْت",tr:"al-bayt",es:"la casa",note:"letra lunar → al-b"},
+    {ar:"النُّور",tr:"an-nūr",es:"la luz",note:"letra solar → an-n"},
+  ]},
+  {title:"Sufijos posesivos",desc:"En árabe el posesivo se añade directamente al final de la palabra como sufijo.",examples:[
+    {ar:"بَيْتِي",tr:"baytī",es:"mi casa",note:"-ī → mío/a"},
+    {ar:"بَيْتُكَ",tr:"baytuka",es:"tu casa (tú masc.)",note:"-ka → tuyo masc."},
+    {ar:"بَيْتُهُ",tr:"baytuhu",es:"su casa (él)",note:"-hu → suyo masc."},
+    {ar:"بَيْتُهَا",tr:"baytuhā",es:"su casa (ella)",note:"-hā → suyo fem."},
+  ]},
+];
+
+// ══════════════════════════════════════
+// AUDIO
+// ══════════════════════════════════════
+let currentAudio = null;
+function speak(text) {
+  // Try Web Speech API first (best mobile support)
+  if ('speechSynthesis' in window) {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'ar-SA'; u.rate = 0.75; u.pitch = 1;
+    u.onerror = () => tryGoogleTTS(text);
+    speechSynthesis.speak(u);
+    // If no voice fires in 1s, try Google TTS
+    setTimeout(() => { if (speechSynthesis.speaking === false) tryGoogleTTS(text); }, 1000);
+  } else {
+    tryGoogleTTS(text);
+  }
+}
+function tryGoogleTTS(text) {
+  try {
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    const url = "https://translate.google.com/translate_tts?ie=UTF-8&q=" + encodeURIComponent(text) + "&tl=ar&client=tw-ob";
+    currentAudio = new Audio(url);
+    currentAudio.play().catch(() => showToast("Sin audio árabe disponible"));
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════
+// SONIDOS DE ACIERTO/FALLO
+// ══════════════════════════════════════
+function playTone(freq, dur, type) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = freq; osc.type = type || 'sine';
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    osc.start(); osc.stop(ctx.currentTime + dur);
+  } catch(e) {}
+}
+function playCorrect() { playTone(880, 0.15); setTimeout(() => playTone(1100, 0.1), 120); }
+function playWrong() { playTone(180, 0.3, 'sawtooth'); }
+
+// ══════════════════════════════════════
+// ESTADO Y PERSISTENCIA
+// ══════════════════════════════════════
+let stats = JSON.parse(localStorage.getItem('arabic_stats') || '{"totalCorrect":0,"totalAnswered":0,"bestStreak":0,"catStats":{}}');
+let mastery = JSON.parse(localStorage.getItem('arabic_mastery') || '{}');
+let favorites = new Set(JSON.parse(localStorage.getItem('arabic_favs') || '[]'));
+let sessionScore = 0, currentStreak = 0;
+
+function saveStats() {
+  localStorage.setItem('arabic_stats', JSON.stringify(stats));
+  localStorage.setItem('arabic_mastery', JSON.stringify(mastery));
+  localStorage.setItem('arabic_favs', JSON.stringify([...favorites]));
+}
+
+function recordAnswer(word, correct) {
+  stats.totalAnswered++;
+  if (correct) {
+    stats.totalCorrect++; sessionScore++; currentStreak++;
+    if (currentStreak > stats.bestStreak) stats.bestStreak = currentStreak;
+    mastery[word.ar] = Math.min(3, (mastery[word.ar] || 0) + 1);
+  } else {
+    currentStreak = 0;
+    mastery[word.ar] = Math.max(0, (mastery[word.ar] || 0) - 1);
+  }
+  if (!stats.catStats[word.cat]) stats.catStats[word.cat] = {c:0,t:0};
+  stats.catStats[word.cat].t++;
+  if (correct) stats.catStats[word.cat].c++;
+  saveStats();
+  updateHeaderStats();
+}
+
+function updateHeaderStats() {
+  document.getElementById('h-score').textContent = stats.totalCorrect;
+  document.getElementById('h-streak').textContent = stats.bestStreak;
+  const m3count = VOCAB.filter(w => (mastery[w.ar]||0) >= 3).length;
+  document.getElementById('h-mastery').textContent = Math.round(m3count/VOCAB.length*100) + '%';
+}
+
+// ══════════════════════════════════════
+// FAVORITOS
+// ══════════════════════════════════════
+let currentWord = null;
+function toggleFav() {
+  if (!currentWord) return;
+  const k = currentWord.ar;
+  if (favorites.has(k)) { favorites.delete(k); document.getElementById('fc-star').textContent = '☆'; document.getElementById('fc-star').classList.remove('on'); }
+  else { favorites.add(k); document.getElementById('fc-star').textContent = '⭐'; document.getElementById('fc-star').classList.add('on'); }
+  saveStats();
+}
+
+// ══════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════
+function shuffle(a) { return [...a].sort(() => Math.random() - .5); }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+function getVocabByFilter(cat) {
+  if (!cat || cat === 'Todas') return VOCAB;
+  return VOCAB.filter(w => w.cat === cat);
+}
+function getCategories() { return ['Todas', ...new Set(VOCAB.map(w => w.cat))]; }
+
+function buildCatFilter(containerId, activeVar, callback) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  getCategories().forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-chip' + (cat === 'Todas' ? ' active' : '');
+    btn.textContent = cat;
+    btn.onclick = () => {
+      c.querySelectorAll('.cat-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      callback(cat);
+    };
+    c.appendChild(btn);
+  });
+}
+
+// ══════════════════════════════════════
+// NAVEGACIÓN
+// ══════════════════════════════════════
+let pageInits = {};
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.remove('hidden');
+  if (btn) btn.classList.add('active');
+  if (!pageInits[name]) { pageInits[name] = true; initPage(name); }
+  if (name === 'stats') renderStats();
+}
+
+function initPage(name) {
+  if (name === 'quiz') initQuiz();
+  if (name === 'escucha') initEscucha();
+  if (name === 'escribe') initEscribe();
+  if (name === 'detecta') initDetect();
+  if (name === 'vocab') buildVocab();
+  if (name === 'gram') buildGram();
+}
+
+// ══════════════════════════════════════
+// TARJETAS
+// ══════════════════════════════════════
+let fcCards = [], fcIdx = 0, fcKnown = 0, fcMode = 'all', fcCat = 'Todas';
+
+function setFcMode(mode) {
+  fcMode = mode;
+  document.querySelectorAll('.fc-toggle-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('fc-' + mode + '-btn').classList.add('active');
+  initFlashcards();
+}
+
+function getFcCards() {
+  let pool = getVocabByFilter(fcCat);
+  if (fcMode === 'fav') pool = pool.filter(w => favorites.has(w.ar));
+  if (fcMode === 'weak') pool = pool.filter(w => (mastery[w.ar] || 0) < 2);
+  if (pool.length === 0) { showToast('No hay palabras en esta selección'); return VOCAB.slice(0, 20); }
+  return shuffle(pool).slice(0, Math.min(20, pool.length));
+}
+
+function initFlashcards() {
+  fcCards = getFcCards(); fcIdx = 0; fcKnown = 0;
+  document.getElementById('fc-result').classList.remove('show');
+  document.getElementById('fc-wrap').style.display = 'block';
+  showCard();
+}
+
+function showCard() {
+  if (fcIdx >= fcCards.length) { endFC(); return; }
+  const w = fcCards[fcIdx]; currentWord = w;
+  document.getElementById('fc-inner').classList.remove('flipped');
+  document.getElementById('fc-arabic').textContent = w.ar;
+  document.getElementById('fc-es').textContent = w.es;
+  document.getElementById('fc-tr').textContent = w.tr;
+  document.getElementById('fc-cat').textContent = w.cat;
+  document.getElementById('fc-num').textContent = (fcIdx + 1) + '/' + fcCards.length;
+  const isFav = favorites.has(w.ar);
+  const star = document.getElementById('fc-star');
+  star.textContent = isFav ? '⭐' : '☆';
+  star.classList.toggle('on', isFav);
+  document.getElementById('fc-prog').style.width = (fcIdx / fcCards.length * 100) + '%';
+}
+
+function flipCard() {
+  const inner = document.getElementById('fc-inner');
+  if (!inner.classList.contains('flipped')) {
+    inner.classList.add('flipped');
+    speak(fcCards[fcIdx].ar);
+  }
+}
+
+function speakCurrent() { if (fcIdx < fcCards.length) speak(fcCards[fcIdx].ar); }
+
+function nextCard(knew) {
+  recordAnswer(fcCards[fcIdx], knew);
+  if (knew) { fcKnown++; playCorrect(); } else { playWrong(); }
+  fcIdx++; showCard();
+}
+
+function endFC() {
+  document.getElementById('fc-wrap').style.display = 'none';
+  document.getElementById('fc-result').classList.add('show');
+  document.getElementById('fc-score').textContent = fcKnown + ' / ' + fcCards.length;
+}
+
+// TARJETAS: category filter
+buildCatFilter('fc-cats', fcCat, (cat) => { fcCat = cat; initFlashcards(); });
+
+// ══════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════
+let qItems = [], qIdx = 0, qC = 0, qW = 0, curQuizWord = null, qCat = 'Todas';
+
+function initQuiz() {
+  buildCatFilter('quiz-cats', qCat, (cat) => { qCat = cat; initQuiz(); });
+  qItems = shuffle(getVocabByFilter(qCat)).slice(0, 15);
+  qIdx = 0; qC = 0; qW = 0;
+  document.getElementById('q-result').classList.remove('show');
+  document.getElementById('quiz-card').style.display = 'block';
+  updateQScore(); showQuestion();
+}
+
+function updateQScore() {
+  document.getElementById('q-c').textContent = qC;
+  document.getElementById('q-w').textContent = qW;
+  document.getElementById('q-r').textContent = Math.max(0, qItems.length - qIdx);
+}
+
+function showQuestion() {
+  if (qIdx >= qItems.length) { endQuiz(); return; }
+  const w = qItems[qIdx]; curQuizWord = w;
+  document.getElementById('q-arabic').textContent = w.ar;
+  document.getElementById('q-tr').textContent = '';
+  document.getElementById('q-feedback').textContent = '';
+  document.getElementById('q-next').style.display = 'none';
+  const others = shuffle(VOCAB.filter(v => v.es !== w.es)).slice(0, 3).map(v => v.es);
+  const opts = shuffle([w.es, ...others]);
+  const c = document.getElementById('q-opts'); c.innerHTML = '';
+  opts.forEach(o => {
+    const b = document.createElement('button'); b.className = 'opt'; b.textContent = o;
+    b.onclick = () => answerQ(b, o, w); c.appendChild(b);
+  });
+  updateQScore();
+}
+
+function answerQ(btn, chosen, word) {
+  document.querySelectorAll('#q-opts .opt').forEach(b => { b.classList.add('locked'); b.onclick = null; });
+  document.getElementById('q-tr').textContent = word.tr;
+  const ok = chosen === word.es;
+  recordAnswer(word, ok);
+  if (ok) { btn.classList.add('correct'); qC++; playCorrect(); document.getElementById('q-feedback').style.color = 'var(--green)'; document.getElementById('q-feedback').textContent = '✓ ¡Correcto!'; speak(word.ar); }
+  else { btn.classList.add('wrong'); qW++; playWrong(); document.querySelectorAll('#q-opts .opt').forEach(b => { if (b.textContent === word.es) b.classList.add('correct'); }); document.getElementById('q-feedback').style.color = 'var(--red)'; document.getElementById('q-feedback').textContent = '✗ Era: ' + word.es; }
+  updateQScore(); qIdx++;
+  document.getElementById('q-next').style.display = 'block';
+}
+
+function speakCurrentQuiz() { if (curQuizWord) speak(curQuizWord.ar); }
+function nextQuiz() { showQuestion(); }
+function endQuiz() {
+  document.getElementById('quiz-card').style.display = 'none';
+  document.getElementById('q-result').classList.add('show');
+  document.getElementById('q-score').textContent = qC;
+  document.getElementById('q-total').textContent = qItems.length;
+}
+
+// ══════════════════════════════════════
+// ESCUCHA
+// ══════════════════════════════════════
+let eItems = [], eIdx = 0, eC = 0, eW = 0, curEscucha = null;
+
+function initEscucha() {
+  eItems = shuffle(VOCAB).slice(0, 12); eIdx = 0; eC = 0; eW = 0;
+  document.getElementById('e-result').classList.remove('show');
+  document.getElementById('escucha-card').style.display = 'block';
+  updateEScore(); showEscucha();
+}
+
+function updateEScore() {
+  document.getElementById('e-c').textContent = eC;
+  document.getElementById('e-w').textContent = eW;
+  document.getElementById('e-r').textContent = Math.max(0, eItems.length - eIdx);
+}
+
+function showEscucha() {
+  if (eIdx >= eItems.length) { endEscucha(); return; }
+  const w = eItems[eIdx]; curEscucha = w;
+  const others = shuffle(VOCAB.filter(v => v.ar !== w.ar)).slice(0, 3);
+  const opts = shuffle([w, ...others]);
+  const c = document.getElementById('e-opts'); c.innerHTML = '';
+  opts.forEach(o => {
+    const b = document.createElement('button'); b.className = 'opt';
+    b.innerHTML = '<div class="opt-arabic">' + o.ar + '</div><div style="font-size:11px;color:var(--cream2);margin-top:2px;">' + o.tr + '</div>';
+    b.onclick = () => answerE(b, o, w); c.appendChild(b);
+  });
+  document.getElementById('e-feedback').textContent = '';
+  document.getElementById('e-next').style.display = 'none';
+  updateEScore();
+  // auto-play removed for mobile
+}
+
+function answerE(btn, chosen, word) {
+  document.querySelectorAll('#e-opts .opt').forEach(b => { b.classList.add('locked'); b.onclick = null; });
+  const ok = chosen.ar === word.ar;
+  recordAnswer(word, ok);
+  if (ok) { btn.classList.add('correct'); eC++; playCorrect(); document.getElementById('e-feedback').style.color = 'var(--green)'; document.getElementById('e-feedback').textContent = '✓ ¡Correcto! ' + word.es; }
+  else { btn.classList.add('wrong'); eW++; playWrong(); document.querySelectorAll('#e-opts .opt').forEach(b => { if (b.querySelector('.opt-arabic') && b.querySelector('.opt-arabic').textContent === word.ar) b.classList.add('correct'); }); document.getElementById('e-feedback').style.color = 'var(--red)'; document.getElementById('e-feedback').textContent = '✗ Era: ' + word.es; }
+  updateEScore(); eIdx++;
+  document.getElementById('e-next').style.display = 'block';
+}
+
+function speakCurrentEscucha() { if (curEscucha) speak(curEscucha.ar); }
+function nextEscucha() { showEscucha(); }
+function endEscucha() {
+  document.getElementById('escucha-card').style.display = 'none';
+  document.getElementById('e-result').classList.add('show');
+  document.getElementById('e-score').textContent = eC;
+  document.getElementById('e-total').textContent = eItems.length;
+}
+
+// ══════════════════════════════════════
+// ESCRIBE
+// ══════════════════════════════════════
+let wItems = [], wIdx = 0, wC = 0, wW = 0, wCat = 'Todas', wAnswered = false;
+
+function initEscribe() {
+  buildCatFilter('escribe-cats', wCat, (cat) => { wCat = cat; initEscribe(); });
+  wItems = shuffle(getVocabByFilter(wCat)).slice(0, 12);
+  wIdx = 0; wC = 0; wW = 0;
+  document.getElementById('w-result').classList.remove('show');
+  document.getElementById('escribe-card').style.display = 'block';
+  updateWScore(); showWrite();
+}
+
+function updateWScore() {
+  document.getElementById('w-c').textContent = wC;
+  document.getElementById('w-w').textContent = wW;
+  document.getElementById('w-r').textContent = Math.max(0, wItems.length - wIdx);
+}
+
+function showWrite() {
+  if (wIdx >= wItems.length) { endWrite(); return; }
+  const w = wItems[wIdx]; wAnswered = false;
+  document.getElementById('w-es').textContent = w.es;
+  document.getElementById('w-arabic').textContent = w.ar;
+  document.getElementById('w-input').value = '';
+  document.getElementById('w-input').disabled = false;
+  document.getElementById('w-answer').className = 'write-answer';
+  document.getElementById('w-assess').className = 'self-assess';
+  document.querySelector('.write-submit').style.display = 'block';
+  updateWScore();
+}
+
+function normalize(s) { return s.toLowerCase().replace(/[āáà]/g,'a').replace(/[īíì]/g,'i').replace(/[ūúù]/g,'u').replace(/[ḥh]/g,'h').replace(/[ṭt]/g,'t').replace(/[ẓz]/g,'z').replace(/[ḍd]/g,'d').replace(/[ṣs]/g,'s').replace(/[ġg]/g,'g').replace(/'/g,'').replace(/'/g,'').replace(/[^a-z\s-]/g,'').replace(/\s+/g,' ').trim(); }
+
+function submitWrite() {
+  const w = wItems[wIdx];
+  const input = document.getElementById('w-input').value.trim();
+  if (!input) { showToast('Escribe algo primero'); return; }
+  const norm = normalize(input);
+  const correct = normalize(w.tr);
+  const similar = norm === correct || correct.includes(norm) || norm.includes(correct.split(' ')[0]);
+  document.getElementById('w-input').disabled = true;
+  document.querySelector('.write-submit').style.display = 'none';
+  const ans = document.getElementById('w-answer');
+  ans.className = 'write-answer show ' + (similar ? 'ok' : 'no');
+  document.getElementById('w-answer-txt').textContent = similar ? '✓ ¡Bien! Comprueba los detalles:' : '✗ Revisa la respuesta correcta:';
+  document.getElementById('w-correct').textContent = w.tr;
+  document.getElementById('w-assess').className = 'self-assess show';
+  speak(w.ar);
+}
+
+function assessWrite(ok) {
+  const w = wItems[wIdx];
+  recordAnswer(w, ok);
+  if (ok) { wC++; playCorrect(); } else { wW++; playWrong(); }
+  wIdx++;
+  setTimeout(() => showWrite(), 600);
+}
+
+function endWrite() {
+  document.getElementById('escribe-card').style.display = 'none';
+  document.getElementById('w-result').classList.add('show');
+  document.getElementById('w-score').textContent = wC;
+  document.getElementById('w-total').textContent = wItems.length;
+}
+
+// ══════════════════════════════════════
+// DETECTA
+// ══════════════════════════════════════
+let dItems = [], dIdx = 0, dC = 0, dW = 0, curDetect = null;
+
+function initDetect() {
+  dItems = shuffle(DETECT).slice(0, 10); dIdx = 0; dC = 0; dW = 0;
+  document.getElementById('d-result').classList.remove('show');
+  document.getElementById('detect-card').style.display = 'block';
+  updateDScore(); showDetect();
+}
+
+function updateDScore() {
+  document.getElementById('d-c').textContent = dC;
+  document.getElementById('d-w').textContent = dW;
+  document.getElementById('d-r').textContent = Math.max(0, dItems.length - dIdx);
+}
+
+function showDetect() {
+  if (dIdx >= dItems.length) { endDetect(); return; }
+  const ex = dItems[dIdx]; curDetect = ex;
+  document.getElementById('d-arabic').textContent = ex.ar;
+  document.getElementById('d-meaning').textContent = '(' + ex.es + ')';
+  document.getElementById('d-feedback').textContent = '';
+  document.getElementById('d-tip').style.display = 'none';
+  document.getElementById('d-next').style.display = 'none';
+  const opts = shuffle([ex.ans, ...ex.dis]);
+  const c = document.getElementById('d-opts'); c.innerHTML = '';
+  opts.forEach(o => {
+    const b = document.createElement('button'); b.className = 'dopt'; b.textContent = o;
+    b.onclick = () => answerD(b, o, ex); c.appendChild(b);
+  });
+  updateDScore();
+}
+
+function answerD(btn, chosen, ex) {
+  document.querySelectorAll('#d-opts .dopt').forEach(b => { b.classList.add('locked'); b.onclick = null; });
+  const ok = chosen === ex.ans;
+  if (ok) { btn.classList.add('correct'); dC++; playCorrect(); document.getElementById('d-feedback').style.color = 'var(--green)'; document.getElementById('d-feedback').textContent = '✓ ¡Correcto!'; }
+  else { btn.classList.add('wrong'); dW++; playWrong(); document.querySelectorAll('#d-opts .dopt').forEach(b => { if (b.textContent === ex.ans) b.classList.add('correct'); }); document.getElementById('d-feedback').style.color = 'var(--red)'; document.getElementById('d-feedback').textContent = '✗ Era: ' + ex.ans; }
+  document.getElementById('d-tip').textContent = '💡 ' + ex.tip;
+  document.getElementById('d-tip').style.display = 'block';
+  updateDScore(); dIdx++;
+  document.getElementById('d-next').style.display = 'block';
+}
+
+function speakCurrentDetect() { if (curDetect) speak(curDetect.ar); }
+function nextDetect() { showDetect(); }
+function endDetect() {
+  document.getElementById('detect-card').style.display = 'none';
+  document.getElementById('d-result').classList.add('show');
+  document.getElementById('d-score').textContent = dC;
+  document.getElementById('d-total').textContent = dItems.length;
+}
+
+// ══════════════════════════════════════
+// STATS
+// ══════════════════════════════════════
+function renderStats() {
+  document.getElementById('st-total').textContent = stats.totalAnswered;
+  const pct = stats.totalAnswered > 0 ? Math.round(stats.totalCorrect / stats.totalAnswered * 100) : 0;
+  document.getElementById('st-pct').textContent = pct + '%';
+  document.getElementById('st-best').textContent = stats.bestStreak;
+  const cats = document.getElementById('st-cats'); cats.innerHTML = '';
+  Object.entries(stats.catStats).forEach(([cat, data]) => {
+    const p = data.t > 0 ? Math.round(data.c / data.t * 100) : 0;
+    cats.innerHTML += '<div class="cat-row"><div class="cat-row-name">' + cat + '</div><div class="cat-row-bar"><div class="cat-row-fill" style="width:' + p + '%"></div></div><div class="cat-row-pct">' + p + '%</div></div>';
+  });
+  const levels = [0,0,0,0];
+  VOCAB.forEach(w => { const m = mastery[w.ar] || 0; levels[m]++; });
+  document.getElementById('m0').textContent = levels[0];
+  document.getElementById('m1').textContent = levels[1];
+  document.getElementById('m2').textContent = levels[2];
+  document.getElementById('m3').textContent = levels[3];
+  const favDiv = document.getElementById('st-favs');
+  if (favorites.size === 0) { favDiv.textContent = 'No tienes palabras favoritas todavía. Toca ☆ en las tarjetas.'; }
+  else { favDiv.innerHTML = [...favorites].slice(0,10).map(ar => '<span style="font-family:Traditional Arabic,serif;font-size:18px;direction:rtl;margin-right:8px;">' + ar + '</span>').join(''); }
+}
+
+function resetStats() {
+  if (!confirm('¿Reiniciar todas las estadísticas?')) return;
+  stats = {totalCorrect:0,totalAnswered:0,bestStreak:0,catStats:{}};
+  mastery = {}; favorites = new Set();
+  saveStats(); updateHeaderStats(); renderStats();
+  showToast('Estadísticas reiniciadas');
+}
+
+// ══════════════════════════════════════
+// VOCAB REFERENCIA
+// ══════════════════════════════════════
+let vocabCat = 'Todas';
+function buildVocab() {
+  buildCatFilter('vocab-cats', vocabCat, (cat) => { vocabCat = cat; renderVocab(); });
+  renderVocab();
+}
+
+function renderVocab() {
+  const pool = getVocabByFilter(vocabCat);
+  const cats = {};
+  pool.forEach(w => { if (!cats[w.cat]) cats[w.cat] = []; cats[w.cat].push(w); });
+  const c = document.getElementById('ref-content'); c.innerHTML = '';
+  Object.entries(cats).forEach(([cat, words]) => {
+    const s = document.createElement('div'); s.className = 'ref-sec';
+    s.innerHTML = '<div class="ref-title">' + cat + '</div>';
+    words.forEach(w => {
+      const d = document.createElement('div'); d.className = 'ref-item';
+      const mLvl = mastery[w.ar] || 0;
+      const mColors = ['#444','#C9A84C','#25BFAA','#3DBF8A'];
+      d.innerHTML = '<div class="ref-ar">' + w.ar + '</div><div class="ref-info"><div class="ref-es">' + w.es + '</div><div class="ref-tr">' + w.tr + '</div></div><div class="ref-btns"><button class="ref-spk">🔊</button><button class="ref-fav ' + (favorites.has(w.ar)?'on':'') + '">' + (favorites.has(w.ar)?'⭐':'☆') + '</button></div><div style="width:6px;height:6px;border-radius:50%;background:' + mColors[mLvl] + ';flex-shrink:0;"></div>';
+      d.querySelector('.ref-spk').addEventListener('click', () => speak(w.ar));
+      const favBtn = d.querySelector('.ref-fav');
+      favBtn.addEventListener('click', () => {
+        if (favorites.has(w.ar)) { favorites.delete(w.ar); favBtn.textContent = '☆'; favBtn.classList.remove('on'); }
+        else { favorites.add(w.ar); favBtn.textContent = '⭐'; favBtn.classList.add('on'); }
+        saveStats();
+      });
+      s.appendChild(d);
+    });
+    c.appendChild(s);
+  });
+}
+
+// ══════════════════════════════════════
+// GRAMÁTICA
+// ══════════════════════════════════════
+function buildGram() {
+  const c = document.getElementById('gram-content'); c.innerHTML = '';
+  GRAMMAR.forEach(g => {
+    const card = document.createElement('div'); card.className = 'gram-card';
+    let exHtml = g.examples.map(ex => `
+      <div class="gram-ex">
+        <div class="gram-ex-ar">${ex.ar}</div>
+        <div class="gram-ex-info">
+          <div class="gram-ex-tr">${ex.tr}</div>
+          <div class="gram-ex-es">${ex.es} — <em style="opacity:.7">${ex.note}</em></div>
+        </div>
+        <button class="gram-ex-spk">🔊</button>
+      </div>`).join('');
+    card.innerHTML = '<div class="gram-title">' + g.title + '</div><div class="gram-desc">' + g.desc + '</div><div class="gram-examples">' + exHtml + '</div>';
+    g.examples.forEach((ex, i) => {
+      card.querySelectorAll('.gram-ex-spk')[i].addEventListener('click', () => speak(ex.ar));
+    });
+    c.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+document.getElementById('h-words').textContent = VOCAB.length;
+updateHeaderStats();
+initFlashcards();
+
+// Enter en modo escribe
+document.getElementById('w-input').addEventListener('keydown', e => { if (e.key === 'Enter') submitWrite(); });
+</script>
+</body>
+</html>
