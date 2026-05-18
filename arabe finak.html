@@ -1252,84 +1252,119 @@ function buildGram() {
 // INIT
 // ══════════════════════════════════════
 
+
+
 // ══════════════════════════════════════
-// DEBERES — IA diaria
+// DEBERES — ejercicios pregenerados
 // ══════════════════════════════════════
-const DEBERES_PROMPT = `Eres un profesor de árabe. Tu estudiante sabe:
-GRAMÁTICA: alifato, harakat (fatha/kasra/damma/sukun/tanwin), vocales largas (alif/waw/ya), waw y ya como consonantes, hamza en todas sus posiciones, artículo ال con letras solares y lunares, shaddah, ta marbuta, alif maqsura, sufijos posesivos, demostrativos هَذَا (masc.) y هَذِهِ (fem.), preguntas con مَا y مَنْ, preguntas de sí/no con هَلْ, construcción de frases completas.
+const EJERCICIOS_POOL = [
+  // LECTURA
+  {tipo:"Lectura",pregunta:"Lee esta palabra en voz alta. Identifica las vocales e indica qué tipo de vocal larga tiene:",arabic:"كِتَاب",respuesta:"kitāb — kasra bajo ك + vocal larga ā (alif). Significa: libro.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta palabra. ¿Tiene shaddah? ¿Qué letra se dobla?",arabic:"مُعَلِّم",respuesta:"mu'allim — sí, tiene shaddah sobre ل. La L se dobla. Significa: profesor.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta palabra e identifica la ta marbuta:",arabic:"مَدْرَسَة",respuesta:"madrasa — la ة al final es ta marbuta. Se pronuncia -a. Significa: escuela.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta palabra. ¿Qué tipo de hamza tiene y dónde está?",arabic:"أُمّ",respuesta:"umm — hamza sobre alif con damma al inicio. Además tiene shaddah en م. Significa: madre.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta frase completa en voz alta:",arabic:"هَذَا كِتَاب",respuesta:"hādhā kitāb — 'esto es un libro'. هَذَا es el demostrativo masculino. No hay verbo 'ser' en árabe.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta frase e identifica todos los elementos especiales:",arabic:"هَذِهِ الْمَدْرَسَة",respuesta:"hādhihi l-madrasa — 'esta es la escuela'. هَذِهِ demostrativo femenino + ال artículo (letra lunar م) + ta marbuta al final.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta palabra. ¿Termina en alif maqsura o ta marbuta?",arabic:"مَقْهَى",respuesta:"maqhā — termina en alif maqsura ى (sin puntos). Se pronuncia ā. Significa: cafetería.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta pregunta en voz alta:",arabic:"هَلْ هَذَا طَبِيب؟",respuesta:"hal hādhā ṭabīb? — '¿Es este un médico?' هَلْ indica pregunta de sí/no. هَذَا demostrativo masc.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta palabra e identifica la vocal larga:",arabic:"سَلَام",respuesta:"salām — fatha + vocal larga ā (alif). Significa: paz.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta frase e identifica el artículo solar o lunar:",arabic:"اَلشَّمْس",respuesta:"ash-shams — la ش es letra solar, la L de ال se asimila: ash-sh. Significa: el sol.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta palabra con la shaddah correctamente:",arabic:"حُبّ",respuesta:"ḥubb — la shaddah sobre ب dobla la B: ḥu-BB. Significa: amor.",arabic_respuesta:""},
+  {tipo:"Lectura",pregunta:"Lee esta frase en voz alta:",arabic:"مَا هَذِهِ؟",respuesta:"mā hādhihi? — '¿Qué es esta?' مَا = qué. هَذِهِ = demostrativo femenino.",arabic_respuesta:""},
 
-VOCABULARIO: saludos, familia, profesiones, escuela, casa, naturaleza, animales, comida, adjetivos, verbos básicos (salir, ver, amar), frases con demostrativos.
+  // TRADUCCIÓN
+  {tipo:"Traducción",pregunta:"Traduce esta frase al español:",arabic:"هَذَا الْبَيْت كَبِير",respuesta:"'Esta casa es grande.' هَذَا = este, الْبَيْت = la casa (ب letra lunar → al-b), كَبِير = grande.",arabic_respuesta:""},
+  {tipo:"Traducción",pregunta:"Traduce esta pregunta al español:",arabic:"مَنْ هَذَا؟",respuesta:"'¿Quién es este?' مَنْ se usa para preguntar por personas.",arabic_respuesta:""},
+  {tipo:"Traducción",pregunta:"Traduce al español:",arabic:"هَلْ هَذِهِ سَيَّارَة؟",respuesta:"'¿Es este un coche?' هَلْ = pregunta sí/no. هَذِهِ = esta (fem.). سَيَّارَة = coche (fem. por ta marbuta).",arabic_respuesta:""},
+  {tipo:"Traducción",pregunta:"Traduce esta frase:",arabic:"أَنَا طَالِب وَهُوَ مُعَلِّم",respuesta:"'Yo soy estudiante y él es profesor.' أَنَا = yo, وَ = y, هُوَ = él.",arabic_respuesta:""},
+  {tipo:"Traducción",pregunta:"Traduce al español:",arabic:"هَذَا الْكِتَاب جَمِيل",respuesta:"'Este libro es bonito.' الْكِتَاب = el libro (ك lunar → al-k). جَمِيل = bonito.",arabic_respuesta:""},
+  {tipo:"Traducción",pregunta:"Traduce esta pregunta:",arabic:"مَا هَذَا؟ هَذَا قَلَم",respuesta:"'¿Qué es esto? Esto es un bolígrafo.' Pregunta y respuesta con demostrativo masculino.",arabic_respuesta:""},
+  {tipo:"Traducción",pregunta:"Traduce al español:",arabic:"هِيَ طَبِيبَة وَهُوَ مُهَنْدِس",respuesta:"'Ella es médica y él es ingeniero.' هِيَ = ella. طَبِيبَة = médica (fem. de طَبِيب con ta marbuta).",arabic_respuesta:""},
+  {tipo:"Traducción",pregunta:"Traduce esta frase:",arabic:"الْبَيْت كَبِير وَالْغُرْفَة صَغِيرَة",respuesta:"'La casa es grande y la habitación es pequeña.' Adjetivos concuerdan en género: كَبِير (masc.) / صَغِيرَة (fem.).",arabic_respuesta:""},
 
-Genera una sesión de deberes de 15-20 minutos. Devuelve SOLO JSON válido, sin markdown, sin explicaciones.
+  // CONSTRUYE LA FRASE
+  {tipo:"Construye la frase",pregunta:"Forma una frase con estas palabras: هَذِهِ / مَدْرَسَة / كَبِيرَة",arabic:"",respuesta:"هَذِهِ مَدْرَسَة كَبِيرَة — 'Esta es una escuela grande.' هَذِهِ (fem.) + sustantivo fem. + adjetivo fem.",arabic_respuesta:"هَذِهِ مَدْرَسَة كَبِيرَة"},
+  {tipo:"Construye la frase",pregunta:"Forma una pregunta de sí/no usando هَلْ con: هَذَا / كِتَاب",arabic:"",respuesta:"هَلْ هَذَا كِتَاب؟ — '¿Es esto un libro?' هَلْ siempre va al inicio de la pregunta.",arabic_respuesta:"هَلْ هَذَا كِتَاب؟"},
+  {tipo:"Construye la frase",pregunta:"Traduce al árabe: 'Esta es una lavadora'",arabic:"",respuesta:"هَذِهِ غَسَّالَة — غَسَّالَة es femenino (tiene shaddah sobre س y ta marbuta al final), así que usamos هَذِهِ.",arabic_respuesta:"هَذِهِ غَسَّالَة"},
+  {tipo:"Construye la frase",pregunta:"Traduce al árabe: '¿Quién es esta?' (refiriéndose a una mujer)",arabic:"",respuesta:"مَنْ هَذِهِ؟ — Para personas usamos مَنْ. Como nos referimos a una mujer, هَذِهِ.",arabic_respuesta:"مَنْ هَذِهِ؟"},
+  {tipo:"Construye la frase",pregunta:"Forma una frase: 'Este es el médico' usando el artículo",arabic:"",respuesta:"هَذَا الطَّبِيب — ط es letra solar, la L de ال se asimila: aṭ-ṭabīb. هَذَا porque طَبِيب es masculino.",arabic_respuesta:"هَذَا الطَّبِيب"},
+  {tipo:"Construye la frase",pregunta:"Traduce al árabe: '¿Qué es este?' (objeto masculino)",arabic:"",respuesta:"مَا هَذَا؟ — مَا para cosas, هَذَا para masculino.",arabic_respuesta:"مَا هَذَا؟"},
+  {tipo:"Construye la frase",pregunta:"Forma una frase con: أَنَا / مِنْ / مَدْرِيد",arabic:"",respuesta:"أَنَا مِنْ مَدْرِيد — 'Yo soy de Madrid.' En árabe no se usa verbo 'ser' en presente.",arabic_respuesta:"أَنَا مِنْ مَدْرِيد"},
+  {tipo:"Construye la frase",pregunta:"Traduce al árabe: 'El sol es grande'",arabic:"",respuesta:"اَلشَّمْس كَبِيرَة — شَمْس es femenino, así que el adjetivo lleva ta marbuta: كَبِيرَة. ش es letra solar: ash-shams.",arabic_respuesta:"اَلشَّمْس كَبِيرَة"},
 
-Usa el día ${new Date().getDay()} y hora ${new Date().getHours()} para variar el contenido.
+  // IDENTIFICA
+  {tipo:"Identifica",pregunta:"¿Qué elemento especial contiene esta palabra? Explica su función:",arabic:"طَالِبَة",respuesta:"Ta marbuta (ة) al final. Convierte el masculino طَالِب (estudiante masc.) en femenino طَالِبَة (estudiante fem.).",arabic_respuesta:""},
+  {tipo:"Identifica",pregunta:"Identifica el tipo de pregunta y qué palabra interrogativa se usa:",arabic:"هَلْ هَذَا مَكْتَب؟",respuesta:"Pregunta de sí/no. Se usa هَلْ al inicio. La respuesta puede ser نَعَم (sí) o لَا (no). Significa: '¿Es esto una oficina?'",arabic_respuesta:""},
+  {tipo:"Identifica",pregunta:"¿Esta frase usa el demostrativo correcto? Explica por qué:",arabic:"هَذَا غُرْفَة",respuesta:"No es del todo correcto. غُرْفَة es femenino (tiene ta marbuta), así que debería ser هَذِهِ غُرْفَة.",arabic_respuesta:"هَذِهِ غُرْفَة"},
+  {tipo:"Identifica",pregunta:"Identifica el artículo y di si la letra es solar o lunar:",arabic:"اَلْقَمَر",respuesta:"al-qamar — ق es letra lunar, la L de ال se pronuncia completa: al-q. Significa: la luna.",arabic_respuesta:""},
+  {tipo:"Identifica",pregunta:"¿Cuántas vocales largas tiene esta palabra y cuáles son?",arabic:"مُعَلِّمَة",respuesta:"Una vocal larga: ā (alif) después de عَ → mu'al-lī-ma. También tiene shaddah en ل y ta marbuta al final.",arabic_respuesta:""},
+  {tipo:"Identifica",pregunta:"Identifica todos los elementos especiales de esta palabra:",arabic:"مُسْتَشْفَى",respuesta:"mustashfā — alif maqsura ى al final (sin puntos, suena ā). No tiene shaddah ni ta marbuta. Significa: hospital.",arabic_respuesta:""},
 
-Formato exacto:
-{
-  "ejercicios": [
-    {
-      "tipo": "Lectura",
-      "pregunta": "Lee esta palabra en voz alta e identifica las vocales:",
-      "arabic": "كِتَاب",
-      "respuesta": "kitāb — kasra + vocal larga ā. Significa: libro.",
-      "arabic_respuesta": ""
-    }
-  ]
+  // COMPLETA
+  {tipo:"Completa",pregunta:"Completa con el demostrativo correcto (هَذَا o هَذِهِ): ___ كِتَاب",arabic:"",respuesta:"هَذَا كِتَاب — كِتَاب es masculino, se usa هَذَا. 'Esto es un libro.'",arabic_respuesta:"هَذَا كِتَاب"},
+  {tipo:"Completa",pregunta:"Completa con el demostrativo correcto: ___ سَيَّارَة",arabic:"",respuesta:"هَذِهِ سَيَّارَة — سَيَّارَة es femenino (ta marbuta), se usa هَذِهِ. 'Este es un coche.'",arabic_respuesta:"هَذِهِ سَيَّارَة"},
+  {tipo:"Completa",pregunta:"Completa la pregunta: ___ هَذَا؟ (pregunta por una cosa)",arabic:"",respuesta:"مَا هَذَا؟ — مَا se usa para preguntar por cosas. '¿Qué es esto?'",arabic_respuesta:"مَا هَذَا؟"},
+  {tipo:"Completa",pregunta:"Añade el artículo ال a esta palabra y di si es solar o lunar: بَيْت",arabic:"",respuesta:"اَلْبَيْت — al-bayt. ب es letra lunar, la L se pronuncia completa.",arabic_respuesta:"اَلْبَيْت"},
+  {tipo:"Completa",pregunta:"Añade el artículo ال a esta palabra y di si es solar o lunar: شَمْس",arabic:"",respuesta:"اَلشَّمْس — ash-shams. ش es letra solar, la L se asimila al sonido sh.",arabic_respuesta:"اَلشَّمْس"},
+  {tipo:"Completa",pregunta:"Transforma al femenino: طَالِب (estudiante masc.)",arabic:"",respuesta:"طَالِبَة — se añade ta marbuta (ة) al final para formar el femenino.",arabic_respuesta:"طَالِبَة"},
+  {tipo:"Completa",pregunta:"Transforma al femenino: مُعَلِّم (profesor)",arabic:"",respuesta:"مُعَلِّمَة — se añade ta marbuta (ة) al final. Conserva la shaddah en ل.",arabic_respuesta:"مُعَلِّمَة"},
+  {tipo:"Completa",pregunta:"Completa con مَا، مَنْ o هَلْ: '___ هَذَا؟' (preguntando quién es una persona)",arabic:"",respuesta:"مَنْ هَذَا؟ — مَنْ se usa para personas. '¿Quién es este?'",arabic_respuesta:"مَنْ هَذَا؟"},
+
+  // VERDADERO O FALSO
+  {tipo:"¿Verdadero o falso?",pregunta:"'هَذِهِ' se usa con sustantivos masculinos. ¿Verdadero o falso?",arabic:"",respuesta:"FALSO. هَذِهِ se usa con sustantivos femeninos. Para masculinos se usa هَذَا.",arabic_respuesta:""},
+  {tipo:"¿Verdadero o falso?",pregunta:"La ta marbuta (ة) siempre indica que una palabra es femenina. ¿Verdadero o falso?",arabic:"",respuesta:"VERDADERO. La ta marbuta marca el género femenino en árabe.",arabic_respuesta:""},
+  {tipo:"¿Verdadero o falso?",pregunta:"هَلْ se usa para preguntar '¿qué?' en árabe. ¿Verdadero o falso?",arabic:"",respuesta:"FALSO. هَلْ es la partícula de preguntas sí/no. Para '¿qué?' se usa مَا.",arabic_respuesta:""},
+  {tipo:"¿Verdadero o falso?",pregunta:"En árabe el artículo ال siempre se pronuncia 'al-' sin importar la letra que le sigue. ¿Verdadero o falso?",arabic:"",respuesta:"FALSO. Con letras solares la L se asimila: اَلشَّمْس = ash-shams, no al-shams.",arabic_respuesta:""},
+  {tipo:"¿Verdadero o falso?",pregunta:"La alif maqsura (ى) y la ya (ي) suenan igual. ¿Verdadero o falso?",arabic:"",respuesta:"FALSO. La alif maqsura suena ā (vocal larga a). La ya suena ī (vocal larga i) o como consonante Y.",arabic_respuesta:""},
+  {tipo:"¿Verdadero o falso?",pregunta:"En árabe moderno se omite el verbo 'ser/estar' en el presente. ¿Verdadero o falso?",arabic:"هَذَا كِتَاب",respuesta:"VERDADERO. En هَذَا كِتَاب ('esto es un libro') no hay verbo. Es una característica del árabe.",arabic_respuesta:""},
+
+  // TRANSFORMA
+  {tipo:"Transforma",pregunta:"Convierte esta frase de masculino a femenino: هَذَا طَالِب",arabic:"هَذَا طَالِب",respuesta:"هَذِهِ طَالِبَة — cambias هَذَا por هَذِهِ y añades ta marbuta a طَالِب → طَالِبَة.",arabic_respuesta:"هَذِهِ طَالِبَة"},
+  {tipo:"Transforma",pregunta:"Convierte en pregunta de sí/no: هَذَا بَيْت",arabic:"هَذَا بَيْت",respuesta:"هَلْ هَذَا بَيْت؟ — simplemente añades هَلْ al inicio y signo de interrogación al final.",arabic_respuesta:"هَلْ هَذَا بَيْت؟"},
+  {tipo:"Transforma",pregunta:"Añade el artículo definido a: غُرْفَة",arabic:"غُرْفَة",respuesta:"اَلْغُرْفَة — al-ghurfa. غ es letra lunar, la L se pronuncia completa. Significa: la habitación.",arabic_respuesta:"اَلْغُرْفَة"},
+  {tipo:"Transforma",pregunta:"Convierte en pregunta con مَا: هَذِهِ غَسَّالَة",arabic:"هَذِهِ غَسَّالَة",respuesta:"مَا هَذِهِ؟ — '¿Qué es esta?' Sustituyes la respuesta por la pregunta con مَا.",arabic_respuesta:"مَا هَذِهِ؟"},
+  {tipo:"Transforma",pregunta:"Convierte al femenino manteniendo el artículo: اَلطَّبِيب",arabic:"اَلطَّبِيب",respuesta:"اَلطَّبِيبَة — se añade ta marbuta. ط letra solar: aṭ-ṭabība. Significa: la médica.",arabic_respuesta:"اَلطَّبِيبَة"},
+];
+
+// Seeded random based on date
+function seededRandom(seed) {
+  let x = Math.sin(seed + 1) * 10000;
+  return x - Math.floor(x);
 }
 
-Reglas:
-- Entre 8 y 12 ejercicios variados
-- Tipos posibles: "Lectura", "Traducción", "Construye la frase", "Identifica", "Completa", "¿Verdadero o falso?", "Escucha y transcribe", "Transforma"
-- Mezcla ejercicios fáciles y difíciles
-- Usa árabe con harakat completos siempre
-- En "respuesta" incluye siempre la transliteración con macrón y explicación breve
-- En "arabic_respuesta" pon la respuesta en árabe si aplica (si no, deja vacío)
-- Incluye al menos 2 ejercicios con frases completas usando هَذَا/هَذِهِ o هَلْ
-- Incluye al menos 1 ejercicio de construcción de frases
-- Varía los temas: vocabulario, gramática, frases, identificación de elementos`;
-
-async function loadDeberes(force) {
-  const today = new Date().toISOString().slice(0,10);
-  const cacheKey = "arabic_deberes_" + today;
-
-  // Check cache
-  if (!force) {
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) { renderDeberes(JSON.parse(cached)); return; }
+function getDailyExercises() {
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth()+1) * 100 + today.getDate();
+  const pool = [...EJERCICIOS_POOL];
+  // Shuffle with seed
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(seededRandom(seed + i) * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
   }
+  return pool.slice(0, 10);
+}
 
-  // Show loading
-  document.getElementById("deb-loading").style.display = "block";
-  document.getElementById("deb-content").style.display = "none";
+function loadDeberes(force) {
+  const today = new Date().toISOString().slice(0,10);
+  const cacheKey = "arabic_deberes_v2_" + today;
+
+  document.getElementById("deb-loading").style.display = "none";
   document.getElementById("deb-error").style.display = "none";
   document.getElementById("deb-complete").classList.remove("show");
 
-  try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 2000,
-        messages: [{role:"user", content: DEBERES_PROMPT}]
-      })
-    });
-    const data = await res.json();
-    const text = data.content.map(b => b.text||"").join("");
-    const clean = text.replace(/```json|```/g,"").trim();
-    const parsed = JSON.parse(clean);
-    localStorage.setItem(cacheKey, JSON.stringify(parsed));
-    renderDeberes(parsed);
-  } catch(e) {
-    document.getElementById("deb-loading").style.display = "none";
-    document.getElementById("deb-error").style.display = "block";
-  }
+  const exercises = getDailyExercises();
+  renderDeberes({ejercicios: exercises});
 }
 
 function regenDeberes() {
-  const today = new Date().toISOString().slice(0,10);
-  localStorage.removeItem("arabic_deberes_" + today);
-  loadDeberes(true);
+  // Show different exercises by using a slightly different seed
+  const pool = [...EJERCICIOS_POOL];
+  const seed = Date.now();
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(seededRandom(seed + i) * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  renderDeberes({ejercicios: pool.slice(0, 10)});
 }
 
 let debRevealedCount = 0;
@@ -1353,27 +1388,24 @@ function renderDeberes(data) {
       <div class="deb-ex-type">${ex.tipo}</div>
       <div class="deb-ex-q">${ex.pregunta}</div>
       ${ex.arabic ? '<div class="deb-ex-arabic">' + ex.arabic + '</div>' : ""}
-      ${ex.arabic ? '<button class="deb-audio-btn" data-arabic="' + ex.arabic + '">🔊</button>' : ""}
+      ${ex.arabic ? '<button class="deb-audio-btn" data-arabic="' + i + '">🔊</button>' : ""}
       <button class="deb-reveal-btn" onclick="revealDeb(this, ${i}, ${total})">Ver respuesta</button>
       <div class="deb-answer" id="deb-ans-${i}">
         <div class="deb-answer-txt">${ex.respuesta}</div>
         ${ex.arabic_respuesta ? '<div class="deb-answer-arabic">' + ex.arabic_respuesta + '</div>' : ""}
       </div>
     `;
-    // Add audio event listener
-    const audioBtn = div.querySelector(".deb-audio-btn");
-    if (audioBtn) {
-      audioBtn.addEventListener("click", () => speak(audioBtn.dataset.arabic));
+    if (ex.arabic) {
+      const audioBtn = div.querySelector(".deb-audio-btn");
+      const arabicText = ex.arabic;
+      audioBtn.addEventListener("click", () => speak(arabicText));
     }
     c.appendChild(div);
   });
 
-  // Add actions
   const actions = document.createElement("div");
   actions.className = "deb-actions";
-  actions.innerHTML = `
-    <button class="deb-regen-btn" onclick="regenDeberes()">↺ Nuevos</button>
-  `;
+  actions.innerHTML = '<button class="deb-regen-btn" onclick="regenDeberes()">↺ Otros ejercicios</button>';
   c.appendChild(actions);
 }
 
@@ -1386,13 +1418,10 @@ function revealDeb(btn, idx, total) {
   const pct = Math.round(debRevealedCount / total * 100);
   document.getElementById("deb-prog").style.width = pct + "%";
   if (debRevealedCount >= total) {
-    setTimeout(() => {
-      document.getElementById("deb-complete").classList.add("show");
-    }, 500);
+    setTimeout(() => { document.getElementById("deb-complete").classList.add("show"); }, 500);
   }
 }
 
-// Set date in header
 document.getElementById("deb-date").textContent = new Date().toLocaleDateString("es-ES", {weekday:"long", day:"numeric", month:"long"});
 
 document.getElementById('h-words').textContent = VOCAB.length;
