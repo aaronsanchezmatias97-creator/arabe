@@ -239,6 +239,29 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .deb-error{text-align:center;padding:24px 16px;background:var(--bg2);border-radius:var(--r);border:1px solid rgba(224,85,85,.2);}
 .deb-error-txt{font-size:13px;color:var(--cream2);line-height:1.6;}
 .deb-retry-btn{margin-top:14px;background:var(--teal);color:#fff;border:none;border-radius:99px;padding:11px 28px;font-size:13px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;}
+
+.deb-opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;}
+.deb-opt-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:14px 8px;font-size:14px;color:var(--cream);cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s;line-height:1.3;}
+.deb-opt-btn:active:not(:disabled){transform:scale(.97);}
+.deb-opt-btn:disabled{cursor:default;}
+.deb-opt-ok{background:rgba(61,191,138,.2)!important;border-color:var(--green)!important;color:var(--green)!important;font-weight:600;}
+.deb-opt-no{background:rgba(224,85,85,.15)!important;border-color:var(--red)!important;color:var(--red)!important;}
+.deb-tf-wrap{display:flex;gap:10px;margin-top:14px;}
+.deb-tf-btn{flex:1;padding:16px;border-radius:var(--r);border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--cream);font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s;}
+.deb-tf-btn:active:not(:disabled){transform:scale(.97);}
+.deb-tf-btn:disabled{cursor:default;}
+.deb-tf-v{border-color:rgba(61,191,138,.3);}
+.deb-tf-f{border-color:rgba(224,85,85,.25);}
+.deb-build-area{min-height:52px;background:rgba(255,255,255,.04);border:1px dashed rgba(201,168,76,.3);border-radius:var(--r);padding:10px;margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-family:'Traditional Arabic','Arabic Typesetting',serif;direction:rtl;font-size:22px;line-height:1.8;}
+.deb-tiles-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.deb-tile{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:99px;padding:8px 16px;font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:20px;direction:rtl;color:var(--cream);cursor:pointer;transition:.15s;}
+.deb-tile:active{transform:scale(.95);background:rgba(201,168,76,.2);}
+.deb-built-tile{background:rgba(37,191,170,.15);border:1px solid rgba(37,191,170,.3);border-radius:99px;padding:6px 14px;font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:20px;direction:rtl;color:var(--teal2);cursor:pointer;transition:.15s;}
+.deb-tile-ok{background:rgba(61,191,138,.2)!important;border-color:var(--green)!important;color:var(--green)!important;}
+.deb-tile-no{background:rgba(224,85,85,.15)!important;border-color:var(--red)!important;color:var(--red)!important;}
+.deb-build-check{width:100%;margin-top:12px;background:var(--teal);color:#fff;border:none;border-radius:99px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.deb-build-reset{width:100%;margin-top:8px;background:rgba(255,255,255,.06);color:var(--cream2);border:1px solid rgba(255,255,255,.1);border-radius:99px;padding:10px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.deb-audio-btn{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);color:var(--gold);border-radius:99px;padding:7px 18px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:10px;display:inline-block;}
 </style>
 </head>
 <body>
@@ -498,95 +521,135 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 // VOCABULARIO
 // ══════════════════════════════════════
 const VOCAB = [
-  {ar:"مَرْحَبًا",tr:"marhaban",es:"Hola",cat:"Saludos"},
-  {ar:"اَلسَّلَامُ عَلَيْكُمْ",tr:"as-salāmu alaykum",es:"Hola (formal)",cat:"Saludos"},
-  {ar:"أَهْلًا",tr:"ahlan",es:"Hola (informal)",cat:"Saludos"},
-  {ar:"صَبَاحُ الْخَيْرِ",tr:"ṣabāḥu l-khayr",es:"Buenos días",cat:"Saludos"},
-  {ar:"مَسَاءُ الْخَيْرِ",tr:"masā'u l-khayr",es:"Buenas tardes",cat:"Saludos"},
-  {ar:"كَيْفَ الْحَال؟",tr:"kayfa l-ḥāl?",es:"¿Qué tal?",cat:"Saludos"},
-  {ar:"أَنَا بِخَيْر",tr:"anā bi-khayr",es:"Estoy bien",cat:"Saludos"},
-  {ar:"مَعَ السَّلَامَة",tr:"ma'a s-salāma",es:"Adiós",cat:"Saludos"},
-  {ar:"إِلَى اللِّقَاء",tr:"ilā l-liqā'",es:"Hasta luego",cat:"Saludos"},
-  {ar:"أُمّ",tr:"umm",es:"Madre",cat:"Familia"},
-  {ar:"أَب",tr:"ab",es:"Padre",cat:"Familia"},
-  {ar:"أَخ",tr:"akh",es:"Hermano",cat:"Familia"},
-  {ar:"أُخْت",tr:"ukht",es:"Hermana",cat:"Familia"},
-  {ar:"اِبْن",tr:"ibn",es:"Hijo",cat:"Familia"},
-  {ar:"وَلَد",tr:"walad",es:"Chico",cat:"Familia"},
-  {ar:"بِنْت",tr:"bint",es:"Chica / Hija",cat:"Familia"},
-  {ar:"حَبِيبِي",tr:"ḥabībī",es:"Cariño / Querido",cat:"Familia"},
-  {ar:"مُعَلِّم",tr:"mu'allim",es:"Profesor",cat:"Profesiones"},
-  {ar:"مُعَلِّمَة",tr:"mu'allima",es:"Profesora",cat:"Profesiones"},
-  {ar:"طَالِب",tr:"ṭālib",es:"Estudiante (masc.)",cat:"Profesiones"},
-  {ar:"طَالِبَة",tr:"ṭāliba",es:"Estudiante (fem.)",cat:"Profesiones"},
-  {ar:"مُدِير",tr:"mudīr",es:"Director",cat:"Profesiones"},
-  {ar:"طَبِيب",tr:"ṭabīb",es:"Médico",cat:"Profesiones"},
-  {ar:"مُهَنْدِس",tr:"muhandis",es:"Ingeniero",cat:"Profesiones"},
-  {ar:"شُرْطِيّ",tr:"shurṭiyy",es:"Policía",cat:"Profesiones"},
-  {ar:"مُمَرِّضَة",tr:"mumarriḍa",es:"Enfermera",cat:"Profesiones"},
-  {ar:"فَلَّاح",tr:"fallāḥ",es:"Agricultor",cat:"Profesiones"},
-  {ar:"مُحَامِي",tr:"muḥāmī",es:"Abogado",cat:"Profesiones"},
-  {ar:"مُوَظَّف",tr:"muwaẓẓaf",es:"Funcionario",cat:"Profesiones"},
-  {ar:"مَدْرَسَة",tr:"madrasa",es:"Escuela",cat:"Escuela"},
-  {ar:"مَكْتَبَة",tr:"maktaba",es:"Biblioteca",cat:"Escuela"},
-  {ar:"كِتَاب",tr:"kitāb",es:"Libro",cat:"Escuela"},
-  {ar:"دَفْتَر",tr:"daftar",es:"Cuaderno",cat:"Escuela"},
-  {ar:"قَلَم",tr:"qalam",es:"Bolígrafo",cat:"Escuela"},
-  {ar:"قَامُوس",tr:"qāmūs",es:"Diccionario",cat:"Escuela"},
-  {ar:"وَاجِب",tr:"wājib",es:"Tarea / Deber",cat:"Escuela"},
-  {ar:"بَيْت",tr:"bayt",es:"Casa",cat:"Casa"},
-  {ar:"غُرْفَة",tr:"ghurfa",es:"Habitación",cat:"Casa"},
-  {ar:"بَاب",tr:"bāb",es:"Puerta",cat:"Casa"},
-  {ar:"مَطْبَخ",tr:"maṭbakh",es:"Cocina",cat:"Casa"},
-  {ar:"مِفْتَاح",tr:"miftāḥ",es:"Llave",cat:"Casa"},
-  {ar:"طَبَق",tr:"ṭabaq",es:"Plato",cat:"Casa"},
-  {ar:"شَمْس",tr:"shams",es:"Sol",cat:"Naturaleza"},
-  {ar:"سَمَاء",tr:"samā'",es:"Cielo",cat:"Naturaleza"},
-  {ar:"مَاء",tr:"mā'",es:"Agua",cat:"Naturaleza"},
-  {ar:"وَرْدَة",tr:"warda",es:"Flor",cat:"Naturaleza"},
-  {ar:"نَهْر",tr:"nahr",es:"Río",cat:"Naturaleza"},
-  {ar:"شَارِع",tr:"shāri'",es:"Calle",cat:"Naturaleza"},
-  {ar:"كَلْب",tr:"kalb",es:"Perro",cat:"Animales"},
-  {ar:"قِطّ",tr:"qiṭṭ",es:"Gato",cat:"Animales"},
-  {ar:"أَسَد",tr:"asad",es:"León",cat:"Animales"},
-  {ar:"فِيل",tr:"fīl",es:"Elefante",cat:"Animales"},
-  {ar:"سَمَك",tr:"samak",es:"Pescado",cat:"Animales"},
-  {ar:"بَقَرَة",tr:"baqara",es:"Vaca",cat:"Animales"},
-  {ar:"زَرَافَة",tr:"zarāfa",es:"Jirafa",cat:"Animales"},
-  {ar:"خُبْز",tr:"khubz",es:"Pan",cat:"Comida"},
-  {ar:"شَاي",tr:"shāy",es:"Té",cat:"Comida"},
-  {ar:"جُبْنَة",tr:"jubna",es:"Queso",cat:"Comida"},
-  {ar:"مَوْز",tr:"mawz",es:"Banana",cat:"Comida"},
-  {ar:"تُفَّاحَة",tr:"tuffāḥa",es:"Manzana",cat:"Comida"},
-  {ar:"حَلِيب",tr:"ḥalīb",es:"Leche",cat:"Comida"},
-  {ar:"لَيْمُون",tr:"laymūn",es:"Limón",cat:"Comida"},
-  {ar:"زَيْتُون",tr:"zaytūn",es:"Aceitunas",cat:"Comida"},
-  {ar:"جَمِيل",tr:"jamīl",es:"Bonito",cat:"Adjetivos"},
-  {ar:"صَغِير",tr:"ṣaghīr",es:"Pequeño",cat:"Adjetivos"},
-  {ar:"نَظِيف",tr:"naẓīf",es:"Limpio",cat:"Adjetivos"},
-  {ar:"سَعِيد",tr:"sa'īd",es:"Feliz (masc.)",cat:"Adjetivos"},
-  {ar:"حَزِينَة",tr:"ḥazīna",es:"Triste (fem.)",cat:"Adjetivos"},
-  {ar:"قَرِيب",tr:"qarīb",es:"Cerca",cat:"Adjetivos"},
-  {ar:"بَعِيد",tr:"ba'īd",es:"Lejos",cat:"Adjetivos"},
-  {ar:"فَقِير",tr:"faqīr",es:"Pobre",cat:"Adjetivos"},
-  {ar:"غَنِيّ",tr:"ghaniyy",es:"Rico",cat:"Adjetivos"},
-  {ar:"حُبّ",tr:"ḥubb",es:"Amor",cat:"Conceptos"},
-  {ar:"سَلَام",tr:"salām",es:"Paz",cat:"Conceptos"},
-  {ar:"نَجَاح",tr:"najāḥ",es:"Éxito",cat:"Conceptos"},
-  {ar:"حَنِين",tr:"ḥanīn",es:"Nostalgia",cat:"Conceptos"},
-  {ar:"يَوْم",tr:"yawm",es:"Día",cat:"Conceptos"},
-  {ar:"سَنَة",tr:"sana",es:"Año",cat:"Conceptos"},
-  {ar:"صَبَاح",tr:"ṣabāḥ",es:"Mañana (por la mañana)",cat:"Conceptos"},
-  {ar:"غَدًا",tr:"ghadan",es:"Mañana (tomorrow)",cat:"Conceptos"},
-  {ar:"اِسْم",tr:"ism",es:"Nombre",cat:"Conceptos"},
-  {ar:"خَرَجَ",tr:"kharaja",es:"Salir",cat:"Verbos"},
-  {ar:"أُحِبّ",tr:"uḥibb",es:"Me gusta / Amo",cat:"Verbos"},
-  {ar:"رَأَى",tr:"ra'ā",es:"Ver",cat:"Verbos"},
-  {ar:"مُسْتَشْفَى",tr:"mustashfā",es:"Hospital",cat:"Lugares"},
-  {ar:"سُوق",tr:"sūq",es:"Mercado",cat:"Lugares"},
-  {ar:"مَقْهَى",tr:"maqhā",es:"Cafetería",cat:"Lugares"},
-  {ar:"مَكْتَب",tr:"maktab",es:"Oficina",cat:"Lugares"},
-  // ROPA
+  // Saludos
+  {ar:"مَرْحَبًا",tr:"marhaban",es:"Hola",cat:"Saludos",ctx:"مَرْحَبًا، كَيْفَ الْحَال؟"},
+  {ar:"اَلسَّلَامُ عَلَيْكُمْ",tr:"as-salāmu alaykum",es:"Hola (formal)",cat:"Saludos",ctx:"اَلسَّلَامُ عَلَيْكُمْ يَا صَدِيقِي"},
+  {ar:"أَهْلًا",tr:"ahlan",es:"Hola (informal)",cat:"Saludos",ctx:"أَهْلًا وَسَهْلًا"},
+  {ar:"صَبَاحُ الْخَيْرِ",tr:"ṣabāḥu l-khayr",es:"Buenos días",cat:"Saludos",ctx:"صَبَاحُ الْخَيْرِ يَا أُمِّي"},
+  {ar:"مَسَاءُ الْخَيْرِ",tr:"masā'u l-khayr",es:"Buenas tardes",cat:"Saludos",ctx:"مَسَاءُ الْخَيْرِ يَا طَالِب"},
+  {ar:"كَيْفَ الْحَال؟",tr:"kayfa l-ḥāl?",es:"¿Qué tal?",cat:"Saludos",ctx:"كَيْفَ الْحَال؟ أَنَا بِخَيْر"},
+  {ar:"أَنَا بِخَيْر",tr:"anā bi-khayr",es:"Estoy bien",cat:"Saludos",ctx:"شُكْرًا، أَنَا بِخَيْر"},
+  {ar:"مَعَ السَّلَامَة",tr:"ma'a s-salāma",es:"Adiós",cat:"Saludos",ctx:"مَعَ السَّلَامَة، إِلَى اللِّقَاء"},
+  {ar:"إِلَى اللِّقَاء",tr:"ilā l-liqā'",es:"Hasta luego",cat:"Saludos",ctx:"إِلَى اللِّقَاء يَا صَدِيقِي"},
+  // Familia
+  {ar:"أُمّ",tr:"umm",es:"Madre",cat:"Familia",ctx:"أُمِّي فِي الْبَيْت"},
+  {ar:"أَب",tr:"ab",es:"Padre",cat:"Familia",ctx:"أَبِي طَبِيب"},
+  {ar:"أَخ",tr:"akh",es:"Hermano",cat:"Familia",ctx:"أَخِي طَالِب"},
+  {ar:"أُخْت",tr:"ukht",es:"Hermana",cat:"Familia",ctx:"أُخْتِي مُعَلِّمَة"},
+  {ar:"اِبْن",tr:"ibn",es:"Hijo",cat:"Familia",ctx:"هَذَا اِبْنِي"},
+  {ar:"وَلَد",tr:"walad",es:"Chico",cat:"Familia",ctx:"هَذَا وَلَد صَغِير"},
+  {ar:"بِنْت",tr:"bint",es:"Chica / Hija",cat:"Familia",ctx:"هَذِهِ بِنْت جَمِيلَة"},
+  {ar:"بَنَات",tr:"banāt",es:"Chicas / Hijas",cat:"Familia",ctx:"الْبَنَات فِي الْمَدْرَسَة"},
+  {ar:"عَائِلَة",tr:"'ā'ila",es:"Familia",cat:"Familia",ctx:"عَائِلَتِي كَبِيرَة"},
+  {ar:"حَبِيبِي",tr:"ḥabībī",es:"Cariño / Querido",cat:"Familia",ctx:"حَبِيبِي، كَيْفَ الْحَال؟"},
+  // Profesiones
+  {ar:"مُعَلِّم",tr:"mu'allim",es:"Profesor",cat:"Profesiones",ctx:"هَذَا مُعَلِّم جَيِّد"},
+  {ar:"مُعَلِّمَة",tr:"mu'allima",es:"Profesora",cat:"Profesiones",ctx:"هَذِهِ مُعَلِّمَة"},
+  {ar:"طَالِب",tr:"ṭālib",es:"Estudiante (masc.)",cat:"Profesiones",ctx:"هَلْ هَذَا طَالِب؟"},
+  {ar:"طَالِبَة",tr:"ṭāliba",es:"Estudiante (fem.)",cat:"Profesiones",ctx:"هَذِهِ طَالِبَة نَشِيطَة"},
+  {ar:"مُدِير",tr:"mudīr",es:"Director",cat:"Profesiones",ctx:"هَذَا مُدِير الْمَدْرَسَة"},
+  {ar:"طَبِيب",tr:"ṭabīb",es:"Médico",cat:"Profesiones",ctx:"أَبِي طَبِيب فِي الْمُسْتَشْفَى"},
+  {ar:"مُهَنْدِس",tr:"muhandis",es:"Ingeniero",cat:"Profesiones",ctx:"هَذَا مُهَنْدِس"},
+  {ar:"شُرْطِيّ",tr:"shurṭiyy",es:"Policía",cat:"Profesiones",ctx:"هَذَا شُرْطِيّ"},
+  {ar:"مُمَرِّضَة",tr:"mumarriḍa",es:"Enfermera",cat:"Profesiones",ctx:"هَذِهِ مُمَرِّضَة فِي الْمُسْتَشْفَى"},
+  {ar:"فَلَّاح",tr:"fallāḥ",es:"Agricultor",cat:"Profesiones",ctx:"هَذَا فَلَّاح"},
+  {ar:"مُحَامِي",tr:"muḥāmī",es:"Abogado",cat:"Profesiones",ctx:"أَخِي مُحَامِي"},
+  {ar:"مُوَظَّف",tr:"muwaẓẓaf",es:"Funcionario",cat:"Profesiones",ctx:"هُوَ مُوَظَّف"},
+  {ar:"ضَابِط",tr:"ḍābiṭ",es:"Agente",cat:"Profesiones",ctx:"هَذَا ضَابِط"},
+  // Escuela
+  {ar:"مَدْرَسَة",tr:"madrasa",es:"Escuela",cat:"Escuela",ctx:"هَذِهِ مَدْرَسَة كَبِيرَة"},
+  {ar:"مَكْتَبَة",tr:"maktaba",es:"Biblioteca",cat:"Escuela",ctx:"الْكِتَاب فِي الْمَكْتَبَة"},
+  {ar:"كِتَاب",tr:"kitāb",es:"Libro",cat:"Escuela",ctx:"هَذَا كِتَاب جَمِيل"},
+  {ar:"دَفْتَر",tr:"daftar",es:"Cuaderno",cat:"Escuela",ctx:"هَذَا دَفْتَرِي"},
+  {ar:"قَلَم",tr:"qalam",es:"Bolígrafo",cat:"Escuela",ctx:"الْقَلَم عَلَى الطَّاوِلَة"},
+  {ar:"قَامُوس",tr:"qāmūs",es:"Diccionario",cat:"Escuela",ctx:"هَذَا قَامُوس عَرَبِيّ"},
+  {ar:"وَاجِب",tr:"wājib",es:"Tarea / Deber",cat:"Escuela",ctx:"هَلْ عِنْدَكَ وَاجِب؟"},
+  {ar:"حَاسُوب",tr:"ḥāsūb",es:"Ordenador",cat:"Escuela",ctx:"هَذَا حَاسُوب جَدِيد"},
+  // Casa
+  {ar:"بَيْت",tr:"bayt",es:"Casa",cat:"Casa",ctx:"هَذَا بَيْتِي"},
+  {ar:"غُرْفَة",tr:"ghurfa",es:"Habitación",cat:"Casa",ctx:"هَذِهِ غُرْفَة صَغِيرَة"},
+  {ar:"بَاب",tr:"bāb",es:"Puerta",cat:"Casa",ctx:"الْبَاب كَبِير"},
+  {ar:"مَطْبَخ",tr:"maṭbakh",es:"Cocina",cat:"Casa",ctx:"أُمِّي فِي الْمَطْبَخ"},
+  {ar:"مِفْتَاح",tr:"miftāḥ",es:"Llave",cat:"Casa",ctx:"هَذَا مِفْتَاح الْبَيْت"},
+  {ar:"طَبَق",tr:"ṭabaq",es:"Plato",cat:"Casa",ctx:"هَذَا طَبَق كَبِير"},
+  {ar:"سُلَّم",tr:"sullam",es:"Escalera",cat:"Casa",ctx:"السُّلَّم طَوِيل"},
+  {ar:"غَسَّالَة",tr:"ghassāla",es:"Lavadora",cat:"Casa",ctx:"هَذِهِ غَسَّالَة جَدِيدَة"},
+  {ar:"لَوْحَة",tr:"lawḥa",es:"Cuadro",cat:"Casa",ctx:"هَذِهِ لَوْحَة جَمِيلَة"},
+  // Naturaleza
+  {ar:"شَمْس",tr:"shams",es:"Sol",cat:"Naturaleza",ctx:"اَلشَّمْس كَبِيرَة"},
+  {ar:"سَمَاء",tr:"samā'",es:"Cielo",cat:"Naturaleza",ctx:"السَّمَاء جَمِيلَة"},
+  {ar:"مَاء",tr:"mā'",es:"Agua",cat:"Naturaleza",ctx:"أُرِيدُ مَاء"},
+  {ar:"وَرْدَة",tr:"warda",es:"Flor",cat:"Naturaleza",ctx:"هَذِهِ وَرْدَة حَمْرَاء"},
+  {ar:"نَهْر",tr:"nahr",es:"Río",cat:"Naturaleza",ctx:"النَّهْر كَبِير"},
+  {ar:"شَارِع",tr:"shāri'",es:"Calle",cat:"Naturaleza",ctx:"الشَّارِع طَوِيل"},
+  // Animales
+  {ar:"كَلْب",tr:"kalb",es:"Perro",cat:"Animales",ctx:"هَذَا كَلْب صَغِير"},
+  {ar:"قِطّ",tr:"qiṭṭ",es:"Gato",cat:"Animales",ctx:"هَذَا قِطّ جَمِيل"},
+  {ar:"أَسَد",tr:"asad",es:"León",cat:"Animales",ctx:"الأَسَد كَبِير"},
+  {ar:"فِيل",tr:"fīl",es:"Elefante",cat:"Animales",ctx:"الْفِيل كَبِير جِدًّا"},
+  {ar:"سَمَك",tr:"samak",es:"Pescado",cat:"Animales",ctx:"هَذَا سَمَك طَازَج"},
+  {ar:"بَقَرَة",tr:"baqara",es:"Vaca",cat:"Animales",ctx:"هَذِهِ بَقَرَة"},
+  {ar:"زَرَافَة",tr:"zarāfa",es:"Jirafa",cat:"Animales",ctx:"الزَّرَافَة طَوِيلَة"},
+  {ar:"ذُبَابَة",tr:"dhubāba",es:"Mosca",cat:"Animales",ctx:"هَذِهِ ذُبَابَة صَغِيرَة"},
+  // Comida
+  {ar:"خُبْز",tr:"khubz",es:"Pan",cat:"Comida",ctx:"أُرِيدُ خُبْزًا"},
+  {ar:"شَاي",tr:"shāy",es:"Té",cat:"Comida",ctx:"هَذَا شَاي سَاخِن"},
+  {ar:"جُبْنَة",tr:"jubna",es:"Queso",cat:"Comida",ctx:"هَذِهِ جُبْنَة لَذِيذَة"},
+  {ar:"مَوْز",tr:"mawz",es:"Banana",cat:"Comida",ctx:"أُحِبّ الْمَوْز"},
+  {ar:"تُفَّاحَة",tr:"tuffāḥa",es:"Manzana",cat:"Comida",ctx:"هَذِهِ تُفَّاحَة حَمْرَاء"},
+  {ar:"حَلِيب",tr:"ḥalīb",es:"Leche",cat:"Comida",ctx:"أُحِبّ الْحَلِيب"},
+  {ar:"لَيْمُون",tr:"laymūn",es:"Limón",cat:"Comida",ctx:"اللَّيْمُون حَامِض"},
+  {ar:"زَيْتُون",tr:"zaytūn",es:"Aceitunas",cat:"Comida",ctx:"أُحِبّ الزَّيْتُون"},
+  {ar:"بَيْض",tr:"bayḍ",es:"Huevos",cat:"Comida",ctx:"هَذَا بَيْض"},
+  // Adjetivos
+  {ar:"جَمِيل",tr:"jamīl",es:"Bonito",cat:"Adjetivos",ctx:"هَذَا بَيْت جَمِيل"},
+  {ar:"صَغِير",tr:"ṣaghīr",es:"Pequeño",cat:"Adjetivos",ctx:"هَذَا قِطّ صَغِير"},
+  {ar:"نَظِيف",tr:"naẓīf",es:"Limpio",cat:"Adjetivos",ctx:"الْبَيْت نَظِيف"},
+  {ar:"سَعِيد",tr:"sa'īd",es:"Feliz (masc.)",cat:"Adjetivos",ctx:"أَنَا سَعِيد"},
+  {ar:"حَزِينَة",tr:"ḥazīna",es:"Triste (fem.)",cat:"Adjetivos",ctx:"هِيَ حَزِينَة"},
+  {ar:"قَرِيب",tr:"qarīb",es:"Cerca",cat:"Adjetivos",ctx:"الْبَيْت قَرِيب"},
+  {ar:"بَعِيد",tr:"ba'īd",es:"Lejos",cat:"Adjetivos",ctx:"الْمَدْرَسَة بَعِيدَة"},
+  {ar:"فَقِير",tr:"faqīr",es:"Pobre",cat:"Adjetivos",ctx:"هُوَ فَقِير"},
+  {ar:"غَنِيّ",tr:"ghaniyy",es:"Rico",cat:"Adjetivos",ctx:"هُوَ غَنِيّ"},
+  // Conceptos
+  {ar:"حُبّ",tr:"ḥubb",es:"Amor",cat:"Conceptos",ctx:"الْحُبّ جَمِيل"},
+  {ar:"سَلَام",tr:"salām",es:"Paz",cat:"Conceptos",ctx:"اَلسَّلَامُ عَلَيْكُمْ"},
+  {ar:"نَجَاح",tr:"najāḥ",es:"Éxito",cat:"Conceptos",ctx:"النَّجَاح مُهِمّ"},
+  {ar:"يَوْم",tr:"yawm",es:"Día",cat:"Conceptos",ctx:"هَذَا يَوْم جَمِيل"},
+  {ar:"سَنَة",tr:"sana",es:"Año",cat:"Conceptos",ctx:"هَذِهِ سَنَة جَدِيدَة"},
+  {ar:"صَبَاح",tr:"ṣabāḥ",es:"Mañana (por la mañana)",cat:"Conceptos",ctx:"صَبَاحُ الْخَيْرِ"},
+  {ar:"غَدًا",tr:"ghadan",es:"Mañana (tomorrow)",cat:"Conceptos",ctx:"أَرَاكَ غَدًا"},
+  {ar:"اِسْم",tr:"ism",es:"Nombre",cat:"Conceptos",ctx:"مَا اِسْمُكَ؟"},
+  // Verbos
+  {ar:"خَرَجَ",tr:"kharaja",es:"Salir",cat:"Verbos",ctx:"خَرَجَ مِنَ الْبَيْت"},
+  {ar:"أُحِبّ",tr:"uḥibb",es:"Me gusta / Amo",cat:"Verbos",ctx:"أُحِبّ الْعَرَبِيَّة"},
+  {ar:"رَأَى",tr:"ra'ā",es:"Ver",cat:"Verbos",ctx:"رَأَى الْكِتَاب"},
+  // Lugares
+  {ar:"مُسْتَشْفَى",tr:"mustashfā",es:"Hospital",cat:"Lugares",ctx:"أَبِي فِي الْمُسْتَشْفَى"},
+  {ar:"سُوق",tr:"sūq",es:"Mercado",cat:"Lugares",ctx:"ذَهَبْتُ إِلَى السُّوق"},
+  {ar:"مَقْهَى",tr:"maqhā",es:"Cafetería",cat:"Lugares",ctx:"هَذِهِ مَقْهَى جَمِيلَة"},
+  {ar:"مَكْتَب",tr:"maktab",es:"Oficina",cat:"Lugares",ctx:"أَبِي فِي الْمَكْتَب"},
+  // Objetos
+  {ar:"خَرِيطَة",tr:"kharīṭa",es:"Mapa",cat:"Objetos",ctx:"هَذِهِ خَرِيطَة"},
+  {ar:"عَلَم",tr:"'alam",es:"Bandera",cat:"Objetos",ctx:"هَذَا عَلَم الْعَرَبِيَّة"},
+  {ar:"فُرْشَة",tr:"fursha",es:"Cepillo",cat:"Objetos",ctx:"هَذِهِ فُرْشَة"},
+  // Ropa
+  {ar:"فُسْتَان",tr:"fustān",es:"Vestido",cat:"Ropa",ctx:"هَذَا فُسْتَان جَمِيل"},
+  // Monedas
+  {ar:"دُولَار",tr:"dūlār",es:"Dólar",cat:"Monedas",ctx:"هَذَا دُولَار"},
+  {ar:"رِيَال",tr:"riyāl",es:"Rial",cat:"Monedas",ctx:"هَذَا رِيَال"},
+  // Frases
+  {ar:"هَذَا كِتَاب",tr:"hādhā kitāb",es:"Esto es un libro",cat:"Frases",ctx:""},
+  {ar:"هَذِهِ مَدْرَسَة",tr:"hādhihi madrasa",es:"Esta es una escuela",cat:"Frases",ctx:""},
+  {ar:"مَا هَذَا؟",tr:"mā hādhā?",es:"¿Qué es esto? (masc.)",cat:"Frases",ctx:""},
+  {ar:"مَا هَذِهِ؟",tr:"mā hādhihi?",es:"¿Qué es esta? (fem.)",cat:"Frases",ctx:""},
+  {ar:"مَنْ هَذَا؟",tr:"man hādhā?",es:"¿Quién es este? (masc.)",cat:"Frases",ctx:""},
+  {ar:"مَنْ هَذِهِ؟",tr:"man hādhihi?",es:"¿Quién es esta? (fem.)",cat:"Frases",ctx:""},
+  {ar:"هَلْ هَذَا كِتَاب؟",tr:"hal hādhā kitāb?",es:"¿Es esto un libro?",cat:"Frases",ctx:""},
+  {ar:"هَلْ هَذِهِ مَدْرَسَة؟",tr:"hal hādhihi madrasa?",es:"¿Es esta una escuela?",cat:"Frases",ctx:""},
+  {ar:"هَذَا الْبَيْت",tr:"hādhā l-bayt",es:"Esta es la casa",cat:"Frases",ctx:""},
+  {ar:"هَلْ هَذَا طَبِيب؟",tr:"hal hādhā ṭabīb?",es:"¿Es este un médico?",cat:"Frases",ctx:""},
+  // ROPA (ya incluido arriba)
   {ar:"فُسْتَان",tr:"fustān",es:"Vestido",cat:"Ropa"},
   // NUEVOS ANIMALES
   {ar:"ذُبَابَة",tr:"dhubāba",es:"Mosca",cat:"Animales"},
@@ -639,6 +702,10 @@ const DETECT = [
   {ar:"وَرْدَة",es:"flor",ans:"Ta marbuta ة",dis:["Shaddah ّ","Hamza ء","Alif maqsura ى"],tip:"La ة al final: warda, palabra femenina."},
   {ar:"أَخ",es:"hermano",ans:"Hamza ء",dis:["Ta marbuta ة","Alif maqsura ى","Shaddah ّ"],tip:"La أ inicial es hamza qat' sobre alif con fatha."},
   {ar:"فَلَّاح",es:"agricultor",ans:"Shaddah ّ",dis:["Ta marbuta ة","Hamza ء","Alif maqsura ى"],tip:"La shaddah sobre ل dobla la L: fallāḥ."},
+  {ar:"اَلشَّمْس",es:"el sol",ans:"Letra solar (ش)",dis:["Letra lunar","Ta marbuta ة","Shaddah ّ"],tip:"ش es letra solar. اَلشَّمْس = ash-shams. La L se asimila al sonido sh."},
+  {ar:"اَلْكِتَاب",es:"el libro",ans:"Letra lunar (ك)",dis:["Letra solar","Alif maqsura ى","Hamza ء"],tip:"ك es letra lunar. اَلْكِتَاب = al-kitāb. La L se pronuncia completa."},
+  {ar:"اَلنُّور",es:"la luz",ans:"Letra solar (ن)",dis:["Letra lunar","Ta marbuta ة","Hamza ء"],tip:"ن es letra solar. اَلنُّور = an-nūr. La L se asimila al sonido n."},
+  {ar:"اَلْبَيْت",es:"la casa",ans:"Letra lunar (ب)",dis:["Letra solar","Shaddah ّ","Alif maqsura ى"],tip:"ب es letra lunar. اَلْبَيْت = al-bayt. La L se pronuncia completa."},
   {ar:"مَكْتَبَة",es:"biblioteca",ans:"Ta marbuta ة",dis:["Shaddah ّ","Alif maqsura ى","Hamza ء"],tip:"La ة al final marca el femenino: maktaba."},
   {ar:"هَذَا كِتَاب",es:"esto es un libro",ans:"Demostrativo هَذَا (masc.)",dis:["Demostrativo هَذِهِ (fem.)","Partícula هَلْ","Artículo ال"],tip:"هَذَا se usa con sustantivos masculinos."},
   {ar:"هَذِهِ مَدْرَسَة",es:"esta es una escuela",ans:"Demostrativo هَذِهِ (fem.)",dis:["Demostrativo هَذَا (masc.)","Partícula هَلْ","Ta marbuta ة"],tip:"هَذِهِ se usa con sustantivos femeninos (muchos acaban en ة)."},
@@ -686,6 +753,12 @@ const GRAMMAR = [
     {ar:"الشَّمْس",tr:"ash-shams",es:"el sol",note:"letra solar → ash-sh"},
     {ar:"الْبَيْت",tr:"al-bayt",es:"la casa",note:"letra lunar → al-b"},
     {ar:"النُّور",tr:"an-nūr",es:"la luz",note:"letra solar → an-n"},
+  ]},
+  {title:"Letras solares y lunares",desc:"Con el artículo ال hay dos grupos. Letras SOLARES (ت ث د ذ ر ز س ش ص ض ط ظ ل ن): la L de ال se asimila al sonido de la letra siguiente. Letras LUNARES (ا ب ج ح خ ع غ ف ق ك م و ه ي): la L se pronuncia completa como al-.",examples:[
+    {ar:"اَلشَّمْس",tr:"ash-shams",es:"el sol",note:"ش solar → ash-sh (L asimilada)"},
+    {ar:"اَلنُّور",tr:"an-nūr",es:"la luz",note:"ن solar → an-n (L asimilada)"},
+    {ar:"اَلْكِتَاب",tr:"al-kitāb",es:"el libro",note:"ك lunar → al-k (L completa)"},
+    {ar:"اَلْبَيْت",tr:"al-bayt",es:"la casa",note:"ب lunar → al-b (L completa)"},
   ]},
   {title:"Demostrativos — اسم الإشارة",desc:"Los demostrativos indican a qué objeto nos referimos. هَذَا para masculino y هَذِهِ para femenino. En árabe no hay verbo 'ser/estar' en el presente — se omite.",examples:[
     {ar:"هَذَا كِتَاب",tr:"hādhā kitāb",es:"Esto es un libro",note:"هَذَا + sustantivo masc."},
@@ -873,6 +946,22 @@ function getFcCards() {
   if (fcMode === 'fav') pool = pool.filter(w => favorites.has(w.ar));
   if (fcMode === 'weak') pool = pool.filter(w => (mastery[w.ar] || 0) < 2);
   if (pool.length === 0) { showToast('No hay palabras en esta selección'); return VOCAB.slice(0, 20); }
+  // Weighted selection: lower mastery = higher probability
+  if (fcMode === 'all') {
+    const weighted = [];
+    pool.forEach(w => {
+      const m = mastery[w.ar] || 0;
+      const weight = [4, 3, 2, 1][m]; // m0=4x, m1=3x, m2=2x, m3=1x
+      for (let i = 0; i < weight; i++) weighted.push(w);
+    });
+    const seen = new Set();
+    const result = [];
+    for (const w of shuffle(weighted)) {
+      if (!seen.has(w.ar)) { seen.add(w.ar); result.push(w); }
+      if (result.length >= 20) break;
+    }
+    return result;
+  }
   return shuffle(pool).slice(0, Math.min(20, pool.length));
 }
 
@@ -890,6 +979,8 @@ function showCard() {
   document.getElementById('fc-arabic').textContent = w.ar;
   document.getElementById('fc-es').textContent = w.es;
   document.getElementById('fc-tr').textContent = w.tr;
+  const ctxEl = document.getElementById('fc-ctx');
+  if (ctxEl) { ctxEl.textContent = w.ctx || ''; ctxEl.style.display = w.ctx ? 'block' : 'none'; }
   document.getElementById('fc-cat').textContent = w.cat;
   document.getElementById('fc-num').textContent = (fcIdx + 1) + '/' + fcCards.length;
   const isFav = favorites.has(w.ar);
@@ -1257,76 +1348,58 @@ function buildGram() {
 // ══════════════════════════════════════
 // DEBERES — ejercicios pregenerados
 // ══════════════════════════════════════
+
+
 const EJERCICIOS_POOL = [
-  // LECTURA
-  {tipo:"Lectura",pregunta:"Lee esta palabra en voz alta. Identifica las vocales e indica qué tipo de vocal larga tiene:",arabic:"كِتَاب",respuesta:"kitāb — kasra bajo ك + vocal larga ā (alif). Significa: libro.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta palabra. ¿Tiene shaddah? ¿Qué letra se dobla?",arabic:"مُعَلِّم",respuesta:"mu'allim — sí, tiene shaddah sobre ل. La L se dobla. Significa: profesor.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta palabra e identifica la ta marbuta:",arabic:"مَدْرَسَة",respuesta:"madrasa — la ة al final es ta marbuta. Se pronuncia -a. Significa: escuela.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta palabra. ¿Qué tipo de hamza tiene y dónde está?",arabic:"أُمّ",respuesta:"umm — hamza sobre alif con damma al inicio. Además tiene shaddah en م. Significa: madre.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta frase completa en voz alta:",arabic:"هَذَا كِتَاب",respuesta:"hādhā kitāb — 'esto es un libro'. هَذَا es el demostrativo masculino. No hay verbo 'ser' en árabe.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta frase e identifica todos los elementos especiales:",arabic:"هَذِهِ الْمَدْرَسَة",respuesta:"hādhihi l-madrasa — 'esta es la escuela'. هَذِهِ demostrativo femenino + ال artículo (letra lunar م) + ta marbuta al final.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta palabra. ¿Termina en alif maqsura o ta marbuta?",arabic:"مَقْهَى",respuesta:"maqhā — termina en alif maqsura ى (sin puntos). Se pronuncia ā. Significa: cafetería.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta pregunta en voz alta:",arabic:"هَلْ هَذَا طَبِيب؟",respuesta:"hal hādhā ṭabīb? — '¿Es este un médico?' هَلْ indica pregunta de sí/no. هَذَا demostrativo masc.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta palabra e identifica la vocal larga:",arabic:"سَلَام",respuesta:"salām — fatha + vocal larga ā (alif). Significa: paz.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta frase e identifica el artículo solar o lunar:",arabic:"اَلشَّمْس",respuesta:"ash-shams — la ش es letra solar, la L de ال se asimila: ash-sh. Significa: el sol.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta palabra con la shaddah correctamente:",arabic:"حُبّ",respuesta:"ḥubb — la shaddah sobre ب dobla la B: ḥu-BB. Significa: amor.",arabic_respuesta:""},
-  {tipo:"Lectura",pregunta:"Lee esta frase en voz alta:",arabic:"مَا هَذِهِ؟",respuesta:"mā hādhihi? — '¿Qué es esta?' مَا = qué. هَذِهِ = demostrativo femenino.",arabic_respuesta:""},
-
-  // TRADUCCIÓN
-  {tipo:"Traducción",pregunta:"Traduce esta frase al español:",arabic:"هَذَا الْبَيْت كَبِير",respuesta:"'Esta casa es grande.' هَذَا = este, الْبَيْت = la casa (ب letra lunar → al-b), كَبِير = grande.",arabic_respuesta:""},
-  {tipo:"Traducción",pregunta:"Traduce esta pregunta al español:",arabic:"مَنْ هَذَا؟",respuesta:"'¿Quién es este?' مَنْ se usa para preguntar por personas.",arabic_respuesta:""},
-  {tipo:"Traducción",pregunta:"Traduce al español:",arabic:"هَلْ هَذِهِ سَيَّارَة؟",respuesta:"'¿Es este un coche?' هَلْ = pregunta sí/no. هَذِهِ = esta (fem.). سَيَّارَة = coche (fem. por ta marbuta).",arabic_respuesta:""},
-  {tipo:"Traducción",pregunta:"Traduce esta frase:",arabic:"أَنَا طَالِب وَهُوَ مُعَلِّم",respuesta:"'Yo soy estudiante y él es profesor.' أَنَا = yo, وَ = y, هُوَ = él.",arabic_respuesta:""},
-  {tipo:"Traducción",pregunta:"Traduce al español:",arabic:"هَذَا الْكِتَاب جَمِيل",respuesta:"'Este libro es bonito.' الْكِتَاب = el libro (ك lunar → al-k). جَمِيل = bonito.",arabic_respuesta:""},
-  {tipo:"Traducción",pregunta:"Traduce esta pregunta:",arabic:"مَا هَذَا؟ هَذَا قَلَم",respuesta:"'¿Qué es esto? Esto es un bolígrafo.' Pregunta y respuesta con demostrativo masculino.",arabic_respuesta:""},
-  {tipo:"Traducción",pregunta:"Traduce al español:",arabic:"هِيَ طَبِيبَة وَهُوَ مُهَنْدِس",respuesta:"'Ella es médica y él es ingeniero.' هِيَ = ella. طَبِيبَة = médica (fem. de طَبِيب con ta marbuta).",arabic_respuesta:""},
-  {tipo:"Traducción",pregunta:"Traduce esta frase:",arabic:"الْبَيْت كَبِير وَالْغُرْفَة صَغِيرَة",respuesta:"'La casa es grande y la habitación es pequeña.' Adjetivos concuerdan en género: كَبِير (masc.) / صَغِيرَة (fem.).",arabic_respuesta:""},
-
-  // CONSTRUYE LA FRASE
-  {tipo:"Construye la frase",pregunta:"Forma una frase con estas palabras: هَذِهِ / مَدْرَسَة / كَبِيرَة",arabic:"",respuesta:"هَذِهِ مَدْرَسَة كَبِيرَة — 'Esta es una escuela grande.' هَذِهِ (fem.) + sustantivo fem. + adjetivo fem.",arabic_respuesta:"هَذِهِ مَدْرَسَة كَبِيرَة"},
-  {tipo:"Construye la frase",pregunta:"Forma una pregunta de sí/no usando هَلْ con: هَذَا / كِتَاب",arabic:"",respuesta:"هَلْ هَذَا كِتَاب؟ — '¿Es esto un libro?' هَلْ siempre va al inicio de la pregunta.",arabic_respuesta:"هَلْ هَذَا كِتَاب؟"},
-  {tipo:"Construye la frase",pregunta:"Traduce al árabe: 'Esta es una lavadora'",arabic:"",respuesta:"هَذِهِ غَسَّالَة — غَسَّالَة es femenino (tiene shaddah sobre س y ta marbuta al final), así que usamos هَذِهِ.",arabic_respuesta:"هَذِهِ غَسَّالَة"},
-  {tipo:"Construye la frase",pregunta:"Traduce al árabe: '¿Quién es esta?' (refiriéndose a una mujer)",arabic:"",respuesta:"مَنْ هَذِهِ؟ — Para personas usamos مَنْ. Como nos referimos a una mujer, هَذِهِ.",arabic_respuesta:"مَنْ هَذِهِ؟"},
-  {tipo:"Construye la frase",pregunta:"Forma una frase: 'Este es el médico' usando el artículo",arabic:"",respuesta:"هَذَا الطَّبِيب — ط es letra solar, la L de ال se asimila: aṭ-ṭabīb. هَذَا porque طَبِيب es masculino.",arabic_respuesta:"هَذَا الطَّبِيب"},
-  {tipo:"Construye la frase",pregunta:"Traduce al árabe: '¿Qué es este?' (objeto masculino)",arabic:"",respuesta:"مَا هَذَا؟ — مَا para cosas, هَذَا para masculino.",arabic_respuesta:"مَا هَذَا؟"},
-  {tipo:"Construye la frase",pregunta:"Forma una frase con: أَنَا / مِنْ / مَدْرِيد",arabic:"",respuesta:"أَنَا مِنْ مَدْرِيد — 'Yo soy de Madrid.' En árabe no se usa verbo 'ser' en presente.",arabic_respuesta:"أَنَا مِنْ مَدْرِيد"},
-  {tipo:"Construye la frase",pregunta:"Traduce al árabe: 'El sol es grande'",arabic:"",respuesta:"اَلشَّمْس كَبِيرَة — شَمْس es femenino, así que el adjetivo lleva ta marbuta: كَبِيرَة. ش es letra solar: ash-shams.",arabic_respuesta:"اَلشَّمْس كَبِيرَة"},
-
-  // IDENTIFICA
-  {tipo:"Identifica",pregunta:"¿Qué elemento especial contiene esta palabra? Explica su función:",arabic:"طَالِبَة",respuesta:"Ta marbuta (ة) al final. Convierte el masculino طَالِب (estudiante masc.) en femenino طَالِبَة (estudiante fem.).",arabic_respuesta:""},
-  {tipo:"Identifica",pregunta:"Identifica el tipo de pregunta y qué palabra interrogativa se usa:",arabic:"هَلْ هَذَا مَكْتَب؟",respuesta:"Pregunta de sí/no. Se usa هَلْ al inicio. La respuesta puede ser نَعَم (sí) o لَا (no). Significa: '¿Es esto una oficina?'",arabic_respuesta:""},
-  {tipo:"Identifica",pregunta:"¿Esta frase usa el demostrativo correcto? Explica por qué:",arabic:"هَذَا غُرْفَة",respuesta:"No es del todo correcto. غُرْفَة es femenino (tiene ta marbuta), así que debería ser هَذِهِ غُرْفَة.",arabic_respuesta:"هَذِهِ غُرْفَة"},
-  {tipo:"Identifica",pregunta:"Identifica el artículo y di si la letra es solar o lunar:",arabic:"اَلْقَمَر",respuesta:"al-qamar — ق es letra lunar, la L de ال se pronuncia completa: al-q. Significa: la luna.",arabic_respuesta:""},
-  {tipo:"Identifica",pregunta:"¿Cuántas vocales largas tiene esta palabra y cuáles son?",arabic:"مُعَلِّمَة",respuesta:"Una vocal larga: ā (alif) después de عَ → mu'al-lī-ma. También tiene shaddah en ل y ta marbuta al final.",arabic_respuesta:""},
-  {tipo:"Identifica",pregunta:"Identifica todos los elementos especiales de esta palabra:",arabic:"مُسْتَشْفَى",respuesta:"mustashfā — alif maqsura ى al final (sin puntos, suena ā). No tiene shaddah ni ta marbuta. Significa: hospital.",arabic_respuesta:""},
-
-  // COMPLETA
-  {tipo:"Completa",pregunta:"Completa con el demostrativo correcto (هَذَا o هَذِهِ): ___ كِتَاب",arabic:"",respuesta:"هَذَا كِتَاب — كِتَاب es masculino, se usa هَذَا. 'Esto es un libro.'",arabic_respuesta:"هَذَا كِتَاب"},
-  {tipo:"Completa",pregunta:"Completa con el demostrativo correcto: ___ سَيَّارَة",arabic:"",respuesta:"هَذِهِ سَيَّارَة — سَيَّارَة es femenino (ta marbuta), se usa هَذِهِ. 'Este es un coche.'",arabic_respuesta:"هَذِهِ سَيَّارَة"},
-  {tipo:"Completa",pregunta:"Completa la pregunta: ___ هَذَا؟ (pregunta por una cosa)",arabic:"",respuesta:"مَا هَذَا؟ — مَا se usa para preguntar por cosas. '¿Qué es esto?'",arabic_respuesta:"مَا هَذَا؟"},
-  {tipo:"Completa",pregunta:"Añade el artículo ال a esta palabra y di si es solar o lunar: بَيْت",arabic:"",respuesta:"اَلْبَيْت — al-bayt. ب es letra lunar, la L se pronuncia completa.",arabic_respuesta:"اَلْبَيْت"},
-  {tipo:"Completa",pregunta:"Añade el artículo ال a esta palabra y di si es solar o lunar: شَمْس",arabic:"",respuesta:"اَلشَّمْس — ash-shams. ش es letra solar, la L se asimila al sonido sh.",arabic_respuesta:"اَلشَّمْس"},
-  {tipo:"Completa",pregunta:"Transforma al femenino: طَالِب (estudiante masc.)",arabic:"",respuesta:"طَالِبَة — se añade ta marbuta (ة) al final para formar el femenino.",arabic_respuesta:"طَالِبَة"},
-  {tipo:"Completa",pregunta:"Transforma al femenino: مُعَلِّم (profesor)",arabic:"",respuesta:"مُعَلِّمَة — se añade ta marbuta (ة) al final. Conserva la shaddah en ل.",arabic_respuesta:"مُعَلِّمَة"},
-  {tipo:"Completa",pregunta:"Completa con مَا، مَنْ o هَلْ: '___ هَذَا؟' (preguntando quién es una persona)",arabic:"",respuesta:"مَنْ هَذَا؟ — مَنْ se usa para personas. '¿Quién es este?'",arabic_respuesta:"مَنْ هَذَا؟"},
-
-  // VERDADERO O FALSO
-  {tipo:"¿Verdadero o falso?",pregunta:"'هَذِهِ' se usa con sustantivos masculinos. ¿Verdadero o falso?",arabic:"",respuesta:"FALSO. هَذِهِ se usa con sustantivos femeninos. Para masculinos se usa هَذَا.",arabic_respuesta:""},
-  {tipo:"¿Verdadero o falso?",pregunta:"La ta marbuta (ة) siempre indica que una palabra es femenina. ¿Verdadero o falso?",arabic:"",respuesta:"VERDADERO. La ta marbuta marca el género femenino en árabe.",arabic_respuesta:""},
-  {tipo:"¿Verdadero o falso?",pregunta:"هَلْ se usa para preguntar '¿qué?' en árabe. ¿Verdadero o falso?",arabic:"",respuesta:"FALSO. هَلْ es la partícula de preguntas sí/no. Para '¿qué?' se usa مَا.",arabic_respuesta:""},
-  {tipo:"¿Verdadero o falso?",pregunta:"En árabe el artículo ال siempre se pronuncia 'al-' sin importar la letra que le sigue. ¿Verdadero o falso?",arabic:"",respuesta:"FALSO. Con letras solares la L se asimila: اَلشَّمْس = ash-shams, no al-shams.",arabic_respuesta:""},
-  {tipo:"¿Verdadero o falso?",pregunta:"La alif maqsura (ى) y la ya (ي) suenan igual. ¿Verdadero o falso?",arabic:"",respuesta:"FALSO. La alif maqsura suena ā (vocal larga a). La ya suena ī (vocal larga i) o como consonante Y.",arabic_respuesta:""},
-  {tipo:"¿Verdadero o falso?",pregunta:"En árabe moderno se omite el verbo 'ser/estar' en el presente. ¿Verdadero o falso?",arabic:"هَذَا كِتَاب",respuesta:"VERDADERO. En هَذَا كِتَاب ('esto es un libro') no hay verbo. Es una característica del árabe.",arabic_respuesta:""},
-
-  // TRANSFORMA
-  {tipo:"Transforma",pregunta:"Convierte esta frase de masculino a femenino: هَذَا طَالِب",arabic:"هَذَا طَالِب",respuesta:"هَذِهِ طَالِبَة — cambias هَذَا por هَذِهِ y añades ta marbuta a طَالِب → طَالِبَة.",arabic_respuesta:"هَذِهِ طَالِبَة"},
-  {tipo:"Transforma",pregunta:"Convierte en pregunta de sí/no: هَذَا بَيْت",arabic:"هَذَا بَيْت",respuesta:"هَلْ هَذَا بَيْت؟ — simplemente añades هَلْ al inicio y signo de interrogación al final.",arabic_respuesta:"هَلْ هَذَا بَيْت؟"},
-  {tipo:"Transforma",pregunta:"Añade el artículo definido a: غُرْفَة",arabic:"غُرْفَة",respuesta:"اَلْغُرْفَة — al-ghurfa. غ es letra lunar, la L se pronuncia completa. Significa: la habitación.",arabic_respuesta:"اَلْغُرْفَة"},
-  {tipo:"Transforma",pregunta:"Convierte en pregunta con مَا: هَذِهِ غَسَّالَة",arabic:"هَذِهِ غَسَّالَة",respuesta:"مَا هَذِهِ؟ — '¿Qué es esta?' Sustituyes la respuesta por la pregunta con مَا.",arabic_respuesta:"مَا هَذِهِ؟"},
-  {tipo:"Transforma",pregunta:"Convierte al femenino manteniendo el artículo: اَلطَّبِيب",arabic:"اَلطَّبِيب",respuesta:"اَلطَّبِيبَة — se añade ta marbuta. ط letra solar: aṭ-ṭabība. Significa: la médica.",arabic_respuesta:"اَلطَّبِيبَة"},
+  // ── OPCIÓN MÚLTIPLE: vocabulario ──
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa esta palabra?",arabic:"كِتَاب",ops:["Libro","Casa","Escuela","Llave"],ok:"Libro",exp:"kitāb — kasra + vocal larga ā. Una de las palabras más comunes en árabe."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa esta palabra?",arabic:"مَدْرَسَة",ops:["Hospital","Escuela","Biblioteca","Cafetería"],ok:"Escuela",exp:"madrasa — ta marbuta al final, es femenino. El artículo sería aṭ-ṭabīb."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa?",arabic:"مُعَلِّم",ops:["Estudiante","Médico","Profesor","Director"],ok:"Profesor",exp:"mu'allim — tiene shaddah en ل (dobla la L). La versión femenina es مُعَلِّمَة."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa esta palabra?",arabic:"بَيْت",ops:["Puerta","Casa","Habitación","Cocina"],ok:"Casa",exp:"bayt — fatha + sukun en ي + t. El plural es بُيُوت (buyūt)."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa?",arabic:"طَبِيب",ops:["Abogado","Ingeniero","Médico","Policía"],ok:"Médico",exp:"ṭabīb — vocal larga ī. La versión femenina es طَبِيبَة con ta marbuta."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa esta palabra?",arabic:"جَمِيل",ops:["Grande","Pequeño","Bonito","Limpio"],ok:"Bonito",exp:"jamīl — vocal larga ī. La versión femenina es جَمِيلَة (jamīla)."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa?",arabic:"غُرْفَة",ops:["Cocina","Puerta","Escalera","Habitación"],ok:"Habitación",exp:"ghurfa — ta marbuta al final, es femenino. هَذِهِ غُرْفَة صَغِيرَة."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa esta palabra?",arabic:"مُسْتَشْفَى",ops:["Mercado","Hospital","Cafetería","Escuela"],ok:"Hospital",exp:"mustashfā — alif maqsura al final (ى sin puntos, suena ā)."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa?",arabic:"حُبّ",ops:["Paz","Éxito","Amor","Paciencia"],ok:"Amor",exp:"ḥubb — shaddah en ب (dobla la B). هَذَا حُبّ جَمِيل."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa esta palabra?",arabic:"سَلَام",ops:["Amor","Guerra","Paz","Éxito"],ok:"Paz",exp:"salām — vocal larga ā. Aparece en el saludo اَلسَّلَامُ عَلَيْكُمْ."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa?",arabic:"فُسْتَان",ops:["Zapato","Vestido","Sombrero","Camisa"],ok:"Vestido",exp:"fustān — damma + sukun + fatha. هَذَا فُسْتَان جَمِيل."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa esta palabra?",arabic:"خَرِيطَة",ops:["Bandera","Cuadro","Mapa","Llave"],ok:"Mapa",exp:"kharīṭa — vocal larga ī + ta marbuta (femenino). هَذِهِ خَرِيطَة."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa?",arabic:"ذُبَابَة",ops:["Mariposa","Mosca","Abeja","Hormiga"],ok:"Mosca",exp:"dhubāba — ta marbuta al final (femenino). هَذِهِ ذُبَابَة صَغِيرَة."},
+  {fmt:"mc",tipo:"Vocabulario",pregunta:"¿Qué significa esta palabra?",arabic:"غَسَّالَة",ops:["Nevera","Cocina","Lavadora","Escalera"],ok:"Lavadora",exp:"ghassāla — shaddah en س + ta marbuta. هَذِهِ غَسَّالَة جَدِيدَة."},
+  // ── OPCIÓN MÚLTIPLE: gramática ──
+  {fmt:"mc",tipo:"Gramática",pregunta:"¿Qué demostrativo usas con مَدْرَسَة (femenino)?",arabic:"___ مَدْرَسَة",ops:["هَذَا","هَذِهِ","هَلْ","مَا"],ok:"هَذِهِ",exp:"هَذِهِ مَدْرَسَة — مَدْرَسَة es femenino (ta marbuta), así que usamos هَذِهِ."},
+  {fmt:"mc",tipo:"Gramática",pregunta:"¿Qué demostrativo usas con كِتَاب (masculino)?",arabic:"___ كِتَاب",ops:["هَذِهِ","هَذَا","مَنْ","هَلْ"],ok:"هَذَا",exp:"هَذَا كِتَاب — كِتَاب es masculino, así que usamos هَذَا."},
+  {fmt:"mc",tipo:"Gramática",pregunta:"¿Qué palabra interrogativa usas para preguntar '¿qué es esto?'?",arabic:"___ هَذَا؟",ops:["مَنْ","هَلْ","مَا","أَيْن"],ok:"مَا",exp:"مَا هَذَا؟ — مَا se usa para cosas. مَنْ se usa para personas."},
+  {fmt:"mc",tipo:"Gramática",pregunta:"¿Cómo se pronuncia ال antes de la letra ش (solar)?",arabic:"اَلشَّمْس",ops:["al-shams","ash-shams","am-shams","an-shams"],ok:"ash-shams",exp:"ash-shams — ش es letra solar, la L de ال se asimila al sonido sh."},
+  {fmt:"mc",tipo:"Gramática",pregunta:"¿Cómo se pronuncia ال antes de la letra ك (lunar)?",arabic:"اَلْكِتَاب",ops:["ak-kitāb","al-kitāb","ash-kitāb","an-kitāb"],ok:"al-kitāb",exp:"al-kitāb — ك es letra lunar, la L se pronuncia completa."},
+  {fmt:"mc",tipo:"Gramática",pregunta:"Para hacer una pregunta de sí/no en árabe, ¿qué partícula usas al inicio?",arabic:"___ هَذَا بَيْت؟",ops:["مَا","مَنْ","هَلْ","أَيْن"],ok:"هَلْ",exp:"هَلْ هَذَا بَيْت؟ — هَلْ convierte cualquier frase en pregunta de sí/no."},
+  {fmt:"mc",tipo:"Gramática",pregunta:"¿Cuál es el femenino de طَالِب (estudiante)?",arabic:"طَالِب → ___",ops:["طَالِبِي","طَالِبَة","طَالِبَات","طُلَّاب"],ok:"طَالِبَة",exp:"طَالِبَة — se añade ta marbuta (ة) para formar el femenino."},
+  {fmt:"mc",tipo:"Gramática",pregunta:"¿Qué elemento especial contiene esta palabra?",arabic:"مُمَرِّضَة",ops:["Solo ta marbuta","Alif maqsura","Shaddah y ta marbuta","Solo hamza"],ok:"Shaddah y ta marbuta",exp:"Tiene shaddah en ر (dobla la R: mumarriḍa) Y ta marbuta ة al final."},
+  {fmt:"mc",tipo:"Gramática",pregunta:"¿Qué elemento especial tiene esta palabra?",arabic:"مَقْهَى",ops:["Ta marbuta ة","Alif maqsura ى","Shaddah ّ","Hamza ء"],ok:"Alif maqsura ى",exp:"maqhā — termina en ى sin puntos (alif maqsura). Suena como vocal larga ā."},
+  // ── VERDADERO O FALSO ──
+  {fmt:"mc",tipo:"Gramática",pregunta:"اَلشَّمْس — ¿cómo se pronuncia el artículo? (ش = letra solar)",arabic:"اَلشَّمْس",ops:["al-shams","ash-shams","am-shams","ab-shams"],ok:"ash-shams",exp:"ash-shams — ش es letra SOLAR, la L se asimila al sonido sh."},
+  {fmt:"mc",tipo:"Gramática",pregunta:"اَلْكِتَاب — ¿cómo se pronuncia el artículo? (ك = letra lunar)",arabic:"اَلْكِتَاب",ops:["ak-kitāb","ash-kitāb","al-kitāb","an-kitāb"],ok:"al-kitāb",exp:"al-kitāb — ك es letra LUNAR, la L se pronuncia completa."},
+  {fmt:"mc",tipo:"Gramática",pregunta:"¿Cuál de estas letras es SOLAR (asimila la L del artículo)?",arabic:"",ops:["ك","ب","ش","م"],ok:"ش",exp:"ش (shīn) es letra solar. Las solares son: ت ث د ذ ر ز س ش ص ض ط ظ ل ن"},
+  {fmt:"mc",tipo:"Gramática",pregunta:"¿Cuál de estas letras es LUNAR (la L del artículo se pronuncia completa)?",arabic:"",ops:["ن","ش","س","ك"],ok:"ك",exp:"ك (kāf) es letra lunar. Las lunares son: ا ب ج ح خ ع غ ف ق ك م و ه ي"},
+  {fmt:"tf",tipo:"Verdadero/Falso",pregunta:"اَلنُّور se pronuncia 'al-nūr'.",arabic:"اَلنُّور",ok:false,exp:"FALSO. ن es letra solar. Se pronuncia 'an-nūr', la L se asimila al sonido n."},
+  {fmt:"tf",tipo:"Verdadero/Falso",pregunta:"اَلْبَيْت se pronuncia 'al-bayt'.",arabic:"اَلْبَيْت",ok:true,exp:"VERDADERO. ب es letra lunar. La L se pronuncia completa: al-bayt."},
+  {fmt:"tf",tipo:"Verdadero/Falso",pregunta:"هَذِهِ se usa con sustantivos masculinos.",arabic:"",ok:false,exp:"FALSO. هَذِهِ es para sustantivos femeninos. Para masculinos se usa هَذَا."},
+  {fmt:"tf",tipo:"Verdadero/Falso",pregunta:"La ta marbuta (ة) siempre indica que una palabra es femenina.",arabic:"",ok:true,exp:"VERDADERO. La ة al final de una palabra siempre marca el género femenino en árabe."},
+  {fmt:"tf",tipo:"Verdadero/Falso",pregunta:"هَلْ se usa para preguntar '¿qué?' en árabe.",arabic:"",ok:false,exp:"FALSO. هَلْ es para preguntas de sí/no. Para '¿qué?' se usa مَا."},
+  {fmt:"tf",tipo:"Verdadero/Falso",pregunta:"En árabe moderno se omite el verbo 'ser/estar' en el presente.",arabic:"هَذَا كِتَاب",ok:true,exp:"VERDADERO. هَذَا كِتَاب = 'Esto es un libro' sin necesidad de verbo 'ser'."},
+  {fmt:"tf",tipo:"Verdadero/Falso",pregunta:"La alif maqsura (ى) y la ta marbuta (ة) suenan igual.",arabic:"",ok:false,exp:"FALSO. La alif maqsura suena ā (vocal larga a). La ta marbuta suena -a o -at dependiendo del contexto."},
+  {fmt:"tf",tipo:"Verdadero/Falso",pregunta:"La shaddah duplica el sonido de la consonante sobre la que aparece.",arabic:"حُبّ",ok:true,exp:"VERDADERO. La shaddah sobre ب en حُبّ la convierte en -bb: ḥubb."},
+  {fmt:"tf",tipo:"Verdadero/Falso",pregunta:"مَنْ se usa para preguntar por cosas inanimadas.",arabic:"",ok:false,exp:"FALSO. مَنْ se usa para personas (¿quién?). Para cosas se usa مَا (¿qué?)."},
+  {fmt:"tf",tipo:"Verdadero/Falso",pregunta:"La letra ش (shīn) es una letra solar — la L de ال se asimila.",arabic:"اَلشَّمْس",ok:true,exp:"VERDADERO. اَلشَّمْس se pronuncia ash-shams, no al-shams."},
+  // ── CONSTRUYE LA FRASE ──
+  {fmt:"build",tipo:"Construye",pregunta:"Forma la frase: 'Esto es un libro'",tiles:["هَذَا","كِتَاب","بَيْت","طَالِب"],correct:["هَذَا","كِتَاب"],exp:"هَذَا كِتَاب — demostrativo masc. + sustantivo masc. Sin verbo 'ser'."},
+  {fmt:"build",tipo:"Construye",pregunta:"Forma la frase: 'Esta es una escuela'",tiles:["هَذِهِ","هَذَا","مَدْرَسَة","كِتَاب"],correct:["هَذِهِ","مَدْرَسَة"],exp:"هَذِهِ مَدْرَسَة — مَدْرَسَة es femenino (ta marbuta), así usamos هَذِهِ."},
+  {fmt:"build",tipo:"Construye",pregunta:"Forma la pregunta: '¿Es esto un libro?'",tiles:["هَلْ","مَا","هَذَا","كِتَاب","بَيْت"],correct:["هَلْ","هَذَا","كِتَاب"],exp:"هَلْ هَذَا كِتَاب؟ — هَلْ al inicio + دemostrativo + sustantivo."},
+  {fmt:"build",tipo:"Construye",pregunta:"Forma la pregunta: '¿Qué es esta?'",tiles:["مَا","مَنْ","هَذِهِ","هَذَا"],correct:["مَا","هَذِهِ"],exp:"مَا هَذِهِ؟ — مَا para cosas + هَذِهِ para femenino."},
+  {fmt:"build",tipo:"Construye",pregunta:"Forma: 'Yo soy de Madrid'",tiles:["أَنَا","هُوَ","مِنْ","فِي","مَدْرِيد"],correct:["أَنَا","مِنْ","مَدْرِيد"],exp:"أَنَا مِنْ مَدْرِيد — sin verbo 'ser'. مِنْ = de (origen)."},
+  {fmt:"build",tipo:"Construye",pregunta:"Forma: '¿Quién es este?'",tiles:["مَنْ","مَا","هَذَا","هَذِهِ"],correct:["مَنْ","هَذَا"],exp:"مَنْ هَذَا؟ — مَنْ para personas + هَذَا para masculino."},
 ];
 
-// Seeded random based on date
 function seededRandom(seed) {
   let x = Math.sin(seed + 1) * 10000;
   return x - Math.floor(x);
@@ -1336,7 +1409,6 @@ function getDailyExercises() {
   const today = new Date();
   const seed = today.getFullYear() * 10000 + (today.getMonth()+1) * 100 + today.getDate();
   const pool = [...EJERCICIOS_POOL];
-  // Shuffle with seed
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(seededRandom(seed + i) * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -1345,62 +1417,50 @@ function getDailyExercises() {
 }
 
 function loadDeberes(force) {
-  const today = new Date().toISOString().slice(0,10);
-  const cacheKey = "arabic_deberes_v2_" + today;
-
   document.getElementById("deb-loading").style.display = "none";
   document.getElementById("deb-error").style.display = "none";
   document.getElementById("deb-complete").classList.remove("show");
-
-  const exercises = getDailyExercises();
-  renderDeberes({ejercicios: exercises});
+  renderDeberes(getDailyExercises());
 }
 
 function regenDeberes() {
-  // Show different exercises by using a slightly different seed
   const pool = [...EJERCICIOS_POOL];
   const seed = Date.now();
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(seededRandom(seed + i) * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
   }
-  renderDeberes({ejercicios: pool.slice(0, 10)});
+  renderDeberes(pool.slice(0, 10));
 }
 
-let debRevealedCount = 0;
-function renderDeberes(data) {
-  document.getElementById("deb-loading").style.display = "none";
-  document.getElementById("deb-error").style.display = "none";
-  debRevealedCount = 0;
+let debScore = 0, debTotal = 0;
 
-  const total = data.ejercicios.length;
+function renderDeberes(exercises) {
+  debScore = 0; debTotal = exercises.length;
   document.getElementById("deb-prog").style.width = "0%";
-
+  document.getElementById("deb-complete").classList.remove("show");
   const c = document.getElementById("deb-content");
-  c.innerHTML = "";
-  c.style.display = "block";
+  c.innerHTML = ""; c.style.display = "block";
 
-  data.ejercicios.forEach((ex, i) => {
+  exercises.forEach((ex, i) => {
     const div = document.createElement("div");
     div.className = "deb-exercise";
-    div.innerHTML = `
-      <div class="deb-ex-num">Ejercicio ${i+1} de ${total}</div>
+    div.id = "deb-ex-" + i;
+    let inner = `<div class="deb-ex-num">Ejercicio ${i+1} de ${debTotal}</div>
       <div class="deb-ex-type">${ex.tipo}</div>
-      <div class="deb-ex-q">${ex.pregunta}</div>
-      ${ex.arabic ? '<div class="deb-ex-arabic">' + ex.arabic + '</div>' : ""}
-      ${ex.arabic ? '<button class="deb-audio-btn" data-arabic="' + i + '">🔊</button>' : ""}
-      <button class="deb-reveal-btn" onclick="revealDeb(this, ${i}, ${total})">Ver respuesta</button>
-      <div class="deb-answer" id="deb-ans-${i}">
-        <div class="deb-answer-txt">${ex.respuesta}</div>
-        ${ex.arabic_respuesta ? '<div class="deb-answer-arabic">' + ex.arabic_respuesta + '</div>' : ""}
-      </div>
-    `;
-    if (ex.arabic) {
-      const audioBtn = div.querySelector(".deb-audio-btn");
-      const arabicText = ex.arabic;
-      audioBtn.addEventListener("click", () => speak(arabicText));
-    }
+      <div class="deb-ex-q">${ex.pregunta}</div>`;
+    if (ex.arabic) inner += `<div class="deb-ex-arabic">${ex.arabic}</div>
+      <button class="deb-audio-btn" id="deb-aud-${i}">🔊 Escuchar</button>`;
+    if (ex.fmt === "mc") inner += renderMC(ex, i);
+    else if (ex.fmt === "tf") inner += renderTF(ex, i);
+    else if (ex.fmt === "build") inner += renderBuild(ex, i);
+    inner += `<div class="deb-answer" id="deb-ans-${i}"><div class="deb-answer-txt" id="deb-exp-${i}"></div></div>`;
+    div.innerHTML = inner;
     c.appendChild(div);
+    if (ex.arabic) {
+      document.getElementById("deb-aud-" + i).addEventListener("click", () => speak(ex.arabic));
+    }
+    if (ex.fmt === "build") initBuild(ex, i);
   });
 
   const actions = document.createElement("div");
@@ -1409,16 +1469,117 @@ function renderDeberes(data) {
   c.appendChild(actions);
 }
 
-function revealDeb(btn, idx, total) {
-  const ans = document.getElementById("deb-ans-" + idx);
-  if (ans.classList.contains("show")) return;
-  ans.classList.add("show");
-  btn.style.display = "none";
-  debRevealedCount++;
-  const pct = Math.round(debRevealedCount / total * 100);
-  document.getElementById("deb-prog").style.width = pct + "%";
-  if (debRevealedCount >= total) {
-    setTimeout(() => { document.getElementById("deb-complete").classList.add("show"); }, 500);
+function renderMC(ex, i) {
+  const shuffled = [...ex.ops].sort(() => Math.random() - .5);
+  return '<div class="deb-opts-grid" id="deb-opts-' + i + '">' +
+    shuffled.map(o => `<button class="deb-opt-btn" onclick="answerMC(this,'${o.replace(/'/g,"\'")}','${ex.ok.replace(/'/g,"\'")}',${i},'${ex.exp.replace(/'/g,"\'")}')">${o}</button>`).join('') +
+    '</div>';
+}
+
+function answerMC(btn, chosen, ok, i, exp) {
+  document.querySelectorAll('#deb-opts-' + i + ' .deb-opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === ok) b.classList.add('deb-opt-ok');
+    else if (b === btn && chosen !== ok) b.classList.add('deb-opt-no');
+  });
+  showDebExp(i, chosen === ok, exp);
+  updateDebProg(chosen === ok);
+}
+
+function renderTF(ex, i) {
+  return `<div class="deb-tf-wrap" id="deb-tf-${i}">
+    <button class="deb-tf-btn deb-tf-v" onclick="answerTF(this,true,${ex.ok},${i},'${ex.exp.replace(/'/g,"\'")}')">✓ Verdadero</button>
+    <button class="deb-tf-btn deb-tf-f" onclick="answerTF(this,false,${ex.ok},${i},'${ex.exp.replace(/'/g,"\'")}')">✗ Falso</button>
+  </div>`;
+}
+
+function answerTF(btn, chosen, ok, i, exp) {
+  document.querySelectorAll('#deb-tf-' + i + ' .deb-tf-btn').forEach(b => b.disabled = true);
+  const correct = chosen === ok;
+  btn.classList.add(correct ? 'deb-opt-ok' : 'deb-opt-no');
+  if (!correct) {
+    document.querySelectorAll('#deb-tf-' + i + ' .deb-tf-btn').forEach(b => {
+      if ((ok && b.classList.contains('deb-tf-v')) || (!ok && b.classList.contains('deb-tf-f'))) b.classList.add('deb-opt-ok');
+    });
+  }
+  showDebExp(i, correct, exp);
+  updateDebProg(correct);
+}
+
+function renderBuild(ex, i) {
+  return `<div class="deb-build-area" id="deb-built-${i}"></div>
+    <div class="deb-tiles-wrap" id="deb-tiles-${i}"></div>
+    <button class="deb-build-check" id="deb-check-${i}" onclick="checkBuild(${i})">Comprobar ✓</button>
+    <button class="deb-build-reset" id="deb-reset-${i}" onclick="resetBuild(${i})">↺ Reiniciar</button>`;
+}
+
+const buildState = {};
+
+function initBuild(ex, i) {
+  buildState[i] = { tiles: [...ex.tiles].sort(() => Math.random() - .5), built: [], correct: ex.correct, exp: ex.exp };
+  renderBuildTiles(i);
+}
+
+function renderBuildTiles(i) {
+  const s = buildState[i];
+  const builtArea = document.getElementById('deb-built-' + i);
+  const tilesWrap = document.getElementById('deb-tiles-' + i);
+  builtArea.innerHTML = s.built.length ? s.built.map((t,j) =>
+    `<button class="deb-built-tile" onclick="removeTile(${i},${j})">${t}</button>`).join('') :
+    '<span style="color:var(--cream2);font-size:13px;opacity:.5;">Toca las palabras en orden</span>';
+  tilesWrap.innerHTML = s.tiles.filter(t => !s.built.includes(t)).map(t =>
+    `<button class="deb-tile" onclick="addTile(${i},'${t.replace(/'/g,"\'")}')">${t}</button>`).join('');
+}
+
+function addTile(i, tile) {
+  buildState[i].built.push(tile);
+  renderBuildTiles(i);
+}
+
+function removeTile(i, j) {
+  buildState[i].built.splice(j, 1);
+  renderBuildTiles(i);
+}
+
+function resetBuild(i) {
+  buildState[i].built = [];
+  renderBuildTiles(i);
+}
+
+function checkBuild(i) {
+  const s = buildState[i];
+  if (s.built.length === 0) { showToast('Añade palabras primero'); return; }
+  const correct = JSON.stringify(s.built) === JSON.stringify(s.correct);
+  document.getElementById('deb-check-' + i).disabled = true;
+  document.getElementById('deb-reset-' + i).disabled = true;
+  document.querySelectorAll('#deb-built-' + i + ' .deb-built-tile').forEach(b => {
+    b.classList.add(correct ? 'deb-tile-ok' : 'deb-tile-no');
+  });
+  showDebExp(i, correct, s.exp);
+  updateDebProg(correct);
+}
+
+function showDebExp(i, correct, exp) {
+  const ans = document.getElementById('deb-ans-' + i);
+  const txt = document.getElementById('deb-exp-' + i);
+  ans.classList.add('show');
+  ans.style.background = correct ? 'rgba(61,191,138,.1)' : 'rgba(224,85,85,.08)';
+  ans.style.borderColor = correct ? 'rgba(61,191,138,.3)' : 'rgba(224,85,85,.2)';
+  txt.textContent = (correct ? '✓ ' : '✗ ') + exp;
+  txt.style.color = correct ? 'var(--green)' : 'var(--red)';
+  if (correct) playCorrect(); else playWrong();
+}
+
+function updateDebProg(correct) {
+  if (correct) debScore++;
+  const answered = document.querySelectorAll('.deb-answer.show').length;
+  document.getElementById('deb-prog').style.width = (answered / debTotal * 100) + '%';
+  if (answered >= debTotal) {
+    setTimeout(() => {
+      document.getElementById('deb-complete').classList.add('show');
+      document.getElementById('deb-complete').querySelector('.deb-complete-txt').textContent =
+        '¡Sesión completada! ' + debScore + ' de ' + debTotal + ' correctas.';
+    }, 600);
   }
 }
 
