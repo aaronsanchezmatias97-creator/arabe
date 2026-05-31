@@ -168,9 +168,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .gram-highlight{display:inline;background:rgba(201,168,76,.2);border-radius:3px;padding:0 2px;color:var(--gold2);}
 
 /* NAV */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(13,27,42,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(201,168,76,.15);display:flex;overflow-x:auto;scrollbar-width:none;z-index:100;}
-.bottom-nav::-webkit-scrollbar{display:none;}
-.nav-btn{flex-shrink:0;min-width:64px;padding:11px 8px 13px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;color:var(--cream2);font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.04em;transition:.15s;text-transform:uppercase;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;width:100%;background:rgba(13,27,42,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(201,168,76,.15);display:flex;overflow-x:auto;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.3) transparent;z-index:100;}
+.bottom-nav::-webkit-scrollbar{height:3px;}
+.bottom-nav::-webkit-scrollbar-track{background:transparent;}
+.bottom-nav::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:99px;}
+.nav-btn{flex:1;min-width:64px;padding:11px 8px 13px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;color:var(--cream2);font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.04em;transition:.15s;text-transform:uppercase;}
 .nav-btn.active{color:var(--gold);}
 .nav-icon{font-size:18px;line-height:1;}
 
@@ -1433,6 +1435,7 @@ function buildGram() {
 // ── Generador automático desde VOCAB ──
 function generateDynamicPool() {
   const auto = [];
+  try {
 
   // MC: ¿Qué significa? (árabe → español)
   VOCAB.forEach(word => {
@@ -1697,17 +1700,24 @@ function generateDynamicPool() {
   });
 
   // ── DETECTA EL ELEMENTO ESPECIAL ──
-  DETECT.forEach(d => {
-    auto.push({
-      fmt:"mc", tipo:"Detecta",
-      pregunta:`¿Qué elemento especial contiene esta palabra?`,
-      arabic: d.ar,
-      ops: shuffle([d.ans, ...d.dis]),
-      ok: d.ans,
-      exp: `${d.ar} (${d.es}) — ${d.tip}`
+  if (typeof DETECT !== 'undefined') {
+    DETECT.forEach(d => {
+      try {
+        auto.push({
+          fmt:"mc", tipo:"Detecta",
+          pregunta:"¿Qué elemento especial contiene esta palabra?",
+          arabic: d.ar,
+          ops: shuffle([d.ans, ...d.dis]),
+          ok: d.ans,
+          exp: `${d.ar} (${d.es}) — ${d.tip}`
+        });
+      } catch(e) {}
     });
-  });
+  }
 
+  } catch(err) {
+    console.warn('generateDynamicPool error:', err);
+  }
   return auto;
 }
 
@@ -1762,7 +1772,13 @@ const EJERCICIOS_POOL = [
 ];
 
 function getFullPool() {
-  return [...EJERCICIOS_POOL, ...generateDynamicPool()];
+  try {
+    const dynamic = generateDynamicPool();
+    return [...EJERCICIOS_POOL, ...dynamic];
+  } catch(e) {
+    console.warn('getFullPool error:', e);
+    return [...EJERCICIOS_POOL];
+  }
 }
 
 function seededRandom(seed) {
@@ -1785,16 +1801,29 @@ function loadDeberes(force) {
   document.getElementById("deb-loading").style.display = "none";
   document.getElementById("deb-error").style.display = "none";
   document.getElementById("deb-complete").classList.remove("show");
-  renderDeberes(getDailyExercises());
+  try {
+    const exercises = getDailyExercises();
+    if (!exercises || exercises.length === 0) throw new Error('Pool vacío');
+    renderDeberes(exercises);
+  } catch(e) {
+    console.error('loadDeberes error:', e);
+    document.getElementById("deb-error").style.display = "block";
+  }
 }
 
 function regenDeberes() {
-  const pool = getFullPool();
-  for (let i = pool.length - 1; i > 0; i--) {
-    const j = Math.floor(seededRandom(Date.now() + i) * (i + 1));
-    [pool[i], pool[j]] = [pool[j], pool[i]];
+  try {
+    const pool = getFullPool();
+    if (!pool || pool.length === 0) { showToast('No hay ejercicios disponibles'); return; }
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(seededRandom(Date.now() + i) * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    renderDeberes(pool.slice(0, 15));
+  } catch(e) {
+    console.error('regenDeberes error:', e);
+    showToast('Error generando ejercicios');
   }
-  renderDeberes(pool.slice(0, 15));
 }
 
 let debScore = 0, debTotal = 0;
@@ -1912,21 +1941,24 @@ function answerRead(btn, i, j) {
 
 function renderTF(ex, i) {
   return `<div class="deb-tf-wrap" id="deb-tf-${i}">
-    <button class="deb-tf-btn deb-tf-v" onclick="answerTF(this,true,${ex.ok},${i},'${ex.exp.replace(/'/g,"\'")}')">✓ Verdadero</button>
-    <button class="deb-tf-btn deb-tf-f" onclick="answerTF(this,false,${ex.ok},${i},'${ex.exp.replace(/'/g,"\'")}')">✗ Falso</button>
+    <button class="deb-tf-btn deb-tf-v" onclick="answerTF(this,true,${i})">✓ Verdadero</button>
+    <button class="deb-tf-btn deb-tf-f" onclick="answerTF(this,false,${i})">✗ Falso</button>
   </div>`;
 }
 
-function answerTF(btn, chosen, ok, i, exp) {
+function answerTF(btn, chosen, i) {
+  const ex = currentExercises[i];
+  const ok = ex.ok;
   document.querySelectorAll('#deb-tf-' + i + ' .deb-tf-btn').forEach(b => b.disabled = true);
   const correct = chosen === ok;
   btn.classList.add(correct ? 'deb-opt-ok' : 'deb-opt-no');
   if (!correct) {
     document.querySelectorAll('#deb-tf-' + i + ' .deb-tf-btn').forEach(b => {
-      if ((ok && b.classList.contains('deb-tf-v')) || (!ok && b.classList.contains('deb-tf-f'))) b.classList.add('deb-opt-ok');
+      if ((ok && b.classList.contains('deb-tf-v')) || (!ok && b.classList.contains('deb-tf-f')))
+        b.classList.add('deb-opt-ok');
     });
   }
-  showDebExp(i, correct, exp);
+  showDebExp(i, correct, ex.exp);
   updateDebProg(correct);
 }
 
