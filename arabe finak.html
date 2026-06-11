@@ -212,7 +212,59 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   .ref-ar { font-size: 18px; min-width: 38px; }
 }
 
-/* DEBERES */
+/* FRASES */
+.fr-mode-bar{display:flex;gap:6px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;}
+.fr-mode-bar::-webkit-scrollbar{display:none;}
+.fr-mode-btn{flex-shrink:0;padding:7px 14px;border-radius:99px;border:1px solid rgba(201,168,76,.25);background:transparent;color:var(--cream2);font-size:12px;cursor:pointer;transition:.15s;font-family:'DM Sans',sans-serif;white-space:nowrap;}
+.fr-mode-btn.active{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600;}
+.fr-wrap{padding:0 16px;}
+.fr-card{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(201,168,76,.2);border-radius:var(--r);padding:22px 18px 18px;box-shadow:var(--shadow);}
+.fr-score-bar{display:flex;justify-content:center;gap:24px;margin-bottom:14px;}
+.fr-label{font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+/* Modo 1: ordena */
+.fr-tiles{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;justify-content:flex-end;direction:rtl;}
+.fr-tile{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:99px;padding:8px 16px;font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:20px;direction:rtl;color:var(--cream);cursor:pointer;transition:.15s;user-select:none;}
+.fr-tile:active{transform:scale(.95);}
+.fr-tile.used{opacity:.25;cursor:default;pointer-events:none;}
+.fr-build{min-height:54px;background:rgba(255,255,255,.04);border:1px dashed rgba(201,168,76,.3);border-radius:var(--r);padding:10px 12px;margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;direction:rtl;justify-content:flex-end;}
+.fr-built{background:rgba(37,191,170,.15);border:1px solid rgba(37,191,170,.3);border-radius:99px;padding:6px 14px;font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:20px;direction:rtl;color:var(--teal2);cursor:pointer;transition:.15s;}
+.fr-built:active{transform:scale(.95);}
+.fr-build-placeholder{font-size:12px;color:rgba(255,255,255,.2);width:100%;text-align:center;}
+/* Modo 2: escribe en español */
+.fr-arabic-display{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:36px;direction:rtl;text-align:right;color:var(--cream);line-height:1.9;margin:8px 0;}
+.fr-trans-hint{font-size:12px;color:var(--teal2);font-style:italic;margin-bottom:10px;min-height:16px;}
+.fr-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:14px;font-size:15px;color:var(--cream);font-family:'DM Sans',sans-serif;margin-top:10px;outline:none;transition:.2s;-webkit-appearance:none;}
+.fr-input:focus{border-color:var(--gold);}
+/* Modo 3: completa el hueco */
+.fr-fill-sentence{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:26px;direction:rtl;text-align:right;color:var(--cream);line-height:2.4;margin:10px 0;}
+.fr-blank{display:inline-block;min-width:80px;border-bottom:2px solid var(--gold);margin:0 8px;vertical-align:bottom;text-align:center;color:var(--gold);font-size:22px;}
+.fr-fill-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;}
+/* Modo 4: construye con piezas */
+.fr-pieces{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.fr-piece-row{display:flex;gap:8px;align-items:center;}
+.fr-piece-label{font-size:10px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;width:70px;flex-shrink:0;}
+.fr-piece-opts{display:flex;flex-wrap:wrap;gap:6px;flex:1;justify-content:flex-end;direction:rtl;}
+.fr-piece-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:8px 14px;font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:18px;direction:rtl;color:var(--cream);cursor:pointer;transition:.15s;}
+.fr-piece-btn.selected{background:rgba(201,168,76,.2);border-color:var(--gold);color:var(--gold);}
+.fr-piece-btn:active{transform:scale(.95);}
+.fr-result-sentence{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:24px;direction:rtl;text-align:right;color:var(--teal2);line-height:2;margin:10px 0;padding:10px 14px;background:rgba(37,191,170,.08);border-radius:10px;border:1px solid rgba(37,191,170,.2);}
+/* compartido */
+.fr-btn-check{width:100%;margin-top:12px;background:var(--teal);color:#fff;border:none;border-radius:99px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.12s;}
+.fr-btn-check:active{transform:scale(.97);}
+.fr-btn-reset{width:100%;margin-top:8px;background:rgba(255,255,255,.06);color:var(--cream2);border:1px solid rgba(255,255,255,.1);border-radius:99px;padding:10px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.fr-feedback{margin-top:12px;font-size:14px;line-height:1.6;min-height:20px;}
+.fr-feedback.ok{color:var(--green);}
+.fr-feedback.no{color:var(--red);}
+.fr-solution{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:22px;direction:rtl;text-align:right;color:var(--teal2);margin-top:6px;line-height:2;}
+.fr-solution-tr{font-size:12px;color:var(--cream2);font-style:italic;margin-top:2px;}
+.fr-btn-next{width:100%;margin-top:10px;background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.3);border-radius:99px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:none;}
+.fr-audio{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);color:var(--gold);border-radius:99px;padding:7px 18px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:10px;display:inline-block;}
+.fr-es-prompt{font-size:18px;font-weight:600;color:var(--cream2);margin-bottom:4px;}
+.fr-tile-ok{background:rgba(61,191,138,.2)!important;border-color:var(--green)!important;color:var(--green)!important;}
+.fr-tile-no{background:rgba(224,85,85,.15)!important;border-color:var(--red)!important;color:var(--red)!important;}
+.fr-opt-ok{background:rgba(61,191,138,.2)!important;border-color:var(--green)!important;color:var(--green)!important;font-weight:600;}
+.fr-opt-no{background:rgba(224,85,85,.15)!important;border-color:var(--red)!important;color:var(--red)!important;}
+.fr-counter{font-size:10px;color:var(--cream2);text-align:right;margin-bottom:8px;}
 .deb-wrap{padding:0 16px;}
 .deb-header{background:linear-gradient(135deg,#1C304A,#0F2A1E);border:1px solid rgba(201,168,76,.2);border-radius:var(--r);padding:20px;text-align:center;margin-bottom:14px;}
 .deb-date{font-size:11px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;}
@@ -517,6 +569,33 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="gram-wrap" id="gram-content"></div>
   </div>
 
+  <!-- FRASES -->
+  <div id="page-frases" class="page hidden">
+    <div class="section-label">Frases — construye y practica</div>
+    <div class="fr-mode-bar">
+      <button class="fr-mode-btn active" id="frm-0" onclick="setFrMode(0)">🔀 Ordena</button>
+      <button class="fr-mode-btn" id="frm-1" onclick="setFrMode(1)">✍️ Traduce</button>
+      <button class="fr-mode-btn" id="frm-2" onclick="setFrMode(2)">🔤 Completa</button>
+      <button class="fr-mode-btn" id="frm-3" onclick="setFrMode(3)">🧩 Construye</button>
+    </div>
+    <div class="fr-wrap">
+      <div class="fr-card">
+        <div class="fr-score-bar">
+          <div><div class="sc-n" id="fr-c">0</div><div class="sc-l">correctas</div></div>
+          <div><div class="sc-n" id="fr-w">0</div><div class="sc-l">errores</div></div>
+          <div><div class="sc-n" id="fr-r">0</div><div class="sc-l">quedan</div></div>
+        </div>
+        <div id="fr-content"></div>
+      </div>
+      <div id="fr-result" class="result" style="display:none;">
+        <div class="result-arabic">أَحْسَنْتَ!</div>
+        <div class="result-score" id="fr-score"></div>
+        <div class="result-sub">correctas de <span id="fr-total"></span></div>
+        <button class="result-btn" onclick="initFrases()">Otra ronda</button>
+      </div>
+    </div>
+  </div>
+
   <!-- DEBERES -->
   <div id="page-deberes" class="page hidden">
     <div class="section-label">Deberes — sesión del día</div>
@@ -552,6 +631,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <button class="nav-btn" onclick="showPage('escucha',this)"><span class="nav-icon">👂</span>Escucha</button>
   <button class="nav-btn" onclick="showPage('escribe',this)"><span class="nav-icon">✏️</span>Escribe</button>
   <button class="nav-btn" onclick="showPage('detecta',this)"><span class="nav-icon">🔍</span>Detecta</button>
+  <button class="nav-btn" onclick="showPage('frases',this)"><span class="nav-icon">💬</span>Frases</button>
   <button class="nav-btn" onclick="showPage('stats',this)"><span class="nav-icon">📊</span>Stats</button>
   <button class="nav-btn" onclick="showPage('vocab',this)"><span class="nav-icon">📖</span>Vocab</button>
   <button class="nav-btn" onclick="showPage('gram',this)"><span class="nav-icon">📚</span>Gram.</button>
@@ -1042,6 +1122,25 @@ const VOCAB = [
   {ar:"كُنَّا",tr:"kunnā / kunna",es:"Nosotros éramos",cat:"Verbos",ctx:"كُنَّا فِي الْمَدْرَسَة"},
   {ar:"كَانُوا",tr:"kānū / kanu",es:"Ellos eran",cat:"Verbos",ctx:"كَانُوا طُلَّابًا"},
 
+  // 11/06/2026 — La casa
+  {ar:"مَنْزِل",tr:"manzil / manzil",es:"Casa",cat:"Lugares",ctx:"هَذَا مَنْزِلِي"},
+  {ar:"غُرْفَة",tr:"ġurfa / gurfa",es:"Habitación",cat:"La casa",ctx:"غُرْفَتِي كَبِيرَة"},
+  {ar:"صَالُون",tr:"ṣālūn / salun",es:"Salón",cat:"La casa",ctx:"الصَّالُون وَاسِع"},
+  {ar:"مَطْبَخ",tr:"maṭbaj / matbaj",es:"Cocina",cat:"La casa",ctx:"الْمَطْبَخ صَغِير"},
+  {ar:"سَرِير",tr:"sarīr / sarir",es:"Cama",cat:"La casa",ctx:"سَرِيرِي مُرِيح"},
+  {ar:"سَاعَة",tr:"sāʿa / saa",es:"Reloj",cat:"La casa",ctx:"السَّاعَة عَلَى الْجِدَار"},
+  {ar:"أَرِيكَة",tr:"arīka / arika",es:"Sofá",cat:"La casa",ctx:"الأَرِيكَة فِي الصَّالُون"},
+  {ar:"بَاب",tr:"bāb / bab",es:"Puerta",cat:"La casa",ctx:"الْبَاب مَفْتُوح"},
+  {ar:"نَافِذَة",tr:"nāfiḏa / nafida",es:"Ventana",cat:"La casa",ctx:"النَّافِذَة كَبِيرَة"},
+  {ar:"مُنَبِّه",tr:"munabbih / munabbih",es:"Despertador",cat:"La casa",ctx:"الْمُنَبِّه فِي الْغُرْفَة"},
+  {ar:"خِزَانَة",tr:"jizāna / jizana",es:"Armario",cat:"La casa",ctx:"الْخِزَانَة فِي غُرْفَتِي"},
+  {ar:"صُوَان",tr:"ṣuwān / suwan",es:"Mesilla de noche",cat:"La casa",ctx:"الصُّوَان بِجَانِب السَّرِير"},
+  {ar:"مِصْبَاح",tr:"miṣbāḥ / misbah",es:"Lámpara",cat:"La casa",ctx:"الْمِصْبَاح عَلَى الصُّوَان"},
+  {ar:"هَاتِف",tr:"hātif / hatif",es:"Teléfono",cat:"La casa",ctx:"الْهَاتِف عَلَى الطَّاوِلَة"},
+  {ar:"حَاسُوب",tr:"ḥāsūb / hasub",es:"Ordenador",cat:"La casa",ctx:"الْحَاسُوب فِي الْمَكْتَب"},
+  {ar:"هَاتِف مَحْمُول",tr:"hātif maḥmūl / hatif mahmul",es:"Teléfono móvil",cat:"La casa",ctx:"هَاتِفِي الْمَحْمُول جَدِيد"},
+  {ar:"مَلَابِس",tr:"malābis / malabis",es:"Ropa",cat:"La casa",ctx:"الْمَلَابِس فِي الْخِزَانَة"},
+
 ];
 
 const DETECT = [
@@ -1074,6 +1173,11 @@ const DETECT = [
   {ar:"كَانَ أَحْمَد طَبِيبًا",es:"Ahmed era médico",ans:"كَانَ (pasado de ser)",dis:["لَيْسَ (negación)","عِنْدَ (tener)","هَذَا (demostrativo)"],tip:"كَانَ es el pasado de ser/estar. El atributo va en acusativo (-an)."},
   {ar:"مَا كَانَ عِنْدَهُ عَمَل",es:"él no tenía trabajo",ans:"كَانَ + عِنْدَ (tener en pasado)",dis:["لَيْسَ (negación presente)","عِنْدَهُ solo (tiene)","هَلْ (pregunta)"],tip:"مَا + كَانَ = negación en pasado. كَانَ عِنْدَهُ = él tenía. مَا كَانَ عِنْدَهُ = él no tenía."},
   {ar:"لَيْسَتْ فِي الْجَامِعَة",es:"ella no está en la universidad",ans:"لَيْسَتْ (ella no es/está)",dis:["لَيْسَ (él no es)","لَسْتُ (yo no soy)","لَسْنَا (nosotros no somos)"],tip:"لَيْسَتْ es la forma femenina de لَيْسَ. Concuerda con el sujeto femenino."},
+  // 11/06/2026 — La casa
+  {ar:"نَافِذَة",es:"ventana",ans:"Ta marbuta ة",dis:["Shaddah ّ","Hamza ء","Alif maqsura ى"],tip:"La ة al final indica femenino: nāfiḏatun."},
+  {ar:"مُنَبِّه",es:"despertador",ans:"Shaddah ّ",dis:["Ta marbuta ة","Hamza ء","Alif maqsura ى"],tip:"Shaddah en ب: munabbih. El despertador que suena doble."},
+  {ar:"مِصْبَاح",es:"lámpara",ans:"Hamza ء",dis:["Ta marbuta ة","Shaddah ّ","Alif maqsura ى"],tip:"No tiene ta marbuta — es masculino. Vocal larga ā antes de ḥ."},
+  {ar:"أَهَذَا كِتَابٌ؟",es:"¿es esto un libro?",ans:"أَ (hamza interrogativa)",dis:["هَلْ (partícula interrogativa)","مَا (qué)","مَنْ (quién)"],tip:"أَ al inicio de frase es partícula interrogativa de sí/no, más clásica que هَلْ."},
 ];
 
 const GRAMMAR = [
@@ -1159,7 +1263,394 @@ const GRAMMAR = [
     {ar:"كَانَ عِنْدِي وَقْت",tr:"kāna ʿindī waqt",es:"Yo tenía tiempo",note:"كَانَ + عِنْدِي = tenía"},
     {ar:"مَا كَانَ عِنْدَهُ عَمَل",tr:"mā kāna ʿindahu ʿamal",es:"Él no tenía trabajo",note:"مَا + كَانَ = negación pasado"},
   ]},
+  {title:"Pregunta con أَ — hamza interrogativa",desc:"أَ es una partícula interrogativa de sí/no que se coloca al inicio de la frase. Más clásica y formal que هَلْ. La respuesta es نَعَمْ (sí) o لَا (no).",examples:[
+    {ar:"أَهَذَا كِتَابٌ؟",tr:"a-hādā kitābun?",es:"¿Es esto un libro?",note:"أَ + demostrativo"},
+    {ar:"أَأَنْتَ طَالِبٌ؟",tr:"a-anta ṭālib?",es:"¿Eres tú estudiante?",note:"أَ + pronombre"},
+    {ar:"أَهَذِهِ غُرْفَتُكَ؟",tr:"a-hādihi ġurfatuka?",es:"¿Es esta tu habitación?",note:"أَ + demostrativo fem."},
+    {ar:"نَعَمْ، هَذِهِ غُرْفَتِي",tr:"naʿam, hādihi ġurfatī",es:"Sí, esta es mi habitación",note:"Respuesta afirmativa"},
+  ]},
 ];
+const FRASES = [
+  // Frases simples con demostrativo
+  {ar:"هَذَا كِتَابٌ جَمِيلٌ",tr:"hādā kitābun ŷamīlun",es:"Este es un libro bonito",
+   palabras:["هَذَا","كِتَابٌ","جَمِيلٌ"],
+   hueco:{frase:"هَذَا _____ جَمِيلٌ",blank:"كِتَابٌ",distractores:["بَيْتٌ","قَلَمٌ","طَبِيبٌ"]},
+   piezas:{sujeto:["هَذَا","هَذِهِ"],predicado:["كِتَابٌ","مَدْرَسَةٌ"],adjetivo:["جَمِيلٌ","كَبِيرٌ"]},sol_piezas:"هَذَا كِتَابٌ جَمِيلٌ"},
+  {ar:"هَذِهِ مَدْرَسَةٌ كَبِيرَةٌ",tr:"hādihi madrasatun kabīratun",es:"Esta es una escuela grande",
+   palabras:["هَذِهِ","مَدْرَسَةٌ","كَبِيرَةٌ"],
+   hueco:{frase:"هَذِهِ مَدْرَسَةٌ _____",blank:"كَبِيرَةٌ",distractores:["صَغِيرٌ","جَمِيلٌ","بَعِيدٌ"]},
+   piezas:{sujeto:["هَذِهِ","هَذَا"],predicado:["مَدْرَسَةٌ","كِتَابٌ"],adjetivo:["كَبِيرَةٌ","جَمِيلَةٌ"]},sol_piezas:"هَذِهِ مَدْرَسَةٌ كَبِيرَةٌ"},
+  // Frases con pronombre y profesión
+  {ar:"هُوَ طَبِيبٌ فِي الْمُسْتَشْفَى",tr:"huwa ṭabībun fī l-mustašfā",es:"Él es médico en el hospital",
+   palabras:["هُوَ","طَبِيبٌ","فِي","الْمُسْتَشْفَى"],
+   hueco:{frase:"هُوَ طَبِيبٌ فِي _____",blank:"الْمُسْتَشْفَى",distractores:["الْمَدْرَسَةِ","الْبَيْتِ","الْمَكْتَبِ"]},
+   piezas:{sujeto:["هُوَ","هِيَ"],predicado:["طَبِيبٌ","مُعَلِّمٌ"],lugar:["فِي الْمُسْتَشْفَى","فِي الْمَدْرَسَةِ"]},sol_piezas:"هُوَ طَبِيبٌ فِي الْمُسْتَشْفَى"},
+  {ar:"هِيَ مُعَلِّمَةٌ فِي الْمَدْرَسَةِ",tr:"hiya muʿallimatun fī l-madrasa",es:"Ella es profesora en la escuela",
+   palabras:["هِيَ","مُعَلِّمَةٌ","فِي","الْمَدْرَسَةِ"],
+   hueco:{frase:"هِيَ _____ فِي الْمَدْرَسَةِ",blank:"مُعَلِّمَةٌ",distractores:["طَالِبَةٌ","مُمَرِّضَةٌ","طَبِيبَةٌ"]},
+   piezas:{sujeto:["هِيَ","هُوَ"],predicado:["مُعَلِّمَةٌ","طَالِبَةٌ"],lugar:["فِي الْمَدْرَسَةِ","فِي الْمُسْتَشْفَى"]},sol_piezas:"هِيَ مُعَلِّمَةٌ فِي الْمَدْرَسَةِ"},
+  // Frases con عِنْدَ (tener)
+  {ar:"عِنْدِي كِتَابٌ جَدِيدٌ",tr:"ʿindī kitābun ŷadīdun",es:"Tengo un libro nuevo",
+   palabras:["عِنْدِي","كِتَابٌ","جَدِيدٌ"],
+   hueco:{frase:"عِنْدِي _____ جَدِيدٌ",blank:"كِتَابٌ",distractores:["قَلَمٌ","دَفْتَرٌ","حَاسُوبٌ"]},
+   piezas:{tener:["عِنْدِي","عِنْدَكَ","عِنْدَهُ"],objeto:["كِتَابٌ","وَقْتٌ","عَمَلٌ"],adjetivo:["جَدِيدٌ","كَبِيرٌ","جَمِيلٌ"]},sol_piezas:"عِنْدِي كِتَابٌ جَدِيدٌ"},
+  {ar:"هَلْ عِنْدَكَ وَقْتٌ؟",tr:"hal ʿindaka waqtun?",es:"¿Tienes tiempo?",
+   palabras:["هَلْ","عِنْدَكَ","وَقْتٌ","؟"],
+   hueco:{frase:"هَلْ _____ وَقْتٌ؟",blank:"عِنْدَكَ",distractores:["عِنْدِي","عِنْدَهُ","عِنْدَنَا"]},
+   piezas:{particula:["هَلْ","مَا"],tener:["عِنْدَكَ","عِنْدَكِ","عِنْدَهُ"],objeto:["وَقْتٌ؟","عَمَلٌ؟","اِمْتِحَانٌ؟"]},sol_piezas:"هَلْ عِنْدَكَ وَقْتٌ؟"},
+  {ar:"عِنْدَنَا اِمْتِحَانٌ الْأُسْبُوعَ الْقَادِمَ",tr:"ʿindanā imtiḥānun al-usbūʿa l-qādima",es:"Tenemos un examen la semana próxima",
+   palabras:["عِنْدَنَا","اِمْتِحَانٌ","الْأُسْبُوعَ","الْقَادِمَ"],
+   hueco:{frase:"عِنْدَنَا _____ الْأُسْبُوعَ الْقَادِمَ",blank:"اِمْتِحَانٌ",distractores:["عَمَلٌ","وَقْتٌ","كِتَابٌ"]},
+   piezas:{tener:["عِنْدَنَا","عِنْدِي","عِنْدَكُمْ"],objeto:["اِمْتِحَانٌ","عَمَلٌ","وَقْتٌ"],tiempo:["الْأُسْبُوعَ الْقَادِمَ","غَدًا","الْيَوْمَ"]},sol_piezas:"عِنْدَنَا اِمْتِحَانٌ الْأُسْبُوعَ الْقَادِمَ"},
+  // Frases con لَيْسَ
+  {ar:"لَيْسَ هَذَا كِتَابًا",tr:"laysa hādā kitāban",es:"Esto no es un libro",
+   palabras:["لَيْسَ","هَذَا","كِتَابًا"],
+   hueco:{frase:"_____ هَذَا كِتَابًا",blank:"لَيْسَ",distractores:["هَذَا","مَا","هَلْ"]},
+   piezas:{negacion:["لَيْسَ","لَسْتُ","لَيْسَتْ"],sujeto:["هَذَا","هَذِهِ","هُوَ"],objeto:["كِتَابًا","بَيْتًا","طَبِيبًا"]},sol_piezas:"لَيْسَ هَذَا كِتَابًا"},
+  {ar:"لَسْتُ مُعَلِّمًا، أَنَا شُرْطِيٌّ",tr:"lastu muʿalliman, anā šurṭiyyun",es:"No soy profesor, soy policía",
+   palabras:["لَسْتُ","مُعَلِّمًا","أَنَا","شُرْطِيٌّ"],
+   hueco:{frase:"لَسْتُ مُعَلِّمًا، أَنَا _____",blank:"شُرْطِيٌّ",distractores:["طَالِبٌ","طَبِيبٌ","مُهَنْدِسٌ"]},
+   piezas:{negacion:["لَسْتُ","لَيْسَ","لَسْتَ"],profesion1:["مُعَلِّمًا","طَبِيبًا","طَالِبًا"],conector:["أَنَا","هُوَ","هِيَ"],profesion2:["شُرْطِيٌّ","مُهَنْدِسٌ","مُحَامٍ"]},sol_piezas:"لَسْتُ مُعَلِّمًا، أَنَا شُرْطِيٌّ"},
+  // Frases con كَانَ
+  {ar:"كَانَ أَحْمَدُ طَبِيبًا",tr:"kāna Aḥmadu ṭabīban",es:"Ahmed era médico",
+   palabras:["كَانَ","أَحْمَدُ","طَبِيبًا"],
+   hueco:{frase:"_____ أَحْمَدُ طَبِيبًا",blank:"كَانَ",distractores:["هُوَ","لَيْسَ","كَانَتْ"]},
+   piezas:{verbo:["كَانَ","كَانَتْ","كُنْتُ"],sujeto:["أَحْمَدُ","فَاطِمَةُ","أَنَا"],predicado:["طَبِيبًا","مُعَلِّمًا","طَالِبًا"]},sol_piezas:"كَانَ أَحْمَدُ طَبِيبًا"},
+  {ar:"كُنْتُ فِي الْجَامِعَةِ",tr:"kuntu fī l-ŷāmiʿa",es:"Yo estaba en la universidad",
+   palabras:["كُنْتُ","فِي","الْجَامِعَةِ"],
+   hueco:{frase:"كُنْتُ فِي _____",blank:"الْجَامِعَةِ",distractores:["الْبَيْتِ","الْمَدْرَسَةِ","الْمُسْتَشْفَى"]},
+   piezas:{verbo:["كُنْتُ","كُنْتَ","كُنَّا"],prep:["فِي","مِنْ","إِلَى"],lugar:["الْجَامِعَةِ","الْبَيْتِ","الْعَمَلِ"]},sol_piezas:"كُنْتُ فِي الْجَامِعَةِ"},
+  {ar:"كَانَ عِنْدَهُ عَمَلٌ لَكِنْ مَا عِنْدَهُ وَقْتٌ",tr:"kāna ʿindahu ʿamalun lākin mā ʿindahu waqtun",es:"Tenía trabajo pero no tenía tiempo",
+   palabras:["كَانَ","عِنْدَهُ","عَمَلٌ","لَكِنْ","مَا","عِنْدَهُ","وَقْتٌ"],
+   hueco:{frase:"كَانَ عِنْدَهُ عَمَلٌ _____ مَا عِنْدَهُ وَقْتٌ",blank:"لَكِنْ",distractores:["وَ","أَوْ","هَلْ"]},
+   piezas:{parte1:["كَانَ عِنْدَهُ عَمَلٌ","كَانَ عِنْدِي وَقْتٌ"],conector:["لَكِنْ","وَ","أَوْ"],parte2:["مَا عِنْدَهُ وَقْتٌ","مَا عِنْدِي عَمَلٌ"]},sol_piezas:"كَانَ عِنْدَهُ عَمَلٌ لَكِنْ مَا عِنْدَهُ وَقْتٌ"},
+  // Preguntas
+  {ar:"مَنْ هَذَا الرَّجُلُ؟",tr:"man hādā r-raŷul?",es:"¿Quién es este hombre?",
+   palabras:["مَنْ","هَذَا","الرَّجُلُ","؟"],
+   hueco:{frase:"_____ هَذَا الرَّجُلُ؟",blank:"مَنْ",distractores:["مَا","هَلْ","أَيْنَ"]},
+   piezas:{particula:["مَنْ","مَا","هَلْ"],demostrativo:["هَذَا","هَذِهِ"],sustantivo:["الرَّجُلُ؟","الْمَرْأَةُ؟","الطَّالِبُ؟"]},sol_piezas:"مَنْ هَذَا الرَّجُلُ؟"},
+  {ar:"أَيْنَ الْجَامِعَةُ؟",tr:"ayna l-ŷāmiʿa?",es:"¿Dónde está la universidad?",
+   palabras:["أَيْنَ","الْجَامِعَةُ","؟"],
+   hueco:{frase:"_____ الْجَامِعَةُ؟",blank:"أَيْنَ",distractores:["مَنْ","مَا","هَلْ"]},
+   piezas:{particula:["أَيْنَ","مَا","مَنْ"],sustantivo:["الْجَامِعَةُ؟","الْمَدْرَسَةُ؟","الْبَيْتُ؟"]},sol_piezas:"أَيْنَ الْجَامِعَةُ؟"},
+  // Frases con sufijos posesivos
+  {ar:"هَذَا كِتَابِي الْجَدِيدُ",tr:"hādā kitābī l-ŷadīd",es:"Este es mi libro nuevo",
+   palabras:["هَذَا","كِتَابِي","الْجَدِيدُ"],
+   hueco:{frase:"هَذَا _____ الْجَدِيدُ",blank:"كِتَابِي",distractores:["كِتَابُكَ","كِتَابُهُ","كِتَابُنَا"]},
+   piezas:{demostrativo:["هَذَا","هَذِهِ"],posesivo:["كِتَابِي","كِتَابُكَ","كِتَابُهُ"],adjetivo:["الْجَدِيدُ","الْكَبِيرُ","الْجَمِيلُ"]},sol_piezas:"هَذَا كِتَابِي الْجَدِيدُ"},
+  {ar:"بَيْتُنَا قَرِيبٌ مِنَ الْمَدْرَسَةِ",tr:"baytunā qarībun min al-madrasa",es:"Nuestra casa está cerca de la escuela",
+   palabras:["بَيْتُنَا","قَرِيبٌ","مِنَ","الْمَدْرَسَةِ"],
+   hueco:{frase:"بَيْتُنَا قَرِيبٌ _____ الْمَدْرَسَةِ",blank:"مِنَ",distractores:["فِي","إِلَى","عَلَى"]},
+   piezas:{sujeto:["بَيْتُنَا","بَيْتِي","بَيْتُكَ"],adjetivo:["قَرِيبٌ","بَعِيدٌ","كَبِيرٌ"],prep:["مِنَ","فِي","إِلَى"],lugar:["الْمَدْرَسَةِ","الْجَامِعَةِ","الْعَمَلِ"]},sol_piezas:"بَيْتُنَا قَرِيبٌ مِنَ الْمَدْرَسَةِ"},
+  // 11/06/2026 — La casa
+  {ar:"الْبَابُ مَفْتُوحٌ",tr:"al-bābu maftūḥun",es:"La puerta está abierta",
+   palabras:["الْبَابُ","مَفْتُوحٌ"],
+   hueco:{frase:"الْبَابُ _____",blank:"مَفْتُوحٌ",distractores:["مُغْلَقٌ","كَبِيرٌ","جَمِيلٌ"]},
+   piezas:{sujeto:["الْبَابُ","النَّافِذَةُ","الْغُرْفَةُ"],adjetivo:["مَفْتُوحٌ","مُغْلَقٌ","كَبِيرٌ"]},sol_piezas:"الْبَابُ مَفْتُوحٌ"},
+  {ar:"غُرْفَتِي كَبِيرَةٌ وَجَمِيلَةٌ",tr:"ġurfatī kabīratun wa-ŷamīlatun",es:"Mi habitación es grande y bonita",
+   palabras:["غُرْفَتِي","كَبِيرَةٌ","وَ","جَمِيلَةٌ"],
+   hueco:{frase:"غُرْفَتِي كَبِيرَةٌ وَ _____",blank:"جَمِيلَةٌ",distractores:["صَغِيرَةٌ","قَدِيمَةٌ","بَعِيدَةٌ"]},
+   piezas:{posesivo:["غُرْفَتِي","غُرْفَتُكَ","غُرْفَتُهُ"],adj1:["كَبِيرَةٌ","صَغِيرَةٌ"],conector:["وَ"],adj2:["جَمِيلَةٌ","نَظِيفَةٌ"]},sol_piezas:"غُرْفَتِي كَبِيرَةٌ وَجَمِيلَةٌ"},
+  {ar:"الْمَلَابِسُ فِي الْخِزَانَةِ",tr:"al-malābisu fī l-jizāna",es:"La ropa está en el armario",
+   palabras:["الْمَلَابِسُ","فِي","الْخِزَانَةِ"],
+   hueco:{frase:"الْمَلَابِسُ فِي _____",blank:"الْخِزَانَةِ",distractores:["الْغُرْفَةِ","الْمَطْبَخِ","الصَّالُونِ"]},
+   piezas:{sujeto:["الْمَلَابِسُ","الْكِتَابُ","الْهَاتِفُ"],prep:["فِي","عَلَى","بِجَانِب"],lugar:["الْخِزَانَةِ","الطَّاوِلَةِ","الْغُرْفَةِ"]},sol_piezas:"الْمَلَابِسُ فِي الْخِزَانَةِ"},
+  {ar:"أَهَذِهِ غُرْفَتُكَ؟",tr:"a-hādihi ġurfatuka?",es:"¿Es esta tu habitación?",
+   palabras:["أَ","هَذِهِ","غُرْفَتُكَ","؟"],
+   hueco:{frase:"_____ هَذِهِ غُرْفَتُكَ؟",blank:"أَ",distractores:["هَلْ","مَا","مَنْ"]},
+   piezas:{particula:["أَ","هَلْ","مَا"],demostrativo:["هَذِهِ","هَذَا"],posesivo:["غُرْفَتُكَ؟","بَيْتُكَ؟","مَنْزِلُكَ؟"]},sol_piezas:"أَهَذِهِ غُرْفَتُكَ؟"},
+];
+
+// ══════════════════════════════════════
+// FRASES — lógica
+// ══════════════════════════════════════
+let frMode = 0;        // 0=ordena 1=traduce 2=completa 3=construye
+let frPool = [];
+let frIdx  = 0;
+let frC = 0, frW = 0;
+let frAnswered = false;
+
+function setFrMode(m) {
+  frMode = m;
+  document.querySelectorAll('.fr-mode-btn').forEach((b,i) => b.classList.toggle('active', i===m));
+  initFrases();
+}
+
+function initFrases() {
+  frPool = shuffle([...FRASES]);
+  frIdx = 0; frC = 0; frW = 0; frAnswered = false;
+  document.getElementById('fr-result').style.display = 'none';
+  document.getElementById('fr-content').style.display = '';
+  updateFrScore();
+  renderFrase();
+}
+
+function updateFrScore() {
+  document.getElementById('fr-c').textContent = frC;
+  document.getElementById('fr-w').textContent = frW;
+  document.getElementById('fr-r').textContent = Math.max(0, frPool.length - frIdx);
+}
+
+function renderFrase() {
+  if (frIdx >= frPool.length) { showFrResult(); return; }
+  const f = frPool[frIdx];
+  frAnswered = false;
+  const c = document.getElementById('fr-content');
+  if (frMode === 0) renderFrOrdena(f, c);
+  else if (frMode === 1) renderFrTraduce(f, c);
+  else if (frMode === 2) renderFrCompleta(f, c);
+  else renderFrConstruye(f, c);
+}
+
+// MODO 0 — Ordena las palabras
+function renderFrOrdena(f, c) {
+  const shuffled = shuffle([...f.palabras]);
+  c.innerHTML = `
+    <div class="fr-label">Ordena las palabras para formar la frase</div>
+    <div class="fr-counter">${frIdx+1} / ${frPool.length}</div>
+    <div style="font-size:13px;color:var(--cream2);margin-bottom:10px;">${f.es}</div>
+    <button class="fr-audio" onclick="speak('${f.ar}')">🔊 Escuchar</button>
+    <div class="fr-build" id="fr-build"><span class="fr-build-placeholder">Toca las palabras para ordenarlas →</span></div>
+    <div class="fr-tiles" id="fr-tiles">
+      ${shuffled.map((w,i) => `<button class="fr-tile" id="frt-${i}" onclick="frTileTap(this,'${w}')">${w}</button>`).join('')}
+    </div>
+    <button class="fr-btn-check" onclick="checkFrOrdena('${f.ar}','${f.tr}')">Comprobar</button>
+    <button class="fr-btn-reset" onclick="resetFrOrdena()">↺ Resetear</button>
+    <div class="fr-feedback" id="fr-fb"></div>
+    <div class="fr-solution" id="fr-sol" style="display:none;">${f.ar}</div>
+    <div class="fr-solution-tr" id="fr-soltr" style="display:none;">${f.tr}</div>
+    <button class="fr-btn-next" id="fr-next" onclick="nextFrase()">Siguiente →</button>`;
+}
+
+let frBuilt = [];
+function frTileTap(btn, word) {
+  if (frAnswered) return;
+  btn.classList.add('used');
+  frBuilt.push({word, btn});
+  const build = document.getElementById('fr-build');
+  const placeholder = build.querySelector('.fr-build-placeholder');
+  if (placeholder) placeholder.remove();
+  const span = document.createElement('span');
+  span.className = 'fr-built';
+  span.textContent = word;
+  span.onclick = () => {
+    if (frAnswered) return;
+    span.remove();
+    btn.classList.remove('used');
+    frBuilt = frBuilt.filter(x => x.btn !== btn);
+  };
+  build.appendChild(span);
+}
+
+function resetFrOrdena() {
+  frBuilt = [];
+  document.querySelectorAll('.fr-tile').forEach(b => b.classList.remove('used'));
+  const build = document.getElementById('fr-build');
+  build.innerHTML = '<span class="fr-build-placeholder">Toca las palabras para ordenarlas →</span>';
+}
+
+function checkFrOrdena(ar, tr) {
+  if (frAnswered) return;
+  const built = frBuilt.map(x => x.word).join(' ');
+  // Normalizar: quitar signos de puntuación para comparar
+  const norm = s => s.replace(/[؟،\.]/g,'').trim();
+  const ok = norm(built) === norm(ar);
+  frAnswered = true;
+  const fb = document.getElementById('fr-fb');
+  const sol = document.getElementById('fr-sol');
+  const soltr = document.getElementById('fr-soltr');
+  const next = document.getElementById('fr-next');
+  if (ok) {
+    fb.className = 'fr-feedback ok'; fb.textContent = '✓ ¡Correcto!';
+    frC++; updateStreak(true);
+  } else {
+    fb.className = 'fr-feedback no'; fb.textContent = '✗ No exactamente. La frase correcta:';
+    sol.style.display = ''; soltr.style.display = '';
+    frW++; updateStreak(false);
+  }
+  next.style.display = 'block';
+  frC > 0 || frW > 0 ? null : null;
+  updateFrScore();
+}
+
+// MODO 1 — Traduce (español → árabe, escribe transliteración simplificada)
+function renderFrTraduce(f, c) {
+  c.innerHTML = `
+    <div class="fr-label">Traduce al árabe — escribe la transliteración</div>
+    <div class="fr-counter">${frIdx+1} / ${frPool.length}</div>
+    <div class="fr-es-prompt">${f.es}</div>
+    <button class="fr-audio" onclick="speak('${f.ar}')">🔊 Escuchar primero</button>
+    <input class="fr-input" id="fr-inp" placeholder="Escribe la transliteración..." autocomplete="off" autocorrect="off" spellcheck="false">
+    <button class="fr-btn-check" onclick="checkFrTraduce('${f.tr}','${f.ar}')">Comprobar</button>
+    <div class="fr-feedback" id="fr-fb"></div>
+    <div class="fr-solution" id="fr-sol" style="display:none;">${f.ar}</div>
+    <div class="fr-solution-tr" id="fr-soltr" style="display:none;">${f.tr}</div>
+    <button class="fr-btn-next" id="fr-next" onclick="nextFrase()">Siguiente →</button>`;
+  document.getElementById('fr-inp').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkFrTraduce(f.tr, f.ar);
+  });
+}
+
+function checkFrTraduce(tr, ar) {
+  if (frAnswered) return;
+  const inp = document.getElementById('fr-inp').value.trim().toLowerCase();
+  // Versión simplificada sin diacríticos para comparar
+  const simplify = s => s.toLowerCase()
+    .replace(/[āa]/g,'a').replace(/[īi]/g,'i').replace(/[ūu]/g,'u')
+    .replace(/[ḥh]/g,'h').replace(/[ṭt]/g,'t').replace(/[ṣs]/g,'s')
+    .replace(/[ḍd]/g,'d').replace(/[ẓz]/g,'z').replace(/[šs]/g,'sh')
+    .replace(/[ġg]/g,'g').replace(/[ŷy]/g,'y').replace(/[ʿʾ]/g,'')
+    .replace(/[ḏd]/g,'d').replace(/[ṯt]/g,'t')
+    .replace(/[-–]/g,'').replace(/[؟?,\.]/g,'').replace(/\s+/g,' ').trim();
+  const ok = simplify(inp) === simplify(tr);
+  frAnswered = true;
+  const fb = document.getElementById('fr-fb');
+  const sol = document.getElementById('fr-sol');
+  const soltr = document.getElementById('fr-soltr');
+  if (ok) {
+    fb.className = 'fr-feedback ok'; fb.textContent = '✓ ¡Correcto!';
+    frC++; updateStreak(true);
+  } else {
+    fb.className = 'fr-feedback no'; fb.textContent = '✗ La respuesta correcta:';
+    sol.style.display = ''; soltr.style.display = '';
+    frW++; updateStreak(false);
+  }
+  document.getElementById('fr-next').style.display = 'block';
+  updateFrScore();
+}
+
+// MODO 2 — Completa el hueco
+function renderFrCompleta(f, c) {
+  const h = f.hueco;
+  const opts = shuffle([h.blank, ...h.distractores]);
+  const partes = h.frase.split('_____');
+  c.innerHTML = `
+    <div class="fr-label">Elige la palabra que completa la frase</div>
+    <div class="fr-counter">${frIdx+1} / ${frPool.length}</div>
+    <div style="font-size:13px;color:var(--cream2);margin-bottom:8px;">${f.es}</div>
+    <div class="fr-fill-sentence">
+      <span dir="rtl">${partes[1] || ''}</span>
+      <span class="fr-blank" id="fr-blank">_____</span>
+      <span dir="rtl">${partes[0] || ''}</span>
+    </div>
+    <button class="fr-audio" onclick="speak('${f.ar}')">🔊 Escuchar</button>
+    <div class="fr-fill-opts">
+      ${opts.map(o => `<button class="deb-opt-btn deb-opt-ar" onclick="checkFrCompleta(this,'${o}','${h.blank}','${f.ar}','${f.tr}')">${o}</button>`).join('')}
+    </div>
+    <div class="fr-feedback" id="fr-fb"></div>
+    <div class="fr-solution-tr" id="fr-soltr" style="display:none;">${f.tr}</div>
+    <button class="fr-btn-next" id="fr-next" onclick="nextFrase()">Siguiente →</button>`;
+}
+
+function checkFrCompleta(btn, chosen, correct, ar, tr) {
+  if (frAnswered) return;
+  frAnswered = true;
+  const allBtns = btn.parentElement.querySelectorAll('button');
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correct) b.classList.add('deb-opt-ok');
+  });
+  const fb = document.getElementById('fr-fb');
+  const soltr = document.getElementById('fr-soltr');
+  document.getElementById('fr-blank').textContent = correct;
+  if (chosen === correct) {
+    btn.classList.add('deb-opt-ok');
+    fb.className = 'fr-feedback ok'; fb.textContent = '✓ ¡Correcto!';
+    frC++; updateStreak(true);
+  } else {
+    btn.classList.add('deb-opt-no');
+    fb.className = 'fr-feedback no'; fb.textContent = `✗ Era: ${correct}`;
+    soltr.style.display = '';
+    frW++; updateStreak(false);
+  }
+  document.getElementById('fr-next').style.display = 'block';
+  updateFrScore();
+}
+
+// MODO 3 — Construye con piezas
+function renderFrConstruye(f, c) {
+  const p = f.piezas;
+  const roles = Object.keys(p);
+  const labels = {
+    sujeto:'Sujeto', predicado:'Predicado', adjetivo:'Adjetivo',
+    lugar:'Lugar', tener:'Tener', objeto:'Objeto', tiempo:'Tiempo',
+    particula:'Partícula', negacion:'Negación', verbo:'Verbo',
+    prep:'Preposición', posesivo:'Posesivo', demostrativo:'Demostrativo',
+    conector:'Conector', profesion1:'Profesión', profesion2:'Profesión',
+    parte1:'Parte 1', parte2:'Parte 2'
+  };
+  let piezasHtml = roles.map(role => `
+    <div class="fr-piece-row">
+      <div class="fr-piece-label">${labels[role]||role}</div>
+      <div class="fr-piece-opts">
+        ${p[role].map((w,i) => `<button class="fr-piece-btn" data-role="${role}" data-idx="${i}" onclick="frPieceSel(this,'${role}')">${w}</button>`).join('')}
+      </div>
+    </div>`).join('');
+
+  c.innerHTML = `
+    <div class="fr-label">Selecciona una pieza de cada fila para construir la frase</div>
+    <div class="fr-counter">${frIdx+1} / ${frPool.length}</div>
+    <div style="font-size:13px;color:var(--cream2);margin-bottom:10px;">${f.es}</div>
+    <div class="fr-pieces">${piezasHtml}</div>
+    <div class="fr-result-sentence" id="fr-preview" style="display:none;"></div>
+    <button class="fr-btn-check" onclick="checkFrConstruye('${f.sol_piezas}','${f.ar}','${f.tr}')">Comprobar</button>
+    <div class="fr-feedback" id="fr-fb"></div>
+    <div class="fr-solution" id="fr-sol" style="display:none;">${f.ar}</div>
+    <div class="fr-solution-tr" id="fr-soltr" style="display:none;">${f.tr}</div>
+    <button class="fr-btn-next" id="fr-next" onclick="nextFrase()">Siguiente →</button>`;
+}
+
+const frPiecesSel = {};
+function frPieceSel(btn, role) {
+  if (frAnswered) return;
+  btn.closest('.fr-piece-opts').querySelectorAll('.fr-piece-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  frPiecesSel[role] = btn.textContent;
+  // Actualizar preview
+  const preview = document.getElementById('fr-preview');
+  const vals = Object.values(frPiecesSel);
+  if (vals.length > 0) {
+    preview.style.display = '';
+    preview.textContent = vals.join(' ');
+  }
+}
+
+function checkFrConstruye(sol, ar, tr) {
+  if (frAnswered) return;
+  const built = Object.values(frPiecesSel).join(' ');
+  const norm = s => s.replace(/[؟،\.]/g,'').replace(/\s+/g,' ').trim();
+  const ok = norm(built) === norm(sol);
+  frAnswered = true;
+  const fb = document.getElementById('fr-fb');
+  if (ok) {
+    fb.className = 'fr-feedback ok'; fb.textContent = '✓ ¡Correcto!';
+    document.getElementById('fr-preview').style.border = '1px solid var(--green)';
+    frC++; updateStreak(true);
+  } else {
+    fb.className = 'fr-feedback no'; fb.textContent = '✗ La combinación correcta:';
+    document.getElementById('fr-sol').style.display = '';
+    document.getElementById('fr-soltr').style.display = '';
+    frW++; updateStreak(false);
+  }
+  document.getElementById('fr-next').style.display = 'block';
+  updateFrScore();
+  // Limpiar selección para próxima vez
+  Object.keys(frPiecesSel).forEach(k => delete frPiecesSel[k]);
+}
+
+function nextFrase() {
+  frIdx++;
+  frAnswered = false;
+  renderFrase();
+}
+
+function showFrResult() {
+  document.getElementById('fr-content').style.display = 'none';
+  const res = document.getElementById('fr-result');
+  res.style.display = 'block';
+  document.getElementById('fr-score').textContent = frC;
+  document.getElementById('fr-total').textContent = frPool.length;
+}
 
 // ══════════════════════════════════════
 // AUDIO
@@ -1305,6 +1796,7 @@ function initPage(name) {
   if (name === 'escucha') initEscucha();
   if (name === 'escribe') initEscribe();
   if (name === 'detecta') initDetect();
+  if (name === 'frases') initFrases();
   if (name === 'vocab') buildVocab();
   if (name === 'gram') buildGram();
   if (name === 'deberes') loadDeberes(false);
