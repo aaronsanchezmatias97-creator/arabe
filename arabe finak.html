@@ -265,6 +265,30 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .fr-opt-ok{background:rgba(61,191,138,.2)!important;border-color:var(--green)!important;color:var(--green)!important;font-weight:600;}
 .fr-opt-no{background:rgba(224,85,85,.15)!important;border-color:var(--red)!important;color:var(--red)!important;}
 .fr-counter{font-size:10px;color:var(--cream2);text-align:right;margin-bottom:8px;}
+
+/* PATRONES DE SUFIJOS */
+.pat-block-tabs{display:flex;gap:6px;padding:0 16px 12px;}
+.pat-tab{flex:1;padding:10px;border-radius:12px;border:1px solid rgba(201,168,76,.25);background:transparent;color:var(--cream2);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;}
+.pat-tab.active{background:var(--gold);color:var(--bg);border-color:var(--gold);}
+.pat-wrap{padding:0 16px;}
+.pat-intro{font-size:12px;color:var(--cream2);line-height:1.6;margin-bottom:14px;padding:12px 14px;background:rgba(201,168,76,.08);border-radius:10px;border:1px solid rgba(201,168,76,.2);}
+.pat-table{width:100%;border-collapse:collapse;margin-bottom:18px;}
+.pat-table th{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;padding:8px 6px;text-align:center;border-bottom:1px solid rgba(201,168,76,.25);}
+.pat-table td{padding:9px 6px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06);}
+.pat-person{font-size:11px;color:var(--cream2);text-align:left!important;}
+.pat-form{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:19px;direction:rtl;color:var(--cream);}
+.pat-suffix{color:var(--gold);font-weight:700;}
+.pat-root{color:var(--cream);}
+.pat-irregular{font-size:10px;color:var(--red);text-align:center;margin-top:-8px;margin-bottom:14px;}
+.pat-selector{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.pat-sel-btn{padding:7px 14px;border-radius:99px;border:1px solid rgba(201,168,76,.25);background:transparent;color:var(--cream2);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.pat-sel-btn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+.pat-card{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(201,168,76,.2);border-radius:var(--r);padding:18px;margin-bottom:14px;}
+.pat-card-title{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.pat-compare-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.pat-compare-row:last-child{border-bottom:none;}
+.pat-compare-label{font-size:11px;color:var(--cream2);width:90px;flex-shrink:0;}
+.pat-compare-form{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:20px;direction:rtl;color:var(--cream);flex:1;text-align:right;}
 .deb-wrap{padding:0 16px;}
 .deb-header{background:linear-gradient(135deg,#1C304A,#0F2A1E);border:1px solid rgba(201,168,76,.2);border-radius:var(--r);padding:20px;text-align:center;margin-bottom:14px;}
 .deb-date{font-size:11px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;}
@@ -596,6 +620,16 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     </div>
   </div>
 
+  <!-- PATRONES DE SUFIJOS -->
+  <div id="page-patrones" class="page hidden">
+    <div class="section-label">Patrones — la misma terminación, distintos usos</div>
+    <div class="pat-block-tabs">
+      <button class="pat-tab active" id="patb-A" onclick="setPatBlock('A')">🔗 Pronombres afijados</button>
+      <button class="pat-tab" id="patb-B" onclick="setPatBlock('B')">⏳ Pasado verbal</button>
+    </div>
+    <div class="pat-wrap" id="pat-content"></div>
+  </div>
+
   <!-- DEBERES -->
   <div id="page-deberes" class="page hidden">
     <div class="section-label">Deberes — sesión del día</div>
@@ -635,6 +669,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <button class="nav-btn" onclick="showPage('stats',this)"><span class="nav-icon">📊</span>Stats</button>
   <button class="nav-btn" onclick="showPage('vocab',this)"><span class="nav-icon">📖</span>Vocab</button>
   <button class="nav-btn" onclick="showPage('gram',this)"><span class="nav-icon">📚</span>Gram.</button>
+  <button class="nav-btn" onclick="showPage('patrones',this)"><span class="nav-icon">🧩</span>Patrones</button>
   <button class="nav-btn" onclick="showPage('deberes',this)"><span class="nav-icon">📝</span>Deberes</button>
 </div>
 <div class="toast" id="toast"></div>
@@ -1138,6 +1173,20 @@ const VOCAB = [
   {ar:"هَاتِف مَحْمُول",tr:"hātif maḥmūl / hatif mahmul",es:"Teléfono móvil",cat:"Casa",ctx:"هَاتِفِي الْمَحْمُول جَدِيد"},
   {ar:"مَلَابِس",tr:"malābis / malabis",es:"Ropa",cat:"Casa",ctx:"الْمَلَابِس فِي الْخِزَانَة"},
 
+  // 11/06/2026 — Repaso temario (págs. 57, 60, 69, 72)
+  {ar:"كَمْ",tr:"kam",es:"Cuánto (interrogativo)",cat:"Pronombres",ctx:"كَمْ عُمْرُكَ؟"},
+  {ar:"سَنَة",tr:"sana",es:"Año",cat:"Conceptos",ctx:"عُمْرِي عِشْرُونَ سَنَة"},
+  {ar:"الصِّين",tr:"aṣ-ṣīn / as-sin",es:"China",cat:"Países",ctx:"هُوَ مِنَ الصِّين"},
+  {ar:"صِينِيّ",tr:"ṣīnī / sini",es:"Chino (gentilicio)",cat:"Gentilicios",ctx:"هُوَ صِينِيّ"},
+  {ar:"صِينِيَّة",tr:"ṣīniyya / siniyya",es:"China (gentilicio fem.)",cat:"Gentilicios",ctx:"هِيَ صِينِيَّة"},
+  {ar:"الْهِنْد",tr:"al-hind",es:"India",cat:"Países",ctx:"هِيَ مِنَ الْهِنْد"},
+  {ar:"هِنْدِيّ",tr:"hindī",es:"Indio (gentilicio)",cat:"Gentilicios",ctx:"هُوَ هِنْدِيّ"},
+  {ar:"هِنْدِيَّة",tr:"hindiyya",es:"India (gentilicio fem.)",cat:"Gentilicios",ctx:"هِيَ هِنْدِيَّة"},
+  {ar:"مَعَ",tr:"maʿa / maa",es:"Con (compañía)",cat:"Conceptos",ctx:"مَعَ صَدِيقِي"},
+  {ar:"بِـ",tr:"bi-",es:"Con (instrumento, prefijo)",cat:"Conceptos",ctx:"بِقَلَمٍ"},
+  {ar:"قَهْوَة",tr:"qahwa",es:"Café",cat:"Comida",ctx:"أُحِبّ الْقَهْوَة"},
+  {ar:"حَلِيب",tr:"ḥalīb / halib",es:"Leche (variante de clase)",cat:"Comida",ctx:"أَشْرَبُ الْحَلِيب"},
+
 ];
 
 const DETECT = [
@@ -1175,6 +1224,11 @@ const DETECT = [
   {ar:"مُنَبِّه",es:"despertador",ans:"Shaddah ّ",dis:["Ta marbuta ة","Hamza ء","Alif maqsura ى"],tip:"Shaddah en ب: munabbih. El despertador que suena doble."},
   {ar:"مِصْبَاح",es:"lámpara",ans:"Hamza ء",dis:["Ta marbuta ة","Shaddah ّ","Alif maqsura ى"],tip:"No tiene ta marbuta — es masculino. Vocal larga ā antes de ḥ."},
   {ar:"أَهَذَا كِتَابٌ؟",es:"¿es esto un libro?",ans:"أَ (hamza interrogativa)",dis:["هَلْ (partícula interrogativa)","مَا (qué)","مَنْ (quién)"],tip:"أَ al inicio de frase es partícula interrogativa de sí/no, más clásica que هَلْ."},
+  // 11/06/2026 — repaso temario
+  {ar:"كَمْ عُمْرُهَا؟",es:"¿cuánto es su edad?",ans:"كَمْ (¿cuánto?)",dis:["مَنْ (¿quién?)","مَا (¿qué?)","أَيْنَ (¿dónde?)"],tip:"كَمْ es la partícula interrogativa de cantidad, se usa con عُمْر + sufijo posesivo."},
+  {ar:"كَتَبْتُ",es:"yo escribí",ans:"كَتَبْتُ (pasado, 1ª pers.)",dis:["كَتَبَ (él escribió)","كَتَبَتْ (ella escribió)","كَتَبْنَا (nosotros escribimos)"],tip:"El sufijo ـتُ marca primera persona singular en el pasado: katabtu."},
+  {ar:"مَا دَخَلَ",es:"no entró",ans:"مَا + pasado (negación)",dis:["لَيْسَ (negación presente)","لَمْ (otra negación)","لَا (no, respuesta)"],tip:"مَا + verbo en pasado conjugado niega la acción en pasado, sin pronombre independiente."},
+  {ar:"بِقَلَمٍ",es:"con un bolígrafo",ans:"بِـ (con, instrumento)",dis:["مَعَ (con, compañía)","فِي (en)","مِنْ (de/desde)"],tip:"بِـ se pega como prefijo a la palabra cuando 'con' indica instrumento, a diferencia de مَعَ que es compañía."},
 ];
 
 const GRAMMAR = [
@@ -1265,6 +1319,27 @@ const GRAMMAR = [
     {ar:"أَأَنْتَ طَالِبٌ؟",tr:"a-anta ṭālib?",es:"¿Eres tú estudiante?",note:"أَ + pronombre"},
     {ar:"أَهَذِهِ غُرْفَتُكَ؟",tr:"a-hādihi ġurfatuka?",es:"¿Es esta tu habitación?",note:"أَ + demostrativo fem."},
     {ar:"نَعَمْ، هَذِهِ غُرْفَتِي",tr:"naʿam, hādihi ġurfatī",es:"Sí, esta es mi habitación",note:"Respuesta afirmativa"},
+  ]},
+  {title:"كَمْ — partícula interrogativa de cantidad",desc:"كَمْ significa '¿cuánto?' y se usa típicamente con عُمْر + sufijo posesivo para preguntar la edad.",examples:[
+    {ar:"كَمْ عُمْرُكَ؟",tr:"kam ʿumruka?",es:"¿Cuánto es tu edad? (masc.)",note:"كَمْ + عُمْر + -ka"},
+    {ar:"كَمْ عُمْرُهَا؟",tr:"kam ʿumruhā?",es:"¿Cuánto es su edad? (de ella)",note:"كَمْ + عُمْر + -hā"},
+    {ar:"عُمْرِي عِشْرُونَ سَنَة",tr:"ʿumrī ʿišrūna sana",es:"Mi edad es veinte años",note:"Respuesta con سَنَة"},
+  ]},
+  {title:"Conjugación en pasado — كَتَبَ، دَخَلَ، خَرَجَ",desc:"El pasado se forma añadiendo sufijos de persona a la raíz del verbo. La raíz se mantiene constante (كتب، دخل، خرج) y solo cambia el sufijo según quién realiza la acción.",examples:[
+    {ar:"كَتَبْتُ",tr:"katabtu",es:"Yo escribí",note:"Sufijo -tu = yo"},
+    {ar:"كَتَبَ",tr:"kataba",es:"Él escribió",note:"Sin sufijo = él (3ª masc.)"},
+    {ar:"دَخَلْنَا",tr:"dajalnā",es:"Nosotros entramos",note:"Sufijo -nā = nosotros"},
+    {ar:"خَرَجُوا",tr:"jaraŷū",es:"Ellos salieron",note:"Sufijo -ū (+ alif mudo) = ellos"},
+  ]},
+  {title:"Negación del pasado con مَا",desc:"Para negar cualquier verbo en pasado se añade مَا delante del verbo conjugado, sin usar el pronombre independiente.",examples:[
+    {ar:"مَا كَتَبْتُ",tr:"mā katabtu",es:"No escribí",note:"مَا + verbo conjugado"},
+    {ar:"مَا دَخَلَ",tr:"mā dajala",es:"No entró",note:"Regla general de negación"},
+    {ar:"مَا سَكَنُوا",tr:"mā sakanū",es:"No vivieron",note:"Aplica a cualquier verbo"},
+  ]},
+  {title:"Dos formas de 'con' — مَعَ y بِـ",desc:"مَعَ se usa para 'con' de compañía (con una persona), mientras que بِـ se pega como prefijo cuando 'con' indica el instrumento usado.",examples:[
+    {ar:"مَعَ صَدِيقِي",tr:"maʿa ṣadīqī",es:"Con mi amigo",note:"مَعَ = compañía"},
+    {ar:"بِقَلَمٍ",tr:"bi-qalamin",es:"Con un bolígrafo",note:"بِـ = instrumento, prefijo pegado"},
+    {ar:"بِسِكِّينٍ",tr:"bi-sikkīnin",es:"Con un cuchillo",note:"بِـ + sustantivo"},
   ]},
 ];
 const FRASES = [
@@ -1650,6 +1725,131 @@ function showFrResult() {
 }
 
 // ══════════════════════════════════════
+// PATRONES DE SUFIJOS — datos
+// ══════════════════════════════════════
+
+// BLOQUE A — Pronombres afijados (posesivos + عِنْدَ)
+const PATRONES_A = {
+  intro: "Estos sufijos son pronombres que se pegan directamente al final de un sustantivo (posesivo: 'mi, tu, su...') o de la preposición عِنْدَ para expresar 'tener'. Es el MISMO sufijo en ambos casos.",
+  filas: [
+    {persona:"Yo",          sufijo:"ـِي",   suf_tr:"-ī",    posesivo:"كِتَابِي",   pos_tr:"kitābī",   pos_es:"mi libro",  tener:"عِنْدِي",   ten_tr:"ʿindī",   ten_es:"yo tengo"},
+    {persona:"Tú (m.)",     sufijo:"ـكَ",   suf_tr:"-ka",   posesivo:"كِتَابُكَ",  pos_tr:"kitābuka", pos_es:"tu libro",  tener:"عِنْدَكَ",  ten_tr:"ʿindaka", ten_es:"tú tienes"},
+    {persona:"Tú (f.)",     sufijo:"ـكِ",   suf_tr:"-ki",   posesivo:"كِتَابُكِ",  pos_tr:"kitābuki", pos_es:"tu libro",  tener:"عِنْدَكِ",  ten_tr:"ʿindaki", ten_es:"tú tienes"},
+    {persona:"Él",          sufijo:"ـهُ",   suf_tr:"-hu",   posesivo:"كِتَابُهُ",  pos_tr:"kitābuhu", pos_es:"su libro",  tener:"عِنْدَهُ",  ten_tr:"ʿindahu", ten_es:"él tiene"},
+    {persona:"Ella",        sufijo:"ـهَا",  suf_tr:"-hā",   posesivo:"كِتَابُهَا", pos_tr:"kitābuhā", pos_es:"su libro",  tener:"عِنْدَهَا", ten_tr:"ʿindahā", ten_es:"ella tiene"},
+    {persona:"Nosotros",    sufijo:"ـنَا",  suf_tr:"-nā",   posesivo:"كِتَابُنَا", pos_tr:"kitābunā", pos_es:"nuestro libro", tener:"عِنْدَنَا", ten_tr:"ʿindanā", ten_es:"nosotros tenemos"},
+    {persona:"Vosotros",    sufijo:"ـكُمْ", suf_tr:"-kum",  posesivo:"كِتَابُكُمْ",pos_tr:"kitābukum",pos_es:"vuestro libro", tener:"عِنْدَكُمْ",ten_tr:"ʿindakum",ten_es:"vosotros tenéis"},
+    {persona:"Ellos",       sufijo:"ـهُمْ", suf_tr:"-hum",  posesivo:"كِتَابُهُمْ",pos_tr:"kitābuhum",pos_es:"su libro",  tener:"عِنْدَهُمْ", ten_tr:"ʿindahum",ten_es:"ellos tienen"},
+  ],
+  nota: "Si el sustantivo termina en ة (ta marbuta), ésta se convierte en ت antes del sufijo: مَدْرَسَة + ـِي = مَدْرَسَتِي (madrasatī) = mi escuela."
+};
+
+// BLOQUE B — Conjugación verbal en pasado
+const PATRONES_B = {
+  intro: "En el pasado, la raíz del verbo se mantiene fija y solo cambia el sufijo según la persona. El mismo conjunto de sufijos se repite en cualquier verbo regular.",
+  verbos: {
+    "كَانَ (ser/estar)": [
+      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"كُنْتُ",    tr:"kuntu",    es:"yo era/estaba"},
+      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"كُنْتَ",    tr:"kunta",    es:"tú eras (m.)"},
+      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"كُنْتِ",    tr:"kunti",    es:"tú eras (f.)"},
+      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"كَانَ",     tr:"kāna",     es:"él era/estaba"},
+      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"كَانَتْ",   tr:"kānat",    es:"ella era/estaba"},
+      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"كُنَّا",    tr:"kunnā",    es:"nosotros éramos"},
+      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"كُنْتُمْ",  tr:"kuntum",   es:"vosotros erais"},
+      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"كَانُوا",   tr:"kānū",     es:"ellos eran"},
+    ],
+    "كَتَبَ (escribir)": [
+      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"كَتَبْتُ",   tr:"katabtu",   es:"yo escribí"},
+      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"كَتَبْتَ",   tr:"katabta",   es:"tú escribiste (m.)"},
+      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"كَتَبْتِ",   tr:"katabti",   es:"tú escribiste (f.)"},
+      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"كَتَبَ",     tr:"kataba",    es:"él escribió"},
+      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"كَتَبَتْ",   tr:"katabat",   es:"ella escribió"},
+      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"كَتَبْنَا",  tr:"katabnā",   es:"nosotros escribimos"},
+      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"كَتَبْتُمْ", tr:"katabtum",  es:"vosotros escribisteis"},
+      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"كَتَبُوا",   tr:"katabū",    es:"ellos escribieron"},
+    ],
+    "دَخَلَ (entrar)": [
+      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"دَخَلْتُ",   tr:"dajaltu",   es:"yo entré"},
+      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"دَخَلْتَ",   tr:"dajalta",   es:"tú entraste (m.)"},
+      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"دَخَلْتِ",   tr:"dajalti",   es:"tú entraste (f.)"},
+      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"دَخَلَ",     tr:"dajala",    es:"él entró"},
+      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"دَخَلَتْ",   tr:"dajalat",   es:"ella entró"},
+      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"دَخَلْنَا",  tr:"dajalnā",   es:"nosotros entramos"},
+      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"دَخَلْتُمْ", tr:"dajaltum",  es:"vosotros entrasteis"},
+      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"دَخَلُوا",   tr:"dajalū",    es:"ellos entraron"},
+    ],
+    "خَرَجَ (salir)": [
+      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"خَرَجْتُ",   tr:"jarajtu",   es:"yo salí"},
+      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"خَرَجْتَ",   tr:"jarajta",   es:"tú saliste (m.)"},
+      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"خَرَجْتِ",   tr:"jarajti",   es:"tú saliste (f.)"},
+      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"خَرَجَ",     tr:"jaraja",    es:"él salió"},
+      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"خَرَجَتْ",   tr:"jarajat",   es:"ella salió"},
+      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"خَرَجْنَا",  tr:"jarajnā",   es:"nosotros salimos"},
+      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"خَرَجْتُمْ", tr:"jarajtum",  es:"vosotros salisteis"},
+      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"خَرَجُوا",   tr:"jarajū",    es:"ellos salieron"},
+    ],
+  },
+  irregular: "⚠️ لَيْسَ (no ser/no estar) es IRREGULAR: usa لَسْتُ, لَسْتَ, لَسْتِ, لَيْسَ, لَيْسَتْ, لَسْنَا, لَسْتُمْ, لَيْسُوا — no sigue exactamente el mismo patrón de sufijos."
+};
+
+// ══════════════════════════════════════
+// PATRONES — lógica
+// ══════════════════════════════════════
+let patBlock = 'A';
+let patVerboSel = 'كَانَ (ser/estar)';
+
+function setPatBlock(b) {
+  patBlock = b;
+  document.getElementById('patb-A').classList.toggle('active', b === 'A');
+  document.getElementById('patb-B').classList.toggle('active', b === 'B');
+  renderPatrones();
+}
+
+function renderPatrones() {
+  const c = document.getElementById('pat-content');
+  if (patBlock === 'A') {
+    c.innerHTML = `
+      <div class="pat-intro">${PATRONES_A.intro}</div>
+      <table class="pat-table">
+        <tr><th>Persona</th><th>Sufijo</th><th>Posesivo</th><th>عِنْدَ (tener)</th></tr>
+        ${PATRONES_A.filas.map(f => `
+          <tr>
+            <td class="pat-person">${f.persona}</td>
+            <td class="pat-form pat-suffix">${f.sufijo}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.suf_tr}</span></td>
+            <td class="pat-form">${f.posesivo}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.pos_es}</span></td>
+            <td class="pat-form">${f.tener}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.ten_es}</span></td>
+          </tr>`).join('')}
+      </table>
+      <div class="pat-intro">📌 ${PATRONES_A.nota}</div>
+    `;
+  } else {
+    const verbos = Object.keys(PATRONES_B.verbos);
+    c.innerHTML = `
+      <div class="pat-intro">${PATRONES_B.intro}</div>
+      <div class="pat-selector">
+        ${verbos.map(v => `<button class="pat-sel-btn ${v===patVerboSel?'active':''}" onclick="setPatVerbo('${v}')">${v}</button>`).join('')}
+      </div>
+      <table class="pat-table">
+        <tr><th>Persona</th><th>Sufijo</th><th>Forma</th><th>Significado</th></tr>
+        ${PATRONES_B.verbos[patVerboSel].map(f => `
+          <tr>
+            <td class="pat-person">${f.persona}</td>
+            <td class="pat-form pat-suffix">${f.sufijo}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.suf_tr}</span></td>
+            <td class="pat-form">${f.forma}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.tr}</span></td>
+            <td style="font-size:11px;color:var(--cream2);">${f.es}</td>
+          </tr>`).join('')}
+      </table>
+      <div class="pat-irregular">${PATRONES_B.irregular}</div>
+    `;
+  }
+}
+
+function setPatVerbo(v) {
+  patVerboSel = v;
+  renderPatrones();
+}
+
+// ══════════════════════════════════════
 // AUDIO
 // ══════════════════════════════════════
 let currentAudio = null;
@@ -1794,6 +1994,7 @@ function initPage(name) {
   if (name === 'escribe') initEscribe();
   if (name === 'detecta') initDetect();
   if (name === 'frases') initFrases();
+  if (name === 'patrones') renderPatrones();
   if (name === 'vocab') buildVocab();
   if (name === 'gram') buildGram();
   if (name === 'deberes') loadDeberes(false);
