@@ -1215,6 +1215,8 @@ const VOCAB = [
   {ar:"رَقَصَ",tr:"raqaṣa / raqasa",es:"Bailar (pasado, él)",cat:"Verbos",ctx:"رَقَصَتْ فِي الْحَفْلَةِ"},
   {ar:"عَرَفَ",tr:"ʿarafa / arafa",es:"Saber/Conocer (pasado, él)",cat:"Verbos",ctx:"عَرَفَ الْجَوَابَ"},
   {ar:"لَبِسَ",tr:"labisa",es:"Vestirse/Ponerse (pasado, él)",cat:"Verbos",ctx:"لَبِسَ الْمَلَابِسَ الْجَدِيدَةَ"},
+  {ar:"مِنْ",tr:"min",es:"De/Desde (procedencia)",cat:"Conceptos",ctx:"أَنَا مِنْ إِسْبَانِيَا"},
+  {ar:"كَـ",tr:"ka-",es:"Como (comparación)",cat:"Conceptos",ctx:"هُوَ كَالْأَسَدِ"},
 ];
 
 const DETECT = [
@@ -1397,6 +1399,26 @@ const GRAMMAR = [
     {ar:"ثَمَانِيَة",tr:"ṯamāniya",es:"Ocho (8)",note:""},
     {ar:"تِسْعَة",tr:"tisʿa",es:"Nueve (9)",note:""},
     {ar:"عَشَرَة",tr:"ʿašara",es:"Diez (10)",note:""},
+  ]},
+  {title:"عَلَى — 'sobre / encima de'",desc:"Preposición de lugar: indica que algo está encima de otra cosa.",examples:[
+    {ar:"الْكِتَابُ عَلَى الطَّاوِلَةِ",tr:"al-kitābu ʿalā ṭ-ṭāwilati",es:"El libro está sobre la mesa",note:"عَلَى = sobre/encima de"},
+    {ar:"جَلَسَ عَلَى الْأَرِيكَةِ",tr:"ŷalasa ʿalā l-arīkati",es:"Se sentó sobre/en el sofá",note:""},
+  ]},
+  {title:"مِنْ — 'de / desde' (procedencia)",desc:"Preposición de origen o punto de partida. Se contrasta con إِلَى (destino, hacia) y مَعَ (compañía, con). Ya aparecía dentro de frases como 'مِنْ أَيْنَ أَنْتَ؟' pero no se había explicado como preposición independiente.",examples:[
+    {ar:"أَنَا مِنْ إِسْبَانِيَا",tr:"anā min isbāniyā",es:"Yo soy de España",note:"مِنْ = de/desde (origen)"},
+    {ar:"ذَهَبْتُ مِنَ الْبَيْتِ إِلَى الْمَدْرَسَةِ",tr:"ḏahabtu mina l-bayti ilā l-madrasati",es:"Fui de casa a la escuela",note:"مِنْ...إِلَى = de...a"},
+  ]},
+  {title:"كَـ — 'como' (comparación)",desc:"Preposición de comparación. Se pega directamente a la palabra igual que بِـ y لِـ (prefijo, sin espacio).",examples:[
+    {ar:"هُوَ كَالْأَسَدِ",tr:"huwa ka-l-asadi",es:"Él es como el león",note:"كَـ = como"},
+    {ar:"هِيَ كَالْقَمَرِ",tr:"hiya ka-l-qamari",es:"Ella es como la luna",note:""},
+  ]},
+  {title:"مَا — los 4 usos que hemos visto",desc:"مَا es una de las palabras que más cambia de función según el contexto. Resumen de sus 4 usos vistos hasta ahora, para no confundirlos entre sí.",examples:[
+    {ar:"مَا هَذَا؟",tr:"mā hādhā?",es:"¿Qué es esto?",note:"Uso 1 — interrogativo 'qué/cuál' + sustantivo/demostrativo"},
+    {ar:"مَا اسْمُكَ؟",tr:"mā ismuka?",es:"¿Cómo te llamas? (lit. ¿cuál es tu nombre?)",note:"Uso 1 — mismo patrón: مَا + sustantivo"},
+    {ar:"مَا مَعْنَى \"كِتَاب\"؟",tr:"mā maʿnā \"kitāb\"?",es:"¿Qué significa \"kitāb\"?",note:"Uso 1 — mismo patrón"},
+    {ar:"مَا كَتَبْتُ",tr:"mā katabtu",es:"No escribí",note:"Uso 2 — negación de un verbo en pasado: مَا + verbo pasado conjugado"},
+    {ar:"مَا كَانَ عِنْدِي وَقْتٌ",tr:"mā kāna ʿindī waqtun",es:"No tenía tiempo",note:"Uso 3 — negación de 'tener' en pasado: مَا كَانَ عِنْدَ + sufijo"},
+    {ar:"مَا فِي وَقْتٌ",tr:"mā fī waqtun",es:"No hay tiempo",note:"Uso 4 — negación existencial: مَا فِي = no hay"},
   ]},
 ];
 const FRASES = [
@@ -1787,16 +1809,20 @@ function showFrResult() {
 
 // BLOQUE A — Pronombres afijados (posesivos + عِنْدَ)
 const PATRONES_A = {
-  intro: "Estos sufijos son pronombres que se pegan directamente al final de un sustantivo (posesivo: 'mi, tu, su...') o de la preposición عِنْدَ para expresar 'tener'. Es el MISMO sufijo en ambos casos.",
+  intro: "Estos sufijos son pronombres que se pegan directamente al final de un sustantivo (posesivo: 'mi, tu, su...'), de la preposición عِنْدَ para expresar 'tener', o de la preposición لِـ para expresar 'para'. Es el MISMO sufijo en los tres casos.",
   filas: [
-    {persona:"Yo",          sufijo:"ـِي",   suf_tr:"-ī",    posesivo:"كِتَابِي",   pos_tr:"kitābī",   pos_es:"mi libro",  tener:"عِنْدِي",   ten_tr:"ʿindī",   ten_es:"yo tengo"},
-    {persona:"Tú (m.)",     sufijo:"ـكَ",   suf_tr:"-ka",   posesivo:"كِتَابُكَ",  pos_tr:"kitābuka", pos_es:"tu libro",  tener:"عِنْدَكَ",  ten_tr:"ʿindaka", ten_es:"tú tienes"},
-    {persona:"Tú (f.)",     sufijo:"ـكِ",   suf_tr:"-ki",   posesivo:"كِتَابُكِ",  pos_tr:"kitābuki", pos_es:"tu libro",  tener:"عِنْدَكِ",  ten_tr:"ʿindaki", ten_es:"tú tienes"},
-    {persona:"Él",          sufijo:"ـهُ",   suf_tr:"-hu",   posesivo:"كِتَابُهُ",  pos_tr:"kitābuhu", pos_es:"su libro",  tener:"عِنْدَهُ",  ten_tr:"ʿindahu", ten_es:"él tiene"},
-    {persona:"Ella",        sufijo:"ـهَا",  suf_tr:"-hā",   posesivo:"كِتَابُهَا", pos_tr:"kitābuhā", pos_es:"su libro",  tener:"عِنْدَهَا", ten_tr:"ʿindahā", ten_es:"ella tiene"},
-    {persona:"Nosotros",    sufijo:"ـنَا",  suf_tr:"-nā",   posesivo:"كِتَابُنَا", pos_tr:"kitābunā", pos_es:"nuestro libro", tener:"عِنْدَنَا", ten_tr:"ʿindanā", ten_es:"nosotros tenemos"},
-    {persona:"Vosotros",    sufijo:"ـكُمْ", suf_tr:"-kum",  posesivo:"كِتَابُكُمْ",pos_tr:"kitābukum",pos_es:"vuestro libro", tener:"عِنْدَكُمْ",ten_tr:"ʿindakum",ten_es:"vosotros tenéis"},
-    {persona:"Ellos",       sufijo:"ـهُمْ", suf_tr:"-hum",  posesivo:"كِتَابُهُمْ",pos_tr:"kitābuhum",pos_es:"su libro",  tener:"عِنْدَهُمْ", ten_tr:"ʿindahum",ten_es:"ellos tienen"},
+    {persona:"Yo",          sufijo:"ـِي",   suf_tr:"-ī",    posesivo:"كِتَابِي",   pos_tr:"kitābī",   pos_es:"mi libro",  tener:"عِنْدِي",   ten_tr:"ʿindī",   ten_es:"yo tengo",  para:"لِي",    para_tr:"lī",    para_es:"para mí"},
+    {persona:"Tú (m.)",     sufijo:"ـكَ",   suf_tr:"-ka",   posesivo:"كِتَابُكَ",  pos_tr:"kitābuka", pos_es:"tu libro",  tener:"عِنْدَكَ",  ten_tr:"ʿindaka", ten_es:"tú tienes", para:"لَكَ",   para_tr:"laka",  para_es:"para ti (m.)"},
+    {persona:"Tú (f.)",     sufijo:"ـكِ",   suf_tr:"-ki",   posesivo:"كِتَابُكِ",  pos_tr:"kitābuki", pos_es:"tu libro",  tener:"عِنْدَكِ",  ten_tr:"ʿindaki", ten_es:"tú tienes", para:"لَكِ",   para_tr:"laki",  para_es:"para ti (f.)"},
+    {persona:"Él",          sufijo:"ـهُ",   suf_tr:"-hu",   posesivo:"كِتَابُهُ",  pos_tr:"kitābuhu", pos_es:"su libro",  tener:"عِنْدَهُ",  ten_tr:"ʿindahu", ten_es:"él tiene",  para:"لَهُ",   para_tr:"lahu",  para_es:"para él"},
+    {persona:"Ella",        sufijo:"ـهَا",  suf_tr:"-hā",   posesivo:"كِتَابُهَا", pos_tr:"kitābuhā", pos_es:"su libro",  tener:"عِنْدَهَا", ten_tr:"ʿindahā", ten_es:"ella tiene", para:"لَهَا",  para_tr:"lahā",  para_es:"para ella"},
+    {persona:"Nosotros",    sufijo:"ـنَا",  suf_tr:"-nā",   posesivo:"كِتَابُنَا", pos_tr:"kitābunā", pos_es:"nuestro libro", tener:"عِنْدَنَا", ten_tr:"ʿindanā", ten_es:"nosotros tenemos", para:"لَنَا",  para_tr:"lanā",  para_es:"para nosotros"},
+    {persona:"Vosotros 2",  sufijo:"ـكُمَا",suf_tr:"-kumā", posesivo:"كِتَابُكُمَا",pos_tr:"kitābukumā",pos_es:"vuestro libro (dual)", tener:"عِنْدَكُمَا",ten_tr:"ʿindakumā",ten_es:"vosotros dos tenéis", para:"لَكُمَا",para_tr:"lakumā", para_es:"para vosotros dos"},
+    {persona:"Su (dual)",   sufijo:"ـهُمَا",suf_tr:"-humā", posesivo:"كِتَابُهُمَا",pos_tr:"kitābuhumā",pos_es:"su libro (dual)", tener:"عِنْدَهُمَا",ten_tr:"ʿindahumā",ten_es:"ellos/as dos tienen", para:"لَهُمَا",para_tr:"lahumā", para_es:"para ellos/as dos"},
+    {persona:"Vosotros",    sufijo:"ـكُمْ", suf_tr:"-kum",  posesivo:"كِتَابُكُمْ",pos_tr:"kitābukum",pos_es:"vuestro libro", tener:"عِنْدَكُمْ",ten_tr:"ʿindakum",ten_es:"vosotros tenéis", para:"لَكُمْ", para_tr:"lakum", para_es:"para vosotros"},
+    {persona:"Vosotras",    sufijo:"ـكُنَّ",suf_tr:"-kunna",posesivo:"كِتَابُكُنَّ",pos_tr:"kitābukunna",pos_es:"vuestro libro (f.)", tener:"عِنْدَكُنَّ",ten_tr:"ʿindakunna",ten_es:"vosotras tenéis", para:"لَكُنَّ",para_tr:"lakunna", para_es:"para vosotras"},
+    {persona:"Ellos",       sufijo:"ـهُمْ", suf_tr:"-hum",  posesivo:"كِتَابُهُمْ",pos_tr:"kitābuhum",pos_es:"su libro",  tener:"عِنْدَهُمْ", ten_tr:"ʿindahum",ten_es:"ellos tienen", para:"لَهُمْ", para_tr:"lahum", para_es:"para ellos"},
+    {persona:"Ellas",       sufijo:"ـهُنَّ",suf_tr:"-hunna",posesivo:"كِتَابُهُنَّ",pos_tr:"kitābuhunna",pos_es:"su libro (f.)", tener:"عِنْدَهُنَّ",ten_tr:"ʿindahunna",ten_es:"ellas tienen", para:"لَهُنَّ",para_tr:"lahunna", para_es:"para ellas"},
   ],
   nota: "Si el sustantivo termina en ة (ta marbuta), ésta se convierte en ت antes del sufijo: مَدْرَسَة + ـِي = مَدْرَسَتِي (madrasatī) = mi escuela."
 };
@@ -1948,13 +1974,14 @@ function renderPatrones() {
     c.innerHTML = `
       <div class="pat-intro">${PATRONES_A.intro}</div>
       <table class="pat-table">
-        <tr><th>Persona</th><th>Sufijo</th><th>Posesivo</th><th>عِنْدَ (tener)</th></tr>
+        <tr><th>Persona</th><th>Sufijo</th><th>Posesivo</th><th>عِنْدَ (tener)</th><th>لِـ (para)</th></tr>
         ${PATRONES_A.filas.map(f => `
           <tr>
             <td class="pat-person">${f.persona}</td>
             <td class="pat-form pat-suffix">${f.sufijo}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.suf_tr}</span></td>
             <td class="pat-form">${f.posesivo}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.pos_es}</span></td>
             <td class="pat-form">${f.tener}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.ten_es}</span></td>
+            <td class="pat-form">${f.para}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.para_es}</span></td>
           </tr>`).join('')}
       </table>
       <div class="pat-intro">📌 ${PATRONES_A.nota}</div>
