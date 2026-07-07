@@ -1217,6 +1217,19 @@ const VOCAB = [
   {ar:"لَبِسَ",tr:"labisa",es:"Vestirse/Ponerse (pasado, él)",cat:"Verbos",ctx:"لَبِسَ الْمَلَابِسَ الْجَدِيدَةَ"},
   {ar:"مِنْ",tr:"min",es:"De/Desde (procedencia)",cat:"Conceptos",ctx:"أَنَا مِنْ إِسْبَانِيَا"},
   {ar:"كَـ",tr:"ka-",es:"Como (comparación)",cat:"Conceptos",ctx:"هُوَ كَالْأَسَدِ"},
+  {ar:"هُنَا",tr:"hunā",es:"Aquí",cat:"Lugares",ctx:"أَنَا هُنَا"},
+  {ar:"هُنَاكَ",tr:"hunāka",es:"Allí",cat:"Lugares",ctx:"هُوَ هُنَاكَ"},
+  {ar:"مَعِي",tr:"maʿī",es:"Conmigo",cat:"Conceptos",ctx:"هَلْ تَذْهَبُ مَعِي؟"},
+  {ar:"مَعَهُ",tr:"maʿahu",es:"Con él",cat:"Conceptos",ctx:"هِيَ مَعَهُ"},
+  {ar:"مَعَهَا",tr:"maʿahā",es:"Con ella",cat:"Conceptos",ctx:"هُوَ مَعَهَا"},
+  {ar:"مَعَكَ",tr:"maʿaka",es:"Contigo (masc.)",cat:"Conceptos",ctx:"أَنَا مَعَكَ"},
+  {ar:"سَلَامَات",tr:"salāmāt",es:"Espero que no sea grave",cat:"Frases",ctx:"سَلَامَات، عَقَبَال مَا تَتَحَسَّنُ"},
+  {ar:"عَفْوًا",tr:"ʿafwan",es:"De nada/Perdona (cotidiano)",cat:"Frases",ctx:"عَفْوًا، لَمْ أَقْصِدْ ذَلِكَ"},
+  {ar:"آسِف",tr:"āsif",es:"Lo siento (grave)",cat:"Frases",ctx:"آسِف جِدًّا عَلَى مَا حَدَثَ"},
+  {ar:"يَوْم",tr:"yawm",es:"Día",cat:"Conceptos",ctx:"كُلَّ يَوْمٍ"},
+  {ar:"اَلْيَوْم",tr:"al-yawm",es:"Hoy (el día)",cat:"Conceptos",ctx:"اَلْيَوْمَ عِنْدِي دَرْسٌ"},
+  {ar:"بَحْر",tr:"baḥr",es:"Playa/Mar",cat:"Lugares",ctx:"ذَهَبْنَا إِلَى الْبَحْرِ"},
+  {ar:"إِذًا؟",tr:"iḏan?",es:"¿Entonces?",cat:"Frases",ctx:"إِذًا، مَاذَا تُرِيدُ؟"},
 ];
 
 const DETECT = [
@@ -1419,6 +1432,38 @@ const GRAMMAR = [
     {ar:"مَا كَتَبْتُ",tr:"mā katabtu",es:"No escribí",note:"Uso 2 — negación de un verbo en pasado: مَا + verbo pasado conjugado"},
     {ar:"مَا كَانَ عِنْدِي وَقْتٌ",tr:"mā kāna ʿindī waqtun",es:"No tenía tiempo",note:"Uso 3 — negación de 'tener' en pasado: مَا كَانَ عِنْدَ + sufijo"},
     {ar:"مَا فِي وَقْتٌ",tr:"mā fī waqtun",es:"No hay tiempo",note:"Uso 4 — negación existencial: مَا فِي = no hay"},
+  ]},
+  {title:"Verbos huecos/irregulares con vocal larga",desc:"كَانَ y لَيْسَ son verbos 'huecos' (vocal larga و/ي en medio de la raíz). Regla: no todos los verbos con vocal larga son irregulares, PERO todos los irregulares de este tipo tienen vocal larga — es una condición necesaria, no suficiente. Cada verbo hueco se aprende por separado.",examples:[
+    {ar:"كَانَ",tr:"kāna",es:"Ser/estar en pasado (irregular, hueco)",note:""},
+    {ar:"لَيْسَ",tr:"laysa",es:"No ser/no estar en presente (irregular)",note:""},
+  ]},
+  {title:"هُنَا / هُنَاكَ — 'aquí' y 'allí'",desc:"Adverbios de lugar básicos.",examples:[
+    {ar:"أَنَا هُنَا",tr:"anā hunā",es:"Yo estoy aquí",note:"هُنَا = aquí"},
+    {ar:"هُوَ هُنَاكَ",tr:"huwa hunāka",es:"Él está allí",note:"هُنَاكَ = allí"},
+  ]},
+  {title:"مَعَ + sufijo posesivo — 'conmigo, contigo...'",desc:"مَعَ toma el mismo sufijo que عِنْدَ y لِـ para expresar compañía con pronombres.",examples:[
+    {ar:"مَعِي",tr:"maʿī",es:"Conmigo",note:""},
+    {ar:"مَعَكَ",tr:"maʿaka",es:"Contigo (m.)",note:""},
+    {ar:"مَعَهُ",tr:"maʿahu",es:"Con él",note:""},
+    {ar:"مَعَهَا",tr:"maʿahā",es:"Con ella",note:""},
+    {ar:"هَلْ تَذْهَبُ مَعِي؟",tr:"hal taḏhabu maʿī?",es:"¿Vienes conmigo?",note:""},
+  ]},
+  {title:"سَلَامَات — expresión de deseo de mejora",desc:"Se dice como respuesta habitual cuando alguien cuenta algo malo (enfermedad, accidente...), con el sentido de 'espero que no sea grave'.",examples:[
+    {ar:"سَلَامَات",tr:"salāmāt",es:"Espero que no sea grave",note:""},
+  ]},
+  {title:"Plural femenino sano — regla general",desc:"La forma más común de plural: se añade ات al final del singular (quitando la ة si la tenía). No es universal — existen plurales irregulares (plural fracto) que se aprenden aparte.",examples:[
+    {ar:"سَيَّارَة → سَيَّارَات",tr:"sayyāra → sayyārāt",es:"Coche → Coches",note:"+ات al quitar la ة"},
+  ]},
+  {title:"عَفْوًا vs آسِف — dos formas de disculparse",desc:"عَفْوًا se usa en el día a día para disculpas pequeñas o al pedir permiso (también significa 'de nada'). آسِف/آسِفَة se reserva para algo serio o grave.",examples:[
+    {ar:"عَفْوًا",tr:"ʿafwan",es:"De nada / Perdona (cotidiano)",note:""},
+    {ar:"آسِف",tr:"āsif",es:"Lo siento (grave, masc.)",note:"Fem.: آسِفَة (āsifa)"},
+  ]},
+  {title:"يَوْم / اَلْيَوْم — 'día' y 'hoy'",desc:"اَلْيَوْم (literalmente 'el día') se usa de forma idiomática para decir 'hoy'.",examples:[
+    {ar:"يَوْم",tr:"yawm",es:"Día",note:""},
+    {ar:"اَلْيَوْم",tr:"al-yawm",es:"Hoy",note:"Lit. 'el día'"},
+  ]},
+  {title:"إِذًا؟ — '¿entonces?'",desc:"Partícula para pedir una conclusión o consecuencia.",examples:[
+    {ar:"إِذًا، مَاذَا تُرِيدُ؟",tr:"iḏan, māḏā turīdu?",es:"¿Entonces, qué quieres?",note:""},
   ]},
 ];
 const FRASES = [
@@ -1809,20 +1854,20 @@ function showFrResult() {
 
 // BLOQUE A — Pronombres afijados (posesivos + عِنْدَ)
 const PATRONES_A = {
-  intro: "Estos sufijos son pronombres que se pegan directamente al final de un sustantivo (posesivo: 'mi, tu, su...'), de la preposición عِنْدَ para expresar 'tener', o de la preposición لِـ para expresar 'para'. Es el MISMO sufijo en los tres casos.",
+  intro: "Estos sufijos son pronombres que se pegan directamente al final de un sustantivo (posesivo: 'mi, tu, su...'), de عِنْدَ para 'tener', de لِـ para 'para', o de مَعَ para 'con'. Es el MISMO sufijo en los cuatro casos.",
   filas: [
-    {persona:"Yo",          sufijo:"ـِي",   suf_tr:"-ī",    posesivo:"كِتَابِي",   pos_tr:"kitābī",   pos_es:"mi libro",  tener:"عِنْدِي",   ten_tr:"ʿindī",   ten_es:"yo tengo",  para:"لِي",    para_tr:"lī",    para_es:"para mí"},
-    {persona:"Tú (m.)",     sufijo:"ـكَ",   suf_tr:"-ka",   posesivo:"كِتَابُكَ",  pos_tr:"kitābuka", pos_es:"tu libro",  tener:"عِنْدَكَ",  ten_tr:"ʿindaka", ten_es:"tú tienes", para:"لَكَ",   para_tr:"laka",  para_es:"para ti (m.)"},
-    {persona:"Tú (f.)",     sufijo:"ـكِ",   suf_tr:"-ki",   posesivo:"كِتَابُكِ",  pos_tr:"kitābuki", pos_es:"tu libro",  tener:"عِنْدَكِ",  ten_tr:"ʿindaki", ten_es:"tú tienes", para:"لَكِ",   para_tr:"laki",  para_es:"para ti (f.)"},
-    {persona:"Él",          sufijo:"ـهُ",   suf_tr:"-hu",   posesivo:"كِتَابُهُ",  pos_tr:"kitābuhu", pos_es:"su libro",  tener:"عِنْدَهُ",  ten_tr:"ʿindahu", ten_es:"él tiene",  para:"لَهُ",   para_tr:"lahu",  para_es:"para él"},
-    {persona:"Ella",        sufijo:"ـهَا",  suf_tr:"-hā",   posesivo:"كِتَابُهَا", pos_tr:"kitābuhā", pos_es:"su libro",  tener:"عِنْدَهَا", ten_tr:"ʿindahā", ten_es:"ella tiene", para:"لَهَا",  para_tr:"lahā",  para_es:"para ella"},
-    {persona:"Nosotros",    sufijo:"ـنَا",  suf_tr:"-nā",   posesivo:"كِتَابُنَا", pos_tr:"kitābunā", pos_es:"nuestro libro", tener:"عِنْدَنَا", ten_tr:"ʿindanā", ten_es:"nosotros tenemos", para:"لَنَا",  para_tr:"lanā",  para_es:"para nosotros"},
-    {persona:"Vosotros 2",  sufijo:"ـكُمَا",suf_tr:"-kumā", posesivo:"كِتَابُكُمَا",pos_tr:"kitābukumā",pos_es:"vuestro libro (dual)", tener:"عِنْدَكُمَا",ten_tr:"ʿindakumā",ten_es:"vosotros dos tenéis", para:"لَكُمَا",para_tr:"lakumā", para_es:"para vosotros dos"},
-    {persona:"Su (dual)",   sufijo:"ـهُمَا",suf_tr:"-humā", posesivo:"كِتَابُهُمَا",pos_tr:"kitābuhumā",pos_es:"su libro (dual)", tener:"عِنْدَهُمَا",ten_tr:"ʿindahumā",ten_es:"ellos/as dos tienen", para:"لَهُمَا",para_tr:"lahumā", para_es:"para ellos/as dos"},
-    {persona:"Vosotros",    sufijo:"ـكُمْ", suf_tr:"-kum",  posesivo:"كِتَابُكُمْ",pos_tr:"kitābukum",pos_es:"vuestro libro", tener:"عِنْدَكُمْ",ten_tr:"ʿindakum",ten_es:"vosotros tenéis", para:"لَكُمْ", para_tr:"lakum", para_es:"para vosotros"},
-    {persona:"Vosotras",    sufijo:"ـكُنَّ",suf_tr:"-kunna",posesivo:"كِتَابُكُنَّ",pos_tr:"kitābukunna",pos_es:"vuestro libro (f.)", tener:"عِنْدَكُنَّ",ten_tr:"ʿindakunna",ten_es:"vosotras tenéis", para:"لَكُنَّ",para_tr:"lakunna", para_es:"para vosotras"},
-    {persona:"Ellos",       sufijo:"ـهُمْ", suf_tr:"-hum",  posesivo:"كِتَابُهُمْ",pos_tr:"kitābuhum",pos_es:"su libro",  tener:"عِنْدَهُمْ", ten_tr:"ʿindahum",ten_es:"ellos tienen", para:"لَهُمْ", para_tr:"lahum", para_es:"para ellos"},
-    {persona:"Ellas",       sufijo:"ـهُنَّ",suf_tr:"-hunna",posesivo:"كِتَابُهُنَّ",pos_tr:"kitābuhunna",pos_es:"su libro (f.)", tener:"عِنْدَهُنَّ",ten_tr:"ʿindahunna",ten_es:"ellas tienen", para:"لَهُنَّ",para_tr:"lahunna", para_es:"para ellas"},
+    {persona:"Yo",          sufijo:"ـِي",   suf_tr:"-ī",    posesivo:"كِتَابِي",   pos_tr:"kitābī",   pos_es:"mi libro",  tener:"عِنْدِي",   ten_tr:"ʿindī",   ten_es:"yo tengo",  para:"لِي",    para_tr:"lī",    para_es:"para mí", con:"مَعِي", con_tr:"maʿī", con_es:"conmigo"},
+    {persona:"Tú (m.)",     sufijo:"ـكَ",   suf_tr:"-ka",   posesivo:"كِتَابُكَ",  pos_tr:"kitābuka", pos_es:"tu libro",  tener:"عِنْدَكَ",  ten_tr:"ʿindaka", ten_es:"tú tienes", para:"لَكَ",   para_tr:"laka",  para_es:"para ti (m.)", con:"مَعَكَ", con_tr:"maʿaka", con_es:"contigo (m.)"},
+    {persona:"Tú (f.)",     sufijo:"ـكِ",   suf_tr:"-ki",   posesivo:"كِتَابُكِ",  pos_tr:"kitābuki", pos_es:"tu libro",  tener:"عِنْدَكِ",  ten_tr:"ʿindaki", ten_es:"tú tienes", para:"لَكِ",   para_tr:"laki",  para_es:"para ti (f.)", con:"مَعَكِ", con_tr:"maʿaki", con_es:"contigo (f.)"},
+    {persona:"Él",          sufijo:"ـهُ",   suf_tr:"-hu",   posesivo:"كِتَابُهُ",  pos_tr:"kitābuhu", pos_es:"su libro",  tener:"عِنْدَهُ",  ten_tr:"ʿindahu", ten_es:"él tiene",  para:"لَهُ",   para_tr:"lahu",  para_es:"para él", con:"مَعَهُ", con_tr:"maʿahu", con_es:"con él"},
+    {persona:"Ella",        sufijo:"ـهَا",  suf_tr:"-hā",   posesivo:"كِتَابُهَا", pos_tr:"kitābuhā", pos_es:"su libro",  tener:"عِنْدَهَا", ten_tr:"ʿindahā", ten_es:"ella tiene", para:"لَهَا",  para_tr:"lahā",  para_es:"para ella", con:"مَعَهَا", con_tr:"maʿahā", con_es:"con ella"},
+    {persona:"Nosotros",    sufijo:"ـنَا",  suf_tr:"-nā",   posesivo:"كِتَابُنَا", pos_tr:"kitābunā", pos_es:"nuestro libro", tener:"عِنْدَنَا", ten_tr:"ʿindanā", ten_es:"nosotros tenemos", para:"لَنَا",  para_tr:"lanā",  para_es:"para nosotros", con:"مَعَنَا", con_tr:"maʿanā", con_es:"con nosotros"},
+    {persona:"Vosotros 2",  sufijo:"ـكُمَا",suf_tr:"-kumā", posesivo:"كِتَابُكُمَا",pos_tr:"kitābukumā",pos_es:"vuestro libro (dual)", tener:"عِنْدَكُمَا",ten_tr:"ʿindakumā",ten_es:"vosotros dos tenéis", para:"لَكُمَا",para_tr:"lakumā", para_es:"para vosotros dos", con:"مَعَكُمَا", con_tr:"maʿakumā", con_es:"con vosotros dos"},
+    {persona:"Su (dual)",   sufijo:"ـهُمَا",suf_tr:"-humā", posesivo:"كِتَابُهُمَا",pos_tr:"kitābuhumā",pos_es:"su libro (dual)", tener:"عِنْدَهُمَا",ten_tr:"ʿindahumā",ten_es:"ellos/as dos tienen", para:"لَهُمَا",para_tr:"lahumā", para_es:"para ellos/as dos", con:"مَعَهُمَا", con_tr:"maʿahumā", con_es:"con ellos/as dos"},
+    {persona:"Vosotros",    sufijo:"ـكُمْ", suf_tr:"-kum",  posesivo:"كِتَابُكُمْ",pos_tr:"kitābukum",pos_es:"vuestro libro", tener:"عِنْدَكُمْ",ten_tr:"ʿindakum",ten_es:"vosotros tenéis", para:"لَكُمْ", para_tr:"lakum", para_es:"para vosotros", con:"مَعَكُمْ", con_tr:"maʿakum", con_es:"con vosotros"},
+    {persona:"Vosotras",    sufijo:"ـكُنَّ",suf_tr:"-kunna",posesivo:"كِتَابُكُنَّ",pos_tr:"kitābukunna",pos_es:"vuestro libro (f.)", tener:"عِنْدَكُنَّ",ten_tr:"ʿindakunna",ten_es:"vosotras tenéis", para:"لَكُنَّ",para_tr:"lakunna", para_es:"para vosotras", con:"مَعَكُنَّ", con_tr:"maʿakunna", con_es:"con vosotras"},
+    {persona:"Ellos",       sufijo:"ـهُمْ", suf_tr:"-hum",  posesivo:"كِتَابُهُمْ",pos_tr:"kitābuhum",pos_es:"su libro",  tener:"عِنْدَهُمْ", ten_tr:"ʿindahum",ten_es:"ellos tienen", para:"لَهُمْ", para_tr:"lahum", para_es:"para ellos", con:"مَعَهُمْ", con_tr:"maʿahum", con_es:"con ellos"},
+    {persona:"Ellas",       sufijo:"ـهُنَّ",suf_tr:"-hunna",posesivo:"كِتَابُهُنَّ",pos_tr:"kitābuhunna",pos_es:"su libro (f.)", tener:"عِنْدَهُنَّ",ten_tr:"ʿindahunna",ten_es:"ellas tienen", para:"لَهُنَّ",para_tr:"lahunna", para_es:"para ellas", con:"مَعَهُنَّ", con_tr:"maʿahunna", con_es:"con ellas"},
   ],
   nota: "Si el sustantivo termina en ة (ta marbuta), ésta se convierte en ت antes del sufijo: مَدْرَسَة + ـِي = مَدْرَسَتِي (madrasatī) = mi escuela."
 };
@@ -1974,7 +2019,7 @@ function renderPatrones() {
     c.innerHTML = `
       <div class="pat-intro">${PATRONES_A.intro}</div>
       <table class="pat-table">
-        <tr><th>Persona</th><th>Sufijo</th><th>Posesivo</th><th>عِنْدَ (tener)</th><th>لِـ (para)</th></tr>
+        <tr><th>Persona</th><th>Sufijo</th><th>Posesivo</th><th>عِنْدَ (tener)</th><th>لِـ (para)</th><th>مَعَ (con)</th></tr>
         ${PATRONES_A.filas.map(f => `
           <tr>
             <td class="pat-person">${f.persona}</td>
@@ -1982,6 +2027,7 @@ function renderPatrones() {
             <td class="pat-form">${f.posesivo}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.pos_es}</span></td>
             <td class="pat-form">${f.tener}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.ten_es}</span></td>
             <td class="pat-form">${f.para}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.para_es}</span></td>
+            <td class="pat-form">${f.con}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.con_es}</span></td>
           </tr>`).join('')}
       </table>
       <div class="pat-intro">📌 ${PATRONES_A.nota}</div>
@@ -2518,6 +2564,30 @@ function resetStats() {
 // ══════════════════════════════════════
 // VOCAB REFERENCIA
 // ══════════════════════════════════════
+
+// Normaliza una transliteración a una "clave fonética" laxa, para que
+// variantes intuitivas en castellano (ej. escribir "mugalima" en vez de
+// "muallima"/"muʿallima") también encuentren la palabra. Quita diacríticos,
+// unifica sonidos guturales/débiles que se confunden fácilmente al oído
+// (ʿ, ʾ, h, ḥ, g, ġ, k, q) y colapsa letras dobles (shadda).
+function phoneticKey(str) {
+  if (!str) return '';
+  let s = str.toLowerCase();
+  // ʿ (ayn) y ʾ (hamza) son letras modificadoras propias, no acentos combinables: se quitan aparte
+  s = s.replace(/ʿ/g, '').replace(/ʾ/g, '');
+  // normaliza a forma descompuesta y quita CUALQUIER acento/diacrítico combinante
+  // (cubre tanto "á" precompuesta como "a + acento combinante", venga como venga del teclado;
+  // también reduce automáticamente ā ī ū ṭ ḍ ṣ ẓ ṯ ḏ š ġ ŷ a sus letras base)
+  s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  // sonidos guturales/débiles que se confunden o se omiten al oído: se eliminan todos
+  s = s.replace(/[hgkq]/g, '');
+  // colapsar letras dobles (shadda / dobles al escribir)
+  s = s.replace(/(.)\1+/g, '$1');
+  // quitar todo lo que no sea letra
+  s = s.replace(/[^a-z]/g, '');
+  return s;
+}
+
 let vocabCat = 'Todas';
 function buildVocab() {
   buildCatFilter('vocab-cats', vocabCat, (cat) => { vocabCat = cat; renderVocab(); });
@@ -2526,13 +2596,15 @@ function buildVocab() {
 
 function renderVocab() {
   const query = (document.getElementById('vocab-search')?.value || '').trim().toLowerCase();
+  const queryPhon = phoneticKey(query);
   let pool = getVocabByFilter(vocabCat);
   if (query) {
     pool = pool.filter(w =>
       w.ar.includes(query) ||
       w.es.toLowerCase().includes(query) ||
       (w.tr && w.tr.toLowerCase().includes(query)) ||
-      (w.cat && w.cat.toLowerCase().includes(query))
+      (w.cat && w.cat.toLowerCase().includes(query)) ||
+      (queryPhon.length >= 3 && w.tr && phoneticKey(w.tr).includes(queryPhon))
     );
   }
   const cats = {};
