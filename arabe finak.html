@@ -626,6 +626,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="pat-block-tabs">
       <button class="pat-tab active" id="patb-A" onclick="setPatBlock('A')">🔗 Pronombres afijados</button>
       <button class="pat-tab" id="patb-B" onclick="setPatBlock('B')">⏳ Pasado verbal</button>
+      <button class="pat-tab" id="patb-C" onclick="setPatBlock('C')">🔤 Presente verbal</button>
     </div>
     <div class="pat-wrap" id="pat-content"></div>
   </div>
@@ -1246,6 +1247,26 @@ const VOCAB = [
   {ar:"كُلَّ",tr:"kulla",es:"Cada...",cat:"Conceptos",ctx:"كُلَّ يَوْم"},
   {ar:"مَكَان",tr:"makān",es:"Lugar",cat:"Lugares",ctx:"هَذَا مَكَانٌ جَمِيلٌ"},
   {ar:"وَلَا أَيّ مَكَان",tr:"wa-lā ayy makān",es:"A ningún lado (forma completa)",cat:"Frases",ctx:"لَمْ أَذْهَبْ إِلَى وَلَا أَيِّ مَكَانٍ"},
+  {ar:"وَرْدِيّ",tr:"wardiyy",es:"Rosa (masc.)",cat:"Adjetivos",ctx:"قَمِيصٌ وَرْدِيٌّ"},
+  {ar:"وَرْدِيَّة",tr:"wardiyya",es:"Rosa (fem.)",cat:"Adjetivos",ctx:"وَرْدَةٌ وَرْدِيَّةٌ"},
+  {ar:"رَمَادِيّ",tr:"ramādiyy",es:"Gris (masc.)",cat:"Adjetivos",ctx:"قِطٌّ رَمَادِيٌّ"},
+  {ar:"رَمَادِيَّة",tr:"ramādiyya",es:"Gris (fem.)",cat:"Adjetivos",ctx:"سَيَّارَةٌ رَمَادِيَّةٌ"},
+  {ar:"بَنَفْسَجِيّ",tr:"banafsaŷiyy / banafsayi",es:"Morado (masc.)",cat:"Adjetivos",ctx:"لَوْنٌ بَنَفْسَجِيٌّ"},
+  {ar:"بَنَفْسَجِيَّة",tr:"banafsaŷiyya / banafsayya",es:"Morado (fem.)",cat:"Adjetivos",ctx:"زَهْرَةٌ بَنَفْسَجِيَّةٌ"},
+  {ar:"اَلْآن",tr:"al-ān",es:"Ahora",cat:"Conceptos",ctx:"أَنَا أَكْتُبُ الْآنَ"},
+  {ar:"أَكَلَ",tr:"akala",es:"Comer (pasado, él)",cat:"Verbos",ctx:"أَكَلَ التُّفَّاحَ"},
+  {ar:"يَكْتُبُ",tr:"yaktubu",es:"Escribe (presente, él)",cat:"Verbos",ctx:"هُوَ يَكْتُبُ الْآنَ"},
+  {ar:"يَأْكُلُ",tr:"yaʾkulu",es:"Come (presente, él)",cat:"Verbos",ctx:"هُوَ يَأْكُلُ الْآنَ"},
+  {ar:"مَرَّة",tr:"marra",es:"Vez",cat:"Conceptos",ctx:"مَرَّةً وَاحِدَةً"},
+  {ar:"مَرَّات",tr:"marrāt",es:"Veces",cat:"Conceptos",ctx:"عِدَّةَ مَرَّاتٍ"},
+  {ar:"خِنْزِير",tr:"jinzīr",es:"Cerdo",cat:"Animales",ctx:"لَحْمُ الْخِنْزِيرِ"},
+  {ar:"أَحْسَن",tr:"aḥsan",es:"Mejor",cat:"Adjetivos",ctx:"هَذَا أَحْسَنُ مِنْ ذَلِكَ"},
+  {ar:"طَلَبَ",tr:"ṭalaba",es:"Pedir/Solicitar (pasado, él)",cat:"Verbos",ctx:"طَلَبَ مُسَاعَدَةً"},
+  {ar:"يَدْرُسُ",tr:"yadrusu",es:"Estudia (presente, él)",cat:"Verbos",ctx:"هُوَ يَدْرُسُ الْآنَ"},
+  {ar:"يَرْقُصُ",tr:"yarquṣu",es:"Baila (presente, él)",cat:"Verbos",ctx:"هُوَ يَرْقُصُ الْآنَ"},
+  {ar:"يَدْخُلُ",tr:"yadjulu",es:"Entra (presente, él)",cat:"Verbos",ctx:"هُوَ يَدْخُلُ الْآنَ"},
+  {ar:"يَخْرُجُ",tr:"yajruŷu",es:"Sale (presente, él)",cat:"Verbos",ctx:"هُوَ يَخْرُجُ الْآنَ"},
+  {ar:"يَطْلُبُ",tr:"yaṭlubu",es:"Pide/Solicita (presente, él)",cat:"Verbos",ctx:"هُوَ يَطْلُبُ مُسَاعَدَةً"},
 
 ];
 
@@ -1540,6 +1561,49 @@ const GRAMMAR = [
   {title:"وَلَا أَيّ مَكَان — desglose completo",desc:"مَكَان (makān) = lugar, como sustantivo independiente. La expresión 'a ningún lado' se compone de وَلَا (ni/no) + أَيّ (cualquier) + مَكَان (lugar). La forma corta y más cotidiana es وَلَا مَكَان (mismo significado).",examples:[
     {ar:"مَكَان",tr:"makān",es:"Lugar",note:""},
     {ar:"وَلَا أَيّ مَكَان",tr:"wa-lā ayy makān",es:"A ningún lado (forma completa)",note:"Forma corta: وَلَا مَكَان"},
+  ]},
+  {title:"Colores nuevos: وَرْدِيّ، رَمَادِيّ، بَنَفْسَجِيّ",desc:"Igual que naranja y marrón, estos colores son 'prestados' y siguen el patrón +ī/+iyya (como los gentilicios), no el patrón afʿal/faʿlāʾ de los colores básicos.",examples:[
+    {ar:"وَرْدِيّ / وَرْدِيَّة",tr:"wardiyy / wardiyya",es:"Rosa (m./f.)",note:""},
+    {ar:"رَمَادِيّ / رَمَادِيَّة",tr:"ramādiyy / ramādiyya",es:"Gris (m./f.)",note:""},
+    {ar:"بَنَفْسَجِيّ / بَنَفْسَجِيَّة",tr:"banafsaŷiyy / banafsaŷiyya",es:"Morado (m./f.)",note:""},
+  ]},
+  {title:"اَلْمُضَارِع — el presente (Forma I)",desc:"Se elimina la primera y última vocal corta de la raíz y se añade un prefijo + sufijo según la persona. Negación: لَا (lā) + verbo en presente.",examples:[
+    {ar:"لَا أَكْتُبُ",tr:"lā aktubu",es:"No escribo",note:""},
+    {ar:"أَنَا أَكْتُبُ",tr:"anā aktubu",es:"Yo escribo",note:"كَتَبَ (kataba) → يَكْتُبُ (yaktubu)"},
+    {ar:"أَنْتَ تَكْتُبُ",tr:"anta taktubu",es:"Tú escribes (m.)",note:""},
+    {ar:"أَنْتِ تَكْتُبِينَ",tr:"anti taktubīna",es:"Tú escribes (f.)",note:""},
+    {ar:"هُوَ يَكْتُبُ",tr:"huwa yaktubu",es:"Él escribe",note:""},
+    {ar:"هِيَ تَكْتُبُ",tr:"hiya taktubu",es:"Ella escribe",note:""},
+    {ar:"نَحْنُ نَكْتُبُ",tr:"naḥnu naktubu",es:"Nosotros escribimos",note:""},
+    {ar:"أَنْتُمْ تَكْتُبُونَ",tr:"antum taktubūna",es:"Vosotros escribís",note:""},
+    {ar:"أَنْتُنَّ تَكْتُبْنَ",tr:"antunna taktubna",es:"Vosotras escribís",note:""},
+    {ar:"هُمْ يَكْتُبُونَ",tr:"hum yaktubūna",es:"Ellos escriben",note:""},
+    {ar:"هُنَّ يَكْتُبْنَ",tr:"hunna yaktubna",es:"Ellas escriben",note:""},
+  ]},
+  {title:"اَلْمُضَارِع de أَكَلَ (comer) — caso especial con hamza",desc:"En 'yo', la hamza del prefijo (أَ) se funde con la hamza de la raíz (أَكَلَ) formando una madda: آكُلُ (ākulu), no 'aʾkulu'. El resto de personas sigue el patrón regular.",examples:[
+    {ar:"أَنَا آكُلُ",tr:"anā ākulu",es:"Yo como",note:"Fusión especial de las dos hamzas"},
+    {ar:"أَنْتَ تَأْكُلُ",tr:"anta taʾkulu",es:"Tú comes (m.)",note:""},
+    {ar:"أَنْتِ تَأْكُلِينَ",tr:"anti taʾkulīna",es:"Tú comes (f.)",note:""},
+    {ar:"هُوَ يَأْكُلُ",tr:"huwa yaʾkulu",es:"Él come",note:""},
+    {ar:"هِيَ تَأْكُلُ",tr:"hiya taʾkulu",es:"Ella come",note:""},
+    {ar:"نَحْنُ نَأْكُلُ",tr:"naḥnu naʾkulu",es:"Nosotros comemos",note:""},
+    {ar:"أَنْتُمْ تَأْكُلُونَ",tr:"antum taʾkulūna",es:"Vosotros coméis",note:""},
+    {ar:"أَنْتُنَّ تَأْكُلْنَ",tr:"antunna taʾkulna",es:"Vosotras coméis",note:""},
+    {ar:"هُمْ يَأْكُلُونَ",tr:"hum yaʾkulūna",es:"Ellos comen",note:""},
+    {ar:"هُنَّ يَأْكُلْنَ",tr:"hunna yaʾkulna",es:"Ellas comen",note:""},
+  ]},
+  {title:"Presente continuo — 'estoy + -ando/-iendo'",desc:"Se forma con el verbo en presente + اَلْآن (al-ān, 'ahora'). Equivale al presente continuo del español/inglés.",examples:[
+    {ar:"أَنَا أَكْتُبُ الْآنَ",tr:"anā aktubu l-āna",es:"Estoy escribiendo (lit. 'yo escribo ahora')",note:""},
+  ]},
+  {title:"El futuro — prefijo سَـ",desc:"Se pega el prefijo سَـ (sa-) directamente a la forma ya conjugada en presente (se escriben juntos, sin espacio).",examples:[
+    {ar:"أَنَا سَأَكْتُبُ",tr:"anā sa-aktubu",es:"Yo escribiré",note:"سَـ + أَكْتُبُ = سَأَكْتُبُ (una sola palabra)"},
+  ]},
+  {title:"La madda (~) — 'alif + alif'",desc:"Cuando se juntan dos alifs seguidas (normalmente hamza + alif, أ + ا), no se escriben por separado: se funden en una sola letra, alif con el signo madda encima (آ). Se pronuncia como una 'a' larga con un golpe glótico inicial marcado.",examples:[
+    {ar:"آكُلُ",tr:"ākulu",es:"Yo como",note:"أَ (prefijo) + أَكُلُ (raíz con hamza) → آكُلُ"},
+    {ar:"اَلْآن",tr:"al-ān",es:"Ahora",note:"اَلْ + آن → اَلْآن"},
+  ]},
+  {title:"مَرَّة / مَرَّات — 'vez' / 'veces'",desc:"Sigue el mismo patrón de plural femenino sano ya visto (+ات quitando la ة).",examples:[
+    {ar:"مَرَّة → مَرَّات",tr:"marra → marrāt",es:"Vez → Veces",note:"Igual que سَيَّارَة → سَيَّارَات"},
   ]},
 ];
 const FRASES = [
@@ -2076,16 +2140,115 @@ const PATRONES_B = {
   irregular: "⚠️ لَيْسَ (no ser/no estar) es IRREGULAR: usa لَسْتُ, لَسْتَ, لَسْتِ, لَيْسَ, لَيْسَتْ, لَسْنَا, لَسْتُمْ, لَيْسُوا — no sigue exactamente el mismo patrón de sufijos."
 };
 
+const PATRONES_C = {
+  intro: "El presente (اَلْمُضَارِع) tiene 4 formas según el patrón de la vocal media de la raíz. De momento en clase solo hemos visto la Forma I — las demás aparecen aquí ya preparadas para cuando las deis.",
+  formas: {
+    "Forma I": {
+      disponible: true,
+      nota: "Se elimina la primera y última vocal corta de la raíz, y se añade un prefijo + sufijo según la persona. Negación: لَا + verbo en presente.",
+      verbos: {
+        "كَتَبَ → يَكْتُبُ (escribir)": [
+          {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَكْتُبُ",     tr:"aktubu",     es:"yo escribo"},
+          {persona:"Tú (m.)",  prefijo:"تَ", sufijo:"ـُ",    forma:"تَكْتُبُ",     tr:"taktubu",    es:"tú escribes (m.)"},
+          {persona:"Tú (f.)",  prefijo:"تَ", sufijo:"ـِينَ", forma:"تَكْتُبِينَ",  tr:"taktubīna",  es:"tú escribes (f.)"},
+          {persona:"Él",       prefijo:"يَ", sufijo:"ـُ",    forma:"يَكْتُبُ",     tr:"yaktubu",    es:"él escribe"},
+          {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَكْتُبُ",     tr:"taktubu",    es:"ella escribe"},
+          {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَكْتُبُ",     tr:"naktubu",    es:"nosotros escribimos"},
+          {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَكْتُبُونَ",  tr:"taktubūna",  es:"vosotros escribís"},
+          {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَكْتُبُونَ",  tr:"yaktubūna",  es:"ellos escriben"},
+        ],
+        "أَكَلَ → يَأْكُلُ (comer)": [
+          {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"آكُلُ",       tr:"ākulu",      es:"yo como — ¡fusión de hamzas! (ver la madda)"},
+          {persona:"Tú (m.)",  prefijo:"تَ", sufijo:"ـُ",    forma:"تَأْكُلُ",     tr:"taʾkulu",    es:"tú comes (m.)"},
+          {persona:"Tú (f.)",  prefijo:"تَ", sufijo:"ـِينَ", forma:"تَأْكُلِينَ",  tr:"taʾkulīna",  es:"tú comes (f.)"},
+          {persona:"Él",       prefijo:"يَ", sufijo:"ـُ",    forma:"يَأْكُلُ",     tr:"yaʾkulu",    es:"él come"},
+          {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَأْكُلُ",     tr:"taʾkulu",    es:"ella come"},
+          {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَأْكُلُ",     tr:"naʾkulu",    es:"nosotros comemos"},
+          {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَأْكُلُونَ",  tr:"taʾkulūna",  es:"vosotros coméis"},
+          {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَأْكُلُونَ",  tr:"yaʾkulūna",  es:"ellos comen"},
+        ],
+        "دَرَسَ → يَدْرُسُ (estudiar)": [
+          {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَدْرُسُ",     tr:"adrusu",     es:"yo estudio"},
+          {persona:"Tú (m.)",  prefijo:"تَ", sufijo:"ـُ",    forma:"تَدْرُسُ",     tr:"tadrusu",    es:"tú estudias (m.)"},
+          {persona:"Tú (f.)",  prefijo:"تَ", sufijo:"ـِينَ", forma:"تَدْرُسِينَ",  tr:"tadrusīna",  es:"tú estudias (f.)"},
+          {persona:"Él",       prefijo:"يَ", sufijo:"ـُ",    forma:"يَدْرُسُ",     tr:"yadrusu",    es:"él estudia"},
+          {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَدْرُسُ",     tr:"tadrusu",    es:"ella estudia"},
+          {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَدْرُسُ",     tr:"nadrusu",    es:"nosotros estudiamos"},
+          {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَدْرُسُونَ",  tr:"tadrusūna",  es:"vosotros estudiáis"},
+          {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَدْرُسُونَ",  tr:"yadrusūna",  es:"ellos estudian"},
+        ],
+        "رَقَصَ → يَرْقُصُ (bailar)": [
+          {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَرْقُصُ",     tr:"arquṣu",     es:"yo bailo"},
+          {persona:"Tú (m.)",  prefijo:"تَ", sufijo:"ـُ",    forma:"تَرْقُصُ",     tr:"tarquṣu",    es:"tú bailas (m.)"},
+          {persona:"Tú (f.)",  prefijo:"تَ", sufijo:"ـِينَ", forma:"تَرْقُصِينَ",  tr:"tarquṣīna",  es:"tú bailas (f.)"},
+          {persona:"Él",       prefijo:"يَ", sufijo:"ـُ",    forma:"يَرْقُصُ",     tr:"yarquṣu",    es:"él baila"},
+          {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَرْقُصُ",     tr:"tarquṣu",    es:"ella baila"},
+          {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَرْقُصُ",     tr:"narquṣu",    es:"nosotros bailamos"},
+          {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَرْقُصُونَ",  tr:"tarquṣūna",  es:"vosotros bailáis"},
+          {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَرْقُصُونَ",  tr:"yarquṣūna",  es:"ellos bailan"},
+        ],
+        "دَخَلَ → يَدْخُلُ (entrar)": [
+          {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَدْخُلُ",     tr:"adjulu",     es:"yo entro"},
+          {persona:"Tú (m.)",  prefijo:"تَ", sufijo:"ـُ",    forma:"تَدْخُلُ",     tr:"tadjulu",    es:"tú entras (m.)"},
+          {persona:"Tú (f.)",  prefijo:"تَ", sufijo:"ـِينَ", forma:"تَدْخُلِينَ",  tr:"tadjulīna",  es:"tú entras (f.)"},
+          {persona:"Él",       prefijo:"يَ", sufijo:"ـُ",    forma:"يَدْخُلُ",     tr:"yadjulu",    es:"él entra"},
+          {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَدْخُلُ",     tr:"tadjulu",    es:"ella entra"},
+          {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَدْخُلُ",     tr:"nadjulu",    es:"nosotros entramos"},
+          {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَدْخُلُونَ",  tr:"tadjulūna",  es:"vosotros entráis"},
+          {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَدْخُلُونَ",  tr:"yadjulūna",  es:"ellos entran"},
+        ],
+        "خَرَجَ → يَخْرُجُ (salir)": [
+          {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَخْرُجُ",     tr:"ajruŷu",     es:"yo salgo"},
+          {persona:"Tú (m.)",  prefijo:"تَ", sufijo:"ـُ",    forma:"تَخْرُجُ",     tr:"tajruŷu",    es:"tú sales (m.)"},
+          {persona:"Tú (f.)",  prefijo:"تَ", sufijo:"ـِينَ", forma:"تَخْرُجِينَ",  tr:"tajruŷīna",  es:"tú sales (f.)"},
+          {persona:"Él",       prefijo:"يَ", sufijo:"ـُ",    forma:"يَخْرُجُ",     tr:"yajruŷu",    es:"él sale"},
+          {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَخْرُجُ",     tr:"tajruŷu",    es:"ella sale"},
+          {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَخْرُجُ",     tr:"najruŷu",    es:"nosotros salimos"},
+          {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَخْرُجُونَ",  tr:"tajruŷūna",  es:"vosotros salís"},
+          {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَخْرُجُونَ",  tr:"yajruŷūna",  es:"ellos salen"},
+        ],
+        "طَلَبَ → يَطْلُبُ (pedir/solicitar)": [
+          {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَطْلُبُ",     tr:"aṭlubu",     es:"yo pido"},
+          {persona:"Tú (m.)",  prefijo:"تَ", sufijo:"ـُ",    forma:"تَطْلُبُ",     tr:"taṭlubu",    es:"tú pides (m.)"},
+          {persona:"Tú (f.)",  prefijo:"تَ", sufijo:"ـِينَ", forma:"تَطْلُبِينَ",  tr:"taṭlubīna",  es:"tú pides (f.)"},
+          {persona:"Él",       prefijo:"يَ", sufijo:"ـُ",    forma:"يَطْلُبُ",     tr:"yaṭlubu",    es:"él pide"},
+          {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَطْلُبُ",     tr:"taṭlubu",    es:"ella pide"},
+          {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَطْلُبُ",     tr:"naṭlubu",    es:"nosotros pedimos"},
+          {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَطْلُبُونَ",  tr:"taṭlubūna",  es:"vosotros pedís"},
+          {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَطْلُبُونَ",  tr:"yaṭlubūna",  es:"ellos piden"},
+        ],
+      },
+      extra: "Presente continuo: presente + اَلْآن (ahora) → أَنَا أَكْتُبُ الْآنَ (estoy escribiendo). Futuro: prefijo سَـ + presente → أَنَا سَأَكْتُبُ (yo escribiré)."
+    },
+    "Forma II": { disponible: false },
+    "Forma III": { disponible: false },
+    "Forma IV": { disponible: false },
+  }
+};
+
 // ══════════════════════════════════════
 // PATRONES — lógica
 // ══════════════════════════════════════
 let patBlock = 'A';
 let patVerboSel = 'كَانَ (ser/estar)';
+let patFormaSel = 'Forma I';
+let patPresVerboSel = 'كَتَبَ → يَكْتُبُ (escribir)';
 
 function setPatBlock(b) {
   patBlock = b;
   document.getElementById('patb-A').classList.toggle('active', b === 'A');
   document.getElementById('patb-B').classList.toggle('active', b === 'B');
+  document.getElementById('patb-C').classList.toggle('active', b === 'C');
+  renderPatrones();
+}
+
+function setPatForma(f) {
+  patFormaSel = f;
+  renderPatrones();
+}
+
+function setPatPresVerbo(v) {
+  patPresVerboSel = v;
   renderPatrones();
 }
 
@@ -2108,7 +2271,7 @@ function renderPatrones() {
       </table>
       <div class="pat-intro">📌 ${PATRONES_A.nota}</div>
     `;
-  } else {
+  } else if (patBlock === 'B') {
     const verbos = Object.keys(PATRONES_B.verbos);
     c.innerHTML = `
       <div class="pat-intro">${PATRONES_B.intro}</div>
@@ -2127,6 +2290,40 @@ function renderPatrones() {
       </table>
       <div class="pat-irregular">${PATRONES_B.irregular}</div>
     `;
+  } else {
+    const formas = Object.keys(PATRONES_C.formas);
+    const formaData = PATRONES_C.formas[patFormaSel];
+    let body = `
+      <div class="pat-intro">${PATRONES_C.intro}</div>
+      <div class="pat-selector">
+        ${formas.map(f => `<button class="pat-sel-btn ${f===patFormaSel?'active':''}" onclick="setPatForma('${f}')">${f}</button>`).join('')}
+      </div>
+    `;
+    if (!formaData.disponible) {
+      body += `<div class="pat-irregular">🚧 Todavía no hemos visto esta forma en clase. En cuanto la deis, se rellena aquí igual que la Forma I.</div>`;
+    } else {
+      const presVerbos = Object.keys(formaData.verbos);
+      if (!presVerbos.includes(patPresVerboSel)) patPresVerboSel = presVerbos[0];
+      body += `
+        <div class="pat-intro">📌 ${formaData.nota}</div>
+        <div class="pat-selector">
+          ${presVerbos.map(v => `<button class="pat-sel-btn ${v===patPresVerboSel?'active':''}" onclick="setPatPresVerbo('${v}')">${v}</button>`).join('')}
+        </div>
+        <table class="pat-table">
+          <tr><th>Persona</th><th>Prefijo</th><th>Sufijo</th><th>Forma</th><th>Significado</th></tr>
+          ${formaData.verbos[patPresVerboSel].map(f => `
+            <tr>
+              <td class="pat-person">${f.persona}</td>
+              <td class="pat-form pat-suffix">${f.prefijo}</td>
+              <td class="pat-form pat-suffix">${f.sufijo}</td>
+              <td class="pat-form">${f.forma}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.tr}</span></td>
+              <td style="font-size:11px;color:var(--cream2);">${f.es}</td>
+            </tr>`).join('')}
+        </table>
+        ${formaData.extra ? `<div class="pat-intro">${formaData.extra}</div>` : ''}
+      `;
+    }
+    c.innerHTML = body;
   }
 }
 
