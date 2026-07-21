@@ -2293,11 +2293,11 @@ const PATRONES_B = {
 };
 
 const PATRONES_C = {
-  intro: "El presente (اَلْمُضَارِع) tiene 4 formas según el patrón de la vocal media de la raíz. De momento en clase solo hemos visto la Forma I — las demás aparecen aquí ya preparadas para cuando las deis.",
+  intro: "El presente (اَلْمُضَارِع) tiene 4 formas según qué le pasa a la vocal media de la raíz al pasar del pasado al presente. Resumen rápido: Forma I → siempre a DAMMA (يَكْتُبُ). Forma II → de KASRA (en el pasado) a FATHA (يَشْرَبُ) — la única predecible mirando el pasado. Forma III → NO CAMBIA, se queda en FATHA (يَذْهَبُ). Forma IV → de FATHA a KASRA (يَجْلِسُ). En las 4 se usan los mismos prefijos y sufijos de persona — abre cada pestaña para la explicación detallada de esa forma en concreto.",
   formas: {
     "Forma I": {
       disponible: true,
-      nota: "Se elimina la primera y última vocal corta de la raíz, y se añade un prefijo + sufijo según la persona. Negación: لَا + verbo en presente.",
+      nota: "El presente (اَلْمُضَارِع) se construye en 3 pasos desde la raíz de 3 consonantes: 1) se eliminan la primera y la última vocal corta que tenía el verbo en pasado, dejando solo el 'esqueleto' de consonantes con la vocal media intacta; 2) se añade un PREFIJO al principio según la persona — أَ (yo), تَ (tú m./tú f./ella), يَ (él/ellos), نَ (nosotros); 3) se añade un SUFIJO al final, que en casi todas las personas es una damma (ـُ) salvo en tú-fem./vosotros/ellos, que llevan una terminación distinta (ـِينَ, ـُونَ, ـْنَ). En la FORMA I, la vocal media del presente es SIEMPRE DAMMA (ُ), pase lo que pase con el pasado: كَتَبَ (pasado, con fatha) se convierte en يَكْتُبُ (presente, con DAMMA). Es la forma que se enseña primero porque es la más frecuente. Negación del presente: لَا (lā) delante del verbo → لَا أَكْتُبُ = no escribo. Truco mnemotécnico: 'Forma Uno, vocal U (damma)'.",
       verbos: {
         "كَتَبَ → يَكْتُبُ (escribir)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَكْتُبُ",     tr:"aktubu",     es:"yo escribo"},
@@ -2394,7 +2394,7 @@ const PATRONES_C = {
     },
     "Forma II": {
       disponible: true,
-      nota: "Modelo II: el pasado tiene KASRA en la vocal media y el presente cambia a FATHA (en vez de damma como en la Forma I). Se usan los MISMOS prefijos y sufijos que en la Forma I — solo cambia esa vocal.",
+      nota: "La FORMA II es la única de las 4 que se puede predecir mirando el PASADO: si el pasado lleva KASRA en la vocal media (ejemplo: شَرِبَ, con kasra bajo la ر), su presente cambiará esa vocal a FATHA — nunca a damma. Ejemplo completo: شَرِبَ (pasado, kasra) → يَشْرَبُ (presente, FATHA). Es como un intercambio: la vocal 'baja' (kasra) del pasado sube a fatha en el presente. Los prefijos y sufijos de persona son EXACTAMENTE los mismos que en la Forma I (أَ/تَ/يَ/نَ + las mismas terminaciones) — lo único distinto es esa vocal del medio. Por qué importa reconocerla: si memorizas el pasado de un verbo y ves que lleva kasra (شَرِبَ، فَهِمَ، رَكِبَ...), ya sabes de forma automática que su presente será con fatha, sin tener que memorizar cada presente por separado. Ejemplos de esta familia: شَرِبَ→يَشْرَبُ (beber), فَهِمَ→يَفْهَمُ (entender), رَكِبَ→يَرْكَبُ (montar), سَمِعَ→يَسْمَعُ (escuchar). Truco mnemotécnico: 'kasra en el pasado, fatha en el presente' — es la única forma con esta regla predecible.",
       verbos: {
         "شَرِبَ → يَشْرَبُ (beber)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَشْرَبُ",     tr:"ašrabu",     es:"yo bebo"},
@@ -2511,7 +2511,7 @@ const PATRONES_C = {
     },
     "Forma III": {
       disponible: true,
-      nota: "Modelo III: NO CAMBIA la vocal media — el pasado tiene FATHA y el presente también FATHA (a diferencia de la Forma I, que cambia a damma). Mismos prefijos y sufijos que las demás formas.",
+      nota: "La FORMA III es la que menos cambia respecto al pasado — por eso se llama 'no cambia'. Tanto el pasado como el presente llevan FATHA en la vocal media: ذَهَبَ (pasado, fatha) → يَذْهَبُ (presente, TAMBIÉN fatha). Puede parecer raro que 'no pase nada', pero es justo la particularidad de este grupo: mientras la Forma I sube a damma y la Forma IV baja a kasra, aquí la vocal simplemente se queda igual que en el pasado. Los prefijos y sufijos de persona son los de siempre (أَ/تَ/يَ/نَ + terminaciones). El problema práctico de esta forma: como su pasado (fatha-fatha) es IGUAL que el de la Forma I y la Forma IV, no hay ninguna pista visual en el pasado para saber que un verbo es de este grupo — solo se sabe memorizando cada verbo. La única manera de reconocerlo es ya conociendo el presente y comprobando que su vocal coincide con la del pasado. Ejemplos: ذَهَبَ→يَذْهَبُ (irse), فَتَحَ→يَفْتَحُ (abrir), مَنَعَ→يَمْنَعُ (impedir), فَعَلَ→يَفْعَلُ (hacer). Truco mnemotécnico: 'lo que ves (fatha) es lo que hay' — no hay sorpresas en la vocal.",
       verbos: {
         "ذَهَبَ → يَذْهَبُ (irse)": [
           {persona:"Yo", prefijo:"أَ", sufijo:"ـُ", forma:"أذْهَبُ", tr:"aḏhabu", es:"yo — irse"},
@@ -2781,7 +2781,7 @@ const PATRONES_C = {
     },
     "Forma IV": {
       disponible: true,
-      nota: "Modelo IV: el pasado tiene FATHA en la vocal media y el presente cambia a KASRA (a diferencia del Modelo I, que cambia a damma). Mismos prefijos y sufijos que las demás formas.",
+      nota: "La FORMA IV, igual que la Forma I y la Forma III, tiene el pasado con FATHA en la vocal media — así que mirando solo el pasado NO se puede distinguir de esas otras dos (los tres se escriben pasado con fatha-fatha, sin ninguna diferencia visible). Lo que sí la distingue es que su PRESENTE cambia a KASRA (ِ), ni a damma ni se queda en fatha. Ejemplo completo: جَلَسَ (pasado, fatha) → يَجْلِسُ (presente, KASRA). Los prefijos y sufijos de persona son los mismos de siempre. Punto clave para no perderse: como las Formas I, III y IV comparten el mismo aspecto en pasado (fatha-fatha) y solo se diferencian por la vocal del PRESENTE (damma / fatha / kasra respectivamente), la ÚNICA forma fiable de saber a qué modelo pertenece un verbo nuevo es habérselo aprendido de memoria — no existe ningún atajo o regla visual, a diferencia de la Forma II (que sí se adivina por el pasado). Ejemplos: جَلَسَ→يَجْلِسُ (sentarse), عَرَفَ→يَعْرِفُ (saber/conocer), كَسَرَ→يَكْسِرُ (romper), قَدَرَ→يَقْدِرُ (poder). Truco mnemotécnico: 'Forma IV, vocal I (kasra)' — como la 'i' de kasra.",
       verbos: {
         "جَلَسَ → يَجْلِسُ (sentarse)": [
           {persona:"Yo", prefijo:"أَ", sufijo:"ـُ", forma:"أجْلِسُ", tr:"aŷlisu", es:"yo — sentarse"},
