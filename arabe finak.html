@@ -467,6 +467,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <!-- ESCUCHA -->
   <div id="page-escucha" class="page hidden">
     <div class="section-label">Escucha — identifica lo que oyes</div>
+    <div class="fr-mode-bar">
+      <button class="fr-mode-btn active" id="em-0" onclick="setEMode('palabras')">📝 Palabras</button>
+      <button class="fr-mode-btn" id="em-1" onclick="setEMode('frases')">💬 Frases</button>
+    </div>
     <div class="game-wrap">
       <div class="score-bar">
         <div><div class="sc-n" id="e-c">0</div><div class="sc-l">correctas</div></div>
@@ -4354,12 +4358,24 @@ function endQuiz() {
 // ══════════════════════════════════════
 // ESCUCHA
 // ══════════════════════════════════════
-let eItems = [], eIdx = 0, eC = 0, eW = 0, curEscucha = null;
+let eItems = [], eIdx = 0, eC = 0, eW = 0, curEscucha = null, eMode = 'palabras';
+
+function setEMode(m) {
+  eMode = m;
+  document.getElementById('em-0').classList.toggle('active', m === 'palabras');
+  document.getElementById('em-1').classList.toggle('active', m === 'frases');
+  initEscucha();
+}
 
 function initEscucha() {
-  eItems = shuffle(VOCAB).slice(0, 12); eIdx = 0; eC = 0; eW = 0;
+  const pool = eMode === 'frases'
+    ? VOCAB.filter(v => v.cat === 'Frases')
+    : VOCAB.filter(v => v.cat !== 'Frases');
+  eItems = shuffle(pool).slice(0, 12); eIdx = 0; eC = 0; eW = 0;
   document.getElementById('e-result').classList.remove('show');
   document.getElementById('escucha-card').style.display = 'block';
+  const label = document.querySelector('#escucha-card > div:first-child');
+  if (label) label.textContent = eMode === 'frases' ? '¿Cuál frase has escuchado?' : '¿Cuál palabra has escuchado?';
   updateEScore(); showEscucha();
 }
 
@@ -4372,12 +4388,17 @@ function updateEScore() {
 function showEscucha() {
   if (eIdx >= eItems.length) { endEscucha(); return; }
   const w = eItems[eIdx]; curEscucha = w;
-  const others = shuffle(VOCAB.filter(v => v.ar !== w.ar)).slice(0, 3);
+  const samePool = eMode === 'frases' ? VOCAB.filter(v => v.cat === 'Frases') : VOCAB.filter(v => v.cat !== 'Frases');
+  const others = shuffle(samePool.filter(v => v.ar !== w.ar)).slice(0, 3);
   const opts = shuffle([w, ...others]);
   const c = document.getElementById('e-opts'); c.innerHTML = '';
   opts.forEach(o => {
     const b = document.createElement('button'); b.className = 'opt';
-    b.innerHTML = '<div class="opt-arabic">' + o.ar + '</div><div style="font-size:11px;color:var(--cream2);margin-top:2px;">' + o.tr + '</div>';
+    if (eMode === 'frases') {
+      b.innerHTML = '<div style="font-size:13px;color:var(--cream);text-align:center;line-height:1.4;">' + o.es + '</div>';
+    } else {
+      b.innerHTML = '<div class="opt-arabic">' + o.ar + '</div><div style="font-size:11px;color:var(--cream2);margin-top:2px;">' + o.tr + '</div>';
+    }
     b.onclick = () => answerE(b, o, w); c.appendChild(b);
   });
   document.getElementById('e-feedback').textContent = '';
