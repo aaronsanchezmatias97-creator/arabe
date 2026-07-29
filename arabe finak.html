@@ -33,8 +33,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .section-label{font-size:10px;color:var(--cream2);letter-spacing:.15em;text-transform:uppercase;padding:16px 20px 8px;}
 
 /* CATEGORY FILTER */
-.cat-filter{display:flex;gap:6px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;}
-.cat-filter::-webkit-scrollbar{display:none;}
+.cat-filter{display:flex;gap:6px;padding:0 16px 12px 16px;padding-bottom:8px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.4) transparent;}
+.cat-filter::-webkit-scrollbar{height:4px;}
+.cat-filter::-webkit-scrollbar-track{background:transparent;}
+.cat-filter::-webkit-scrollbar-thumb{background:rgba(201,168,76,.4);border-radius:99px;}
 .cat-chip{flex-shrink:0;padding:6px 14px;border-radius:99px;border:1px solid rgba(201,168,76,.25);background:transparent;color:var(--cream2);font-size:12px;cursor:pointer;transition:.15s;font-family:'DM Sans',sans-serif;}
 .cat-chip.active{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600;}
 
