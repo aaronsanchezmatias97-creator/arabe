@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>عربي — Árabe Interactivo</title>
+<title>عربي — Árabe Interactivo [v2 · 69 verbos]</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
 :root{
@@ -2372,7 +2372,6 @@ const PATRONES_B = {
       {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"لَبِسُوا",   tr:"labisū",    es:"ellos se vistieron"},
       {persona:"Ellas",    sufijo:"ـنَ",   suf_tr:"-na",    forma:"لَبِسْنَ",   tr:"labisna",   es:"ellas se vistieron"},
     ],
-  },
 
     "أَكَلَ (comer)": [
       {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"أَكَلْتُ",    tr:"akaltu",    es:"yo comí"},
@@ -3059,6 +3058,7 @@ const PATRONES_B = {
       {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"حَلَفُوا", tr:"ḥalafū", es:"ellos juraron"},
       {persona:"Ellas",    sufijo:"ـنَ",   suf_tr:"-na",    forma:"حَلَفْنَ", tr:"ḥalafna", es:"ellas juraron"},
     ],
+  },
   irregular: "⚠️ لَيْسَ (no ser/no estar) es IRREGULAR: usa لَسْتُ, لَسْتَ, لَسْتِ, لَيْسَ, لَيْسَتْ, لَسْنَا, لَسْتُمْ, لَيْسُوا — no sigue exactamente el mismo patrón de sufijos."
 };
 
@@ -3077,7 +3077,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَكْتُبُ",     tr:"taktubu",    es:"ella escribe"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَكْتُبُ",     tr:"naktubu",    es:"nosotros escribimos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَكْتُبُونَ",  tr:"taktubūna",  es:"vosotros escribís"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَكْتُبْنَ",  tr:"taktubna",  es:"vosotras escribís"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَكْتُبُونَ",  tr:"yaktubūna",  es:"ellos escriben"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَكْتُبْنَ",  tr:"yaktubna",  es:"ellas escriben"},
         ],
         "أَكَلَ → يَأْكُلُ (comer)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"آكُلُ",       tr:"ākulu",      es:"yo como — ¡fusión de hamzas! (ver la madda)"},
@@ -3087,7 +3089,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَأْكُلُ",     tr:"taʾkulu",    es:"ella come"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَأْكُلُ",     tr:"naʾkulu",    es:"nosotros comemos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَأْكُلُونَ",  tr:"taʾkulūna",  es:"vosotros coméis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَأْكُلْنَ",  tr:"taʾkulna",  es:"vosotras coméis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَأْكُلُونَ",  tr:"yaʾkulūna",  es:"ellos comen"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَأْكُلْنَ",  tr:"yaʾkulna",  es:"ellas comen"},
         ],
         "دَرَسَ → يَدْرُسُ (estudiar)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَدْرُسُ",     tr:"adrusu",     es:"yo estudio"},
@@ -3097,7 +3101,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَدْرُسُ",     tr:"tadrusu",    es:"ella estudia"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَدْرُسُ",     tr:"nadrusu",    es:"nosotros estudiamos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَدْرُسُونَ",  tr:"tadrusūna",  es:"vosotros estudiáis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَدْرُسْنَ",  tr:"tadrusna",  es:"vosotras estudiáis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَدْرُسُونَ",  tr:"yadrusūna",  es:"ellos estudian"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَدْرُسْنَ",  tr:"yadrusna",  es:"ellas estudian"},
         ],
         "رَقَصَ → يَرْقُصُ (bailar)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَرْقُصُ",     tr:"arquṣu",     es:"yo bailo"},
@@ -3107,7 +3113,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَرْقُصُ",     tr:"tarquṣu",    es:"ella baila"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَرْقُصُ",     tr:"narquṣu",    es:"nosotros bailamos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَرْقُصُونَ",  tr:"tarquṣūna",  es:"vosotros bailáis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَرْقُصْنَ",  tr:"tarquṣna",  es:"vosotras bailáis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَرْقُصُونَ",  tr:"yarquṣūna",  es:"ellos bailan"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَرْقُصْنَ",  tr:"yarquṣna",  es:"ellas bailan"},
         ],
         "دَخَلَ → يَدْخُلُ (entrar)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَدْخُلُ",     tr:"adjulu",     es:"yo entro"},
@@ -3117,7 +3125,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَدْخُلُ",     tr:"tadjulu",    es:"ella entra"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَدْخُلُ",     tr:"nadjulu",    es:"nosotros entramos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَدْخُلُونَ",  tr:"tadjulūna",  es:"vosotros entráis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَدْخُلْنَ",  tr:"tadjulna",  es:"vosotras entráis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَدْخُلُونَ",  tr:"yadjulūna",  es:"ellos entran"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَدْخُلْنَ",  tr:"yadjulna",  es:"ellas entran"},
         ],
         "خَرَجَ → يَخْرُجُ (salir)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَخْرُجُ",     tr:"ajruŷu",     es:"yo salgo"},
@@ -3127,7 +3137,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَخْرُجُ",     tr:"tajruŷu",    es:"ella sale"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَخْرُجُ",     tr:"najruŷu",    es:"nosotros salimos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَخْرُجُونَ",  tr:"tajruŷūna",  es:"vosotros salís"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَخْرُجْنَ",  tr:"tajruŷna",  es:"vosotras salís"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَخْرُجُونَ",  tr:"yajruŷūna",  es:"ellos salen"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَخْرُجْنَ",  tr:"yajruŷna",  es:"ellas salen"},
         ],
         "طَلَبَ → يَطْلُبُ (pedir/solicitar)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَطْلُبُ",     tr:"aṭlubu",     es:"yo pido"},
@@ -3137,7 +3149,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَطْلُبُ",     tr:"taṭlubu",    es:"ella pide"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَطْلُبُ",     tr:"naṭlubu",    es:"nosotros pedimos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَطْلُبُونَ",  tr:"taṭlubūna",  es:"vosotros pedís"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَطْلُبْنَ",  tr:"taṭlubna",  es:"vosotras pedís"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَطْلُبُونَ",  tr:"yaṭlubūna",  es:"ellos piden"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَطْلُبْنَ",  tr:"yaṭlubna",  es:"ellas piden"},
         ],
         "سَقَطَ → يَسْقُطُ (caer)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَسْقُطُ",     tr:"asquṭu",     es:"yo caigo"},
@@ -3147,7 +3161,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَسْقُطُ",     tr:"tasquṭu",    es:"ella cae"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَسْقُطُ",     tr:"nasquṭu",    es:"nosotros caemos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَسْقُطُونَ",  tr:"tasquṭūna",  es:"vosotros caéis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَسْقُطْنَ",  tr:"tasquṭna",  es:"vosotras caéis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَسْقُطُونَ",  tr:"yasquṭūna",  es:"ellos caen"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَسْقُطْنَ",  tr:"yasquṭna",  es:"ellas caen"},
         ],
         "نَظَرَ → يَنْظُرُ (mirar)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَنْظُرُ",     tr:"anẓuru",     es:"yo miro"},
@@ -3157,7 +3173,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَنْظُرُ",     tr:"tanẓuru",    es:"ella mira"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَنْظُرُ",     tr:"nanẓuru",    es:"nosotros miramos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَنْظُرُونَ",  tr:"tanẓurūna",  es:"vosotros miráis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَنْظُرْنَ",  tr:"tanẓurna",  es:"vosotras miráis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَنْظُرُونَ",  tr:"yanẓurūna",  es:"ellos miran"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَنْظُرْنَ",  tr:"yanẓurna",  es:"ellas miran"},
         ],
         "ذَكَرَ → يَذْكُرُ (mencionar)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَذْكُرُ",     tr:"aḏkuru",     es:"yo menciono"},
@@ -3167,7 +3185,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَذْكُرُ",     tr:"taḏkuru",    es:"ella menciona"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَذْكُرُ",     tr:"naḏkuru",    es:"nosotros mencionamos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَذْكُرُونَ",  tr:"taḏkurūna",  es:"vosotros mencionáis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَذْكُرْنَ",  tr:"taḏkurna",  es:"vosotras mencionáis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَذْكُرُونَ",  tr:"yaḏkurūna",  es:"ellos mencionan"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَذْكُرْنَ",  tr:"yaḏkurna",  es:"ellas mencionan"},
         ],
         "سَكَنَ → يَسْكُنُ (vivir/habitar)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَسْكُنُ",     tr:"askunu",     es:"yo vivo"},
@@ -3177,7 +3197,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَسْكُنُ",     tr:"taskunu",    es:"ella vive"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَسْكُنُ",     tr:"naskunu",    es:"nosotros vivimos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَسْكُنُونَ",  tr:"taskunūna",  es:"vosotros vivís"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَسْكُنَّ",  tr:"taskunna",  es:"vosotras vivís"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَسْكُنُونَ",  tr:"yaskunūna",  es:"ellos viven"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَسْكُنَّ",  tr:"yaskunna",  es:"ellas viven"},
         ],
         "شَكَرَ → يَشْكُرُ (agradecer)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَشْكُرُ",     tr:"aškuru",     es:"yo agradezco"},
@@ -3187,7 +3209,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَشْكُرُ",     tr:"taškuru",    es:"ella agradece"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَشْكُرُ",     tr:"naškuru",    es:"nosotros agradecemos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَشْكُرُونَ",  tr:"taškurūna",  es:"vosotros agradecéis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَشْكُرْنَ",  tr:"taškurna",  es:"vosotras agradecéis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَشْكُرُونَ",  tr:"yaškurūna",  es:"ellos agradecen"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَشْكُرْنَ",  tr:"yaškurna",  es:"ellas agradecen"},
         ],
         "شَرَدَ → يَشْرُدُ (huir)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَشْرُدُ",     tr:"ašrudu",     es:"yo huyo"},
@@ -3197,7 +3221,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَشْرُدُ",     tr:"tašrudu",    es:"ella huye"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَشْرُدُ",     tr:"našrudu",    es:"nosotros huimos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَشْرُدُونَ",  tr:"tašrudūna",  es:"vosotros huís"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَشْرُدْنَ",  tr:"tašrudna",  es:"vosotras huís"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَشْرُدُونَ",  tr:"yašrudūna",  es:"ellos huyen"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَشْرُدْنَ",  tr:"yašrudna",  es:"ellas huyen"},
         ],
         "تَرَكَ → يَتْرُكُ (dejar)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَتْرُكُ",     tr:"atruku",     es:"yo dejo"},
@@ -3207,7 +3233,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَتْرُكُ",     tr:"tatruku",    es:"ella deja"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَتْرُكُ",     tr:"natruku",    es:"nosotros dejamos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَتْرُكُونَ",  tr:"tatrukūna",  es:"vosotros dejáis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَتْرُكْنَ",  tr:"tatrukna",  es:"vosotras dejáis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَتْرُكُونَ",  tr:"yatrukūna",  es:"ellos dejan"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَتْرُكْنَ",  tr:"yatrukna",  es:"ellas dejan"},
         ],
         "شَعَرَ → يَشْعُرُ (sentir, con بِـ)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَشْعُرُ",     tr:"ašʿuru",     es:"yo siento"},
@@ -3217,7 +3245,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَشْعُرُ",     tr:"tašʿuru",    es:"ella siente"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَشْعُرُ",     tr:"našʿuru",    es:"nosotros sentimos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَشْعُرُونَ",  tr:"tašʿurūna",  es:"vosotros sentís"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَشْعُرْنَ",  tr:"tašʿurna",  es:"vosotras sentís"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَشْعُرُونَ",  tr:"yašʿurūna",  es:"ellos sienten"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَشْعُرْنَ",  tr:"yašʿurna",  es:"ellas sienten"},
         ],
         "أَخَذَ → يَأْخُذُ (coger)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"آخُذُ",       tr:"āḵuḏu",      es:"yo cojo — fusión de hamzas, como آكُلُ"},
@@ -3227,7 +3257,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَأْخُذُ",     tr:"taʾḵuḏu",    es:"ella coge"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَأْخُذُ",     tr:"naʾḵuḏu",    es:"nosotros cogemos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَأْخُذُونَ",  tr:"taʾḵuḏūna",  es:"vosotros cogéis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَأْخُذْنَ",  tr:"taʾḵuḏna",  es:"vosotras cogéis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَأْخُذُونَ",  tr:"yaʾḵuḏūna",  es:"ellos cogen"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَأْخُذْنَ",  tr:"yaʾḵuḏna",  es:"ellas cogen"},
         ],
       },
       extra: "Presente continuo: presente + اَلْآن (ahora) → أَنَا أَكْتُبُ الْآنَ (estoy escribiendo). Futuro: prefijo سَـ + presente → أَنَا سَأَكْتُبُ (yo escribiré)."
@@ -3244,7 +3276,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَشْرَبُ",     tr:"tašrabu",    es:"ella bebe"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَشْرَبُ",     tr:"našrabu",    es:"nosotros bebemos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَشْرَبُونَ",  tr:"tašrabūna",  es:"vosotros bebéis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَشْرَبْنَ",  tr:"tašrabna",  es:"vosotras bebéis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَشْرَبُونَ",  tr:"yašrabūna",  es:"ellos beben"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَشْرَبْنَ",  tr:"yašrabna",  es:"ellas beben"},
         ],
         "رَكِبَ → يَرْكَبُ (montar/transporte)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَرْكَبُ",     tr:"arkabu",     es:"yo monto"},
@@ -3254,7 +3288,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَرْكَبُ",     tr:"tarkabu",    es:"ella monta"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَرْكَبُ",     tr:"narkabu",    es:"nosotros montamos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَرْكَبُونَ",  tr:"tarkabūna",  es:"vosotros montáis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَرْكَبْنَ",  tr:"tarkabna",  es:"vosotras montáis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَرْكَبُونَ",  tr:"yarkabūna",  es:"ellos montan"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَرْكَبْنَ",  tr:"yarkabna",  es:"ellas montan"},
         ],
         "سَمِعَ → يَسْمَعُ (escuchar/oír)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَسْمَعُ",     tr:"asmaʿu",     es:"yo escucho"},
@@ -3264,7 +3300,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَسْمَعُ",     tr:"tasmaʿu",    es:"ella escucha"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَسْمَعُ",     tr:"nasmaʿu",    es:"nosotros escuchamos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَسْمَعُونَ",  tr:"tasmaʿūna",  es:"vosotros escucháis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَسْمَعْنَ",  tr:"tasmaʿna",  es:"vosotras escucháis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَسْمَعُونَ",  tr:"yasmaʿūna",  es:"ellos escuchan"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَسْمَعْنَ",  tr:"yasmaʿna",  es:"ellas escuchan"},
         ],
         "عَمِلَ → يَعْمَلُ (trabajar/hacer)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَعْمَلُ",     tr:"aʿmalu",     es:"yo trabajo"},
@@ -3274,7 +3312,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَعْمَلُ",     tr:"taʿmalu",    es:"ella trabaja"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَعْمَلُ",     tr:"naʿmalu",    es:"nosotros trabajamos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَعْمَلُونَ",  tr:"taʿmalūna",  es:"vosotros trabajáis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَعْمَلْنَ",  tr:"taʿmalna",  es:"vosotras trabajáis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَعْمَلُونَ",  tr:"yaʿmalūna",  es:"ellos trabajan"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَعْمَلْنَ",  tr:"yaʿmalna",  es:"ellas trabajan"},
         ],
         "لَعِبَ → يَلْعَبُ (jugar)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَلْعَبُ",     tr:"alʿabu",     es:"yo juego"},
@@ -3284,7 +3324,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَلْعَبُ",     tr:"talʿabu",    es:"ella juega"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَلْعَبُ",     tr:"nalʿabu",    es:"nosotros jugamos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَلْعَبُونَ",  tr:"talʿabūna",  es:"vosotros jugáis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَلْعَبْنَ",  tr:"talʿabna",  es:"vosotras jugáis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَلْعَبُونَ",  tr:"yalʿabūna",  es:"ellos juegan"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَلْعَبْنَ",  tr:"yalʿabna",  es:"ellas juegan"},
         ],
         "فَهِمَ → يَفْهَمُ (entender)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَفْهَمُ",     tr:"afhamu",     es:"yo entiendo"},
@@ -3294,7 +3336,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَفْهَمُ",     tr:"tafhamu",    es:"ella entiende"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَفْهَمُ",     tr:"nafhamu",    es:"nosotros entendemos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَفْهَمُونَ",  tr:"tafhamūna",  es:"vosotros entendéis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَفْهَمْنَ",  tr:"tafhamna",  es:"vosotras entendéis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَفْهَمُونَ",  tr:"yafhamūna",  es:"ellos entienden"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَفْهَمْنَ",  tr:"yafhamna",  es:"ellas entienden"},
         ],
         "غَضِبَ → يَغْضَبُ (enfadarse)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَغْضَبُ",     tr:"aġḍabu",     es:"yo me enfado"},
@@ -3304,7 +3348,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَغْضَبُ",     tr:"taġḍabu",    es:"ella se enfada"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَغْضَبُ",     tr:"naġḍabu",    es:"nosotros nos enfadamos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَغْضَبُونَ",  tr:"taġḍabūna",  es:"vosotros os enfadáis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَغْضَبْنَ",  tr:"taġḍabna",  es:"vosotras os enfadáis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَغْضَبُونَ",  tr:"yaġḍabūna",  es:"ellos se enfadan"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَغْضَبْنَ",  tr:"yaġḍabna",  es:"ellas se enfadan"},
         ],
         "تَعِبَ → يَتْعَبُ (cansarse)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَتْعَبُ",     tr:"atʿabu",     es:"yo me canso"},
@@ -3314,7 +3360,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَتْعَبُ",     tr:"tatʿabu",    es:"ella se cansa"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَتْعَبُ",     tr:"natʿabu",    es:"nosotros nos cansamos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَتْعَبُونَ",  tr:"tatʿabūna",  es:"vosotros os cansáis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَتْعَبْنَ",  tr:"tatʿabna",  es:"vosotras os cansáis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَتْعَبُونَ",  tr:"yatʿabūna",  es:"ellos se cansan"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَتْعَبْنَ",  tr:"yatʿabna",  es:"ellas se cansan"},
         ],
         "ضَحِكَ → يَضْحَكُ (reírse)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَضْحَكُ",     tr:"aḍḥaku",     es:"yo me río"},
@@ -3324,7 +3372,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَضْحَكُ",     tr:"taḍḥaku",    es:"ella se ríe"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَضْحَكُ",     tr:"naḍḥaku",    es:"nosotros nos reímos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَضْحَكُونَ",  tr:"taḍḥakūna",  es:"vosotros os reís"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَضْحَكْنَ",  tr:"taḍḥakna",  es:"vosotras os reís"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَضْحَكُونَ",  tr:"yaḍḥakūna",  es:"ellos se ríen"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَضْحَكْنَ",  tr:"yaḍḥakna",  es:"ellas se ríen"},
         ],
         "فَرِحَ → يَفْرَحُ (alegrarse)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَفْرَحُ",     tr:"afraḥu",     es:"yo me alegro"},
@@ -3334,7 +3384,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَفْرَحُ",     tr:"tafraḥu",    es:"ella se alegra"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَفْرَحُ",     tr:"nafraḥu",    es:"nosotros nos alegramos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَفْرَحُونَ",  tr:"tafraḥūna",  es:"vosotros os alegráis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَفْرَحْنَ",  tr:"tafraḥna",  es:"vosotras os alegráis"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَفْرَحُونَ",  tr:"yafraḥūna",  es:"ellos se alegran"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَفْرَحْنَ",  tr:"yafraḥna",  es:"ellas se alegran"},
         ],
         "لَبِسَ → يَلْبَسُ (vestirse/ponerse)": [
           {persona:"Yo",       prefijo:"أَ", sufijo:"ـُ",    forma:"أَلْبَسُ",     tr:"albasu",     es:"yo me visto"},
@@ -3344,7 +3396,9 @@ const PATRONES_C = {
           {persona:"Ella",     prefijo:"تَ", sufijo:"ـُ",    forma:"تَلْبَسُ",     tr:"talbasu",    es:"ella se viste"},
           {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ",    forma:"نَلْبَسُ",     tr:"nalbasu",    es:"nosotros nos vestimos"},
           {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَلْبَسُونَ",  tr:"talbasūna",  es:"vosotros os vestís"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ",  forma:"تَلْبَسْنَ",  tr:"talbasna",  es:"vosotras os vestís"},
           {persona:"Ellos",    prefijo:"يَ", sufijo:"ـُونَ", forma:"يَلْبَسُونَ",  tr:"yalbasūna",  es:"ellos se visten"},
+          {persona:"Ellas",    prefijo:"يَ", sufijo:"ـْنَ",  forma:"يَلْبَسْنَ",  tr:"yalbasna",  es:"ellas se visten"},
         ],
       },
       extra: "Negación en pasado: مَا فَهِمْتُ (mā fahimtu) = no entendí — se usa مَا, NO لَا (لَا niega el presente)."
@@ -3898,23 +3952,28 @@ function renderPatrones() {
     `;
   } else if (patBlock === 'B') {
     const verbos = Object.keys(PATRONES_B.verbos);
-    c.innerHTML = `
-      <div class="pat-intro">${PATRONES_B.intro}</div>
-      <div class="pat-selector">
-        ${verbos.map(v => `<button class="pat-sel-btn ${v===patVerboSel?'active':''}" onclick="setPatVerbo('${v}')">${wrapArabic(v)}</button>`).join('')}
-      </div>
-      <table class="pat-table">
-        <tr><th>Persona</th><th>Sufijo</th><th>Forma</th><th>Significado</th></tr>
-        ${PATRONES_B.verbos[patVerboSel].map(f => `
-          <tr>
-            <td class="pat-person">${f.persona}</td>
-            <td class="pat-form pat-suffix">${f.sufijo}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.suf_tr}</span></td>
-            <td class="pat-form">${f.forma}<br><span style="font-size:9px;color:var(--cream2);font-family:'DM Sans',sans-serif;">${f.tr}</span></td>
-            <td style="font-size:11px;color:var(--cream2);">${f.es}</td>
-          </tr>`).join('')}
-      </table>
-      <div class="pat-irregular">${PATRONES_B.irregular}</div>
-    `;
+    let opts = '';
+    for (let i = 0; i < verbos.length; i++) {
+      const v = verbos[i];
+      const sel = v === patVerboSel ? ' selected' : '';
+      opts += '<option value="' + v.replace(/"/g, '&quot;') + '"' + sel + '>' + v + '</option>';
+    }
+    c.innerHTML = '<div class="pat-intro">' + PATRONES_B.intro + '</div>'
+      + '<select id="pat-b-select" onchange="setPatVerbo(this.value)"'
+      + ' style="width:100%;box-sizing:border-box;padding:10px 13px;border-radius:10px;border:1px solid rgba(201,168,76,.35);background:var(--bg2);color:var(--cream);font-size:14px;font-family:\'DM Sans\',sans-serif;margin-bottom:14px;outline:none;cursor:pointer;">'
+      + opts + '</select>'
+      + '<table class="pat-table"><tr><th>Persona</th><th>Sufijo</th><th>Forma</th><th>Significado</th></tr>'
+      + PATRONES_B.verbos[patVerboSel].map(function(f) {
+          return '<tr>'
+            + '<td class="pat-person">' + f.persona + '</td>'
+            + '<td class="pat-form pat-suffix">' + f.sufijo + '<br><span style="font-size:9px;color:var(--cream2);font-family:\'DM Sans\',sans-serif;">' + f.suf_tr + '</span></td>'
+            + '<td class="pat-form">' + f.forma + '<br><span style="font-size:9px;color:var(--cream2);font-family:\'DM Sans\',sans-serif;">' + f.tr + '</span></td>'
+            + '<td style="font-size:11px;color:var(--cream2);">' + f.es + '</td>'
+            + '</tr>';
+        }).join('')
+      + '</table>'
+      + '<div class="pat-irregular">' + PATRONES_B.irregular + '</div>';
+    return;
   } else {
     const formas = Object.keys(PATRONES_C.formas);
     const formaData = PATRONES_C.formas[patFormaSel];
@@ -3955,6 +4014,15 @@ function renderPatrones() {
 function setPatVerbo(v) {
   patVerboSel = v;
   renderPatrones();
+}
+
+function filterPatB(query) {
+  const q = query.trim().toLowerCase();
+  const btns = document.querySelectorAll('#pat-b-selector .pat-sel-btn');
+  btns.forEach(btn => {
+    const verb = btn.getAttribute('data-verb') || '';
+    btn.style.display = (!q || verb.includes(q)) ? '' : 'none';
+  });
 }
 
 // ══════════════════════════════════════
