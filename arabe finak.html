@@ -423,6 +423,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       </div>
       <button class="write-submit" style="width:100%;" onclick="generatePrintWorkbook()">🖨️ Generar workbook (PDF)</button>
     </div>
+    <div class="game-card" style="text-align:left;margin-top:14px;">
+      <div style="font-size:13px;font-weight:700;color:var(--cream);margin-bottom:6px;">📘 Teoría completa en PDF</div>
+      <div style="font-size:12px;color:var(--cream2);margin-bottom:10px;line-height:1.5;">Toda la gramática explicada + todas las tablas de conjugación (pasado y los 4 modelos de presente), tal cual están ahora mismo en la app. Ideal para repasar sin conexión tras un tiempo parado.</div>
+      <button class="write-submit" style="width:100%;background:var(--gold);" onclick="generateTheoryPDF()">📘 Generar teoría (PDF)</button>
+    </div>
   </div>
   <div id="page-tarjetas" class="page hidden">
     <div class="section-label">Tarjetas — toca para voltear</div>
@@ -3749,6 +3754,285 @@ function generatePrintWorkbook() {
     ${solutionHTML}
   </div>
   <div class="pw-footer">Generado automáticamente · nunca se repite igual dos veces</div>
+  </body></html>`;
+
+  const win = window.open('', '_blank');
+  if (!win) { showToast('El navegador bloqueó la ventana — permite pop-ups para este sitio'); return; }
+  win.document.open();
+  win.document.write(doc);
+  win.document.close();
+  setTimeout(() => { try { win.focus(); win.print(); } catch(e) {} }, 400);
+}
+
+// ══════════════════════════════════════
+// TEORÍA COMPLETA EN PDF (siempre lee GRAMMAR / PATRONES_B / PATRONES_C en vivo,
+// así que nunca se desactualiza respecto a lo que haya en el HTML en ese momento)
+// ══════════════════════════════════════
+function theoryPasadoTableHTML(verboKey, formas) {
+  const rows = formas.map(f => `<tr><td class="th-ar">${pwEsc(f.persona)}</td><td class="th-ar">${pwEsc(f.forma)}<br><span class="th-tr">${pwEsc(f.tr)}</span></td><td class="th-es">${pwEsc(f.es)}</td></tr>`).join('');
+  return `<div class="th-verbo"><div class="th-verbo-title">${pwEsc(verboKey)}</div>
+    <table class="th-table"><tr><th>Persona</th><th>Forma</th><th>Significado</th></tr>${rows}</table></div>`;
+}
+
+function theoryPresenteTableHTML(verboKey, formas) {
+  const rows = formas.map(f => `<tr><td class="th-ar">${pwEsc(f.persona)}</td><td class="th-ar">${pwEsc(f.prefijo)}</td><td class="th-ar">${pwEsc(f.sufijo)}</td><td class="th-ar">${pwEsc(f.forma)}<br><span class="th-tr">${pwEsc(f.tr)}</span></td><td class="th-es">${pwEsc(f.es)}</td></tr>`).join('');
+  return `<div class="th-verbo"><div class="th-verbo-title">${pwEsc(verboKey)}</div>
+    <table class="th-table"><tr><th>Persona</th><th>Prefijo</th><th>Sufijo</th><th>Forma</th><th>Significado</th></tr>${rows}</table></div>`;
+}
+
+function generateTheoryPDF() {
+  showToast('Generando documento de teoría...');
+  const fecha = new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+
+  // ── Fundamentos — explicado desde cero, para cuando llevas tiempo sin tocar árabe ──
+  const fundamentosHTML = `
+    <div class="th-block">
+      <div class="th-block-title">0.1 — El alfabeto y cómo se escribe</div>
+      <div class="th-block-desc">El árabe se escribe de <b>derecha a izquierda</b> (al revés que el español). No existen mayúsculas ni minúsculas — todas las letras son "de un solo tipo", pero cambian ligeramente de forma según vayan al principio, en medio, al final o solas dentro de una palabra (esto lo hace automáticamente cualquier fuente árabe, no hay que memorizar formas distintas a propósito, con el tiempo el ojo se acostumbra solo).</div>
+    </div>
+    <div class="th-block">
+      <div class="th-block-title">0.2 — Las harakat (los signos que van encima o debajo de las letras)</div>
+      <div class="th-block-desc">Las letras árabes son, en su mayoría, CONSONANTES. Las vocales cortas no se escriben como letras propias, sino como pequeños signos (harakat) encima o debajo de la consonante a la que "pertenecen". Este documento las escribe siempre completas para que puedas leer sin dudas — en la vida real, los árabes adultos casi nunca las escriben (se sobreentienden), pero para aprender son imprescindibles. Estas son las que verás una y otra vez:</div>
+      <div class="th-nota">
+        <b>فَتْحَة (fatha)</b> — una rayita encima ( َ ) = vocal corta "a". Ejemplo: بَ se lee "ba".<br>
+        <b>كَسْرَة (kasra)</b> — una rayita debajo ( ِ ) = vocal corta "i". Ejemplo: بِ se lee "bi".<br>
+        <b>ضَمَّة (damma)</b> — una comita encima ( ُ ) = vocal corta "u". Ejemplo: بُ se lee "bu".<br>
+        <b>سُكُون (sukun)</b> — un círculo pequeño encima ( ْ ) = NO hay vocal, la consonante suena "seca", sin apoyo vocálico. Ejemplo: بْ suena solo "b".<br>
+        <b>شَدَّة (shadda)</b> — una especie de "w" pequeña encima ( ّ ) = la consonante se pronuncia DOBLE/reforzada. Ejemplo: بّ suena como "bb".<br>
+        <b>تَنْوِين (tanwin)</b> — se duplica el signo de fatha/kasra/damma ( ً ٍ ٌ ) = añade un sonido "n" al final, y marca que la palabra es INDEFINIDA (como decir "un/una" en vez de "el/la"). Se pronuncia -an, -in, -un.<br>
+        Además, cuando después de una consonante con fatha va la letra ا (alif), ي (ya) o و (waw) SIN vocal propia, esa letra "larga" la vocal: se convierte en ā, ī o ū (el doble de larga que la vocal corta correspondiente). Por eso en la transliteración de este documento verás letras con una rayita encima (ā, ī, ū) — significan "vocal larga", no una letra nueva que aprender.
+      </div>
+    </div>
+    <div class="th-block">
+      <div class="th-block-title">0.3 — La raíz de 3 consonantes (el corazón de casi cada palabra)</div>
+      <div class="th-block-desc">Esto es la idea más importante para entender por qué el árabe "funciona" como funciona. La inmensa mayoría de palabras árabes (verbos, sustantivos, adjetivos) se construyen a partir de una RAÍZ de (normalmente) 3 consonantes, que porta el significado central de una familia de palabras. Después, esa raíz se "viste" con distintas vocales y a veces prefijos/sufijos para dar palabras relacionadas pero distintas. Ejemplo con la raíz ك-ت-ب (k-t-b, relacionada con la idea de "escribir"): كَتَبَ (kataba) = él escribió · كِتَاب (kitāb) = libro · مَكْتَب (maktab) = escritorio/oficina · مَكْتَبَة (maktaba) = biblioteca. Las tres consonantes (ك ت ب) están siempre presentes; lo que cambia es la "melodía" de vocales alrededor de ellas. Por eso, cuando en las tablas de este documento veas que "solo cambia la vocal media" de un verbo, es exactamente este fenómeno.</div>
+    </div>
+    <div class="th-block">
+      <div class="th-block-title">0.4 — El pasado y el presente: cómo se marca quién hace la acción</div>
+      <div class="th-block-desc">A diferencia del español (que cambia la terminación del verbo: hablo/hablas/habla), el árabe usa un sistema distinto según el tiempo. En el PASADO, se añaden SUFIJOS al final de la raíz (ejemplo: كَتَبْتُ = yo escribí, con el sufijo ـتُ = "yo"). En el PRESENTE, se añade un PREFIJO al principio (y a veces también un sufijo al final) (ejemplo: أَكْتُبُ = yo escribo, con el prefijo أَ = "yo"). Este documento explica ambos sistemas completos más abajo, con todas las personas.</div>
+    </div>
+    <div class="th-block">
+      <div class="th-block-title">0.5 — El "infinitivo" en árabe (spoiler: no existe como palabra aparte)</div>
+      <div class="th-block-desc">En español, "escribir" es una palabra distinta de "escribió". En árabe NO — la forma de pasado en 3ª persona masculina singular ("él") funciona A LA VEZ como el infinitivo/forma de diccionario del verbo. Es decir, كَتَبَ significa tanto "él escribió" como, genéricamente, "escribir". Por eso en los diccionarios de árabe los verbos se buscan por esta forma, y por eso en este documento cada verbo aparece etiquetado así.</div>
+    </div>
+    <div class="th-block">
+      <div class="th-block-title">0.6 — Qué es un "Modelo" cuando hablamos del presente</div>
+      <div class="th-block-desc">Ya sabes (punto 0.3) que la raíz de un verbo tiene una "vocal media" que puede cambiar. Pues bien: al pasar del pasado al presente, esa vocal media cambia de una manera muy concreta según a qué "Modelo" pertenezca el verbo — y hay solo 4 posibles: <b>Modelo I</b> → la vocal del presente es siempre DAMMA (ejemplo: كَتَبَ→يَكْتُبُ). <b>Modelo II</b> → si el pasado tenía KASRA, el presente cambia a FATHA (ejemplo: شَرِبَ→يَشْرَبُ) — es el único de los 4 que se puede adivinar mirando el pasado. <b>Modelo III</b> → NO CAMBIA nada, sigue en fatha en los dos tiempos (ejemplo: ذَهَبَ→يَذْهَبُ). <b>Modelo IV</b> → el presente cambia a KASRA (ejemplo: جَلَسَ→يَجْلِسُ). En LOS 4 modelos se usa exactamente el mismo juego de prefijos y sufijos de persona — lo único que cambia entre un modelo y otro es esa vocal del medio.</div>
+    </div>
+    <div class="th-block">
+      <div class="th-block-title">0.7 — Cómo leer las tablas de este documento</div>
+      <div class="th-block-desc">Cada tabla de conjugación tiene una fila por persona (yo, tú masculino, tú femenino, él, ella, nosotros, vosotros, vosotras, ellos, ellas). Debajo de cada palabra en árabe se muestra en cursiva verde su transliteración (cómo se pronuncia, escrita con el alfabeto latino según el sistema de la Casa de Velázquez). Si una explicación te suena repetida respecto a otra parte del documento, es intencionado — se repite el concepto exactamente donde hace falta para que no tengas que buscarlo en otro sitio.</div>
+    </div>`;
+
+  // ── Pronombres y sufijos (PATRONES_A: posesivo / tener / para / con) ──
+  let pronombresHTML = '';
+  if (typeof PATRONES_A !== 'undefined') {
+    pronombresHTML += `<div class="th-nota">${pwEsc(PATRONES_A.intro||'')}</div>`;
+    pronombresHTML += `<div class="th-block-desc">Este mismo sufijo (el que ves en la primera columna de números) se pega a un SUSTANTIVO para decir de quién es algo (columna "Posesivo": mi/tu/su libro...), a la palabra عِنْدَ para expresar "tener" (columna "Tener": literalmente significa "en posesión de", pero se traduce como el verbo tener), a la palabra لِـ para expresar "para" (columna "Para"), y a la palabra مَعَ para expresar "con" (columna "Con"). Ninguna de estas cuatro es un verbo conjugado — son un sustantivo y tres partículas, todas usando el mismo sufijo de persona.</div>`;
+    const rows = PATRONES_A.filas.map(f => `<tr>
+      <td class="th-es">${pwEsc(f.persona)}</td>
+      <td class="th-ar">${pwEsc(f.posesivo)}<br><span class="th-tr">${pwEsc(f.pos_tr)} — ${pwEsc(f.pos_es)}</span></td>
+      <td class="th-ar">${pwEsc(f.tener)}<br><span class="th-tr">${pwEsc(f.ten_tr)} — ${pwEsc(f.ten_es)}</span></td>
+      <td class="th-ar">${pwEsc(f.para)}<br><span class="th-tr">${pwEsc(f.para_tr)} — ${pwEsc(f.para_es)}</span></td>
+      <td class="th-ar">${pwEsc(f.con)}<br><span class="th-tr">${pwEsc(f.con_tr)} — ${pwEsc(f.con_es)}</span></td>
+    </tr>`).join('');
+    pronombresHTML += `<table class="th-table"><tr><th>Persona</th><th>Posesivo</th><th>عِنْدَ (tener)</th><th>لِـ (para)</th><th>مَعَ (con)</th></tr>${rows}</table>`;
+    if (PATRONES_A.nota) pronombresHTML += `<div class="th-nota">${pwEsc(PATRONES_A.nota)}</div>`;
+  }
+
+  // ── Clasificación temática de la Gramática (en vez de orden cronológico) ──
+  const TEMAS_GRAM = [
+    {clave:'verbos_pasado', nombre:'El pasado', kw:['pasado','kāna','huec']},
+    {clave:'verbos_presente', nombre:'El presente y sus modelos', kw:['presente','modelo','madda']},
+    {clave:'negacion', nombre:'La negación', kw:['negac','مَا','لَيْس','لا ']},
+    {clave:'posesivo', nombre:'Posesivos, tener, para, con', kw:['posesiv','عِنْدَ','تاء مربوطة','marbuta']},
+    {clave:'preposiciones', nombre:'Preposiciones', kw:['preposic','فِي','إِلَى','مِنْ','عَلَى']},
+    {clave:'tiempo', nombre:'Tiempo y frecuencia', kw:['قَبْلَ','بَعْدَ','مَرَّة','تَقْرِيبًا','día','semana','دَائِمًا','adverbio']},
+    {clave:'plural_dual', nombre:'Plural, dual y nombre de unidad', kw:['plural','dual','مُثَنَّى','وحدة','unidad']},
+    {clave:'familia_colores', nombre:'Familia, colores y números', kw:['famili','color','número','عَدَد']},
+    {clave:'otros', nombre:'Otras reglas', kw:[]},
+  ];
+  function clasificarGram(g) {
+    const texto = (g.title + ' ' + g.desc).toLowerCase();
+    for (const t of TEMAS_GRAM) {
+      if (t.kw.some(k => texto.includes(k.toLowerCase()))) return t.clave;
+    }
+    return 'otros';
+  }
+  const gramPorTema = {};
+  TEMAS_GRAM.forEach(t => gramPorTema[t.clave] = []);
+  GRAMMAR.forEach(g => gramPorTema[clasificarGram(g)].push(g));
+
+  const indiceGram = TEMAS_GRAM.filter(t => gramPorTema[t.clave].length > 0).map(t =>
+    `<div class="th-idx-tema">${pwEsc(t.nombre)} (${gramPorTema[t.clave].length})</div>` +
+    gramPorTema[t.clave].map(g => `<div class="th-idx-item">— ${pwEsc(g.title)}</div>`).join('')
+  ).join('');
+
+  // ── Gramática agrupada por tema en vez de por orden cronológico ──
+  let contador = 0;
+  const gramHTML = TEMAS_GRAM.filter(t => gramPorTema[t.clave].length > 0).map(t => {
+    const bloques = gramPorTema[t.clave].map(g => {
+      contador++;
+      const ex = (g.examples||[]).map(e => `<div class="th-ex"><span class="th-ex-ar">${pwEsc(e.ar)}</span><span class="th-ex-tr">${pwEsc(e.tr)}</span><span class="th-ex-es">${pwEsc(e.es)}${e.note ? ' — <em>'+pwEsc(e.note)+'</em>' : ''}</span></div>`).join('');
+      return `<div class="th-block"><div class="th-block-title">${contador}. ${pwEsc(g.title)}</div><div class="th-block-desc">${pwEsc(g.desc)}</div><div class="th-examples">${ex}</div></div>`;
+    }).join('');
+    return `<div class="th-tema-title">${pwEsc(t.nombre)}</div>${bloques}`;
+  }).join('');
+
+  // ── Chuleta resumen de una página — los 4 modelos comparados de un vistazo ──
+  const chuletaHTML = `
+    <div class="th-block-desc">Antes de entrar en el detalle, esto es lo esencial en una sola tabla. Vuelve aquí siempre que necesites refrescar rápido sin leer todo el documento.</div>
+    <table class="th-table">
+      <tr><th>Modelo</th><th>Pasado (vocal media)</th><th>Presente (vocal media)</th><th>Ejemplo</th><th>¿Se adivina desde el pasado?</th></tr>
+      <tr><td><b>I</b></td><td>fatha</td><td>DAMMA</td><td class="th-ar">كَتَبَ → يَكْتُبُ</td><td>No — hay que memorizarlo</td></tr>
+      <tr><td><b>II</b></td><td>KASRA</td><td>fatha</td><td class="th-ar">شَرِبَ → يَشْرَبُ</td><td><b>Sí</b> — si el pasado lleva kasra, el presente será fatha</td></tr>
+      <tr><td><b>III</b></td><td>fatha</td><td>fatha (no cambia)</td><td class="th-ar">ذَهَبَ → يَذْهَبُ</td><td>No — hay que memorizarlo</td></tr>
+      <tr><td><b>IV</b></td><td>fatha</td><td>KASRA</td><td class="th-ar">جَلَسَ → يَجْلِسُ</td><td>No — hay que memorizarlo</td></tr>
+    </table>
+    <div class="th-nota">En LOS 4 modelos se usan los mismos prefijos y sufijos de persona — solo cambia esa vocal del medio. Los modelos I, III y IV tienen el pasado IDÉNTICO (fatha-fatha) — la única forma de saber a cuál pertenece un verbo nuevo es habérselo aprendido, no hay ningún atajo visual.</div>
+    <div class="th-block-desc" style="margin-top:10px;"><b>مَا — los 4 usos, en una línea cada uno:</b></div>
+    <div class="th-nota">
+      1) Interrogativo + sustantivo: مَا اسْمُكَ؟ (¿cómo te llamas?)<br>
+      2) Negación de un verbo en pasado: مَا كَتَبْتُ (no escribí)<br>
+      3) Negación de "tener" en pasado: مَا كَانَ عِنْدِي وَقْتٌ (no tenía tiempo)<br>
+      4) Negación existencial ("no hay"): مَا فِي أَحَدٌ (no hay nadie)
+    </div>
+    <div class="th-block-desc" style="margin-top:10px;"><b>Los 6 sistemas de sufijos/prefijos que más se confunden entre sí:</b></div>
+    <table class="th-table">
+      <tr><th>Sistema</th><th>¿A qué se pega?</th><th>Ejemplo</th></tr>
+      <tr><td>Pasado</td><td>A un VERBO, indica quién hizo la acción</td><td class="th-ar">كَتَبْتُ (yo escribí)</td></tr>
+      <tr><td>Presente</td><td>A un VERBO (prefijo+sufijo), indica quién hace la acción</td><td class="th-ar">أَكْتُبُ (yo escribo)</td></tr>
+      <tr><td>Posesivo</td><td>A un SUSTANTIVO, indica de quién es</td><td class="th-ar">كِتَابِي (mi libro)</td></tr>
+      <tr><td>عِنْدَ (tener)</td><td>Sufijo posesivo sobre esta palabra = "tener"</td><td class="th-ar">عِنْدِي (yo tengo)</td></tr>
+      <tr><td>لِـ (para)</td><td>Sufijo posesivo sobre esta partícula = "para"</td><td class="th-ar">لِي (para mí)</td></tr>
+      <tr><td>مَعَ (con)</td><td>Sufijo posesivo sobre esta partícula = "con"</td><td class="th-ar">مَعِي (conmigo)</td></tr>
+    </table>
+  `;
+
+  // ── Confusiones habituales — basado en lo que realmente ha costado durante el intensivo ──
+  const confusionesHTML = `
+    <div class="th-block">
+      <div class="th-block-title">"¿Esto es pasado, presente o posesivo?"</div>
+      <div class="th-block-desc">Es la confusión más repetida. Truco: PASADO y PRESENTE siempre van pegados a un VERBO (una acción). POSESIVO, عِنْدَ, لِـ y مَعَ van pegados a un SUSTANTIVO o una PARTÍCULA (nunca a un verbo). Si la palabra de al lado es una acción ("escribir", "ir", "comer"), es pasado o presente. Si es una cosa o una persona, es posesivo/tener/para/con.</div>
+    </div>
+    <div class="th-block">
+      <div class="th-block-title">"¿Dónde está el infinitivo?"</div>
+      <div class="th-block-desc">No hay que buscarlo aparte — كَتَبَ (la forma de pasado de "él") YA ES el infinitivo. Ver Capítulo 0.5 más arriba.</div>
+    </div>
+    <div class="th-block">
+      <div class="th-block-title">قِطَار (tren) vs قَطَر (Qatar)</div>
+      <div class="th-block-desc">Se escriben casi igual y se confunden fácilmente. قِطَار (qiṭār, tren) lleva una alif larga después de la ط que قَطَر (Qaṭar, el país) no tiene. Fíjate en esa alif.</div>
+    </div>
+    <div class="th-block">
+      <div class="th-block-title">La madda (آ) — por qué "yo como" es آكُلُ y no "أَأْكُلُ"</div>
+      <div class="th-block-desc">Cuando se juntan dos alifs seguidas (típicamente un prefijo que termina en hamza + una raíz que empieza en hamza), NUNCA se escriben las dos por separado — se funden en una sola letra con el signo madda encima (آ). Pasa con آكُلُ (comer) y آخُذُ (coger), los dos verbos con hamza al principio de la raíz.</div>
+    </div>
+    <div class="th-block">
+      <div class="th-block-title">Por qué قَبْلَ significa a la vez "antes" y "hace"</div>
+      <div class="th-block-desc">Es la misma palabra con dos traducciones al español según el contexto — no son dos usos distintos que memorizar, es un único significado ("mirar hacia atrás en el tiempo desde ahora") que en español a veces se dice "antes" y a veces "hace".</div>
+    </div>
+  `;
+
+
+  // ── Verbos en pasado (Patrones_B) ──
+  let pasadoHTML = '';
+  if (typeof PATRONES_B !== 'undefined') {
+    pasadoHTML += `<div class="th-nota">${pwEsc(PATRONES_B.intro||'')}</div>`;
+    Object.keys(PATRONES_B.verbos).forEach(k => { pasadoHTML += theoryPasadoTableHTML(k, PATRONES_B.verbos[k]); });
+    if (PATRONES_B.irregular) pasadoHTML += `<div class="th-nota">${pwEsc(PATRONES_B.irregular)}</div>`;
+  }
+
+  // ── Verbos en presente (Patrones_C, las 4 formas) ──
+  let presenteHTML = '';
+  if (typeof PATRONES_C !== 'undefined') {
+    presenteHTML += `<div class="th-nota">${pwEsc(PATRONES_C.intro||'')}</div>`;
+    Object.keys(PATRONES_C.formas).forEach(formaKey => {
+      const fd = PATRONES_C.formas[formaKey];
+      if (!fd || !fd.disponible) return;
+      presenteHTML += `<div class="th-forma-title">${pwEsc(formaKey)}</div><div class="th-nota">${pwEsc(fd.nota||'')}</div>`;
+      Object.keys(fd.verbos).forEach(k => { presenteHTML += theoryPresenteTableHTML(k, fd.verbos[k]); });
+      if (fd.extra) presenteHTML += `<div class="th-nota">${pwEsc(fd.extra)}</div>`;
+    });
+  }
+
+  const doc = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Teoría completa de árabe — ${fecha}</title>
+  <style>
+    @page { margin: 16mm; }
+    body { font-family:'DM Sans', Arial, sans-serif; color:#1B1B1B; background:#fff; font-size:12.5px; line-height:1.55; }
+    .th-cover { border-bottom: 3px solid #1B4332; padding-bottom: 14px; margin-bottom: 20px; }
+    .th-title { font-size: 22px; font-weight: 700; color:#1B4332; }
+    .th-sub { font-size: 12px; color:#2D6A4F; margin-top:3px; }
+    .th-section { page-break-before: always; }
+    .th-section-title { font-size: 18px; font-weight:700; color:#fff; background:#1B4332; padding:8px 12px; border-radius:8px; margin-bottom:14px; }
+    .th-idx-item { font-size: 12px; margin: 3px 0; color:#333; }
+    .th-block { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #e5e0d0; page-break-inside: avoid; }
+    .th-block-title { font-size: 14px; font-weight:700; color:#1B4332; margin-bottom:4px; }
+    .th-block-desc { font-size: 12px; color:#333; margin-bottom:6px; }
+    .th-ex { margin: 5px 0; font-size: 12px; display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; }
+    .th-ex-ar { font-family:'Traditional Arabic','Arabic Typesetting',serif; direction:rtl; font-size:17px; }
+    .th-ex-tr { font-style: italic; color:#2D6A4F; font-size:11px; }
+    .th-ex-es { color:#333; }
+    .th-nota { background:#EAF4EE; border:1px solid #52B788; border-radius:8px; padding:8px 10px; font-size:11.5px; margin: 8px 0 14px; }
+    .th-forma-title { font-size:15px; font-weight:700; color:#1B4332; margin: 16px 0 6px; border-bottom:2px solid #B08D57; padding-bottom:3px; }
+    .th-tema-title { font-size:16px; font-weight:700; color:#fff; background:#2D6A4F; padding:6px 10px; border-radius:6px; margin: 18px 0 10px; }
+    .th-idx-tema { font-size:13px; font-weight:700; color:#1B4332; margin-top:8px; }
+    .th-verbo { margin-bottom: 14px; page-break-inside: avoid; }
+    .th-verbo-title { font-family:'Traditional Arabic','Arabic Typesetting',serif; direction:rtl; font-size:16px; font-weight:700; color:#1B4332; margin-bottom:4px; }
+    .th-table { width:100%; border-collapse: collapse; font-size: 11px; margin-bottom: 4px; }
+    .th-table th { background:#EDE0C4; padding: 4px 6px; text-align:left; }
+    .th-table td { padding: 3px 6px; border-bottom: 1px solid #eee; }
+    .th-ar { font-family:'Traditional Arabic','Arabic Typesetting',serif; direction:rtl; font-size:14px; }
+    .th-tr { font-style:italic; color:#2D6A4F; font-size:10px; }
+    .th-es { font-size: 11px; }
+    .th-footer { margin-top: 24px; font-size: 10px; color:#888; text-align:center; }
+    @media print { .pw-noprint { display:none; } }
+  </style></head><body>
+  <div class="pw-noprint" style="position:fixed;top:10px;right:10px;background:#1B4332;padding:10px 16px;border-radius:10px;">
+    <button onclick="window.print()" style="background:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;">🖨️ Imprimir / Guardar PDF</button>
+  </div>
+  <div class="th-cover">
+    <div class="th-title">Teoría completa de árabe</div>
+    <div class="th-sub">${fecha} · Generado en vivo desde la app — siempre al día</div>
+  </div>
+  <div class="th-block-title" style="font-size:15px;">Índice de gramática</div>
+  ${indiceGram}
+
+  <div class="th-section">
+    <div class="th-section-title">Capítulo 0 — Fundamentos (empieza aquí si llevas tiempo sin practicar)</div>
+    ${fundamentosHTML}
+  </div>
+
+  <div class="th-section">
+    <div class="th-section-title">Chuleta resumen — lo esencial de un vistazo</div>
+    ${chuletaHTML}
+  </div>
+
+  <div class="th-section">
+    <div class="th-section-title">Confusiones habituales (basado en lo que más te ha costado)</div>
+    ${confusionesHTML}
+  </div>
+
+  <div class="th-section">
+    <div class="th-section-title">Pronombres y sufijos — posesivo, tener, para, con</div>
+    ${pronombresHTML}
+  </div>
+
+  <div class="th-section">
+    <div class="th-section-title">Gramática (agrupada por tema)</div>
+    ${gramHTML}
+  </div>
+
+  <div class="th-section">
+    <div class="th-section-title">Verbos en pasado</div>
+    ${pasadoHTML}
+  </div>
+
+  <div class="th-section">
+    <div class="th-section-title">Verbos en presente — las 4 formas</div>
+    ${presenteHTML}
+  </div>
+
+  <div class="th-footer">Generado automáticamente desde arabe_finak.html — este documento se actualiza solo con el HTML.</div>
   </body></html>`;
 
   const win = window.open('', '_blank');
