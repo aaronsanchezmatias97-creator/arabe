@@ -37,6 +37,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .cat-filter::-webkit-scrollbar{display:none;}
 .cat-chip{flex-shrink:0;padding:6px 14px;border-radius:99px;border:1px solid rgba(201,168,76,.25);background:transparent;color:var(--cream2);font-size:12px;cursor:pointer;transition:.15s;font-family:'DM Sans',sans-serif;}
 .cat-chip.active{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600;}
+.cat-nav-wrap{display:flex;align-items:center;gap:4px;padding:0 16px 12px;}
+.cat-nav-wrap .cat-filter{flex:1;min-width:0;padding:0;}
+.cat-arrow{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1px solid rgba(201,168,76,.3);background:rgba(201,168,76,.07);color:var(--gold);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;font-family:inherit;padding:0;}
+.cat-arrow:active{background:rgba(201,168,76,.22);}
 
 /* FLIP CARD */
 .fc-wrap{padding:0 16px;}
@@ -285,6 +289,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .pat-sel-btn{padding:8px 14px;border-radius:99px;border:1px solid rgba(201,168,76,.25);background:transparent;color:var(--cream2);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;}
 .pat-sel-ar{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:18px;}
 .pat-sel-btn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+.pat-verb-select{width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(201,168,76,.3);background:rgba(20,20,30,.6);color:var(--cream);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:14px;appearance:none;-webkit-appearance:none;}
+.pat-verb-select:focus{outline:none;border-color:var(--gold);}
 .pat-card{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(201,168,76,.2);border-radius:var(--r);padding:18px;margin-bottom:14px;}
 .pat-card-title{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
 .pat-compare-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);}
@@ -422,11 +428,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <button class="cat-chip" id="wbsize-60" onclick="setWbSize(60)">Largo (60)</button>
       </div>
       <button class="write-submit" style="width:100%;" onclick="generatePrintWorkbook()">🖨️ Generar workbook (PDF)</button>
-    </div>
-    <div class="game-card" style="text-align:left;margin-top:14px;">
-      <div style="font-size:13px;font-weight:700;color:var(--cream);margin-bottom:6px;">📘 Teoría completa en PDF</div>
-      <div style="font-size:12px;color:var(--cream2);margin-bottom:10px;line-height:1.5;">Toda la gramática explicada + todas las tablas de conjugación (pasado y los 4 modelos de presente), tal cual están ahora mismo en la app. Ideal para repasar sin conexión tras un tiempo parado.</div>
-      <button class="write-submit" style="width:100%;background:var(--gold);" onclick="generateTheoryPDF()">📘 Generar teoría (PDF)</button>
     </div>
   </div>
   <div id="page-tarjetas" class="page hidden">
@@ -2313,126 +2314,846 @@ const PATRONES_B = {
   intro: "En el pasado, la raíz del verbo se mantiene fija y solo cambia el sufijo según la persona. El mismo conjunto de sufijos se repite en cualquier verbo regular.",
   verbos: {
     "كَانَ (ser/estar)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"كُنْتُ",    tr:"kuntu",    es:"yo era/estaba"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"كُنْتَ",    tr:"kunta",    es:"tú eras (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"كُنْتِ",    tr:"kunti",    es:"tú eras (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"كَانَ",     tr:"kāna",     es:"él era/estaba"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"كَانَتْ",   tr:"kānat",    es:"ella era/estaba"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"كُنَّا",    tr:"kunnā",    es:"nosotros éramos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"كُنْتُمْ",  tr:"kuntum",   es:"vosotros erais"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"كَانُوا",   tr:"kānū",     es:"ellos eran"},
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"كُنْتُ", tr:"kuntu", es:"yo era/estaba"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"كُنْتَ", tr:"kunta", es:"tú eras (m.)"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"كُنْتِ", tr:"kunti", es:"tú eras (f.)"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"كَانَ", tr:"kāna", es:"él era/estaba"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"كَانَتْ", tr:"kānat", es:"ella era/estaba"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"كُنَّا", tr:"kunnā", es:"nosotros éramos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"كُنْتُمْ", tr:"kuntum", es:"(vosotros erais)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"كُنْتُنَّ", tr:"kuntunna", es:"(vosotras erais)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"كَانُوا", tr:"kānū", es:"ellos eran"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"كُنَّ", tr:"kunna", es:"ellas eran"},
     ],
     "كَتَبَ (escribir)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"كَتَبْتُ",   tr:"katabtu",   es:"yo escribí"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"كَتَبْتَ",   tr:"katabta",   es:"tú escribiste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"كَتَبْتِ",   tr:"katabti",   es:"tú escribiste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"كَتَبَ",     tr:"kataba",    es:"él escribió"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"كَتَبَتْ",   tr:"katabat",   es:"ella escribió"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"كَتَبْنَا",  tr:"katabnā",   es:"nosotros escribimos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"كَتَبْتُمْ", tr:"katabtum",  es:"vosotros escribisteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"كَتَبُوا",   tr:"katabū",    es:"ellos escribieron"},
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"كَتَبْتُ", tr:"katabtu", es:"yo escribí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"كَتَبْتَ", tr:"katabta", es:"tú escribiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"كَتَبْتِ", tr:"katabti", es:"tú escribiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"كَتَبَ", tr:"kataba", es:"él escribió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"كَتَبَتْ", tr:"katabat", es:"ella escribió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"كَتَبْنَا", tr:"katabnā", es:"nosotros escribimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"كَتَبْتُمْ", tr:"katabtum", es:"(vosotros escribisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"كَتَبْتُنَّ", tr:"katabtunna", es:"(vosotras escribisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"كَتَبُوا", tr:"katabū", es:"ellos escribieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"كَتَبْنَ", tr:"katabna", es:"ellas escribieron"},
     ],
     "دَخَلَ (entrar)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"دَخَلْتُ",   tr:"dajaltu",   es:"yo entré"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"دَخَلْتَ",   tr:"dajalta",   es:"tú entraste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"دَخَلْتِ",   tr:"dajalti",   es:"tú entraste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"دَخَلَ",     tr:"dajala",    es:"él entró"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"دَخَلَتْ",   tr:"dajalat",   es:"ella entró"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"دَخَلْنَا",  tr:"dajalnā",   es:"nosotros entramos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"دَخَلْتُمْ", tr:"dajaltum",  es:"vosotros entrasteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"دَخَلُوا",   tr:"dajalū",    es:"ellos entraron"},
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"دَخَلْتُ", tr:"dajaltu", es:"yo entré"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"دَخَلْتَ", tr:"dajalta", es:"tú entraste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"دَخَلْتِ", tr:"dajalti", es:"tú entraste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"دَخَلَ", tr:"dajala", es:"él entró"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"دَخَلَتْ", tr:"dajalat", es:"ella entró"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"دَخَلْنَا", tr:"dajalnā", es:"nosotros entramos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"دَخَلْتُمْ", tr:"dajaltum", es:"(vosotros entrasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"دَخَلْتُنَّ", tr:"dajaltunna", es:"(vosotras entrasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"دَخَلُوا", tr:"dajalū", es:"ellos entraron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"دَخَلْنَ", tr:"dajalna", es:"ellas entraron"},
     ],
     "خَرَجَ (salir)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"خَرَجْتُ",   tr:"jarajtu",   es:"yo salí"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"خَرَجْتَ",   tr:"jarajta",   es:"tú saliste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"خَرَجْتِ",   tr:"jarajti",   es:"tú saliste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"خَرَجَ",     tr:"jaraja",    es:"él salió"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"خَرَجَتْ",   tr:"jarajat",   es:"ella salió"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"خَرَجْنَا",  tr:"jarajnā",   es:"nosotros salimos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"خَرَجْتُمْ", tr:"jarajtum",  es:"vosotros salisteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"خَرَجُوا",   tr:"jarajū",    es:"ellos salieron"},
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"خَرَجْتُ", tr:"jaraŷtu", es:"yo salí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"خَرَجْتَ", tr:"jaraŷta", es:"tú saliste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"خَرَجْتِ", tr:"jaraŷti", es:"tú saliste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"خَرَجَ", tr:"jaraŷa", es:"él salió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"خَرَجَتْ", tr:"jaraŷat", es:"ella salió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"خَرَجْنَا", tr:"jaraŷnā", es:"nosotros salimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"خَرَجْتُمْ", tr:"jaraŷtum", es:"(vosotros salisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"خَرَجْتُنَّ", tr:"jaraŷtunna", es:"(vosotras salisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"خَرَجُوا", tr:"jaraŷū", es:"ellos salieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"خَرَجْنَ", tr:"jaraŷna", es:"ellas salieron"},
     ],
     "دَرَسَ (estudiar)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"دَرَسْتُ",   tr:"darastu",   es:"yo estudié"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"دَرَسْتَ",   tr:"darasta",   es:"tú estudiaste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"دَرَسْتِ",   tr:"darasti",   es:"tú estudiaste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"دَرَسَ",     tr:"darasa",    es:"él estudió"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"دَرَسَتْ",   tr:"darasat",   es:"ella estudió"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"دَرَسْنَا",  tr:"darasnā",   es:"nosotros estudiamos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"دَرَسْتُمْ", tr:"darastum",  es:"vosotros estudiasteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"دَرَسُوا",   tr:"darasū",    es:"ellos estudiaron"},
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"دَرَسْتُ", tr:"darastu", es:"yo estudié"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"دَرَسْتَ", tr:"darasta", es:"tú estudiaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"دَرَسْتِ", tr:"darasti", es:"tú estudiaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"دَرَسَ", tr:"darasa", es:"él estudió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"دَرَسَتْ", tr:"darasat", es:"ella estudió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"دَرَسْنَا", tr:"darasnā", es:"nosotros estudiamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"دَرَسْتُمْ", tr:"darastum", es:"(vosotros estudiasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"دَرَسْتُنَّ", tr:"darastunna", es:"(vosotras estudiasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"دَرَسُوا", tr:"darasū", es:"ellos estudiaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"دَرَسْنَ", tr:"darasna", es:"ellas estudiaron"},
     ],
     "شَرِبَ (beber)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"شَرِبْتُ",   tr:"šaribtu",   es:"yo bebí"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"شَرِبْتَ",   tr:"šaribta",   es:"tú bebiste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"شَرِبْتِ",   tr:"šaribti",   es:"tú bebiste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"شَرِبَ",     tr:"šariba",    es:"él bebió"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"شَرِبَتْ",   tr:"šaribat",   es:"ella bebió"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"شَرِبْنَا",  tr:"šaribnā",   es:"nosotros bebimos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"شَرِبْتُمْ", tr:"šaribtum",  es:"vosotros bebisteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"شَرِبُوا",   tr:"šaribū",    es:"ellos bebieron"},
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"شَرِبْتُ", tr:"šaribtu", es:"yo bebí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"شَرِبْتَ", tr:"šaribta", es:"tú bebiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"شَرِبْتِ", tr:"šaribti", es:"tú bebiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"شَرِبَ", tr:"šariba", es:"él bebió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"شَرِبَتْ", tr:"šaribat", es:"ella bebió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"شَرِبْنَا", tr:"šaribnā", es:"nosotros bebimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"شَرِبْتُمْ", tr:"šaribtum", es:"(vosotros bebisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"شَرِبْتُنَّ", tr:"šaribtunna", es:"(vosotras bebisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"شَرِبُوا", tr:"šaribū", es:"ellos bebieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"شَرِبْنَ", tr:"šaribna", es:"ellas bebieron"},
     ],
     "ذَهَبَ (ir)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"ذَهَبْتُ",   tr:"ḏahabtu",   es:"yo fui"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"ذَهَبْتَ",   tr:"ḏahabta",   es:"tú fuiste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"ذَهَبْتِ",   tr:"ḏahabti",   es:"tú fuiste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"ذَهَبَ",     tr:"ḏahaba",    es:"él fue"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"ذَهَبَتْ",   tr:"ḏahabat",   es:"ella fue"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"ذَهَبْنَا",  tr:"ḏahabnā",   es:"nosotros fuimos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"ذَهَبْتُمْ", tr:"ḏahabtum",  es:"vosotros fuisteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"ذَهَبُوا",   tr:"ḏahabū",    es:"ellos fueron"},
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"ذَهَبْتُ", tr:"ḏahabtu", es:"yo fui"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"ذَهَبْتَ", tr:"ḏahabta", es:"tú fuiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"ذَهَبْتِ", tr:"ḏahabti", es:"tú fuiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"ذَهَبَ", tr:"ḏahaba", es:"él fue"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"ذَهَبَتْ", tr:"ḏahabat", es:"ella fue"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"ذَهَبْنَا", tr:"ḏahabnā", es:"nosotros fuimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"ذَهَبْتُمْ", tr:"ḏahabtum", es:"(vosotros fuisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"ذَهَبْتُنَّ", tr:"ḏahabtunna", es:"(vosotras fuisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"ذَهَبُوا", tr:"ḏahabū", es:"ellos fueron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"ذَهَبْنَ", tr:"ḏahabna", es:"ellas fueron"},
     ],
     "طَبَخَ (cocinar)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"طَبَخْتُ",   tr:"ṭabajtu",   es:"yo cociné"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"طَبَخْتَ",   tr:"ṭabajta",   es:"tú cocinaste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"طَبَخْتِ",   tr:"ṭabajti",   es:"tú cocinaste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"طَبَخَ",     tr:"ṭabaja",    es:"él cocinó"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"طَبَخَتْ",   tr:"ṭabajat",   es:"ella cocinó"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"طَبَخْنَا",  tr:"ṭabajnā",   es:"nosotros cocinamos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"طَبَخْتُمْ", tr:"ṭabajtum",  es:"vosotros cocinasteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"طَبَخُوا",   tr:"ṭabajū",    es:"ellos cocinaron"},
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"طَبَخْتُ", tr:"ṭabajtu", es:"yo cociné"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"طَبَخْتَ", tr:"ṭabajta", es:"tú cocinaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"طَبَخْتِ", tr:"ṭabajti", es:"tú cocinaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"طَبَخَ", tr:"ṭabaja", es:"él cocinó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"طَبَخَتْ", tr:"ṭabajat", es:"ella cocinó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"طَبَخْنَا", tr:"ṭabajnā", es:"nosotros cocinamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"طَبَخْتُمْ", tr:"ṭabajtum", es:"(vosotros cocinasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"طَبَخْتُنَّ", tr:"ṭabajtunna", es:"(vosotras cocinasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"طَبَخُوا", tr:"ṭabajū", es:"ellos cocinaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"طَبَخْنَ", tr:"ṭabajna", es:"ellas cocinaron"},
     ],
-    "جَلَسَ (sentarse/quedarse)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"جَلَسْتُ",   tr:"ŷalastu",   es:"yo me senté"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"جَلَسْتَ",   tr:"ŷalasta",   es:"tú te sentaste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"جَلَسْتِ",   tr:"ŷalasti",   es:"tú te sentaste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"جَلَسَ",     tr:"ŷalasa",    es:"él se sentó"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"جَلَسَتْ",   tr:"ŷalasat",   es:"ella se sentó"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"جَلَسْنَا",  tr:"ŷalasnā",   es:"nosotros nos sentamos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"جَلَسْتُمْ", tr:"ŷalastum",  es:"vosotros os sentasteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"جَلَسُوا",   tr:"ŷalasū",    es:"ellos se sentaron"},
+    "جَلَسَ (sentarse)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"جَلَسْتُ", tr:"ŷalastu", es:"yo me senté"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"جَلَسْتَ", tr:"ŷalasta", es:"tú te sentaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"جَلَسْتِ", tr:"ŷalasti", es:"tú te sentaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"جَلَسَ", tr:"ŷalasa", es:"él se sentó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"جَلَسَتْ", tr:"ŷalasat", es:"ella se sentó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"جَلَسْنَا", tr:"ŷalasnā", es:"nosotros nos sentamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"جَلَسْتُمْ", tr:"ŷalastum", es:"(vosotros os sentasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"جَلَسْتُنَّ", tr:"ŷalastunna", es:"(vosotras os sentasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"جَلَسُوا", tr:"ŷalasū", es:"ellos se sentaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"جَلَسْنَ", tr:"ŷalasna", es:"ellas se sentaron"},
     ],
     "رَقَصَ (bailar)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"رَقَصْتُ",   tr:"raqaṣtu",   es:"yo bailé"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"رَقَصْتَ",   tr:"raqaṣta",   es:"tú bailaste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"رَقَصْتِ",   tr:"raqaṣti",   es:"tú bailaste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"رَقَصَ",     tr:"raqaṣa",    es:"él bailó"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"رَقَصَتْ",   tr:"raqaṣat",   es:"ella bailó"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"رَقَصْنَا",  tr:"raqaṣnā",   es:"nosotros bailamos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"رَقَصْتُمْ", tr:"raqaṣtum",  es:"vosotros bailasteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"رَقَصُوا",   tr:"raqaṣū",    es:"ellos bailaron"},
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"رَقَصْتُ", tr:"raqaṣtu", es:"yo bailé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"رَقَصْتَ", tr:"raqaṣta", es:"tú bailaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"رَقَصْتِ", tr:"raqaṣti", es:"tú bailaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"رَقَصَ", tr:"raqaṣa", es:"él bailó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"رَقَصَتْ", tr:"raqaṣat", es:"ella bailó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"رَقَصْنَا", tr:"raqaṣnā", es:"nosotros bailamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"رَقَصْتُمْ", tr:"raqaṣtum", es:"(vosotros bailasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"رَقَصْتُنَّ", tr:"raqaṣtunna", es:"(vosotras bailasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"رَقَصُوا", tr:"raqaṣū", es:"ellos bailaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"رَقَصْنَ", tr:"raqaṣna", es:"ellas bailaron"},
     ],
-    "عَرَفَ (saber/conocer)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"عَرَفْتُ",   tr:"ʿaraftu",   es:"yo supe/conocí"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"عَرَفْتَ",   tr:"ʿarafta",   es:"tú supiste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"عَرَفْتِ",   tr:"ʿarafti",   es:"tú supiste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"عَرَفَ",     tr:"ʿarafa",    es:"él supo/conoció"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"عَرَفَتْ",   tr:"ʿarafat",   es:"ella supo/conoció"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"عَرَفْنَا",  tr:"ʿarafnā",   es:"nosotros supimos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"عَرَفْتُمْ", tr:"ʿaraftum",  es:"vosotros supisteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"عَرَفُوا",   tr:"ʿarafū",    es:"ellos supieron"},
+    "عَرَفَ (conocer)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"عَرَفْتُ", tr:"ʿaraftu", es:"yo conocí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"عَرَفْتَ", tr:"ʿarafta", es:"tú conociste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"عَرَفْتِ", tr:"ʿarafti", es:"tú conociste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"عَرَفَ", tr:"ʿarafa", es:"él conoció"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"عَرَفَتْ", tr:"ʿarafat", es:"ella conoció"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"عَرَفْنَا", tr:"ʿarafnā", es:"nosotros conocimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"عَرَفْتُمْ", tr:"ʿaraftum", es:"(vosotros conocisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"عَرَفْتُنَّ", tr:"ʿaraftunna", es:"(vosotras conocisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"عَرَفُوا", tr:"ʿarafū", es:"ellos conocieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"عَرَفْنَ", tr:"ʿarafna", es:"ellas conocieron"},
     ],
-    "لَبِسَ (vestirse/ponerse)": [
-      {persona:"Yo",       sufijo:"ـتُ",   suf_tr:"-tu",    forma:"لَبِسْتُ",   tr:"labistu",   es:"yo me vestí"},
-      {persona:"Tú (m.)",  sufijo:"ـتَ",   suf_tr:"-ta",    forma:"لَبِسْتَ",   tr:"labista",   es:"tú te vestiste (m.)"},
-      {persona:"Tú (f.)",  sufijo:"ـتِ",   suf_tr:"-ti",    forma:"لَبِسْتِ",   tr:"labisti",   es:"tú te vestiste (f.)"},
-      {persona:"Él",       sufijo:"—",     suf_tr:"—",      forma:"لَبِسَ",     tr:"labisa",    es:"él se vistió"},
-      {persona:"Ella",     sufijo:"ـتْ",   suf_tr:"-t",     forma:"لَبِسَتْ",   tr:"labisat",   es:"ella se vistió"},
-      {persona:"Nosotros", sufijo:"ـنَا",  suf_tr:"-nā",    forma:"لَبِسْنَا",  tr:"labisnā",   es:"nosotros nos vestimos"},
-      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum",   forma:"لَبِسْتُمْ", tr:"labistum",  es:"vosotros os vestisteis"},
-      {persona:"Ellos",    sufijo:"ـوا",   suf_tr:"-ū",     forma:"لَبِسُوا",   tr:"labisū",    es:"ellos se vistieron"},
+    "لَبِسَ (vestirse)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"لَبِسْتُ", tr:"labistu", es:"yo me vestí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"لَبِسْتَ", tr:"labista", es:"tú te vestiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"لَبِسْتِ", tr:"labisti", es:"tú te vestiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"لَبِسَ", tr:"labisa", es:"él se vistió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"لَبِسَتْ", tr:"labisat", es:"ella se vistió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"لَبِسْنَا", tr:"labisnā", es:"nosotros nos vestimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"لَبِسْتُمْ", tr:"labistum", es:"(vosotros os vestisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"لَبِسْتُنَّ", tr:"labistunna", es:"(vosotras os vestisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"لَبِسُوا", tr:"labisū", es:"ellos se vistieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"لَبِسْنَ", tr:"labisna", es:"ellas se vistieron"},
     ],
-  },
+    "عَمِلَ (trabajar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"عَمِلْتُ", tr:"ʿamiltu", es:"yo trabajé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"عَمِلْتَ", tr:"ʿamilta", es:"tú trabajaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"عَمِلْتِ", tr:"ʿamilti", es:"tú trabajaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"عَمِلَ", tr:"ʿamila", es:"él trabajó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"عَمِلَتْ", tr:"ʿamilat", es:"ella trabajó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"عَمِلْنَا", tr:"ʿamilnā", es:"nosotros trabajamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"عَمِلْتُمْ", tr:"ʿamiltum", es:"(vosotros trabajasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"عَمِلْتُنَّ", tr:"ʿamiltunna", es:"(vosotras trabajasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"عَمِلُوا", tr:"ʿamilū", es:"ellos trabajaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"عَمِلْنَ", tr:"ʿamilna", es:"ellas trabajaron"},
+    ],
+    "أَكَلَ (comer)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"أَكَلْتُ", tr:"akaltu", es:"yo comí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"أَكَلْتَ", tr:"akalta", es:"tú comiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"أَكَلْتِ", tr:"akalti", es:"tú comiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"أَكَلَ", tr:"akala", es:"él comió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"أَكَلَتْ", tr:"akalat", es:"ella comió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"أَكَلْنَا", tr:"akalnā", es:"nosotros comimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"أَكَلْتُمْ", tr:"akaltum", es:"(vosotros comisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"أَكَلْتُنَّ", tr:"akaltunna", es:"(vosotras comisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"أَكَلُوا", tr:"akalū", es:"ellos comieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"أَكَلْنَ", tr:"akalna", es:"ellas comieron"},
+    ],
+    "طَلَبَ (pedir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"طَلَبْتُ", tr:"ṭalabtu", es:"yo pedí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"طَلَبْتَ", tr:"ṭalabta", es:"tú pediste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"طَلَبْتِ", tr:"ṭalabti", es:"tú pediste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"طَلَبَ", tr:"ṭalaba", es:"él pidió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"طَلَبَتْ", tr:"ṭalabat", es:"ella pidió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"طَلَبْنَا", tr:"ṭalabnā", es:"nosotros pedimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"طَلَبْتُمْ", tr:"ṭalabtum", es:"(vosotros pedisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"طَلَبْتُنَّ", tr:"ṭalabtunna", es:"(vosotras pedisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"طَلَبُوا", tr:"ṭalabū", es:"ellos pidieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"طَلَبْنَ", tr:"ṭalabna", es:"ellas pidieron"},
+    ],
+    "سَقَطَ (caer)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"سَقَطْتُ", tr:"saqaṭtu", es:"yo caí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"سَقَطْتَ", tr:"saqaṭta", es:"tú caíste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"سَقَطْتِ", tr:"saqaṭti", es:"tú caíste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"سَقَطَ", tr:"saqaṭa", es:"él cayó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"سَقَطَتْ", tr:"saqaṭat", es:"ella cayó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"سَقَطْنَا", tr:"saqaṭnā", es:"nosotros caímos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"سَقَطْتُمْ", tr:"saqaṭtum", es:"(vosotros caísteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"سَقَطْتُنَّ", tr:"saqaṭtunna", es:"(vosotras caísteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"سَقَطُوا", tr:"saqaṭū", es:"ellos cayeron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"سَقَطْنَ", tr:"saqaṭna", es:"ellas cayeron"},
+    ],
+    "نَظَرَ (mirar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"نَظَرْتُ", tr:"naẓartu", es:"yo miré"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"نَظَرْتَ", tr:"naẓarta", es:"tú miraste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"نَظَرْتِ", tr:"naẓarti", es:"tú miraste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"نَظَرَ", tr:"naẓara", es:"él miró"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"نَظَرَتْ", tr:"naẓarat", es:"ella miró"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"نَظَرْنَا", tr:"naẓarnā", es:"nosotros miramos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"نَظَرْتُمْ", tr:"naẓartum", es:"(vosotros mirasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"نَظَرْتُنَّ", tr:"naẓartunna", es:"(vosotras mirasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"نَظَرُوا", tr:"naẓarū", es:"ellos miraron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"نَظَرْنَ", tr:"naẓarna", es:"ellas miraron"},
+    ],
+    "رَكِبَ (montar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"رَكِبْتُ", tr:"rakibtu", es:"yo monté"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"رَكِبْتَ", tr:"rakibta", es:"tú montaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"رَكِبْتِ", tr:"rakibti", es:"tú montaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"رَكِبَ", tr:"rakiba", es:"él montó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"رَكِبَتْ", tr:"rakibat", es:"ella montó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"رَكِبْنَا", tr:"rakibnā", es:"nosotros montamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"رَكِبْتُمْ", tr:"rakibtum", es:"(vosotros montasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"رَكِبْتُنَّ", tr:"rakibtunna", es:"(vosotras montasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"رَكِبُوا", tr:"rakibū", es:"ellos montaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"رَكِبْنَ", tr:"rakibna", es:"ellas montaron"},
+    ],
+    "سَمِعَ (oír)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"سَمِعْتُ", tr:"samiʿtu", es:"yo oí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"سَمِعْتَ", tr:"samiʿta", es:"tú oíste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"سَمِعْتِ", tr:"samiʿti", es:"tú oíste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"سَمِعَ", tr:"samiʿa", es:"él oyó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"سَمِعَتْ", tr:"samiʿat", es:"ella oyó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"سَمِعْنَا", tr:"samiʿnā", es:"nosotros oímos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"سَمِعْتُمْ", tr:"samiʿtum", es:"(vosotros oísteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"سَمِعْتُنَّ", tr:"samiʿtunna", es:"(vosotras oísteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"سَمِعُوا", tr:"samiʿū", es:"ellos oyeron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"سَمِعْنَ", tr:"samiʿna", es:"ellas oyeron"},
+    ],
+    "لَعِبَ (jugar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"لَعِبْتُ", tr:"laʿibtu", es:"yo jugué"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"لَعِبْتَ", tr:"laʿibta", es:"tú jugaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"لَعِبْتِ", tr:"laʿibti", es:"tú jugaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"لَعِبَ", tr:"laʿiba", es:"él jugó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"لَعِبَتْ", tr:"laʿibat", es:"ella jugó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"لَعِبْنَا", tr:"laʿibnā", es:"nosotros jugamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"لَعِبْتُمْ", tr:"laʿibtum", es:"(vosotros jugasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"لَعِبْتُنَّ", tr:"laʿibtunna", es:"(vosotras jugasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"لَعِبُوا", tr:"laʿibū", es:"ellos jugaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"لَعِبْنَ", tr:"laʿibna", es:"ellas jugaron"},
+    ],
+    "فَهِمَ (entender)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"فَهِمْتُ", tr:"fahimtu", es:"yo entendí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"فَهِمْتَ", tr:"fahimta", es:"tú entendiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"فَهِمْتِ", tr:"fahimti", es:"tú entendiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"فَهِمَ", tr:"fahima", es:"él entendió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"فَهِمَتْ", tr:"fahimat", es:"ella entendió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"فَهِمْنَا", tr:"fahimnā", es:"nosotros entendimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"فَهِمْتُمْ", tr:"fahimtum", es:"(vosotros entendisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"فَهِمْتُنَّ", tr:"fahimtunna", es:"(vosotras entendisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"فَهِمُوا", tr:"fahimū", es:"ellos entendieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"فَهِمْنَ", tr:"fahimna", es:"ellas entendieron"},
+    ],
+    "غَضِبَ (enfadarse)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"غَضِبْتُ", tr:"ġaḍibtu", es:"yo me enfadé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"غَضِبْتَ", tr:"ġaḍibta", es:"tú te enfadaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"غَضِبْتِ", tr:"ġaḍibti", es:"tú te enfadaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"غَضِبَ", tr:"ġaḍiba", es:"él se enfadó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"غَضِبَتْ", tr:"ġaḍibat", es:"ella se enfadó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"غَضِبْنَا", tr:"ġaḍibnā", es:"nosotros nos enfadamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"غَضِبْتُمْ", tr:"ġaḍibtum", es:"(vosotros os enfadasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"غَضِبْتُنَّ", tr:"ġaḍibtunna", es:"(vosotras os enfadasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"غَضِبُوا", tr:"ġaḍibū", es:"ellos se enfadaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"غَضِبْنَ", tr:"ġaḍibna", es:"ellas se enfadaron"},
+    ],
+    "تَعِبَ (cansarse)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"تَعِبْتُ", tr:"taʿibtu", es:"yo me cansé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"تَعِبْتَ", tr:"taʿibta", es:"tú te cansaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"تَعِبْتِ", tr:"taʿibti", es:"tú te cansaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"تَعِبَ", tr:"taʿiba", es:"él se cansó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"تَعِبَتْ", tr:"taʿibat", es:"ella se cansó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"تَعِبْنَا", tr:"taʿibnā", es:"nosotros nos cansamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"تَعِبْتُمْ", tr:"taʿibtum", es:"(vosotros os cansasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"تَعِبْتُنَّ", tr:"taʿibtunna", es:"(vosotras os cansasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"تَعِبُوا", tr:"taʿibū", es:"ellos se cansaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"تَعِبْنَ", tr:"taʿibna", es:"ellas se cansaron"},
+    ],
+    "ضَحِكَ (reírse)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"ضَحِكْتُ", tr:"ḍaḥiktu", es:"yo me reí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"ضَحِكْتَ", tr:"ḍaḥikta", es:"tú te reíste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"ضَحِكْتِ", tr:"ḍaḥikti", es:"tú te reíste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"ضَحِكَ", tr:"ḍaḥika", es:"él se rió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"ضَحِكَتْ", tr:"ḍaḥikat", es:"ella se rió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"ضَحِكْنَا", tr:"ḍaḥiknā", es:"nosotros nos reímos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"ضَحِكْتُمْ", tr:"ḍaḥiktum", es:"(vosotros os reísteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"ضَحِكْتُنَّ", tr:"ḍaḥiktunna", es:"(vosotras os reísteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"ضَحِكُوا", tr:"ḍaḥikū", es:"ellos se rieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"ضَحِكْنَ", tr:"ḍaḥikna", es:"ellas se rieron"},
+    ],
+    "فَرِحَ (alegrarse)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"فَرِحْتُ", tr:"fariḥtu", es:"yo me alegré"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"فَرِحْتَ", tr:"fariḥta", es:"tú te alegraste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"فَرِحْتِ", tr:"fariḥti", es:"tú te alegraste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"فَرِحَ", tr:"fariḥa", es:"él se alegró"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"فَرِحَتْ", tr:"fariḥat", es:"ella se alegró"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"فَرِحْنَا", tr:"fariḥnā", es:"nosotros nos alegramos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"فَرِحْتُمْ", tr:"fariḥtum", es:"(vosotros os alegrasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"فَرِحْتُنَّ", tr:"fariḥtunna", es:"(vosotras os alegrasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"فَرِحُوا", tr:"fariḥū", es:"ellos se alegraron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"فَرِحْنَ", tr:"fariḥna", es:"ellas se alegraron"},
+    ],
+    "فَصَلَ (separar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"فَصَلْتُ", tr:"faṣaltu", es:"yo separé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"فَصَلْتَ", tr:"faṣalta", es:"tú separaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"فَصَلْتِ", tr:"faṣalti", es:"tú separaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"فَصَلَ", tr:"faṣala", es:"él separó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"فَصَلَتْ", tr:"faṣalat", es:"ella separó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"فَصَلْنَا", tr:"faṣalnā", es:"nosotros separamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"فَصَلْتُمْ", tr:"faṣaltum", es:"(vosotros separasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"فَصَلْتُنَّ", tr:"faṣaltunna", es:"(vosotras separasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"فَصَلُوا", tr:"faṣalū", es:"ellos separaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"فَصَلْنَ", tr:"faṣalna", es:"ellas separaron"},
+    ],
+    "فَقَدَ (perder)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"فَقَدْتُ", tr:"faqadtu", es:"yo perdí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"فَقَدْتَ", tr:"faqadta", es:"tú perdiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"فَقَدْتِ", tr:"faqadti", es:"tú perdiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"فَقَدَ", tr:"faqada", es:"él perdió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"فَقَدَتْ", tr:"faqadat", es:"ella perdió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"فَقَدْنَا", tr:"faqadnā", es:"nosotros perdimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"فَقَدْتُمْ", tr:"faqadtum", es:"(vosotros perdisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"فَقَدْتُنَّ", tr:"faqadtunna", es:"(vosotras perdisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"فَقَدُوا", tr:"faqadū", es:"ellos perdieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"فَقَدْنَ", tr:"faqadna", es:"ellas perdieron"},
+    ],
+    "قَدَرَ (poder)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"قَدَرْتُ", tr:"qadartu", es:"yo pude"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"قَدَرْتَ", tr:"qadarta", es:"tú pudiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"قَدَرْتِ", tr:"qadarti", es:"tú pudiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"قَدَرَ", tr:"qadara", es:"él pudo"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"قَدَرَتْ", tr:"qadarat", es:"ella pudo"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"قَدَرْنَا", tr:"qadarnā", es:"nosotros pudimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"قَدَرْتُمْ", tr:"qadartum", es:"(vosotros pudisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"قَدَرْتُنَّ", tr:"qadartunna", es:"(vosotras pudisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"قَدَرُوا", tr:"qadarū", es:"ellos pudieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"قَدَرْنَ", tr:"qadarna", es:"ellas pudieron"},
+    ],
+    "قَسَمَ (dividir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"قَسَمْتُ", tr:"qasamtu", es:"yo dividí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"قَسَمْتَ", tr:"qasamta", es:"tú dividiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"قَسَمْتِ", tr:"qasamti", es:"tú dividiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"قَسَمَ", tr:"qasama", es:"él dividió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"قَسَمَتْ", tr:"qasamat", es:"ella dividió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"قَسَمْنَا", tr:"qasamnā", es:"nosotros dividimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"قَسَمْتُمْ", tr:"qasamtum", es:"(vosotros dividisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"قَسَمْتُنَّ", tr:"qasamtunna", es:"(vosotras dividisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"قَسَمُوا", tr:"qasamū", es:"ellos dividieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"قَسَمْنَ", tr:"qasamna", es:"ellas dividieron"},
+    ],
+    "كَسَرَ (romper)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"كَسَرْتُ", tr:"kasartu", es:"yo rompí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"كَسَرْتَ", tr:"kasarta", es:"tú rompiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"كَسَرْتِ", tr:"kasarti", es:"tú rompiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"كَسَرَ", tr:"kasara", es:"él rompió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"كَسَرَتْ", tr:"kasarat", es:"ella rompió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"كَسَرْنَا", tr:"kasarnā", es:"nosotros rompimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"كَسَرْتُمْ", tr:"kasartum", es:"(vosotros rompisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"كَسَرْتُنَّ", tr:"kasartunna", es:"(vosotras rompisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"كَسَرُوا", tr:"kasarū", es:"ellos rompieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"كَسَرْنَ", tr:"kasarna", es:"ellas rompieron"},
+    ],
+    "مَلَكَ (poseer)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"مَلَكْتُ", tr:"malaktu", es:"yo poseí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"مَلَكْتَ", tr:"malakta", es:"tú poseíste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"مَلَكْتِ", tr:"malakti", es:"tú poseíste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"مَلَكَ", tr:"malaka", es:"él poseyó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"مَلَكَتْ", tr:"malakat", es:"ella poseyó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"مَلَكْنَا", tr:"malaknā", es:"nosotros poseímos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"مَلَكْتُمْ", tr:"malaktum", es:"(vosotros poseísteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"مَلَكْتُنَّ", tr:"malaktunna", es:"(vosotras poseísteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"مَلَكُوا", tr:"malakū", es:"ellos poseyeron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"مَلَكْنَ", tr:"malakna", es:"ellas poseyeron"},
+    ],
+    "نَطَقَ (pronunciar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"نَطَقْتُ", tr:"naṭaqtu", es:"yo pronuncié"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"نَطَقْتَ", tr:"naṭaqta", es:"tú pronunciaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"نَطَقْتِ", tr:"naṭaqti", es:"tú pronunciaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"نَطَقَ", tr:"naṭaqa", es:"él pronunció"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"نَطَقَتْ", tr:"naṭaqat", es:"ella pronunció"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"نَطَقْنَا", tr:"naṭaqnā", es:"nosotros pronunciamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"نَطَقْتُمْ", tr:"naṭaqtum", es:"(vosotros pronunciasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"نَطَقْتُنَّ", tr:"naṭaqtunna", es:"(vosotras pronunciasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"نَطَقُوا", tr:"naṭaqū", es:"ellos pronunciaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"نَطَقْنَ", tr:"naṭaqna", es:"ellas pronunciaron"},
+    ],
+    "رَجَعَ (volver)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"رَجَعْتُ", tr:"raŷaʿtu", es:"yo volví"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"رَجَعْتَ", tr:"raŷaʿta", es:"tú volviste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"رَجَعْتِ", tr:"raŷaʿti", es:"tú volviste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"رَجَعَ", tr:"raŷaʿa", es:"él volvió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"رَجَعَتْ", tr:"raŷaʿat", es:"ella volvió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"رَجَعْنَا", tr:"raŷaʿnā", es:"nosotros volvimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"رَجَعْتُمْ", tr:"raŷaʿtum", es:"(vosotros volvisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"رَجَعْتُنَّ", tr:"raŷaʿtunna", es:"(vosotras volvisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"رَجَعُوا", tr:"raŷaʿū", es:"ellos volvieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"رَجَعْنَ", tr:"raŷaʿna", es:"ellas volvieron"},
+    ],
+    "سَرَقَ (robar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"سَرَقْتُ", tr:"saraqtu", es:"yo robé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"سَرَقْتَ", tr:"saraqta", es:"tú robaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"سَرَقْتِ", tr:"saraqti", es:"tú robaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"سَرَقَ", tr:"saraqa", es:"él robó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"سَرَقَتْ", tr:"saraqat", es:"ella robó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"سَرَقْنَا", tr:"saraqnā", es:"nosotros robamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"سَرَقْتُمْ", tr:"saraqtum", es:"(vosotros robasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"سَرَقْتُنَّ", tr:"saraqtunna", es:"(vosotras robasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"سَرَقُوا", tr:"saraqū", es:"ellos robaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"سَرَقْنَ", tr:"saraqna", es:"ellas robaron"},
+    ],
+    "هَمَسَ (susurrar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"هَمَسْتُ", tr:"hamastu", es:"yo susurré"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"هَمَسْتَ", tr:"hamasta", es:"tú susurraste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"هَمَسْتِ", tr:"hamasti", es:"tú susurraste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"هَمَسَ", tr:"hamasa", es:"él susurró"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"هَمَسَتْ", tr:"hamasat", es:"ella susurró"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"هَمَسْنَا", tr:"hamasnā", es:"nosotros susurramos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"هَمَسْتُمْ", tr:"hamastum", es:"(vosotros susurrasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"هَمَسْتُنَّ", tr:"hamastunna", es:"(vosotras susurrasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"هَمَسُوا", tr:"hamasū", es:"ellos susurraron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"هَمَسْنَ", tr:"hamasna", es:"ellas susurraron"},
+    ],
+    "حَسَبَ (calcular)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"حَسَبْتُ", tr:"ḥasabtu", es:"yo calculé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"حَسَبْتَ", tr:"ḥasabta", es:"tú calculaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"حَسَبْتِ", tr:"ḥasabti", es:"tú calculaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"حَسَبَ", tr:"ḥasaba", es:"él calculó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"حَسَبَتْ", tr:"ḥasabat", es:"ella calculó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"حَسَبْنَا", tr:"ḥasabnā", es:"nosotros calculamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"حَسَبْتُمْ", tr:"ḥasabtum", es:"(vosotros calculasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"حَسَبْتُنَّ", tr:"ḥasabtunna", es:"(vosotras calculasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"حَسَبُوا", tr:"ḥasabū", es:"ellos calcularon"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"حَسَبْنَ", tr:"ḥasabna", es:"ellas calcularon"},
+    ],
+    "حَمَلَ (llevar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"حَمَلْتُ", tr:"ḥamaltu", es:"yo llevé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"حَمَلْتَ", tr:"ḥamalta", es:"tú llevaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"حَمَلْتِ", tr:"ḥamalti", es:"tú llevaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"حَمَلَ", tr:"ḥamala", es:"él llevó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"حَمَلَتْ", tr:"ḥamalat", es:"ella llevó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"حَمَلْنَا", tr:"ḥamalnā", es:"nosotros llevamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"حَمَلْتُمْ", tr:"ḥamaltum", es:"(vosotros llevasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"حَمَلْتُنَّ", tr:"ḥamaltunna", es:"(vosotras llevasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"حَمَلُوا", tr:"ḥamalū", es:"ellos llevaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"حَمَلْنَ", tr:"ḥamalna", es:"ellas llevaron"},
+    ],
+    "كَذَبَ (mentir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"كَذَبْتُ", tr:"kaḏabtu", es:"yo mentí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"كَذَبْتَ", tr:"kaḏabta", es:"tú mentiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"كَذَبْتِ", tr:"kaḏabti", es:"tú mentiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"كَذَبَ", tr:"kaḏaba", es:"él mintió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"كَذَبَتْ", tr:"kaḏabat", es:"ella mintió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"كَذَبْنَا", tr:"kaḏabnā", es:"nosotros mentimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"كَذَبْتُمْ", tr:"kaḏabtum", es:"(vosotros mentisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"كَذَبْتُنَّ", tr:"kaḏabtunna", es:"(vosotras mentisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"كَذَبُوا", tr:"kaḏabū", es:"ellos mintieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"كَذَبْنَ", tr:"kaḏabna", es:"ellas mintieron"},
+    ],
+    "عَرَضَ (exponer)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"عَرَضْتُ", tr:"ʿaraḍtu", es:"yo expuse"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"عَرَضْتَ", tr:"ʿaraḍta", es:"tú expusiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"عَرَضْتِ", tr:"ʿaraḍti", es:"tú expusiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"عَرَضَ", tr:"ʿaraḍa", es:"él expuso"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"عَرَضَتْ", tr:"ʿaraḍat", es:"ella expuso"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"عَرَضْنَا", tr:"ʿaraḍnā", es:"nosotros expusimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"عَرَضْتُمْ", tr:"ʿaraḍtum", es:"(vosotros expusisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"عَرَضْتُنَّ", tr:"ʿaraḍtunna", es:"(vosotras expusisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"عَرَضُوا", tr:"ʿaraḍū", es:"ellos expusieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"عَرَضْنَ", tr:"ʿaraḍna", es:"ellas expusieron"},
+    ],
+    "عَقَدَ (atar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"عَقَدْتُ", tr:"ʿaqadtu", es:"yo até"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"عَقَدْتَ", tr:"ʿaqadta", es:"tú ataste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"عَقَدْتِ", tr:"ʿaqadti", es:"tú ataste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"عَقَدَ", tr:"ʿaqada", es:"él ató"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"عَقَدَتْ", tr:"ʿaqadat", es:"ella ató"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"عَقَدْنَا", tr:"ʿaqadnā", es:"nosotros atamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"عَقَدْتُمْ", tr:"ʿaqadtum", es:"(vosotros atasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"عَقَدْتُنَّ", tr:"ʿaqadtunna", es:"(vosotras atasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"عَقَدُوا", tr:"ʿaqadū", es:"ellos ataron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"عَقَدْنَ", tr:"ʿaqadna", es:"ellas ataron"},
+    ],
+    "حَلَفَ (jurar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"حَلَفْتُ", tr:"ḥalaftu", es:"yo juré"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"حَلَفْتَ", tr:"ḥalafta", es:"tú juraste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"حَلَفْتِ", tr:"ḥalafti", es:"tú juraste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"حَلَفَ", tr:"ḥalafa", es:"él juró"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"حَلَفَتْ", tr:"ḥalafat", es:"ella juró"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"حَلَفْنَا", tr:"ḥalafnā", es:"nosotros juramos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"حَلَفْتُمْ", tr:"ḥalaftum", es:"(vosotros jurasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"حَلَفْتُنَّ", tr:"ḥalaftunna", es:"(vosotras jurasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"حَلَفُوا", tr:"ḥalafū", es:"ellos juraron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"حَلَفْنَ", tr:"ḥalafna", es:"ellas juraron"},
+    ],
+    "نَهَضَ (levantarse)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"نَهَضْتُ", tr:"nahaḍtu", es:"yo me levanté"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"نَهَضْتَ", tr:"nahaḍta", es:"tú te levantaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"نَهَضْتِ", tr:"nahaḍti", es:"tú te levantaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"نَهَضَ", tr:"nahaḍa", es:"él se levantó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"نَهَضَتْ", tr:"nahaḍat", es:"ella se levantó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"نَهَضْنَا", tr:"nahaḍnā", es:"nosotros nos levantamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"نَهَضْتُمْ", tr:"nahaḍtum", es:"(vosotros os levantasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"نَهَضْتُنَّ", tr:"nahaḍtunna", es:"(vosotras os levantasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"نَهَضُوا", tr:"nahaḍū", es:"ellos se levantaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"نَهَضْنَ", tr:"nahaḍna", es:"ellas se levantaron"},
+    ],
+    "فَتَحَ (abrir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"فَتَحْتُ", tr:"fataḥtu", es:"yo abrí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"فَتَحْتَ", tr:"fataḥta", es:"tú abriste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"فَتَحْتِ", tr:"fataḥti", es:"tú abriste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"فَتَحَ", tr:"fataḥa", es:"él abrió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"فَتَحَتْ", tr:"fataḥat", es:"ella abrió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"فَتَحْنَا", tr:"fataḥnā", es:"nosotros abrimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"فَتَحْتُمْ", tr:"fataḥtum", es:"(vosotros abristeis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"فَتَحْتُنَّ", tr:"fataḥtunna", es:"(vosotras abristeis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"فَتَحُوا", tr:"fataḥū", es:"ellos abrieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"فَتَحْنَ", tr:"fataḥna", es:"ellas abrieron"},
+    ],
+    "سَبَحَ (nadar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"سَبَحْتُ", tr:"sabaḥtu", es:"yo nadé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"سَبَحْتَ", tr:"sabaḥta", es:"tú nadaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"سَبَحْتِ", tr:"sabaḥti", es:"tú nadaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"سَبَحَ", tr:"sabaḥa", es:"él nadó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"سَبَحَتْ", tr:"sabaḥat", es:"ella nadó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"سَبَحْنَا", tr:"sabaḥnā", es:"nosotros nadamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"سَبَحْتُمْ", tr:"sabaḥtum", es:"(vosotros nadasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"سَبَحْتُنَّ", tr:"sabaḥtunna", es:"(vosotras nadasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"سَبَحُوا", tr:"sabaḥū", es:"ellos nadaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"سَبَحْنَ", tr:"sabaḥna", es:"ellas nadaron"},
+    ],
+    "مَنَعَ (impedir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"مَنَعْتُ", tr:"manaʿtu", es:"yo impedí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"مَنَعْتَ", tr:"manaʿta", es:"tú impediste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"مَنَعْتِ", tr:"manaʿti", es:"tú impediste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"مَنَعَ", tr:"manaʿa", es:"él impidió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"مَنَعَتْ", tr:"manaʿat", es:"ella impidió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"مَنَعْنَا", tr:"manaʿnā", es:"nosotros impedimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"مَنَعْتُمْ", tr:"manaʿtum", es:"(vosotros impedisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"مَنَعْتُنَّ", tr:"manaʿtunna", es:"(vosotras impedisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"مَنَعُوا", tr:"manaʿū", es:"ellos impidieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"مَنَعْنَ", tr:"manaʿna", es:"ellas impidieron"},
+    ],
+    "رَحَلَ (partir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"رَحَلْتُ", tr:"raḥaltu", es:"yo partí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"رَحَلْتَ", tr:"raḥalta", es:"tú partiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"رَحَلْتِ", tr:"raḥalti", es:"tú partiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"رَحَلَ", tr:"raḥala", es:"él partió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"رَحَلَتْ", tr:"raḥalat", es:"ella partió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"رَحَلْنَا", tr:"raḥalnā", es:"nosotros partimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"رَحَلْتُمْ", tr:"raḥaltum", es:"(vosotros partisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"رَحَلْتُنَّ", tr:"raḥaltunna", es:"(vosotras partisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"رَحَلُوا", tr:"raḥalū", es:"ellos partieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"رَحَلْنَ", tr:"raḥalna", es:"ellas partieron"},
+    ],
+    "زَرَعَ (plantar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"زَرَعْتُ", tr:"zaraʿtu", es:"yo planté"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"زَرَعْتَ", tr:"zaraʿta", es:"tú plantaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"زَرَعْتِ", tr:"zaraʿti", es:"tú plantaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"زَرَعَ", tr:"zaraʿa", es:"él plantó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"زَرَعَتْ", tr:"zaraʿat", es:"ella plantó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"زَرَعْنَا", tr:"zaraʿnā", es:"nosotros plantamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"زَرَعْتُمْ", tr:"zaraʿtum", es:"(vosotros plantasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"زَرَعْتُنَّ", tr:"zaraʿtunna", es:"(vosotras plantasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"زَرَعُوا", tr:"zaraʿū", es:"ellos plantaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"زَرَعْنَ", tr:"zaraʿna", es:"ellas plantaron"},
+    ],
+    "نَصَحَ (aconsejar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"نَصَحْتُ", tr:"naṣaḥtu", es:"yo aconsejé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"نَصَحْتَ", tr:"naṣaḥta", es:"tú aconsejaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"نَصَحْتِ", tr:"naṣaḥti", es:"tú aconsejaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"نَصَحَ", tr:"naṣaḥa", es:"él aconsejó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"نَصَحَتْ", tr:"naṣaḥat", es:"ella aconsejó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"نَصَحْنَا", tr:"naṣaḥnā", es:"nosotros aconsejamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"نَصَحْتُمْ", tr:"naṣaḥtum", es:"(vosotros aconsejasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"نَصَحْتُنَّ", tr:"naṣaḥtunna", es:"(vosotras aconsejasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"نَصَحُوا", tr:"naṣaḥū", es:"ellos aconsejaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"نَصَحْنَ", tr:"naṣaḥna", es:"ellas aconsejaron"},
+    ],
+    "فَعَلَ (hacer)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"فَعَلْتُ", tr:"faʿaltu", es:"yo hice"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"فَعَلْتَ", tr:"faʿalta", es:"tú hiciste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"فَعَلْتِ", tr:"faʿalti", es:"tú hiciste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"فَعَلَ", tr:"faʿala", es:"él hizo"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"فَعَلَتْ", tr:"faʿalat", es:"ella hizo"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"فَعَلْنَا", tr:"faʿalnā", es:"nosotros hicimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"فَعَلْتُمْ", tr:"faʿaltum", es:"(vosotros hicisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"فَعَلْتُنَّ", tr:"faʿaltunna", es:"(vosotras hicisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"فَعَلُوا", tr:"faʿalū", es:"ellos hicieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"فَعَلْنَ", tr:"faʿalna", es:"ellas hicieron"},
+    ],
+    "ظَهَرَ (aparecer)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"ظَهَرْتُ", tr:"ẓahartu", es:"yo aparecí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"ظَهَرْتَ", tr:"ẓaharta", es:"tú apareciste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"ظَهَرْتِ", tr:"ẓaharti", es:"tú apareciste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"ظَهَرَ", tr:"ẓahara", es:"él apareció"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"ظَهَرَتْ", tr:"ẓaharat", es:"ella apareció"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"ظَهَرْنَا", tr:"ẓaharnā", es:"nosotros aparecimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"ظَهَرْتُمْ", tr:"ẓahartum", es:"(vosotros aparecisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"ظَهَرْتُنَّ", tr:"ẓahartunna", es:"(vosotras aparecisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"ظَهَرُوا", tr:"ẓaharū", es:"ellos aparecieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"ظَهَرْنَ", tr:"ẓaharna", es:"ellas aparecieron"},
+    ],
+    "بَلَعَ (tragar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"بَلَعْتُ", tr:"balaʿtu", es:"yo tragué"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"بَلَعْتَ", tr:"balaʿta", es:"tú tragaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"بَلَعْتِ", tr:"balaʿti", es:"tú tragaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"بَلَعَ", tr:"balaʿa", es:"él tragó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"بَلَعَتْ", tr:"balaʿat", es:"ella tragó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"بَلَعْنَا", tr:"balaʿnā", es:"nosotros tragamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"بَلَعْتُمْ", tr:"balaʿtum", es:"(vosotros tragasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"بَلَعْتُنَّ", tr:"balaʿtunna", es:"(vosotras tragasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"بَلَعُوا", tr:"balaʿū", es:"ellos tragaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"بَلَعْنَ", tr:"balaʿna", es:"ellas tragaron"},
+    ],
+    "فَضَحَ (desvelar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"فَضَحْتُ", tr:"faḍaḥtu", es:"yo desvelé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"فَضَحْتَ", tr:"faḍaḥta", es:"tú desvelaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"فَضَحْتِ", tr:"faḍaḥti", es:"tú desvelaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"فَضَحَ", tr:"faḍaḥa", es:"él desveló"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"فَضَحَتْ", tr:"faḍaḥat", es:"ella desveló"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"فَضَحْنَا", tr:"faḍaḥnā", es:"nosotros desvelamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"فَضَحْتُمْ", tr:"faḍaḥtum", es:"(vosotros desvelasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"فَضَحْتُنَّ", tr:"faḍaḥtunna", es:"(vosotras desvelasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"فَضَحُوا", tr:"faḍaḥū", es:"ellos desvelaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"فَضَحْنَ", tr:"faḍaḥna", es:"ellas desvelaron"},
+    ],
+    "جَرَحَ (herir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"جَرَحْتُ", tr:"ŷaraḥtu", es:"yo herí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"جَرَحْتَ", tr:"ŷaraḥta", es:"tú heriste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"جَرَحْتِ", tr:"ŷaraḥti", es:"tú heriste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"جَرَحَ", tr:"ŷaraḥa", es:"él hirió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"جَرَحَتْ", tr:"ŷaraḥat", es:"ella hirió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"جَرَحْنَا", tr:"ŷaraḥnā", es:"nosotros herimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"جَرَحْتُمْ", tr:"ŷaraḥtum", es:"(vosotros heristeis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"جَرَحْتُنَّ", tr:"ŷaraḥtunna", es:"(vosotras heristeis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"جَرَحُوا", tr:"ŷaraḥū", es:"ellos hirieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"جَرَحْنَ", tr:"ŷaraḥna", es:"ellas hirieron"},
+    ],
+    "مَنَحَ (otorgar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"مَنَحْتُ", tr:"manaḥtu", es:"yo otorgué"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"مَنَحْتَ", tr:"manaḥta", es:"tú otorgaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"مَنَحْتِ", tr:"manaḥti", es:"tú otorgaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"مَنَحَ", tr:"manaḥa", es:"él otorgó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"مَنَحَتْ", tr:"manaḥat", es:"ella otorgó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"مَنَحْنَا", tr:"manaḥnā", es:"nosotros otorgamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"مَنَحْتُمْ", tr:"manaḥtum", es:"(vosotros otorgasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"مَنَحْتُنَّ", tr:"manaḥtunna", es:"(vosotras otorgasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"مَنَحُوا", tr:"manaḥū", es:"ellos otorgaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"مَنَحْنَ", tr:"manaḥna", es:"ellas otorgaron"},
+    ],
+    "كَبَحَ (frenar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"كَبَحْتُ", tr:"kabaḥtu", es:"yo frené"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"كَبَحْتَ", tr:"kabaḥta", es:"tú frenaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"كَبَحْتِ", tr:"kabaḥti", es:"tú frenaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"كَبَحَ", tr:"kabaḥa", es:"él frenó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"كَبَحَتْ", tr:"kabaḥat", es:"ella frenó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"كَبَحْنَا", tr:"kabaḥnā", es:"nosotros frenamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"كَبَحْتُمْ", tr:"kabaḥtum", es:"(vosotros frenasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"كَبَحْتُنَّ", tr:"kabaḥtunna", es:"(vosotras frenasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"كَبَحُوا", tr:"kabaḥū", es:"ellos frenaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"كَبَحْنَ", tr:"kabaḥna", es:"ellas frenaron"},
+    ],
+    "لَمَعَ (brillar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"لَمَعْتُ", tr:"lamaʿtu", es:"yo brillé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"لَمَعْتَ", tr:"lamaʿta", es:"tú brillaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"لَمَعْتِ", tr:"lamaʿti", es:"tú brillaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"لَمَعَ", tr:"lamaʿa", es:"él brilló"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"لَمَعَتْ", tr:"lamaʿat", es:"ella brilló"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"لَمَعْنَا", tr:"lamaʿnā", es:"nosotros brillamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"لَمَعْتُمْ", tr:"lamaʿtum", es:"(vosotros brillasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"لَمَعْتُنَّ", tr:"lamaʿtunna", es:"(vosotras brillasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"لَمَعُوا", tr:"lamaʿū", es:"ellos brillaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"لَمَعْنَ", tr:"lamaʿna", es:"ellas brillaron"},
+    ],
+    "نَبَحَ (ladrar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"نَبَحْتُ", tr:"nabaḥtu", es:"yo ladré"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"نَبَحْتَ", tr:"nabaḥta", es:"tú ladraste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"نَبَحْتِ", tr:"nabaḥti", es:"tú ladraste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"نَبَحَ", tr:"nabaḥa", es:"él ladró"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"نَبَحَتْ", tr:"nabaḥat", es:"ella ladró"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"نَبَحْنَا", tr:"nabaḥnā", es:"nosotros ladramos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"نَبَحْتُمْ", tr:"nabaḥtum", es:"(vosotros ladrasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"نَبَحْتُنَّ", tr:"nabaḥtunna", es:"(vosotras ladrasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"نَبَحُوا", tr:"nabaḥū", es:"ellos ladraron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"نَبَحْنَ", tr:"nabaḥna", es:"ellas ladraron"},
+    ],
+    "طَحَنَ (moler)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"طَحَنْتُ", tr:"ṭaḥantu", es:"yo molí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"طَحَنْتَ", tr:"ṭaḥanta", es:"tú moliste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"طَحَنْتِ", tr:"ṭaḥanti", es:"tú moliste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"طَحَنَ", tr:"ṭaḥana", es:"él molió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"طَحَنَتْ", tr:"ṭaḥanat", es:"ella molió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"طَحَنْنَا", tr:"ṭaḥannā", es:"nosotros molimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"طَحَنْتُمْ", tr:"ṭaḥantum", es:"(vosotros molisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"طَحَنْتُنَّ", tr:"ṭaḥantunna", es:"(vosotras molisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"طَحَنُوا", tr:"ṭaḥanū", es:"ellos molieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"طَحَنْنَ", tr:"ṭaḥanna", es:"ellas molieron"},
+    ],
+    "ثَأَرَ (vengar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"ثَأَرْتُ", tr:"ṯaʾartu", es:"yo vengué"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"ثَأَرْتَ", tr:"ṯaʾarta", es:"tú vengaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"ثَأَرْتِ", tr:"ṯaʾarti", es:"tú vengaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"ثَأَرَ", tr:"ṯaʾara", es:"él vengó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"ثَأَرَتْ", tr:"ṯaʾarat", es:"ella vengó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"ثَأَرْنَا", tr:"ṯaʾarnā", es:"nosotros vengamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"ثَأَرْتُمْ", tr:"ṯaʾartum", es:"(vosotros vengasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"ثَأَرْتُنَّ", tr:"ṯaʾartunna", es:"(vosotras vengasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"ثَأَرُوا", tr:"ṯaʾarū", es:"ellos vengaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"ثَأَرْنَ", tr:"ṯaʾarna", es:"ellas vengaron"},
+    ],
+    "رَكَعَ (arrodillarse)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"رَكَعْتُ", tr:"rakaʿtu", es:"yo me arrodillé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"رَكَعْتَ", tr:"rakaʿta", es:"tú te arrodillaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"رَكَعْتِ", tr:"rakaʿti", es:"tú te arrodillaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"رَكَعَ", tr:"rakaʿa", es:"él se arrodilló"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"رَكَعَتْ", tr:"rakaʿat", es:"ella se arrodilló"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"رَكَعْنَا", tr:"rakaʿnā", es:"nosotros nos arrodillamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"رَكَعْتُمْ", tr:"rakaʿtum", es:"(vosotros os arrodillasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"رَكَعْتُنَّ", tr:"rakaʿtunna", es:"(vosotras os arrodillasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"رَكَعُوا", tr:"rakaʿū", es:"ellos se arrodillaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"رَكَعْنَ", tr:"rakaʿna", es:"ellas se arrodillaron"},
+    ],
+    "زَحَفَ (arrastrarse)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"زَحَفْتُ", tr:"zaḥaftu", es:"yo me arrastré"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"زَحَفْتَ", tr:"zaḥafta", es:"tú te arrastraste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"زَحَفْتِ", tr:"zaḥafti", es:"tú te arrastraste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"زَحَفَ", tr:"zaḥafa", es:"él se arrastró"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"زَحَفَتْ", tr:"zaḥafat", es:"ella se arrastró"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"زَحَفْنَا", tr:"zaḥafnā", es:"nosotros nos arrastramos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"زَحَفْتُمْ", tr:"zaḥaftum", es:"(vosotros os arrastrasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"زَحَفْتُنَّ", tr:"zaḥaftunna", es:"(vosotras os arrastrasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"زَحَفُوا", tr:"zaḥafū", es:"ellos se arrastraron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"زَحَفْنَ", tr:"zaḥafna", es:"ellas se arrastraron"},
+    ],
+    "جَمَعَ (agrupar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"جَمَعْتُ", tr:"ŷamaʿtu", es:"yo agrupé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"جَمَعْتَ", tr:"ŷamaʿta", es:"tú agrupaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"جَمَعْتِ", tr:"ŷamaʿti", es:"tú agrupaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"جَمَعَ", tr:"ŷamaʿa", es:"él agrupó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"جَمَعَتْ", tr:"ŷamaʿat", es:"ella agrupó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"جَمَعْنَا", tr:"ŷamaʿnā", es:"nosotros agrupamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"جَمَعْتُمْ", tr:"ŷamaʿtum", es:"(vosotros agrupasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"جَمَعْتُنَّ", tr:"ŷamaʿtunna", es:"(vosotras agrupasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"جَمَعُوا", tr:"ŷamaʿū", es:"ellos agruparon"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"جَمَعْنَ", tr:"ŷamaʿna", es:"ellas agruparon"},
+    ],
+    "ذَكَرَ (mencionar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"ذَكَرْتُ", tr:"ḏakartu", es:"yo mencioné"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"ذَكَرْتَ", tr:"ḏakarta", es:"tú mencionaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"ذَكَرْتِ", tr:"ḏakarti", es:"tú mencionaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"ذَكَرَ", tr:"ḏakara", es:"él mencionó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"ذَكَرَتْ", tr:"ḏakarat", es:"ella mencionó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"ذَكَرْنَا", tr:"ḏakarnā", es:"nosotros mencionamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"ذَكَرْتُمْ", tr:"ḏakartum", es:"(vosotros mencionasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"ذَكَرْتُنَّ", tr:"ḏakartunna", es:"(vosotras mencionasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"ذَكَرُوا", tr:"ḏakarū", es:"ellos mencionaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"ذَكَرْنَ", tr:"ḏakarna", es:"ellas mencionaron"},
+    ],
+    "سَكَنَ (vivir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"سَكَنْتُ", tr:"sakantu", es:"yo viví"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"سَكَنْتَ", tr:"sakanta", es:"tú viviste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"سَكَنْتِ", tr:"sakanti", es:"tú viviste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"سَكَنَ", tr:"sakana", es:"él vivió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"سَكَنَتْ", tr:"sakanat", es:"ella vivió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"سَكَنْنَا", tr:"sakannā", es:"nosotros vivimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"سَكَنْتُمْ", tr:"sakantum", es:"(vosotros vivisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"سَكَنْتُنَّ", tr:"sakantunna", es:"(vosotras vivisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"سَكَنُوا", tr:"sakanū", es:"ellos vivieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"سَكَنْنَ", tr:"sakanna", es:"ellas vivieron"},
+    ],
+    "شَكَرَ (agradecer)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"شَكَرْتُ", tr:"šakartu", es:"yo agradecí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"شَكَرْتَ", tr:"šakarta", es:"tú agradeciste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"شَكَرْتِ", tr:"šakarti", es:"tú agradeciste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"شَكَرَ", tr:"šakara", es:"él agradeció"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"شَكَرَتْ", tr:"šakarat", es:"ella agradeció"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"شَكَرْنَا", tr:"šakarnā", es:"nosotros agradecimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"شَكَرْتُمْ", tr:"šakartum", es:"(vosotros agradecisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"شَكَرْتُنَّ", tr:"šakartunna", es:"(vosotras agradecisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"شَكَرُوا", tr:"šakarū", es:"ellos agradecieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"شَكَرْنَ", tr:"šakarna", es:"ellas agradecieron"},
+    ],
+    "شَرَدَ (huir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"شَرَدْتُ", tr:"šaradtu", es:"yo huí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"شَرَدْتَ", tr:"šaradta", es:"tú huiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"شَرَدْتِ", tr:"šaradti", es:"tú huiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"شَرَدَ", tr:"šarada", es:"él huyó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"شَرَدَتْ", tr:"šaradat", es:"ella huyó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"شَرَدْنَا", tr:"šaradnā", es:"nosotros huimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"شَرَدْتُمْ", tr:"šaradtum", es:"(vosotros huisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"شَرَدْتُنَّ", tr:"šaradtunna", es:"(vosotras huisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"شَرَدُوا", tr:"šaradū", es:"ellos huyeron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"شَرَدْنَ", tr:"šaradna", es:"ellas huyeron"},
+    ],
+    "تَرَكَ (dejar)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"تَرَكْتُ", tr:"taraktu", es:"yo dejé"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"تَرَكْتَ", tr:"tarakta", es:"tú dejaste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"تَرَكْتِ", tr:"tarakti", es:"tú dejaste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"تَرَكَ", tr:"taraka", es:"él dejó"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"تَرَكَتْ", tr:"tarakat", es:"ella dejó"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"تَرَكْنَا", tr:"taraknā", es:"nosotros dejamos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"تَرَكْتُمْ", tr:"taraktum", es:"(vosotros dejasteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"تَرَكْتُنَّ", tr:"taraktunna", es:"(vosotras dejasteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"تَرَكُوا", tr:"tarakū", es:"ellos dejaron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"تَرَكْنَ", tr:"tarakna", es:"ellas dejaron"},
+    ],
+    "شَعَرَ (sentir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"شَعَرْتُ", tr:"šaʿartu", es:"yo sentí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"شَعَرْتَ", tr:"šaʿarta", es:"tú sentiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"شَعَرْتِ", tr:"šaʿarti", es:"tú sentiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"شَعَرَ", tr:"šaʿara", es:"él sintió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"شَعَرَتْ", tr:"šaʿarat", es:"ella sintió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"شَعَرْنَا", tr:"šaʿarnā", es:"nosotros sentimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"شَعَرْتُمْ", tr:"šaʿartum", es:"(vosotros sentisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"شَعَرْتُنَّ", tr:"šaʿartunna", es:"(vosotras sentisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"شَعَرُوا", tr:"šaʿarū", es:"ellos sintieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"شَعَرْنَ", tr:"šaʿarna", es:"ellas sintieron"},
+    ],
+    "أَخَذَ (coger)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"أَخَذْتُ", tr:"aḵaḏtu", es:"yo cogí"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"أَخَذْتَ", tr:"aḵaḏta", es:"tú cogiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"أَخَذْتِ", tr:"aḵaḏti", es:"tú cogiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"أَخَذَ", tr:"aḵaḏa", es:"él cogió"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"أَخَذَتْ", tr:"aḵaḏat", es:"ella cogió"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"أَخَذْنَا", tr:"aḵaḏnā", es:"nosotros cogimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"أَخَذْتُمْ", tr:"aḵaḏtum", es:"(vosotros cogisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"أَخَذْتُنَّ", tr:"aḵaḏtunna", es:"(vosotras cogisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"أَخَذُوا", tr:"aḵaḏū", es:"ellos cogieron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"أَخَذْنَ", tr:"aḵaḏna", es:"ellas cogieron"},
+    ],
+    "قَالَ (decir)": [
+      {persona:"Yo"         , sufijo:"ـتُ"    , suf_tr:"-tu"    , forma:"قُلْتُ", tr:"qultu", es:"yo dije"},
+      {persona:"Tú (m.)"    , sufijo:"ـتَ"    , suf_tr:"-ta"    , forma:"قُلْتَ", tr:"qulta", es:"tú dijiste"},
+      {persona:"Tú (f.)"    , sufijo:"ـتِ"    , suf_tr:"-ti"    , forma:"قُلْتِ", tr:"qulti", es:"tú dijiste"},
+      {persona:"Él"         , sufijo:"—"      , suf_tr:"—"      , forma:"قَالَ", tr:"qāla", es:"él dijo"},
+      {persona:"Ella"       , sufijo:"ـتْ"    , suf_tr:"-t"     , forma:"قَالَتْ", tr:"qālat", es:"ella dijo"},
+      {persona:"Nosotros"   , sufijo:"ـنَا"   , suf_tr:"-nā"    , forma:"قُلْنَا", tr:"qulnā", es:"nosotros dijimos"},
+      {persona:"Vosotros"   , sufijo:"ـتُمْ"  , suf_tr:"-tum"   , forma:"قُلْتُمْ", tr:"qultum", es:"(vosotros dijisteis)"},
+      {persona:"Vosotras"   , sufijo:"ـتُنَّ" , suf_tr:"-tunna" , forma:"قُلْتُنَّ", tr:"qultunna", es:"(vosotras dijisteis)"},
+      {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"قَالُوا", tr:"qālū", es:"ellos dijeron"},
+      {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"قُلْنَ", tr:"qulna", es:"ellas dijeron"},
+    ],
+},
   irregular: "⚠️ لَيْسَ (no ser/no estar) es IRREGULAR: usa لَسْتُ, لَسْتَ, لَسْتِ, لَيْسَ, لَيْسَتْ, لَسْنَا, لَسْتُمْ, لَيْسُوا — no sigue exactamente el mismo patrón de sufijos."
 };
 
@@ -3271,12 +3992,16 @@ function renderPatrones() {
       <div class="pat-intro">📌 ${PATRONES_A.nota}</div>
     `;
   } else if (patBlock === 'B') {
-    const verbos = Object.keys(PATRONES_B.verbos);
+    const verbos = Object.keys(PATRONES_B.verbos).sort((a,b)=>{
+      const ea=(a.match(/\(([^)]+)\)/)||[,''])[1], eb=(b.match(/\(([^)]+)\)/)||[,''])[1];
+      return ea.localeCompare(eb,'es');
+    });
+    if(!verbos.includes(patVerboSel)) patVerboSel = verbos[0];
     c.innerHTML = `
       <div class="pat-intro">${PATRONES_B.intro}</div>
-      <div class="pat-selector">
-        ${verbos.map(v => `<button class="pat-sel-btn ${v===patVerboSel?'active':''}" onclick="setPatVerbo('${v}')">${wrapArabic(v)}</button>`).join('')}
-      </div>
+      <select class="pat-verb-select" onchange="setPatVerbo(this.value)">
+        ${verbos.map(v => `<option value="${v}" ${v===patVerboSel?'selected':''}>‏${v}</option>`).join('')}
+      </select>
       <table class="pat-table">
         <tr><th>Persona</th><th>Sufijo</th><th>Forma</th><th>Significado</th></tr>
         ${PATRONES_B.verbos[patVerboSel].map(f => `
@@ -3301,13 +4026,16 @@ function renderPatrones() {
     if (!formaData.disponible) {
       body += `<div class="pat-irregular">🚧 Todavía no hemos visto esta forma en clase. En cuanto la deis, se rellena aquí igual que la Forma I.</div>`;
     } else {
-      const presVerbos = Object.keys(formaData.verbos);
+      const presVerbos = Object.keys(formaData.verbos).sort((a,b)=>{
+        const ea=(a.match(/\(([^)]+)\)/)||[,''])[1], eb=(b.match(/\(([^)]+)\)/)||[,''])[1];
+        return ea.localeCompare(eb,'es');
+      });
       if (!presVerbos.includes(patPresVerboSel)) patPresVerboSel = presVerbos[0];
       body += `
         <div class="pat-intro">📌 ${formaData.nota}</div>
-        <div class="pat-selector">
-          ${presVerbos.map(v => `<button class="pat-sel-btn ${v===patPresVerboSel?'active':''}" onclick="setPatPresVerbo('${v}')">${wrapArabic(v)}</button>`).join('')}
-        </div>
+        <select class="pat-verb-select" onchange="setPatPresVerbo(this.value)">
+          ${presVerbos.map(v => `<option value="${v}" ${v===patPresVerboSel?'selected':''}>‏${v}</option>`).join('')}
+        </select>
         <table class="pat-table">
           <tr><th>Persona</th><th>Prefijo</th><th>Sufijo</th><th>Forma</th><th>Significado</th></tr>
           ${formaData.verbos[patPresVerboSel].map(f => `
@@ -3489,12 +4217,13 @@ function getVocabByFilter(cat) {
 }
 function getCategories() { return ['Todas', ...new Set(VOCAB.map(w => w.cat))]; }
 
-function buildCatFilter(containerId, activeVar, callback) {
+function buildCatFilter(containerId, activeVar, callback, withArrows) {
   const c = document.getElementById(containerId);
   c.innerHTML = '';
-  getCategories().forEach(cat => {
+  const cats = getCategories();
+  cats.forEach(cat => {
     const btn = document.createElement('button');
-    btn.className = 'cat-chip' + (cat === 'Todas' ? ' active' : '');
+    btn.className = 'cat-chip' + (cat === activeVar ? ' active' : '');
     btn.textContent = cat;
     btn.onclick = () => {
       c.querySelectorAll('.cat-chip').forEach(b => b.classList.remove('active'));
@@ -3503,6 +4232,31 @@ function buildCatFilter(containerId, activeVar, callback) {
     };
     c.appendChild(btn);
   });
+  if (withArrows && !c.parentElement.classList.contains('cat-nav-wrap')) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'cat-nav-wrap';
+    c.parentNode.insertBefore(wrapper, c);
+    wrapper.appendChild(c);
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'cat-arrow';
+    prevBtn.innerHTML = '&#8249;';
+    prevBtn.title = 'Categoría anterior';
+    wrapper.insertBefore(prevBtn, c);
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'cat-arrow';
+    nextBtn.innerHTML = '&#8250;';
+    nextBtn.title = 'Categoría siguiente';
+    wrapper.appendChild(nextBtn);
+    const navigate = (dir) => {
+      const chips = Array.from(c.querySelectorAll('.cat-chip'));
+      const activeIdx = chips.findIndex(b => b.classList.contains('active'));
+      const newIdx = (activeIdx + dir + chips.length) % chips.length;
+      chips[newIdx].click();
+      chips[newIdx].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+    };
+    prevBtn.onclick = () => navigate(-1);
+    nextBtn.onclick = () => navigate(1);
+  }
 }
 
 // ══════════════════════════════════════
@@ -3537,7 +4291,8 @@ function initPage(name) {
 const CL_ITEMS = [
   {id:'deberes', label:'Deberes de hoy — sesión completa', tiempo:'20-30 min', pagina:'deberes'},
   {id:'tarjetas', label:'Tarjetas — repasa al menos 15', tiempo:'5-10 min', pagina:'tarjetas'},
-  {id:'frases', label:'Frases — practica 5 (cualquier modo)', tiempo:'5-10 min', pagina:'frases'},
+  {id:'escribe', label:'Escribe — 8 palabras en árabe real (con harakat)', tiempo:'5 min', pagina:'escribe'},
+  {id:'frases', label:'Frases — practica 8-10 (cualquier modo)', tiempo:'8-10 min', pagina:'frases'},
   {id:'escucha', label:'Escucha — 10 palabras', tiempo:'5 min', pagina:'escucha'},
   {id:'flojo', label:'Refuerza tu punto más flojo de ahora mismo', tiempo:'5 min', pagina:'stats'},
 ];
@@ -3765,285 +4520,6 @@ function generatePrintWorkbook() {
 }
 
 // ══════════════════════════════════════
-// TEORÍA COMPLETA EN PDF (siempre lee GRAMMAR / PATRONES_B / PATRONES_C en vivo,
-// así que nunca se desactualiza respecto a lo que haya en el HTML en ese momento)
-// ══════════════════════════════════════
-function theoryPasadoTableHTML(verboKey, formas) {
-  const rows = formas.map(f => `<tr><td class="th-ar">${pwEsc(f.persona)}</td><td class="th-ar">${pwEsc(f.forma)}<br><span class="th-tr">${pwEsc(f.tr)}</span></td><td class="th-es">${pwEsc(f.es)}</td></tr>`).join('');
-  return `<div class="th-verbo"><div class="th-verbo-title">${pwEsc(verboKey)}</div>
-    <table class="th-table"><tr><th>Persona</th><th>Forma</th><th>Significado</th></tr>${rows}</table></div>`;
-}
-
-function theoryPresenteTableHTML(verboKey, formas) {
-  const rows = formas.map(f => `<tr><td class="th-ar">${pwEsc(f.persona)}</td><td class="th-ar">${pwEsc(f.prefijo)}</td><td class="th-ar">${pwEsc(f.sufijo)}</td><td class="th-ar">${pwEsc(f.forma)}<br><span class="th-tr">${pwEsc(f.tr)}</span></td><td class="th-es">${pwEsc(f.es)}</td></tr>`).join('');
-  return `<div class="th-verbo"><div class="th-verbo-title">${pwEsc(verboKey)}</div>
-    <table class="th-table"><tr><th>Persona</th><th>Prefijo</th><th>Sufijo</th><th>Forma</th><th>Significado</th></tr>${rows}</table></div>`;
-}
-
-function generateTheoryPDF() {
-  showToast('Generando documento de teoría...');
-  const fecha = new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
-
-  // ── Fundamentos — explicado desde cero, para cuando llevas tiempo sin tocar árabe ──
-  const fundamentosHTML = `
-    <div class="th-block">
-      <div class="th-block-title">0.1 — El alfabeto y cómo se escribe</div>
-      <div class="th-block-desc">El árabe se escribe de <b>derecha a izquierda</b> (al revés que el español). No existen mayúsculas ni minúsculas — todas las letras son "de un solo tipo", pero cambian ligeramente de forma según vayan al principio, en medio, al final o solas dentro de una palabra (esto lo hace automáticamente cualquier fuente árabe, no hay que memorizar formas distintas a propósito, con el tiempo el ojo se acostumbra solo).</div>
-    </div>
-    <div class="th-block">
-      <div class="th-block-title">0.2 — Las harakat (los signos que van encima o debajo de las letras)</div>
-      <div class="th-block-desc">Las letras árabes son, en su mayoría, CONSONANTES. Las vocales cortas no se escriben como letras propias, sino como pequeños signos (harakat) encima o debajo de la consonante a la que "pertenecen". Este documento las escribe siempre completas para que puedas leer sin dudas — en la vida real, los árabes adultos casi nunca las escriben (se sobreentienden), pero para aprender son imprescindibles. Estas son las que verás una y otra vez:</div>
-      <div class="th-nota">
-        <b>فَتْحَة (fatha)</b> — una rayita encima ( َ ) = vocal corta "a". Ejemplo: بَ se lee "ba".<br>
-        <b>كَسْرَة (kasra)</b> — una rayita debajo ( ِ ) = vocal corta "i". Ejemplo: بِ se lee "bi".<br>
-        <b>ضَمَّة (damma)</b> — una comita encima ( ُ ) = vocal corta "u". Ejemplo: بُ se lee "bu".<br>
-        <b>سُكُون (sukun)</b> — un círculo pequeño encima ( ْ ) = NO hay vocal, la consonante suena "seca", sin apoyo vocálico. Ejemplo: بْ suena solo "b".<br>
-        <b>شَدَّة (shadda)</b> — una especie de "w" pequeña encima ( ّ ) = la consonante se pronuncia DOBLE/reforzada. Ejemplo: بّ suena como "bb".<br>
-        <b>تَنْوِين (tanwin)</b> — se duplica el signo de fatha/kasra/damma ( ً ٍ ٌ ) = añade un sonido "n" al final, y marca que la palabra es INDEFINIDA (como decir "un/una" en vez de "el/la"). Se pronuncia -an, -in, -un.<br>
-        Además, cuando después de una consonante con fatha va la letra ا (alif), ي (ya) o و (waw) SIN vocal propia, esa letra "larga" la vocal: se convierte en ā, ī o ū (el doble de larga que la vocal corta correspondiente). Por eso en la transliteración de este documento verás letras con una rayita encima (ā, ī, ū) — significan "vocal larga", no una letra nueva que aprender.
-      </div>
-    </div>
-    <div class="th-block">
-      <div class="th-block-title">0.3 — La raíz de 3 consonantes (el corazón de casi cada palabra)</div>
-      <div class="th-block-desc">Esto es la idea más importante para entender por qué el árabe "funciona" como funciona. La inmensa mayoría de palabras árabes (verbos, sustantivos, adjetivos) se construyen a partir de una RAÍZ de (normalmente) 3 consonantes, que porta el significado central de una familia de palabras. Después, esa raíz se "viste" con distintas vocales y a veces prefijos/sufijos para dar palabras relacionadas pero distintas. Ejemplo con la raíz ك-ت-ب (k-t-b, relacionada con la idea de "escribir"): كَتَبَ (kataba) = él escribió · كِتَاب (kitāb) = libro · مَكْتَب (maktab) = escritorio/oficina · مَكْتَبَة (maktaba) = biblioteca. Las tres consonantes (ك ت ب) están siempre presentes; lo que cambia es la "melodía" de vocales alrededor de ellas. Por eso, cuando en las tablas de este documento veas que "solo cambia la vocal media" de un verbo, es exactamente este fenómeno.</div>
-    </div>
-    <div class="th-block">
-      <div class="th-block-title">0.4 — El pasado y el presente: cómo se marca quién hace la acción</div>
-      <div class="th-block-desc">A diferencia del español (que cambia la terminación del verbo: hablo/hablas/habla), el árabe usa un sistema distinto según el tiempo. En el PASADO, se añaden SUFIJOS al final de la raíz (ejemplo: كَتَبْتُ = yo escribí, con el sufijo ـتُ = "yo"). En el PRESENTE, se añade un PREFIJO al principio (y a veces también un sufijo al final) (ejemplo: أَكْتُبُ = yo escribo, con el prefijo أَ = "yo"). Este documento explica ambos sistemas completos más abajo, con todas las personas.</div>
-    </div>
-    <div class="th-block">
-      <div class="th-block-title">0.5 — El "infinitivo" en árabe (spoiler: no existe como palabra aparte)</div>
-      <div class="th-block-desc">En español, "escribir" es una palabra distinta de "escribió". En árabe NO — la forma de pasado en 3ª persona masculina singular ("él") funciona A LA VEZ como el infinitivo/forma de diccionario del verbo. Es decir, كَتَبَ significa tanto "él escribió" como, genéricamente, "escribir". Por eso en los diccionarios de árabe los verbos se buscan por esta forma, y por eso en este documento cada verbo aparece etiquetado así.</div>
-    </div>
-    <div class="th-block">
-      <div class="th-block-title">0.6 — Qué es un "Modelo" cuando hablamos del presente</div>
-      <div class="th-block-desc">Ya sabes (punto 0.3) que la raíz de un verbo tiene una "vocal media" que puede cambiar. Pues bien: al pasar del pasado al presente, esa vocal media cambia de una manera muy concreta según a qué "Modelo" pertenezca el verbo — y hay solo 4 posibles: <b>Modelo I</b> → la vocal del presente es siempre DAMMA (ejemplo: كَتَبَ→يَكْتُبُ). <b>Modelo II</b> → si el pasado tenía KASRA, el presente cambia a FATHA (ejemplo: شَرِبَ→يَشْرَبُ) — es el único de los 4 que se puede adivinar mirando el pasado. <b>Modelo III</b> → NO CAMBIA nada, sigue en fatha en los dos tiempos (ejemplo: ذَهَبَ→يَذْهَبُ). <b>Modelo IV</b> → el presente cambia a KASRA (ejemplo: جَلَسَ→يَجْلِسُ). En LOS 4 modelos se usa exactamente el mismo juego de prefijos y sufijos de persona — lo único que cambia entre un modelo y otro es esa vocal del medio.</div>
-    </div>
-    <div class="th-block">
-      <div class="th-block-title">0.7 — Cómo leer las tablas de este documento</div>
-      <div class="th-block-desc">Cada tabla de conjugación tiene una fila por persona (yo, tú masculino, tú femenino, él, ella, nosotros, vosotros, vosotras, ellos, ellas). Debajo de cada palabra en árabe se muestra en cursiva verde su transliteración (cómo se pronuncia, escrita con el alfabeto latino según el sistema de la Casa de Velázquez). Si una explicación te suena repetida respecto a otra parte del documento, es intencionado — se repite el concepto exactamente donde hace falta para que no tengas que buscarlo en otro sitio.</div>
-    </div>`;
-
-  // ── Pronombres y sufijos (PATRONES_A: posesivo / tener / para / con) ──
-  let pronombresHTML = '';
-  if (typeof PATRONES_A !== 'undefined') {
-    pronombresHTML += `<div class="th-nota">${pwEsc(PATRONES_A.intro||'')}</div>`;
-    pronombresHTML += `<div class="th-block-desc">Este mismo sufijo (el que ves en la primera columna de números) se pega a un SUSTANTIVO para decir de quién es algo (columna "Posesivo": mi/tu/su libro...), a la palabra عِنْدَ para expresar "tener" (columna "Tener": literalmente significa "en posesión de", pero se traduce como el verbo tener), a la palabra لِـ para expresar "para" (columna "Para"), y a la palabra مَعَ para expresar "con" (columna "Con"). Ninguna de estas cuatro es un verbo conjugado — son un sustantivo y tres partículas, todas usando el mismo sufijo de persona.</div>`;
-    const rows = PATRONES_A.filas.map(f => `<tr>
-      <td class="th-es">${pwEsc(f.persona)}</td>
-      <td class="th-ar">${pwEsc(f.posesivo)}<br><span class="th-tr">${pwEsc(f.pos_tr)} — ${pwEsc(f.pos_es)}</span></td>
-      <td class="th-ar">${pwEsc(f.tener)}<br><span class="th-tr">${pwEsc(f.ten_tr)} — ${pwEsc(f.ten_es)}</span></td>
-      <td class="th-ar">${pwEsc(f.para)}<br><span class="th-tr">${pwEsc(f.para_tr)} — ${pwEsc(f.para_es)}</span></td>
-      <td class="th-ar">${pwEsc(f.con)}<br><span class="th-tr">${pwEsc(f.con_tr)} — ${pwEsc(f.con_es)}</span></td>
-    </tr>`).join('');
-    pronombresHTML += `<table class="th-table"><tr><th>Persona</th><th>Posesivo</th><th>عِنْدَ (tener)</th><th>لِـ (para)</th><th>مَعَ (con)</th></tr>${rows}</table>`;
-    if (PATRONES_A.nota) pronombresHTML += `<div class="th-nota">${pwEsc(PATRONES_A.nota)}</div>`;
-  }
-
-  // ── Clasificación temática de la Gramática (en vez de orden cronológico) ──
-  const TEMAS_GRAM = [
-    {clave:'verbos_pasado', nombre:'El pasado', kw:['pasado','kāna','huec']},
-    {clave:'verbos_presente', nombre:'El presente y sus modelos', kw:['presente','modelo','madda']},
-    {clave:'negacion', nombre:'La negación', kw:['negac','مَا','لَيْس','لا ']},
-    {clave:'posesivo', nombre:'Posesivos, tener, para, con', kw:['posesiv','عِنْدَ','تاء مربوطة','marbuta']},
-    {clave:'preposiciones', nombre:'Preposiciones', kw:['preposic','فِي','إِلَى','مِنْ','عَلَى']},
-    {clave:'tiempo', nombre:'Tiempo y frecuencia', kw:['قَبْلَ','بَعْدَ','مَرَّة','تَقْرِيبًا','día','semana','دَائِمًا','adverbio']},
-    {clave:'plural_dual', nombre:'Plural, dual y nombre de unidad', kw:['plural','dual','مُثَنَّى','وحدة','unidad']},
-    {clave:'familia_colores', nombre:'Familia, colores y números', kw:['famili','color','número','عَدَد']},
-    {clave:'otros', nombre:'Otras reglas', kw:[]},
-  ];
-  function clasificarGram(g) {
-    const texto = (g.title + ' ' + g.desc).toLowerCase();
-    for (const t of TEMAS_GRAM) {
-      if (t.kw.some(k => texto.includes(k.toLowerCase()))) return t.clave;
-    }
-    return 'otros';
-  }
-  const gramPorTema = {};
-  TEMAS_GRAM.forEach(t => gramPorTema[t.clave] = []);
-  GRAMMAR.forEach(g => gramPorTema[clasificarGram(g)].push(g));
-
-  const indiceGram = TEMAS_GRAM.filter(t => gramPorTema[t.clave].length > 0).map(t =>
-    `<div class="th-idx-tema">${pwEsc(t.nombre)} (${gramPorTema[t.clave].length})</div>` +
-    gramPorTema[t.clave].map(g => `<div class="th-idx-item">— ${pwEsc(g.title)}</div>`).join('')
-  ).join('');
-
-  // ── Gramática agrupada por tema en vez de por orden cronológico ──
-  let contador = 0;
-  const gramHTML = TEMAS_GRAM.filter(t => gramPorTema[t.clave].length > 0).map(t => {
-    const bloques = gramPorTema[t.clave].map(g => {
-      contador++;
-      const ex = (g.examples||[]).map(e => `<div class="th-ex"><span class="th-ex-ar">${pwEsc(e.ar)}</span><span class="th-ex-tr">${pwEsc(e.tr)}</span><span class="th-ex-es">${pwEsc(e.es)}${e.note ? ' — <em>'+pwEsc(e.note)+'</em>' : ''}</span></div>`).join('');
-      return `<div class="th-block"><div class="th-block-title">${contador}. ${pwEsc(g.title)}</div><div class="th-block-desc">${pwEsc(g.desc)}</div><div class="th-examples">${ex}</div></div>`;
-    }).join('');
-    return `<div class="th-tema-title">${pwEsc(t.nombre)}</div>${bloques}`;
-  }).join('');
-
-  // ── Chuleta resumen de una página — los 4 modelos comparados de un vistazo ──
-  const chuletaHTML = `
-    <div class="th-block-desc">Antes de entrar en el detalle, esto es lo esencial en una sola tabla. Vuelve aquí siempre que necesites refrescar rápido sin leer todo el documento.</div>
-    <table class="th-table">
-      <tr><th>Modelo</th><th>Pasado (vocal media)</th><th>Presente (vocal media)</th><th>Ejemplo</th><th>¿Se adivina desde el pasado?</th></tr>
-      <tr><td><b>I</b></td><td>fatha</td><td>DAMMA</td><td class="th-ar">كَتَبَ → يَكْتُبُ</td><td>No — hay que memorizarlo</td></tr>
-      <tr><td><b>II</b></td><td>KASRA</td><td>fatha</td><td class="th-ar">شَرِبَ → يَشْرَبُ</td><td><b>Sí</b> — si el pasado lleva kasra, el presente será fatha</td></tr>
-      <tr><td><b>III</b></td><td>fatha</td><td>fatha (no cambia)</td><td class="th-ar">ذَهَبَ → يَذْهَبُ</td><td>No — hay que memorizarlo</td></tr>
-      <tr><td><b>IV</b></td><td>fatha</td><td>KASRA</td><td class="th-ar">جَلَسَ → يَجْلِسُ</td><td>No — hay que memorizarlo</td></tr>
-    </table>
-    <div class="th-nota">En LOS 4 modelos se usan los mismos prefijos y sufijos de persona — solo cambia esa vocal del medio. Los modelos I, III y IV tienen el pasado IDÉNTICO (fatha-fatha) — la única forma de saber a cuál pertenece un verbo nuevo es habérselo aprendido, no hay ningún atajo visual.</div>
-    <div class="th-block-desc" style="margin-top:10px;"><b>مَا — los 4 usos, en una línea cada uno:</b></div>
-    <div class="th-nota">
-      1) Interrogativo + sustantivo: مَا اسْمُكَ؟ (¿cómo te llamas?)<br>
-      2) Negación de un verbo en pasado: مَا كَتَبْتُ (no escribí)<br>
-      3) Negación de "tener" en pasado: مَا كَانَ عِنْدِي وَقْتٌ (no tenía tiempo)<br>
-      4) Negación existencial ("no hay"): مَا فِي أَحَدٌ (no hay nadie)
-    </div>
-    <div class="th-block-desc" style="margin-top:10px;"><b>Los 6 sistemas de sufijos/prefijos que más se confunden entre sí:</b></div>
-    <table class="th-table">
-      <tr><th>Sistema</th><th>¿A qué se pega?</th><th>Ejemplo</th></tr>
-      <tr><td>Pasado</td><td>A un VERBO, indica quién hizo la acción</td><td class="th-ar">كَتَبْتُ (yo escribí)</td></tr>
-      <tr><td>Presente</td><td>A un VERBO (prefijo+sufijo), indica quién hace la acción</td><td class="th-ar">أَكْتُبُ (yo escribo)</td></tr>
-      <tr><td>Posesivo</td><td>A un SUSTANTIVO, indica de quién es</td><td class="th-ar">كِتَابِي (mi libro)</td></tr>
-      <tr><td>عِنْدَ (tener)</td><td>Sufijo posesivo sobre esta palabra = "tener"</td><td class="th-ar">عِنْدِي (yo tengo)</td></tr>
-      <tr><td>لِـ (para)</td><td>Sufijo posesivo sobre esta partícula = "para"</td><td class="th-ar">لِي (para mí)</td></tr>
-      <tr><td>مَعَ (con)</td><td>Sufijo posesivo sobre esta partícula = "con"</td><td class="th-ar">مَعِي (conmigo)</td></tr>
-    </table>
-  `;
-
-  // ── Confusiones habituales — basado en lo que realmente ha costado durante el intensivo ──
-  const confusionesHTML = `
-    <div class="th-block">
-      <div class="th-block-title">"¿Esto es pasado, presente o posesivo?"</div>
-      <div class="th-block-desc">Es la confusión más repetida. Truco: PASADO y PRESENTE siempre van pegados a un VERBO (una acción). POSESIVO, عِنْدَ, لِـ y مَعَ van pegados a un SUSTANTIVO o una PARTÍCULA (nunca a un verbo). Si la palabra de al lado es una acción ("escribir", "ir", "comer"), es pasado o presente. Si es una cosa o una persona, es posesivo/tener/para/con.</div>
-    </div>
-    <div class="th-block">
-      <div class="th-block-title">"¿Dónde está el infinitivo?"</div>
-      <div class="th-block-desc">No hay que buscarlo aparte — كَتَبَ (la forma de pasado de "él") YA ES el infinitivo. Ver Capítulo 0.5 más arriba.</div>
-    </div>
-    <div class="th-block">
-      <div class="th-block-title">قِطَار (tren) vs قَطَر (Qatar)</div>
-      <div class="th-block-desc">Se escriben casi igual y se confunden fácilmente. قِطَار (qiṭār, tren) lleva una alif larga después de la ط que قَطَر (Qaṭar, el país) no tiene. Fíjate en esa alif.</div>
-    </div>
-    <div class="th-block">
-      <div class="th-block-title">La madda (آ) — por qué "yo como" es آكُلُ y no "أَأْكُلُ"</div>
-      <div class="th-block-desc">Cuando se juntan dos alifs seguidas (típicamente un prefijo que termina en hamza + una raíz que empieza en hamza), NUNCA se escriben las dos por separado — se funden en una sola letra con el signo madda encima (آ). Pasa con آكُلُ (comer) y آخُذُ (coger), los dos verbos con hamza al principio de la raíz.</div>
-    </div>
-    <div class="th-block">
-      <div class="th-block-title">Por qué قَبْلَ significa a la vez "antes" y "hace"</div>
-      <div class="th-block-desc">Es la misma palabra con dos traducciones al español según el contexto — no son dos usos distintos que memorizar, es un único significado ("mirar hacia atrás en el tiempo desde ahora") que en español a veces se dice "antes" y a veces "hace".</div>
-    </div>
-  `;
-
-
-  // ── Verbos en pasado (Patrones_B) ──
-  let pasadoHTML = '';
-  if (typeof PATRONES_B !== 'undefined') {
-    pasadoHTML += `<div class="th-nota">${pwEsc(PATRONES_B.intro||'')}</div>`;
-    Object.keys(PATRONES_B.verbos).forEach(k => { pasadoHTML += theoryPasadoTableHTML(k, PATRONES_B.verbos[k]); });
-    if (PATRONES_B.irregular) pasadoHTML += `<div class="th-nota">${pwEsc(PATRONES_B.irregular)}</div>`;
-  }
-
-  // ── Verbos en presente (Patrones_C, las 4 formas) ──
-  let presenteHTML = '';
-  if (typeof PATRONES_C !== 'undefined') {
-    presenteHTML += `<div class="th-nota">${pwEsc(PATRONES_C.intro||'')}</div>`;
-    Object.keys(PATRONES_C.formas).forEach(formaKey => {
-      const fd = PATRONES_C.formas[formaKey];
-      if (!fd || !fd.disponible) return;
-      presenteHTML += `<div class="th-forma-title">${pwEsc(formaKey)}</div><div class="th-nota">${pwEsc(fd.nota||'')}</div>`;
-      Object.keys(fd.verbos).forEach(k => { presenteHTML += theoryPresenteTableHTML(k, fd.verbos[k]); });
-      if (fd.extra) presenteHTML += `<div class="th-nota">${pwEsc(fd.extra)}</div>`;
-    });
-  }
-
-  const doc = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Teoría completa de árabe — ${fecha}</title>
-  <style>
-    @page { margin: 16mm; }
-    body { font-family:'DM Sans', Arial, sans-serif; color:#1B1B1B; background:#fff; font-size:12.5px; line-height:1.55; }
-    .th-cover { border-bottom: 3px solid #1B4332; padding-bottom: 14px; margin-bottom: 20px; }
-    .th-title { font-size: 22px; font-weight: 700; color:#1B4332; }
-    .th-sub { font-size: 12px; color:#2D6A4F; margin-top:3px; }
-    .th-section { page-break-before: always; }
-    .th-section-title { font-size: 18px; font-weight:700; color:#fff; background:#1B4332; padding:8px 12px; border-radius:8px; margin-bottom:14px; }
-    .th-idx-item { font-size: 12px; margin: 3px 0; color:#333; }
-    .th-block { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #e5e0d0; page-break-inside: avoid; }
-    .th-block-title { font-size: 14px; font-weight:700; color:#1B4332; margin-bottom:4px; }
-    .th-block-desc { font-size: 12px; color:#333; margin-bottom:6px; }
-    .th-ex { margin: 5px 0; font-size: 12px; display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; }
-    .th-ex-ar { font-family:'Traditional Arabic','Arabic Typesetting',serif; direction:rtl; font-size:17px; }
-    .th-ex-tr { font-style: italic; color:#2D6A4F; font-size:11px; }
-    .th-ex-es { color:#333; }
-    .th-nota { background:#EAF4EE; border:1px solid #52B788; border-radius:8px; padding:8px 10px; font-size:11.5px; margin: 8px 0 14px; }
-    .th-forma-title { font-size:15px; font-weight:700; color:#1B4332; margin: 16px 0 6px; border-bottom:2px solid #B08D57; padding-bottom:3px; }
-    .th-tema-title { font-size:16px; font-weight:700; color:#fff; background:#2D6A4F; padding:6px 10px; border-radius:6px; margin: 18px 0 10px; }
-    .th-idx-tema { font-size:13px; font-weight:700; color:#1B4332; margin-top:8px; }
-    .th-verbo { margin-bottom: 14px; page-break-inside: avoid; }
-    .th-verbo-title { font-family:'Traditional Arabic','Arabic Typesetting',serif; direction:rtl; font-size:16px; font-weight:700; color:#1B4332; margin-bottom:4px; }
-    .th-table { width:100%; border-collapse: collapse; font-size: 11px; margin-bottom: 4px; }
-    .th-table th { background:#EDE0C4; padding: 4px 6px; text-align:left; }
-    .th-table td { padding: 3px 6px; border-bottom: 1px solid #eee; }
-    .th-ar { font-family:'Traditional Arabic','Arabic Typesetting',serif; direction:rtl; font-size:14px; }
-    .th-tr { font-style:italic; color:#2D6A4F; font-size:10px; }
-    .th-es { font-size: 11px; }
-    .th-footer { margin-top: 24px; font-size: 10px; color:#888; text-align:center; }
-    @media print { .pw-noprint { display:none; } }
-  </style></head><body>
-  <div class="pw-noprint" style="position:fixed;top:10px;right:10px;background:#1B4332;padding:10px 16px;border-radius:10px;">
-    <button onclick="window.print()" style="background:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;">🖨️ Imprimir / Guardar PDF</button>
-  </div>
-  <div class="th-cover">
-    <div class="th-title">Teoría completa de árabe</div>
-    <div class="th-sub">${fecha} · Generado en vivo desde la app — siempre al día</div>
-  </div>
-  <div class="th-block-title" style="font-size:15px;">Índice de gramática</div>
-  ${indiceGram}
-
-  <div class="th-section">
-    <div class="th-section-title">Capítulo 0 — Fundamentos (empieza aquí si llevas tiempo sin practicar)</div>
-    ${fundamentosHTML}
-  </div>
-
-  <div class="th-section">
-    <div class="th-section-title">Chuleta resumen — lo esencial de un vistazo</div>
-    ${chuletaHTML}
-  </div>
-
-  <div class="th-section">
-    <div class="th-section-title">Confusiones habituales (basado en lo que más te ha costado)</div>
-    ${confusionesHTML}
-  </div>
-
-  <div class="th-section">
-    <div class="th-section-title">Pronombres y sufijos — posesivo, tener, para, con</div>
-    ${pronombresHTML}
-  </div>
-
-  <div class="th-section">
-    <div class="th-section-title">Gramática (agrupada por tema)</div>
-    ${gramHTML}
-  </div>
-
-  <div class="th-section">
-    <div class="th-section-title">Verbos en pasado</div>
-    ${pasadoHTML}
-  </div>
-
-  <div class="th-section">
-    <div class="th-section-title">Verbos en presente — las 4 formas</div>
-    ${presenteHTML}
-  </div>
-
-  <div class="th-footer">Generado automáticamente desde arabe_finak.html — este documento se actualiza solo con el HTML.</div>
-  </body></html>`;
-
-  const win = window.open('', '_blank');
-  if (!win) { showToast('El navegador bloqueó la ventana — permite pop-ups para este sitio'); return; }
-  win.document.open();
-  win.document.write(doc);
-  win.document.close();
-  setTimeout(() => { try { win.focus(); win.print(); } catch(e) {} }, 400);
-}
-
-// ══════════════════════════════════════
 // TARJETAS
 // ══════════════════════════════════════
 let fcCards = [], fcIdx = 0, fcKnown = 0, fcMode = 'all', fcCat = 'Todas';
@@ -4127,7 +4603,7 @@ function endFC() {
 }
 
 // TARJETAS: category filter
-buildCatFilter('fc-cats', fcCat, (cat) => { fcCat = cat; initFlashcards(); });
+buildCatFilter('fc-cats', fcCat, (cat) => { fcCat = cat; initFlashcards(); }, true);
 
 // ══════════════════════════════════════
 // QUIZ
@@ -4496,7 +4972,7 @@ function phoneticKey(str) {
 
 let vocabCat = 'Todas';
 function buildVocab() {
-  buildCatFilter('vocab-cats', vocabCat, (cat) => { vocabCat = cat; renderVocab(); });
+  buildCatFilter('vocab-cats', vocabCat, (cat) => { vocabCat = cat; renderVocab(); }, true);
   renderVocab();
 }
 
