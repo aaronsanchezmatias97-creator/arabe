@@ -114,6 +114,43 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .sa-yes{background:var(--green);color:#fff;}
 .sa-no{background:rgba(224,85,85,.3);color:var(--red);}
 
+
+/* HABLA (práctica oral) */
+.hb-filter{display:flex;gap:6px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;}
+.hb-ar{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:34px;direction:rtl;line-height:1.7;color:var(--cream);text-align:center;}
+.hb-ar.sm{font-size:26px;}
+.hb-es{font-size:16px;font-weight:600;color:var(--gold2);text-align:center;margin:6px 0;}
+.hb-tr{font-size:13px;color:var(--teal2);font-style:italic;text-align:center;}
+.hb-lbl{font-size:12px;color:var(--cream2);letter-spacing:.1em;text-transform:uppercase;text-align:center;}
+.hb-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;}
+.hb-btn{flex:1;min-width:120px;padding:12px 10px;border-radius:var(--r);border:1px solid rgba(201,168,76,.25);background:rgba(201,168,76,.1);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
+.hb-btn:active{transform:scale(.97);}
+.hb-btn.mic{background:var(--teal);border-color:var(--teal);color:#fff;}
+.hb-btn.rec{background:var(--red);border-color:var(--red);color:#fff;animation:hbpulse 1s infinite;}
+.hb-btn.go{background:var(--gold);border-color:var(--gold);color:var(--bg);}
+@keyframes hbpulse{50%{opacity:.6;}}
+.hb-box{margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);font-size:13px;color:var(--cream2);line-height:1.6;text-align:left;}
+.hb-box.ok{background:rgba(61,191,138,.12);border:1px solid rgba(61,191,138,.3);}
+.hb-box.no{background:rgba(224,85,85,.1);border:1px solid rgba(224,85,85,.25);}
+.hb-said{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:22px;direction:rtl;color:var(--cream);}
+.hb-w-ok{color:var(--green);} .hb-w-no{color:var(--red);text-decoration:underline;}
+.hb-meta{font-size:11px;color:var(--cream2);text-align:center;margin-top:10px;opacity:.75;}
+.hb-pick{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.hb-pick button{text-align:left;padding:12px 14px;border-radius:12px;border:1px solid rgba(201,168,76,.2);background:rgba(255,255,255,.04);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;}
+.hb-pick button small{display:block;color:var(--cream2);font-size:11px;margin-top:2px;}
+.hb-chat{display:flex;flex-direction:column;gap:8px;margin-top:12px;max-height:46vh;overflow-y:auto;}
+.hb-bub{max-width:88%;padding:8px 12px;border-radius:14px;background:rgba(255,255,255,.06);}
+.hb-bub.me{align-self:flex-start;background:rgba(26,158,138,.18);border:1px solid rgba(26,158,138,.35);}
+.hb-bub.them{align-self:flex-end;}
+.hb-bub .who{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;}
+.hb-bub .hb-said{font-size:21px;}
+.hb-bub .es{font-size:11px;color:var(--cream2);}
+.hb-timer{font-size:44px;font-weight:700;color:var(--gold);text-align:center;margin:8px 0;font-variant-numeric:tabular-nums;}
+.hb-check{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;}
+.hb-check .bx{width:22px;height:22px;border-radius:6px;border:2px solid rgba(255,255,255,.25);flex-shrink:0;text-align:center;line-height:18px;color:#fff;font-size:13px;}
+.hb-check.on .bx{background:var(--green);border-color:var(--green);}
+.hb-check .ar{font-family:'Traditional Arabic','Arabic Typesetting',serif;font-size:20px;direction:rtl;color:var(--cream);}
+.hb-check .es{font-size:11px;color:var(--cream2);}
 /* RESULT */
 .result{display:none;text-align:center;padding:32px 20px;}
 .result.show{display:block;}
@@ -521,6 +558,45 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     </div>
   </div>
 
+  <!-- HABLA (práctica oral) -->
+  <div id="page-habla" class="page hidden">
+    <div class="section-label">Habla — conversación en voz alta</div>
+    <div class="fr-mode-bar">
+      <button class="fr-mode-btn active" id="hbm-dialogo" onclick="setHablaMode('dialogo')">💬 Diálogo</button>
+      <button class="fr-mode-btn" id="hbm-comprension" onclick="setHablaMode('comprension')">👂 Comprensión</button>
+      <button class="fr-mode-btn" id="hbm-responde" onclick="setHablaMode('responde')">🤝 Entrevista</button>
+      <button class="fr-mode-btn" id="hbm-monologo" onclick="setHablaMode('monologo')">🎤 Monólogo</button>
+      <button class="fr-mode-btn" id="hbm-roles" onclick="setHablaMode('roles')">🎭 Roles</button>
+      <button class="fr-mode-btn" id="hbm-dilo" onclick="setHablaMode('dilo')">🗣️ Dilo</button>
+      <button class="fr-mode-btn" id="hbm-repite" onclick="setHablaMode('repite')">🔁 Repite</button>
+      <button class="fr-mode-btn" id="hbm-rapida" onclick="setHablaMode('rapida')">⚡ Rápida</button>
+      <button class="fr-mode-btn" id="hbm-libre" onclick="setHablaMode('libre')">🚗 Manos libres</button>
+    </div>
+    <div class="hb-filter">
+      <button class="cat-chip active" id="hbf-ult" onclick="setHablaFiltro('ult')">Lección actual</button>
+      <button class="cat-chip" id="hbf-a2" onclick="setHablaFiltro('a2')">Libro A2</button>
+      <button class="cat-chip" id="hbf-todo" onclick="setHablaFiltro('todo')">A2 + mi vocabulario</button>
+      <button class="cat-chip" style="border-color:var(--teal);color:var(--teal2);" onclick="hbAjustes()">⚙️ Mi ficha y voz</button>
+    </div>
+    <div class="fr-wrap">
+      <div class="fr-card" id="hb-card">
+        <div class="fr-score-bar" id="hb-bar">
+          <div><div class="sc-n" id="hb-c">0</div><div class="sc-l">bien</div></div>
+          <div><div class="sc-n" id="hb-w">0</div><div class="sc-l">a repasar</div></div>
+          <div><div class="sc-n" id="hb-r">0</div><div class="sc-l">quedan</div></div>
+        </div>
+        <div id="hb-content"></div>
+      </div>
+      <div id="hb-result" class="result" style="display:none;">
+        <div class="result-arabic">أَحْسَنْتَ!</div>
+        <div class="result-score" id="hb-score"></div>
+        <div class="result-sub" id="hb-sub"></div>
+        <button class="result-btn" onclick="initHabla()">Otra vez</button>
+      </div>
+      <div class="hb-meta" id="hb-micinfo"></div>
+    </div>
+  </div>
+
   <!-- ESCRIBE -->
   <div id="page-escribe" class="page hidden">
     <div class="section-label">Escribe — traduce al árabe</div>
@@ -595,6 +671,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <div class="big-stat"><div class="big-stat-n" id="st-total">0</div><div class="big-stat-l">respondidas</div></div>
         <div class="big-stat"><div class="big-stat-n" id="st-pct">0%</div><div class="big-stat-l">aciertos</div></div>
         <div class="big-stat"><div class="big-stat-n" id="st-best">0</div><div class="big-stat-l">mejor racha</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-title">🗣️ Habla — práctica oral</div>
+        <div id="st-habla" style="font-size:13px;color:var(--cream2);"></div>
       </div>
       <div class="stat-card">
         <div class="stat-card-title">Rendimiento en Deberes — por bloque</div>
@@ -719,6 +799,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 <div class="bottom-nav">
   <button class="nav-btn active" onclick="showPage('checklist',this)"><span class="nav-icon">📋</span>Rutina</button>
+  <button class="nav-btn" onclick="showPage('habla',this)"><span class="nav-icon">🗣️</span>Habla</button>
   <button class="nav-btn" onclick="showPage('tarjetas',this)"><span class="nav-icon">🃏</span>Tarjetas</button>
   <button class="nav-btn" onclick="showPage('quiz',this)"><span class="nav-icon">❓</span>Quiz</button>
   <button class="nav-btn" onclick="showPage('escucha',this)"><span class="nav-icon">👂</span>Escucha</button>
@@ -771,7 +852,7 @@ const VOCAB = [
   {ar:"مُمَرِّضَة",tr:"mumarriḍa / mumarrida",es:"Enfermera",cat:"Profesiones",ctx:"هَذِهِ مُمَرِّضَة فِي الْمُسْتَشْفَى"},
   {ar:"فَلَّاح",tr:"fallāḥ / fallah",es:"Agricultor",cat:"Profesiones",ctx:"هَذَا فَلَّاح"},
   {ar:"مُحَامِي",tr:"muḥāmī / muhami",es:"Abogado",cat:"Profesiones",ctx:"أَخِي مُحَامِي"},
-  {ar:"مُوَظَّف",tr:"muwaẓẓaf / muwazzaf",es:"Funcionario",cat:"Profesiones",ctx:"هُوَ مُوَظَّف"},
+  {ar:"مُوَظَّف",tr:"muwaẓẓaf / muwazzaf",es:"Empleado / Funcionario",cat:"Profesiones",ctx:"هُوَ مُوَظَّف"},
   {ar:"ضَابِط",tr:"ḍābiṭ / dabit",es:"Agente",cat:"Profesiones",ctx:"هَذَا ضَابِط"},
   // Escuela
   {ar:"مَدْرَسَة",tr:"madrasa",es:"Escuela",cat:"Escuela",ctx:"هَذِهِ مَدْرَسَة كَبِيرَة"},
@@ -833,7 +914,7 @@ const VOCAB = [
   {ar:"سَنَة",tr:"sana",es:"Año",cat:"Conceptos",ctx:"هَذِهِ سَنَة جَدِيدَة"},
   {ar:"صَبَاح",tr:"ṣabāḥ / sabah",es:"Mañana (por la mañana)",cat:"Conceptos",ctx:"صَبَاحُ الْخَيْرِ"},
   {ar:"غَدًا",tr:"ġadan / gadan",es:"Mañana (tomorrow)",cat:"Conceptos",ctx:"أَرَاكَ غَدًا"},
-  {ar:"اِسْم",tr:"ism",es:"Nombre",cat:"Conceptos",ctx:"مَا اِسْمُكَ؟"},
+  {ar:"اِسْم",tr:"ism",es:"Nombre",cat:"Datos personales",ctx:"مَا اِسْمُكَ؟"},
   // Verbos
   {ar:"خَرَجَ",tr:"jaraŷa / jaraya",es:"Salir",cat:"Verbos",ctx:"خَرَجَ مِنَ الْبَيْت"},
   {ar:"أُحِبّ",tr:"uḥibb / uhibb",es:"Me gusta / Amo",cat:"Verbos",ctx:"أُحِبّ الْعَرَبِيَّة"},
@@ -1003,7 +1084,7 @@ const VOCAB = [
   {ar:"مَسَاءُ النُّورِ",tr:"masāʾu n-nūr / masau n-nur",es:"Buenas tardes (respuesta)",cat:"Saludos"},
   // Frases
   {ar:"مَنْ أَنْتِ؟",tr:"man anti?",es:"¿Quién eres tú?",cat:"Frases"},
-  {ar:"مِنْ أَيْنَ أَنْتَ؟",tr:"min ayna anta?",es:"¿De dónde eres? (masc.)",cat:"Frases"},
+  {ar:"مِنْ أَيْنَ أَنْتَ؟",tr:"min ayna anta?",es:"¿De dónde eres? (masc.)",cat:"Preguntas"},
   {ar:"هُوَ فِي الْبَيْتِ",tr:"huwa fī l-bayt / huwa fi l-bayt",es:"Él está en casa",cat:"Frases"},
   {ar:"أَنَا فِي الْبَيْتِ",tr:"anā fī l-bayt / ana fi l-bayt",es:"Yo estoy en casa",cat:"Frases"},
   {ar:"مَنْ فِي مَدْرِيد؟",tr:"man fī madrīd? / man fi madrid?",es:"¿Quién está en Madrid?",cat:"Frases"},
@@ -1124,14 +1205,14 @@ const VOCAB = [
   {ar:"عُمَانِيَّة",tr:"ʿumāniyya / umaniyya",es:"Omaní (fem.)",cat:"Gentilicios"},
   {ar:"فَلَسْطِينِيّ",tr:"filasṭīnī / filastini",es:"Palestino (masc.)",cat:"Gentilicios"},
   {ar:"فَلَسْطِينِيَّة",tr:"filasṭīniyya / filastiniyya",es:"Palestina (fem.)",cat:"Gentilicios"},
-  {ar:"إِسْبَانِيّ",tr:"isbānī / isbani",es:"Español (masc.)",cat:"Gentilicios"},
-  {ar:"إِسْبَانِيَّة",tr:"isbāniyya / isbaniyya",es:"Española (fem.)",cat:"Gentilicios"},
+  {ar:"إِسْبَانِيّ",tr:"isbānī / isbani",es:"Español (masc.)",cat:"Países y nacionalidades"},
+  {ar:"إِسْبَانِيَّة",tr:"isbāniyya / isbaniyya",es:"Española (fem.)",cat:"Países y nacionalidades"},
   {ar:"أَلْمَانِيّ",tr:"almānī / almani",es:"Alemán (masc.)",cat:"Gentilicios"},
   {ar:"أَلْمَانِيَّة",tr:"almāniyya / almaniyya",es:"Alemana (fem.)",cat:"Gentilicios"},
-  {ar:"فَرَنْسِيّ",tr:"faransī / faransi",es:"Francés (masc.)",cat:"Gentilicios"},
-  {ar:"فَرَنْسِيَّة",tr:"faransiyya",es:"Francesa (fem.)",cat:"Gentilicios"},
-  {ar:"مَغْرِبِيّ",tr:"maġribī / magribi",es:"Marroquí (masc.)",cat:"Gentilicios"},
-  {ar:"مَغْرِبِيَّة",tr:"maġribiyya / magribiyya",es:"Marroquí (fem.)",cat:"Gentilicios"},
+  {ar:"فَرَنْسِيّ",tr:"faransī / faransi",es:"Francés (masc.)",cat:"Países y nacionalidades"},
+  {ar:"فَرَنْسِيَّة",tr:"faransiyya",es:"Francesa (fem.)",cat:"Países y nacionalidades"},
+  {ar:"مَغْرِبِيّ",tr:"maġribī / magribi",es:"Marroquí (masc.)",cat:"Países y nacionalidades"},
+  {ar:"مَغْرِبِيَّة",tr:"maġribiyya / magribiyya",es:"Marroquí (fem.)",cat:"Países y nacionalidades"},
   {ar:"جَزَائِرِيّ",tr:"ŷazāʾirī / yazairi",es:"Argelino (masc.)",cat:"Gentilicios"},
   {ar:"جَزَائِرِيَّة",tr:"ŷazāʾiriyya / yazairiyya",es:"Argelina (fem.)",cat:"Gentilicios"},
   {ar:"عِرَاقِيّ",tr:"ʿirāqī / iraqi",es:"Iraquí (masc.)",cat:"Gentilicios"},
@@ -1141,13 +1222,13 @@ const VOCAB = [
   {ar:"كُوَيْتِيّ",tr:"kuwaytī / kuwayti",es:"Kuwaití (masc.)",cat:"Gentilicios"},
   {ar:"كُوَيْتِيَّة",tr:"kuwaytiyya",es:"Kuwaití (fem.)",cat:"Gentilicios"},
   // 09/06/2026 — Vocabulario nuevo
-  {ar:"عُمْر",tr:"ʿumr / umr",es:"Edad",cat:"Conceptos",ctx:"كَمْ عُمْرُكَ؟"},
+  {ar:"عُمْر",tr:"ʿumr / umr",es:"Edad",cat:"Datos personales",ctx:"كَمْ عُمْرُكَ؟"},
   {ar:"اِمْتِحَان",tr:"imtiḥān / imtihan",es:"Examen",cat:"Escuela",ctx:"عِنْدِي اِمْتِحَان غَدًا"},
   {ar:"أُسْبُوع",tr:"usbūʿ / usbu",es:"Semana",cat:"Conceptos",ctx:"الأُسْبُوع الْقَادِم"},
   {ar:"الْقَادِم",tr:"al-qādim / al-qadim",es:"Próximo / Siguiente",cat:"Adjetivos",ctx:"الأُسْبُوع الْقَادِم"},
   {ar:"لَكِنْ",tr:"lākin / lakin",es:"Pero",cat:"Frases",ctx:"أَنَا طَالِب لَكِنْ لَيْسَ عِنْدِي وَقْت"},
   {ar:"وَقْت",tr:"waqt",es:"Tiempo (momento)",cat:"Conceptos",ctx:"مَا عِنْدِي وَقْت"},
-  {ar:"عَمَل",tr:"ʿamal / amal",es:"Trabajo",cat:"Conceptos",ctx:"عِنْدَهُ عَمَل جَيِّد"},
+  {ar:"عَمَل",tr:"ʿamal / amal",es:"Trabajo",cat:"Datos personales",ctx:"عِنْدَهُ عَمَل جَيِّد"},
   {ar:"جَامِعَة",tr:"ŷāmiʿa / yamia",es:"Universidad",cat:"Lugares",ctx:"هِيَ فِي الْجَامِعَة"},
   {ar:"مَال",tr:"māl / mal",es:"Dinero / Riqueza",cat:"Conceptos",ctx:"عِنْدَهُ مَال كَثِير"},
   // 09/06/2026 — Verbo tener (عِنْدَ + sufijo)
@@ -1207,7 +1288,7 @@ const VOCAB = [
   {ar:"قَهْوَة",tr:"qahwa",es:"Café",cat:"Comida",ctx:"أُحِبّ الْقَهْوَة"},
   // Sesión reciente — frases, preposiciones y números
   {ar:"تَشَرَّفْنَا",tr:"tašarrafnā / tasharrafna",es:"Encantado/a (de conocerte)",cat:"Frases",ctx:"تَشَرَّفْنَا بِمَعْرِفَتِكَ"},
-  {ar:"مَا اسْمُكَ؟",tr:"mā ismuka? / ma ismuka?",es:"¿Cómo te llamas?",cat:"Frases",ctx:"مَا اسْمُكَ؟ اِسْمِي أَحْمَد"},
+  {ar:"مَا اسْمُكَ؟",tr:"mā ismuka? / ma ismuka?",es:"¿Cómo te llamas? (masc.)",cat:"Preguntas",ctx:"مَا اسْمُكَ؟ اِسْمِي أَحْمَد"},
   {ar:"فِي",tr:"fī",es:"En / Haber",cat:"Conceptos",ctx:"فِي كِتَابٌ عَلَى الطَّاوِلَةِ"},
   {ar:"مَا فِي",tr:"mā fī",es:"No hay",cat:"Conceptos",ctx:"مَا فِي وَقْتٌ"},
   {ar:"لِـ",tr:"li-",es:"Para (+ posesivo)",cat:"Conceptos",ctx:"هَذَا لِي"},
@@ -1466,6 +1547,53 @@ const VOCAB = [
   {ar:"يَأْخُذُ",tr:"yaʾḵuḏu",es:"Coge (presente, él)",cat:"Verbos",ctx:"هُوَ يَأْخُذُ الْآنَ"},
   {ar:"مُبَارَاة",tr:"mubārāh",es:"Partido (deportivo)",cat:"Conceptos",ctx:"مُبَارَاةٌ مُهِمَّةٌ"},
   {ar:"قِطَار",tr:"qiṭār",es:"Tren",cat:"Lugares",ctx:"رَكِبَ الْقِطَارَ"},
+  // ── A2 · 05/10/2026 — Lección 1: Presentarse (págs. 3-5) ──
+  {ar:"لَقَبُ الْعَائِلَةِ",tr:"laqabu l-ʿāʾila",es:"Apellido",cat:"Datos personales",ctx:"مَا لَقَبُ عَائِلَتِكَ؟"},
+  {ar:"جِنْسِيَّة",tr:"ŷinsiyya",es:"Nacionalidad",cat:"Datos personales",ctx:"جِنْسِيَّتِي إِسْبَانِيَّة"},
+  {ar:"بَلَد",tr:"balad",es:"País",cat:"Datos personales",ctx:"بَلَدِي إِسْبَانِيَا"},
+  {ar:"مَدِينَة",tr:"madīna",es:"Ciudad",cat:"Datos personales",ctx:"مَدْرِيد مَدِينَة كَبِيرَة"},
+  {ar:"مِهْنَة",tr:"mihna",es:"Profesión",cat:"Datos personales",ctx:"مَا مِهْنَتُكَ؟"},
+  {ar:"لُغَة",tr:"luġa",es:"Idioma / Lengua",cat:"Datos personales",ctx:"اللُّغَةُ الْعَرَبِيَّةُ جَمِيلَة"},
+  {ar:"أَنَا اسْمِي فَاطِمَة",tr:"anā ismī Fāṭima",es:"Me llamo Fátima",cat:"Frases básicas",ctx:""},
+  {ar:"عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا",tr:"ʿumrī jamsatun wa-ʿišrūna ʿāman",es:"Tengo 25 años",cat:"Frases básicas",ctx:""},
+  {ar:"أَنَا إِسْبَانِيّ / أَنَا إِسْبَانِيَّة",tr:"anā isbānī / anā isbāniyya",es:"Soy español / Soy española",cat:"Frases básicas",ctx:""},
+  {ar:"أَنَا مِنْ إِسْبَانِيَا",tr:"anā min isbāniyā",es:"Soy de España",cat:"Frases básicas",ctx:""},
+  {ar:"أَسْكُنُ فِي مَدْرِيدَ",tr:"askunu fī madrīd",es:"Vivo en Madrid",cat:"Frases básicas",ctx:""},
+  {ar:"أَنَا طَالِب / أَنَا طَالِبَة",tr:"anā ṭālib / anā ṭāliba",es:"Soy estudiante (m./f.)",cat:"Frases básicas",ctx:""},
+  {ar:"أَعْمَلُ فِي مَدْرِيدَ",tr:"aʿmalu fī madrīd",es:"Trabajo en Madrid",cat:"Frases básicas",ctx:""},
+  {ar:"عِشْرُونَ",tr:"ʿišrūna",es:"Veinte (20)",cat:"Números",ctx:"عُمْرِي عِشْرُونَ عَامًا"},
+  {ar:"عَام",tr:"ʿām",es:"Año (sinónimo de سَنَة)",cat:"Conceptos",ctx:"عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا"},
+  {ar:"مَا اسْمُكِ؟",tr:"mā ismuki?",es:"¿Cómo te llamas? (fem.)",cat:"Preguntas",ctx:"مَا اسْمُكِ؟ اِسْمِي لَيْلَى"},
+  {ar:"كَمْ عُمْرُكَ؟",tr:"kam ʿumruka?",es:"¿Cuántos años tienes? (masc.)",cat:"Preguntas",ctx:"كَمْ عُمْرُكَ؟ عُمْرِي عِشْرُونَ عَامًا"},
+  {ar:"كَمْ عُمْرُكِ؟",tr:"kam ʿumruki?",es:"¿Cuántos años tienes? (fem.)",cat:"Preguntas",ctx:"كَمْ عُمْرُكِ؟ عُمْرِي عِشْرُونَ عَامًا"},
+  {ar:"مِنْ أَيْنَ أَنْتِ؟",tr:"min ayna anti?",es:"¿De dónde eres? (fem.)",cat:"Preguntas",ctx:"مِنْ أَيْنَ أَنْتِ؟ أَنَا مِنْ إِسْبَانِيَا"},
+  {ar:"أَيْنَ تَسْكُنُ؟",tr:"ayna taskunu?",es:"¿Dónde vives? (masc.)",cat:"Preguntas",ctx:"أَيْنَ تَسْكُنُ؟ أَسْكُنُ فِي مَدْرِيدَ"},
+  {ar:"أَيْنَ تَسْكُنِينَ؟",tr:"ayna taskunīna?",es:"¿Dónde vives? (fem.)",cat:"Preguntas",ctx:"أَيْنَ تَسْكُنِينَ؟ أَسْكُنُ فِي مَدْرِيدَ"},
+  {ar:"مَا مِهْنَتُكَ؟",tr:"mā mihnatuka?",es:"¿Cuál es tu profesión? (masc.)",cat:"Preguntas",ctx:"مَا مِهْنَتُكَ؟ أَنَا طَبِيب"},
+  {ar:"مَا مِهْنَتُكِ؟",tr:"mā mihnatuki?",es:"¿Cuál es tu profesión? (fem.)",cat:"Preguntas",ctx:"مَا مِهْنَتُكِ؟ أَنَا طَبِيبَة"},
+  {ar:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟",tr:"mā l-luġātu llatī tatakallamuhā?",es:"¿Qué idiomas hablas? (masc.)",cat:"Preguntas",ctx:""},
+  {ar:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمِينَهَا؟",tr:"mā l-luġātu llatī tatakallamīnahā?",es:"¿Qué idiomas hablas? (fem.)",cat:"Preguntas",ctx:""},
+  {ar:"الَّتِي",tr:"allatī",es:"Que / la cual (relativo fem.)",cat:"Conceptos",ctx:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟"},
+  {ar:"إِيطَالِيّ",tr:"iṭālī",es:"Italiano (masc.)",cat:"Países y nacionalidades",ctx:"هُوَ إِيطَالِيّ"},
+  {ar:"إِيطَالِيَّة",tr:"iṭāliyya",es:"Italiana (fem.)",cat:"Países y nacionalidades",ctx:"هِيَ إِيطَالِيَّة"},
+  {ar:"طَبِيبَة",tr:"ṭabība",es:"Médica",cat:"Profesiones",ctx:"أُخْتِي طَبِيبَة"},
+  {ar:"مُهَنْدِسَة",tr:"muhandisa",es:"Ingeniera",cat:"Profesiones",ctx:"هِيَ مُهَنْدِسَة"},
+  {ar:"مُوَظَّفَة",tr:"muwaẓẓafa",es:"Empleada / Funcionaria",cat:"Profesiones",ctx:"هِيَ مُوَظَّفَة"},
+  {ar:"صَحَفِيّ",tr:"ṣaḥafī",es:"Periodista (masc.)",cat:"Profesiones",ctx:"هُوَ صَحَفِيّ"},
+  {ar:"صَحَفِيَّة",tr:"ṣaḥafiyya",es:"Periodista (fem.)",cat:"Profesiones",ctx:"هِيَ صَحَفِيَّة"},
+  {ar:"نَادِل",tr:"nādil",es:"Camarero",cat:"Profesiones",ctx:"النَّادِلُ فِي الْمَقْهَى"},
+  {ar:"نَادِلَة",tr:"nādila",es:"Camarera",cat:"Profesiones",ctx:"هِيَ نَادِلَة"},
+  {ar:"فَنَّان",tr:"fannān",es:"Artista (masc.)",cat:"Profesiones",ctx:"هُوَ فَنَّان"},
+  {ar:"فَنَّانَة",tr:"fannāna",es:"Artista (fem.)",cat:"Profesiones",ctx:"هِيَ فَنَّانَة"},
+  {ar:"اَلْفَرَنْسِيَّة",tr:"al-faransiyya",es:"Francés (idioma)",cat:"Idiomas",ctx:"أَتَكَلَّمُ الْفَرَنْسِيَّةَ"},
+  {ar:"اَلْإِنْجِلِيزِيَّة",tr:"al-inŷilīziyya",es:"Inglés (idioma)",cat:"Idiomas",ctx:"أَتَكَلَّمُ الْإِنْجِلِيزِيَّةَ"},
+  {ar:"اَلْإِسْبَانِيَّة",tr:"al-isbāniyya",es:"Español (idioma)",cat:"Idiomas",ctx:"أَتَكَلَّمُ الْإِسْبَانِيَّةَ"},
+  {ar:"اَلْعَرَبِيَّة",tr:"al-ʿarabiyya",es:"Árabe (idioma)",cat:"Idiomas",ctx:"أَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ"},
+  {ar:"اَلْأَلْمَانِيَّة",tr:"al-almāniyya",es:"Alemán (idioma)",cat:"Idiomas",ctx:"أَتَكَلَّمُ الْأَلْمَانِيَّةَ"},
+  {ar:"أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْإِنْجِلِيزِيَّةَ وَأَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ",tr:"atakallamu l-isbāniyyata wa-l-inŷilīziyyata wa-atakallamu qalīlan mina l-ʿarabiyyati",es:"Hablo español e inglés, y hablo un poco de árabe",cat:"Idiomas",ctx:""},
+  {ar:"قَلِيلًا",tr:"qalīlan",es:"Un poco (adverbio)",cat:"Adverbios",ctx:"أَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ"},
+  {ar:"تَكَلَّمَ",tr:"takallama",es:"Hablar (pasado, él / infinitivo)",cat:"Verbos",ctx:"تَكَلَّمَ مَعَ الْمُعَلِّمِ"},
+  {ar:"يَتَكَلَّمُ",tr:"yatakallamu",es:"Habla (presente, él)",cat:"Verbos",ctx:"هُوَ يَتَكَلَّمُ الْعَرَبِيَّةَ"},
 
 ];
 
@@ -1841,6 +1969,45 @@ const GRAMMAR = [
     {ar:"سَأَكُونُ فِي الْبَيْتِ غَدًا",tr:"sa-akūnu fī l-bayti ġadan",es:"Estaré en casa mañana",note:"سَـ + يَكُونُ = futuro"},
     {ar:"سَيَكُونُونَ",tr:"sayakūnūna",es:"(ellos) estarán — futuro",note:""},
   ]},
+  // ── A2 · 05/10/2026 ──
+  {title:"Preguntas personales — masculino y femenino",desc:"Al preguntar a 'tú', el árabe distingue si hablas con un hombre o con una mujer. Cambian tres cosas: 1) el sufijo posesivo ـكَ (masc.) / ـكِ (fem.): اسْمُكَ / اسْمُكِ; 2) el pronombre أَنْتَ / أَنْتِ; 3) el verbo en presente: تَسْكُنُ / تَسْكُنِينَ, تَتَكَلَّمُهَا / تَتَكَلَّمِينَهَا. Si el sustantivo acaba en ة, la ة pasa a ت antes del sufijo: مِهْنَة → مِهْنَتُكَ.",examples:[
+    {ar:"مَا اسْمُكَ؟ / مَا اسْمُكِ؟",tr:"mā ismuka? / mā ismuki?",es:"¿Cómo te llamas?",note:"ـكَ / ـكِ"},
+    {ar:"كَمْ عُمْرُكَ؟ / كَمْ عُمْرُكِ؟",tr:"kam ʿumruka? / kam ʿumruki?",es:"¿Cuántos años tienes?",note:"ـكَ / ـكِ"},
+    {ar:"مِنْ أَيْنَ أَنْتَ؟ / مِنْ أَيْنَ أَنْتِ؟",tr:"min ayna anta? / min ayna anti?",es:"¿De dónde eres?",note:"أَنْتَ / أَنْتِ"},
+    {ar:"أَيْنَ تَسْكُنُ؟ / أَيْنَ تَسْكُنِينَ؟",tr:"ayna taskunu? / ayna taskunīna?",es:"¿Dónde vives?",note:"verbo: ـُ / ـِينَ"},
+    {ar:"مَا مِهْنَتُكَ؟ / مَا مِهْنَتُكِ؟",tr:"mā mihnatuka? / mā mihnatuki?",es:"¿Cuál es tu profesión?",note:"ة → ت + ـكَ / ـكِ"},
+    {ar:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟",tr:"mā l-luġātu llatī tatakallamuhā?",es:"¿Qué idiomas hablas? (masc.)",note:"fem.: تَتَكَلَّمِينَهَا"},
+  ]},
+  {title:"Partículas interrogativas para presentarse",desc:"مَا = qué / cuál (+ sustantivo) · كَمْ = cuánto · أَيْنَ = dónde · مِنْ أَيْنَ = de dónde. La respuesta repite la misma estructura en 1ª persona: اسْمُكَ → اِسْمِي, عُمْرُكَ → عُمْرِي, تَسْكُنُ → أَسْكُنُ, تَتَكَلَّمُ → أَتَكَلَّمُ.",examples:[
+    {ar:"مَا اسْمُكَ؟ — اِسْمِي سَامِي",tr:"mā ismuka? — ismī Sāmī",es:"¿Cómo te llamas? — Me llamo Sami",note:"مَا"},
+    {ar:"كَمْ عُمْرُكَ؟ — عُمْرِي عِشْرُونَ عَامًا",tr:"kam ʿumruka? — ʿumrī ʿišrūna ʿāman",es:"¿Cuántos años tienes? — Tengo 20 años",note:"كَمْ"},
+    {ar:"أَيْنَ تَسْكُنُ؟ — أَسْكُنُ فِي مَدْرِيدَ",tr:"ayna taskunu? — askunu fī madrīd",es:"¿Dónde vives? — Vivo en Madrid",note:"أَيْنَ"},
+    {ar:"مِنْ أَيْنَ أَنْتَ؟ — أَنَا مِنَ الْمَغْرِبِ",tr:"min ayna anta? — anā mina l-maġrib",es:"¿De dónde eres? — Soy de Marruecos",note:"مِنْ أَيْنَ"},
+  ]},
+  {title:"Decir la edad — عُمْرِي + número + عَامًا",desc:"Para decir la edad: عُمْرِي (mi edad) + número + عَامًا. Del 21 al 99 se dicen primero las unidades y después las decenas, unidas con وَ: خَمْسَةٌ وَعِشْرُونَ = 25 (lit. 'cinco y veinte'). عَام = año (sinónimo de سَنَة).",examples:[
+    {ar:"عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا",tr:"ʿumrī jamsatun wa-ʿišrūna ʿāman",es:"Tengo 25 años",note:"unidades + وَ + decenas"},
+    {ar:"عُمْرِي عِشْرُونَ عَامًا",tr:"ʿumrī ʿišrūna ʿāman",es:"Tengo 20 años",note:"عِشْرُونَ = 20"},
+  ]},
+  {title:"Profesiones y nacionalidades — masculino y femenino",desc:"Las profesiones forman el femenino con ة: طَبِيب → طَبِيبَة, نَادِل → نَادِلَة. Las nacionalidades (y profesiones en ـِيّ como صَحَفِيّ) pasan de ـِيّ a ـِيَّة: إِيطَالِيّ → إِيطَالِيَّة.",examples:[
+    {ar:"مُهَنْدِس / مُهَنْدِسَة",tr:"muhandis / muhandisa",es:"ingeniero / ingeniera",note:"+ة"},
+    {ar:"فَنَّان / فَنَّانَة",tr:"fannān / fannāna",es:"artista",note:"+ة"},
+    {ar:"صَحَفِيّ / صَحَفِيَّة",tr:"ṣaḥafī / ṣaḥafiyya",es:"periodista",note:"ـِيّ → ـِيَّة"},
+    {ar:"إِيطَالِيّ / إِيطَالِيَّة",tr:"iṭālī / iṭāliyya",es:"italiano / italiana",note:"ـِيّ → ـِيَّة"},
+  ]},
+  {title:"Idiomas — el nombre lleva artículo اَلْ",desc:"Los idiomas tienen la forma del gentilicio femenino (ـِيَّة) y llevan artículo: اَلْعَرَبِيَّة = la lengua árabe. Sin artículo es el adjetivo: عَرَبِيَّة = árabe (mujer). Se usan con أَتَكَلَّمُ (hablo) y con قَلِيلًا مِنَ = un poco de.",examples:[
+    {ar:"أَنَا إِسْبَانِيَّة",tr:"anā isbāniyya",es:"Soy española",note:"gentilicio, sin artículo"},
+    {ar:"أَتَكَلَّمُ الْإِسْبَانِيَّةَ",tr:"atakallamu l-isbāniyyata",es:"Hablo español",note:"idioma, con artículo"},
+    {ar:"أَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ",tr:"atakallamu qalīlan mina l-ʿarabiyyati",es:"Hablo un poco de árabe",note:"قَلِيلًا مِنَ = un poco de"},
+  ]},
+  {title:"الَّتِي — relativo 'que / la cual'",desc:"الَّتِي es el relativo femenino singular. Va con اللُّغَات porque los plurales de cosas (no de personas) concuerdan en femenino singular. En مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟ el ـهَا final retoma 'las lenguas': lit. '¿cuáles son las lenguas que las hablas?'.",examples:[
+    {ar:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟",tr:"mā l-luġātu llatī tatakallamuhā?",es:"¿Qué idiomas hablas?",note:"الَّتِي + verbo + ـهَا"},
+  ]},
+  {title:"تَكَلَّمَ / يَتَكَلَّمُ — verbo de forma derivada (Forma V)",desc:"تَكَلَّمَ (hablar) no es de Forma I: lleva تَ delante y šadda en la 2ª consonante de la raíz ك-ل-م (patrón تَفَعَّلَ). El pasado usa los sufijos de siempre (تَكَلَّمْتُ...). El presente usa los mismos prefijos y sufijos que el resto, y la vocal se queda en fatha: يَتَكَلَّمُ. Ver Patrones → Presente verbal → Forma V (derivada).",examples:[
+    {ar:"تَكَلَّمْتُ",tr:"takallamtu",es:"Yo hablé",note:"pasado"},
+    {ar:"أَتَكَلَّمُ",tr:"atakallamu",es:"Yo hablo",note:"presente"},
+    {ar:"تَتَكَلَّمِينَ",tr:"tatakallamīna",es:"Tú hablas (fem.)",note:"presente"},
+    {ar:"يَتَكَلَّمُونَ",tr:"yatakallamūna",es:"Ellos hablan",note:"presente"},
+  ]},
 ];
 const FRASES = [
   // Frases simples con demostrativo
@@ -1992,7 +2159,134 @@ const FRASES = [
    palabras:["سَأَذْهَبُ","إِلَى","الْبَيْتِ","غَدًا"],
    hueco:{frase:"سَأَذْهَبُ إِلَى الْبَيْتِ _____",blank:"غَدًا",distractores:["أَمْسِ","دَائِمًا","الْآنَ"]},
    piezas:{verbo:["سَأَذْهَبُ","سَتَذْهَبُ"],lugar:["إِلَى الْبَيْتِ","إِلَى الْمَدْرَسَةِ"],tiempo:["غَدًا","أَمْسِ"]},sol_piezas:"سَأَذْهَبُ إِلَى الْبَيْتِ غَدًا"},
+  // A2 · 05/10/2026 — Preguntas para presentarse
+  {ar:"مَا اسْمُكَ؟ اِسْمِي سَامِي",tr:"mā ismuka? ismī Sāmī",es:"¿Cómo te llamas? — Me llamo Sami",
+   palabras:["مَا", "اسْمُكَ؟", "اِسْمِي", "سَامِي"],
+   hueco:{frase:"_____ اسْمُكَ؟ اِسْمِي سَامِي",blank:"مَا",distractores:["كَمْ", "أَيْنَ", "مِنْ"]},
+   piezas:{particula:["مَا", "كَمْ"],posesivo:["اسْمُكَ؟", "عُمْرُكَ؟"],predicado:["اِسْمِي سَامِي", "عُمْرِي عِشْرُونَ عَامًا"]},sol_piezas:"مَا اسْمُكَ؟ اِسْمِي سَامِي"},
+  {ar:"كَمْ عُمْرُكِ؟ عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا",tr:"kam ʿumruki? ʿumrī jamsatun wa-ʿišrūna ʿāman",es:"¿Cuántos años tienes? (fem.) — Tengo 25 años",
+   palabras:["كَمْ", "عُمْرُكِ؟", "عُمْرِي", "خَمْسَةٌ", "وَعِشْرُونَ", "عَامًا"],
+   hueco:{frase:"كَمْ _____ عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا",blank:"عُمْرُكِ؟",distractores:["اسْمُكِ؟", "مِهْنَتُكِ؟", "عُمْرِي؟"]},
+   piezas:{particula:["كَمْ", "مَا"],posesivo:["عُمْرُكِ؟", "اسْمُكِ؟"],predicado:["عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا", "اِسْمِي فَاطِمَة"]},sol_piezas:"كَمْ عُمْرُكِ؟ عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا"},
+  {ar:"مِنْ أَيْنَ أَنْتَ؟ أَنَا مِنْ إِسْبَانِيَا",tr:"min ayna anta? anā min isbāniyā",es:"¿De dónde eres? (masc.) — Soy de España",
+   palabras:["مِنْ", "أَيْنَ", "أَنْتَ؟", "أَنَا", "مِنْ", "إِسْبَانِيَا"],
+   hueco:{frase:"مِنْ _____ أَنْتَ؟ أَنَا مِنْ إِسْبَانِيَا",blank:"أَيْنَ",distractores:["مَا", "كَمْ", "مَنْ"]},
+   piezas:{particula:["مِنْ أَيْنَ", "أَيْنَ"],sujeto:["أَنْتَ؟", "أَنْتِ؟"],predicado:["أَنَا مِنْ إِسْبَانِيَا", "أَسْكُنُ فِي مَدْرِيدَ"]},sol_piezas:"مِنْ أَيْنَ أَنْتَ؟ أَنَا مِنْ إِسْبَانِيَا"},
+  {ar:"أَيْنَ تَسْكُنِينَ؟ أَسْكُنُ فِي مَدْرِيدَ",tr:"ayna taskunīna? askunu fī madrīd",es:"¿Dónde vives? (fem.) — Vivo en Madrid",
+   palabras:["أَيْنَ", "تَسْكُنِينَ؟", "أَسْكُنُ", "فِي", "مَدْرِيدَ"],
+   hueco:{frase:"أَيْنَ _____ أَسْكُنُ فِي مَدْرِيدَ",blank:"تَسْكُنِينَ؟",distractores:["تَسْكُنُ؟", "أَسْكُنُ؟", "يَسْكُنُ؟"]},
+   piezas:{particula:["أَيْنَ", "كَمْ"],verbo:["تَسْكُنِينَ؟", "أَسْكُنُ؟"],lugar:["أَسْكُنُ فِي مَدْرِيدَ", "أَعْمَلُ فِي مَدْرِيدَ"]},sol_piezas:"أَيْنَ تَسْكُنِينَ؟ أَسْكُنُ فِي مَدْرِيدَ"},
+  {ar:"مَا مِهْنَتُكَ؟ أَنَا طَالِبٌ",tr:"mā mihnatuka? anā ṭālibun",es:"¿Cuál es tu profesión? (masc.) — Soy estudiante",
+   palabras:["مَا", "مِهْنَتُكَ؟", "أَنَا", "طَالِبٌ"],
+   hueco:{frase:"مَا _____ أَنَا طَالِبٌ",blank:"مِهْنَتُكَ؟",distractores:["مِهْنَتِي؟", "اسْمُكَ؟", "مِهْنَتُهُ؟"]},
+   piezas:{particula:["مَا", "أَيْنَ"],posesivo:["مِهْنَتُكَ؟", "عُمْرُكَ؟"],predicado:["أَنَا طَالِبٌ", "أَنَا مِنْ إِسْبَانِيَا"]},sol_piezas:"مَا مِهْنَتُكَ؟ أَنَا طَالِبٌ"},
+  {ar:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟ أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْإِنْجِلِيزِيَّةَ",tr:"mā l-luġātu llatī tatakallamuhā? atakallamu l-isbāniyyata wa-l-inŷilīziyyata",es:"¿Qué idiomas hablas? — Hablo español e inglés",
+   palabras:["مَا", "اللُّغَاتُ", "الَّتِي", "تَتَكَلَّمُهَا؟", "أَتَكَلَّمُ", "الْإِسْبَانِيَّةَ", "وَالْإِنْجِلِيزِيَّةَ"],
+   hueco:{frase:"مَا اللُّغَاتُ _____ تَتَكَلَّمُهَا؟ أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْإِنْجِلِيزِيَّةَ",blank:"الَّتِي",distractores:["مَا", "مِنْ", "فِي"]},
+   piezas:{particula:["مَا", "كَمْ"],objeto:["اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟", "اسْمُكَ؟"],verbo:["أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْإِنْجِلِيزِيَّةَ", "أَسْكُنُ فِي مَدْرِيدَ"]},sol_piezas:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟ أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْإِنْجِلِيزِيَّةَ"},
 ];
+
+const HABLA = {
+  // Práctica oral, al ritmo de las clases del libro A2. Cada bloque lleva su lección en "lec".
+  // Al añadir una lección nueva: responde (Entrevista), dilo, dialogos, comprension, monologo y roles (si el libro los trae).
+  responde: [
+    {lec:"A2 · L1 Presentarse",fk:"nombre",q:"مَا اسْمُكَ؟",q_tr:"mā ismuka?",q_es:"¿Cómo te llamas?",m:"اِسْمِي ...",m_tr:"ismī ...",m_es:"Me llamo ...",clave:[["اسمي"]]},
+    {lec:"A2 · L1 Presentarse",fk:"edad",q:"كَمْ عُمْرُكَ؟",q_tr:"kam ʿumruka?",q_es:"¿Cuántos años tienes?",m:"عُمْرِي ... عَامًا",m_tr:"ʿumrī ... ʿāman",m_es:"Tengo ... años",clave:[["عمري"], ["عاما", "عام", "سنه", "سنوات"]]},
+    {lec:"A2 · L1 Presentarse",fk:"pais",q:"مِنْ أَيْنَ أَنْتَ؟",q_tr:"min ayna anta?",q_es:"¿De dónde eres?",m:"أَنَا مِنْ إِسْبَانِيَا",m_tr:"anā min isbāniyā",m_es:"Soy de España",clave:[["من"], ["اسبانيا"]]},
+    {lec:"A2 · L1 Presentarse",fk:"nac",q:"مَا جِنْسِيَّتُكَ؟",q_tr:"mā ŷinsiyyatuka?",q_es:"¿Cuál es tu nacionalidad?",m:"أَنَا إِسْبَانِيّ",m_tr:"anā isbānī",m_es:"Soy español",clave:[["اسباني", "اسبانيه"]]},
+    {lec:"A2 · L1 Presentarse",fk:"ciudad",q:"أَيْنَ تَسْكُنُ؟",q_tr:"ayna taskunu?",q_es:"¿Dónde vives?",m:"أَسْكُنُ فِي ...",m_tr:"askunu fī ...",m_es:"Vivo en ...",clave:[["اسكن"], ["في"]]},
+    {lec:"A2 · L1 Presentarse",fk:"prof",q:"مَا مِهْنَتُكَ؟",q_tr:"mā mihnatuka?",q_es:"¿Cuál es tu profesión?",m:"أَنَا شُرْطِيّ",m_tr:"anā šurṭī",m_es:"Soy policía",clave:[["انا"]]},
+    {lec:"A2 · L1 Presentarse",fk:"trabajo",q:"أَيْنَ تَعْمَلُ؟",q_tr:"ayna taʿmalu?",q_es:"¿Dónde trabajas?",m:"أَعْمَلُ فِي ...",m_tr:"aʿmalu fī ...",m_es:"Trabajo en ...",clave:[["اعمل"], ["في"]]},
+    {lec:"A2 · L1 Presentarse",fk:"idiomas",q:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟",q_tr:"mā l-luġātu llatī tatakallamuhā?",q_es:"¿Qué idiomas hablas?",m:"أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْإِنْجِلِيزِيَّةَ",m_tr:"atakallamu l-isbāniyyata wa-l-inŷilīziyyata",m_es:"Hablo español e inglés",clave:[["اتكلم"]]},
+    {lec:"A2 · L1 Presentarse",q:"هَلْ تَتَكَلَّمُ الْعَرَبِيَّةَ؟",q_tr:"hal tatakallamu l-ʿarabiyyata?",q_es:"¿Hablas árabe?",m:"نَعَمْ، أَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ",m_tr:"naʿam, atakallamu qalīlan mina l-ʿarabiyyati",m_es:"Sí, hablo un poco de árabe",clave:[["نعم", "لا"], ["اتكلم"]]},
+    {lec:"A2 · L1 Presentarse",fk:"estudiante",q:"هَلْ أَنْتَ طَالِب؟",q_tr:"hal anta ṭālib?",q_es:"¿Eres estudiante?",m:"لَا، أَنَا شُرْطِيّ",m_tr:"lā, anā šurṭī",m_es:"No, soy policía",clave:[["نعم", "لا"], ["انا"]]},
+  ],
+  dilo: [
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre cómo se llama",ar:"مَا اسْمُكَ؟",tr:"mā ismuka?",genero:true},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer cómo se llama",ar:"مَا اسْمُكِ؟",tr:"mā ismuki?",genero:true},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre cuántos años tiene",ar:"كَمْ عُمْرُكَ؟",tr:"kam ʿumruka?",genero:true},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer cuántos años tiene",ar:"كَمْ عُمْرُكِ؟",tr:"kam ʿumruki?",genero:true},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre de dónde es",ar:"مِنْ أَيْنَ أَنْتَ؟",tr:"min ayna anta?",genero:true},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer de dónde es",ar:"مِنْ أَيْنَ أَنْتِ؟",tr:"min ayna anti?",genero:true},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre dónde vive",ar:"أَيْنَ تَسْكُنُ؟",tr:"ayna taskunu?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer dónde vive",ar:"أَيْنَ تَسْكُنِينَ؟",tr:"ayna taskunīna?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre cuál es su profesión",ar:"مَا مِهْنَتُكَ؟",tr:"mā mihnatuka?",genero:true},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer cuál es su profesión",ar:"مَا مِهْنَتُكِ؟",tr:"mā mihnatuki?",genero:true},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre qué idiomas habla",ar:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟",tr:"mā l-luġātu llatī tatakallamuhā?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer qué idiomas habla",ar:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمِينَهَا؟",tr:"mā l-luġātu llatī tatakallamīnahā?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que tienes 25 años",ar:"عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا",tr:"ʿumrī jamsatun wa-ʿišrūna ʿāman",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que tienes 20 años",ar:"عُمْرِي عِشْرُونَ عَامًا",tr:"ʿumrī ʿišrūna ʿāman",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que eres de España",ar:"أَنَا مِنْ إِسْبَانِيَا",tr:"anā min isbāniyā",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que eres español",ar:"أَنَا إِسْبَانِيّ",tr:"anā isbānī",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que vives en Madrid",ar:"أَسْكُنُ فِي مَدْرِيدَ",tr:"askunu fī madrīd",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que trabajas en Madrid",ar:"أَعْمَلُ فِي مَدْرِيدَ",tr:"aʿmalu fī madrīd",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que hablas español e inglés",ar:"أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْإِنْجِلِيزِيَّةَ",tr:"atakallamu l-isbāniyyata wa-l-inŷilīziyyata",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que hablas un poco de árabe",ar:"أَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ",tr:"atakallamu qalīlan mina l-ʿarabiyyati",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que eres estudiante (hombre)",ar:"أَنَا طَالِب",tr:"anā ṭālib",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es periodista",ar:"هِيَ صَحَفِيَّة",tr:"hiya ṣaḥafiyya",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es camarero",ar:"هُوَ نَادِل",tr:"huwa nādil",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es italiana",ar:"هِيَ إِيطَالِيَّة",tr:"hiya iṭāliyya",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es artista",ar:"هُوَ فَنَّان",tr:"huwa fannān",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que tu nacionalidad es española (hombre)",ar:"جِنْسِيَّتِي إِسْبَانِيَّة",tr:"ŷinsiyyatī isbāniyya",genero:false},
+  ],
+  dialogos: [
+    {lec:"A2 · L1 Presentarse",titulo:"Práctica: Samir y Leila se conocen",personajes:["سَمِير", "لَيْلَى"],personajes_es:["Samir", "Leila"],turnos:[
+      {p:0,ar:"مَرْحَبًا! مَا اسْمُكِ؟",tr:"marḥaban! mā ismuki?",es:"¡Hola! ¿Cómo te llamas?"},
+      {p:1,ar:"اِسْمِي لَيْلَى. وَمَا اسْمُكَ؟",tr:"ismī Laylā. wa-mā ismuka?",es:"Me llamo Leila. ¿Y cómo te llamas tú?"},
+      {p:0,ar:"اِسْمِي سَمِير. مِنْ أَيْنَ أَنْتِ؟",tr:"ismī Samīr. min ayna anti?",es:"Me llamo Samir. ¿De dónde eres?"},
+      {p:1,ar:"أَنَا مِنْ إِسْبَانِيَا. وَأَنْتَ؟",tr:"anā min isbāniyā. wa-anta?",es:"Soy de España. ¿Y tú?"},
+      {p:0,ar:"أَنَا مِنَ الْمَغْرِبِ. أَيْنَ تَسْكُنِينَ؟",tr:"anā mina l-maġribi. ayna taskunīna?",es:"Soy de Marruecos. ¿Dónde vives?"},
+      {p:1,ar:"أَسْكُنُ فِي مَدْرِيدَ. مَا مِهْنَتُكَ؟",tr:"askunu fī madrīd. mā mihnatuka?",es:"Vivo en Madrid. ¿Cuál es tu profesión?"},
+      {p:0,ar:"أَنَا مُهَنْدِس. وَأَنْتِ؟",tr:"anā muhandis. wa-anti?",es:"Soy ingeniero. ¿Y tú?"},
+      {p:1,ar:"أَنَا صَحَفِيَّة.",tr:"anā ṣaḥafiyya.",es:"Soy periodista."},
+      {p:0,ar:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمِينَهَا؟",tr:"mā l-luġātu llatī tatakallamīnahā?",es:"¿Qué idiomas hablas?"},
+      {p:1,ar:"أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْفَرَنْسِيَّةَ، وَأَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ.",tr:"atakallamu l-isbāniyyata wa-l-faransiyyata, wa-atakallamu qalīlan mina l-ʿarabiyyati.",es:"Hablo español y francés, y un poco de árabe."},
+    ]},
+    {lec:"A2 · L1 Presentarse",titulo:"Práctica: Yusuf y Fátima",personajes:["يُوسُف", "فَاطِمَة"],personajes_es:["Yusuf", "Fátima"],turnos:[
+      {p:0,ar:"مَرْحَبًا! أَنَا يُوسُف. مَا اسْمُكِ؟",tr:"marḥaban! anā Yūsuf. mā ismuki?",es:"¡Hola! Soy Yusuf. ¿Cómo te llamas?"},
+      {p:1,ar:"اِسْمِي فَاطِمَة.",tr:"ismī Fāṭima.",es:"Me llamo Fátima."},
+      {p:0,ar:"كَمْ عُمْرُكِ؟",tr:"kam ʿumruki?",es:"¿Cuántos años tienes?"},
+      {p:1,ar:"عُمْرِي عِشْرُونَ عَامًا. وَأَنْتَ؟",tr:"ʿumrī ʿišrūna ʿāman. wa-anta?",es:"Tengo 20 años. ¿Y tú?"},
+      {p:0,ar:"عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا. هَلْ أَنْتِ طَالِبَة؟",tr:"ʿumrī jamsatun wa-ʿišrūna ʿāman. hal anti ṭāliba?",es:"Tengo 25 años. ¿Eres estudiante?"},
+      {p:1,ar:"نَعَمْ، أَنَا طَالِبَة. وَأَنْتَ؟",tr:"naʿam, anā ṭāliba. wa-anta?",es:"Sí, soy estudiante. ¿Y tú?"},
+      {p:0,ar:"أَنَا نَادِل. أَعْمَلُ فِي مَدْرِيدَ.",tr:"anā nādil. aʿmalu fī madrīd.",es:"Soy camarero. Trabajo en Madrid."},
+      {p:1,ar:"مَا جِنْسِيَّتُكَ؟",tr:"mā ŷinsiyyatuka?",es:"¿Cuál es tu nacionalidad?"},
+      {p:0,ar:"أَنَا إِيطَالِيّ.",tr:"anā iṭālī.",es:"Soy italiano."},
+    ]},
+  ],
+  comprension: [
+    {lec:"A2 · L1 Presentarse",titulo:"Práctica: Fátima se presenta",texto:"اِسْمِي فَاطِمَة. عُمْرِي عِشْرُونَ عَامًا. أَنَا مِنَ الْمَغْرِبِ وَأَسْكُنُ فِي مَدْرِيدَ. أَنَا طَالِبَة. أَتَكَلَّمُ الْعَرَبِيَّةَ وَالْفَرَنْسِيَّةَ، وَأَتَكَلَّمُ قَلِيلًا مِنَ الْإِسْبَانِيَّةِ.",preguntas:[
+      {q:"مَا اسْمُهَا؟",q_tr:"mā ismuhā?",q_es:"¿Cómo se llama?",m:"اِسْمُهَا فَاطِمَة",m_tr:"ismuhā Fāṭima",m_es:"Se llama Fátima",clave:[["فاطمه"]]},
+      {q:"كَمْ عُمْرُهَا؟",q_tr:"kam ʿumruhā?",q_es:"¿Cuántos años tiene?",m:"عُمْرُهَا عِشْرُونَ عَامًا",m_tr:"ʿumruhā ʿišrūna ʿāman",m_es:"Tiene 20 años",clave:[["عشرون", "عشرين"]]},
+      {q:"مِنْ أَيْنَ هِيَ؟",q_tr:"min ayna hiya?",q_es:"¿De dónde es?",m:"هِيَ مِنَ الْمَغْرِبِ",m_tr:"hiya mina l-maġribi",m_es:"Es de Marruecos",clave:[["المغرب", "مغرب"]]},
+      {q:"أَيْنَ تَسْكُنُ؟",q_tr:"ayna taskunu?",q_es:"¿Dónde vive (ella)?",m:"تَسْكُنُ فِي مَدْرِيدَ",m_tr:"taskunu fī madrīd",m_es:"Vive en Madrid",clave:[["مدريد"]]},
+      {q:"مَا مِهْنَتُهَا؟",q_tr:"mā mihnatuhā?",q_es:"¿Cuál es su profesión?",m:"هِيَ طَالِبَة",m_tr:"hiya ṭāliba",m_es:"Es estudiante",clave:[["طالبه"]]},
+      {q:"مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟",q_tr:"mā l-luġātu llatī tatakallamuhā?",q_es:"¿Qué idiomas habla?",m:"تَتَكَلَّمُ الْعَرَبِيَّةَ وَالْفَرَنْسِيَّةَ، وَقَلِيلًا مِنَ الْإِسْبَانِيَّةِ",m_tr:"tatakallamu l-ʿarabiyyata wa-l-faransiyyata, wa-qalīlan mina l-isbāniyyati",m_es:"Árabe y francés, y un poco de español",clave:[["العربيه", "عربيه"], ["الفرنسيه", "فرنسيه", "والفرنسيه"]]},
+    ]},
+    {lec:"A2 · L1 Presentarse",titulo:"Práctica: diálogo de Samir y Leila",texto:"مَرْحَبًا! مَا اسْمُكِ؟ — اِسْمِي لَيْلَى. وَمَا اسْمُكَ؟ — اِسْمِي سَمِير. مِنْ أَيْنَ أَنْتِ؟ — أَنَا مِنْ إِسْبَانِيَا. وَأَنْتَ؟ — أَنَا مِنَ الْمَغْرِبِ. أَيْنَ تَسْكُنِينَ؟ — أَسْكُنُ فِي مَدْرِيدَ. مَا مِهْنَتُكَ؟ — أَنَا مُهَنْدِس. وَأَنْتِ؟ — أَنَا صَحَفِيَّة. — مَا اللُّغَاتُ الَّتِي تَتَكَلَّمِينَهَا؟ — أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْفَرَنْسِيَّةَ، وَأَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ.",preguntas:[
+      {q:"مِنْ أَيْنَ لَيْلَى؟",q_tr:"min ayna Laylā?",q_es:"¿De dónde es Leila?",m:"لَيْلَى مِنْ إِسْبَانِيَا",m_tr:"Laylā min isbāniyā",m_es:"Leila es de España",clave:[["اسبانيا"]]},
+      {q:"مِنْ أَيْنَ سَمِير؟",q_tr:"min ayna Samīr?",q_es:"¿De dónde es Samir?",m:"سَمِير مِنَ الْمَغْرِبِ",m_tr:"Samīr mina l-maġribi",m_es:"Samir es de Marruecos",clave:[["المغرب", "مغرب"]]},
+      {q:"مَا مِهْنَةُ سَمِير؟",q_tr:"mā mihnatu Samīr?",q_es:"¿Cuál es la profesión de Samir?",m:"هُوَ مُهَنْدِس",m_tr:"huwa muhandis",m_es:"Es ingeniero",clave:[["مهندس"]]},
+      {q:"مَا مِهْنَةُ لَيْلَى؟",q_tr:"mā mihnatu Laylā?",q_es:"¿Cuál es la profesión de Leila?",m:"هِيَ صَحَفِيَّة",m_tr:"hiya ṣaḥafiyya",m_es:"Es periodista",clave:[["صحفيه", "صحافيه"]]},
+      {q:"أَيْنَ تَسْكُنُ لَيْلَى؟",q_tr:"ayna taskunu Laylā?",q_es:"¿Dónde vive Leila?",m:"تَسْكُنُ فِي مَدْرِيدَ",m_tr:"taskunu fī madrīd",m_es:"Vive en Madrid",clave:[["مدريد"]]},
+    ]},
+  ],
+  monologo: [
+    {lec:"A2 · L1 Presentarse",titulo:"Preséntate (con lo de las págs. 3-5)",consigna:"Di tu nombre, tu edad, de dónde eres y tu nacionalidad, dónde vives, tu profesión, dónde trabajas y qué idiomas hablas.",segundos:60,modelo:"اِسْمِي فَاطِمَة. عُمْرِي عِشْرُونَ عَامًا. أَنَا مِنَ الْمَغْرِبِ وَأَسْكُنُ فِي مَدْرِيدَ. أَنَا طَالِبَة. أَتَكَلَّمُ الْعَرَبِيَّةَ وَالْفَرَنْسِيَّةَ، وَأَتَكَلَّمُ قَلِيلًا مِنَ الْإِسْبَانِيَّةِ.",estructuras:[
+      {ar:"اِسْمِي ...",tr:"ismī ...",es:"tu nombre",clave:["اسمي"]},
+      {ar:"عُمْرِي ... عَامًا",tr:"ʿumrī ... ʿāman",es:"tu edad",clave:["عمري"]},
+      {ar:"أَنَا مِنْ ...",tr:"anā min ...",es:"de dónde eres",clave:["من"]},
+      {ar:"أَنَا إِسْبَانِيّ",tr:"anā isbānī",es:"nacionalidad",clave:["اسباني", "اسبانيه", "جنسيتي"]},
+      {ar:"أَسْكُنُ فِي ...",tr:"askunu fī ...",es:"dónde vives",clave:["اسكن"]},
+      {ar:"أَنَا ... / أَعْمَلُ فِي ...",tr:"anā ... / aʿmalu fī ...",es:"profesión y trabajo",clave:["اعمل", "طالب", "شرطي", "مدرس", "موظف", "طبيب", "مهندس", "صحفي", "نادل", "فنان"]},
+      {ar:"أَتَكَلَّمُ ...",tr:"atakallamu ...",es:"idiomas",clave:["اتكلم"]},
+    ]},
+  ],
+  roles: [
+    // {lec, titulo, consigna, personajes:[A,B], personajes_es, turnos:[{p,ar,tr,es}]} — llegan con las lecciones que los traen
+  ],
+};
+
 
 // ══════════════════════════════════════
 // FRASES — lógica
@@ -3153,12 +3447,24 @@ const PATRONES_B = {
       {persona:"Ellos"      , sufijo:"ـوا"    , suf_tr:"-ū"     , forma:"قَالُوا", tr:"qālū", es:"ellos dijeron"},
       {persona:"Ellas"      , sufijo:"ـنَ"    , suf_tr:"-na"    , forma:"قُلْنَ", tr:"qulna", es:"ellas dijeron"},
     ],
+    "تَكَلَّمَ (hablar)": [
+      {persona:"Yo", sufijo:"ـتُ", suf_tr:"-tu", forma:"تَكَلَّمْتُ", tr:"takallamtu", es:"yo hablé"},
+      {persona:"Tú (m.)", sufijo:"ـتَ", suf_tr:"-ta", forma:"تَكَلَّمْتَ", tr:"takallamta", es:"tú hablaste"},
+      {persona:"Tú (f.)", sufijo:"ـتِ", suf_tr:"-ti", forma:"تَكَلَّمْتِ", tr:"takallamti", es:"tú hablaste"},
+      {persona:"Él", sufijo:"—", suf_tr:"—", forma:"تَكَلَّمَ", tr:"takallama", es:"él habló"},
+      {persona:"Ella", sufijo:"ـتْ", suf_tr:"-t", forma:"تَكَلَّمَتْ", tr:"takallamat", es:"ella habló"},
+      {persona:"Nosotros", sufijo:"ـنَا", suf_tr:"-nā", forma:"تَكَلَّمْنَا", tr:"takallamnā", es:"nosotros hablamos"},
+      {persona:"Vosotros", sufijo:"ـتُمْ", suf_tr:"-tum", forma:"تَكَلَّمْتُمْ", tr:"takallamtum", es:"(vosotros hablasteis)"},
+      {persona:"Vosotras", sufijo:"ـتُنَّ", suf_tr:"-tunna", forma:"تَكَلَّمْتُنَّ", tr:"takallamtunna", es:"(vosotras hablasteis)"},
+      {persona:"Ellos", sufijo:"ـوا", suf_tr:"-ū", forma:"تَكَلَّمُوا", tr:"takallamū", es:"ellos hablaron"},
+      {persona:"Ellas", sufijo:"ـنَ", suf_tr:"-na", forma:"تَكَلَّمْنَ", tr:"takallamna", es:"ellas hablaron"},
+    ],
 },
   irregular: "⚠️ لَيْسَ (no ser/no estar) es IRREGULAR: usa لَسْتُ, لَسْتَ, لَسْتِ, لَيْسَ, لَيْسَتْ, لَسْنَا, لَسْتُمْ, لَيْسُوا — no sigue exactamente el mismo patrón de sufijos."
 };
 
 const PATRONES_C = {
-  intro: "El presente (اَلْمُضَارِع) tiene 4 formas según qué le pasa a la vocal media de la raíz al pasar del pasado al presente. Resumen rápido: Forma I → siempre a DAMMA (يَكْتُبُ). Forma II → de KASRA (en el pasado) a FATHA (يَشْرَبُ) — la única predecible mirando el pasado. Forma III → NO CAMBIA, se queda en FATHA (يَذْهَبُ). Forma IV → de FATHA a KASRA (يَجْلِسُ). En las 4 se usan los mismos prefijos y sufijos de persona — abre cada pestaña para la explicación detallada de esa forma en concreto.",
+  intro: "El presente (اَلْمُضَارِع) tiene 4 formas según qué le pasa a la vocal media de la raíz al pasar del pasado al presente. Resumen rápido: Forma I → siempre a DAMMA (يَكْتُبُ). Forma II → de KASRA (en el pasado) a FATHA (يَشْرَبُ) — la única predecible mirando el pasado. Forma III → NO CAMBIA, se queda en FATHA (يَذْهَبُ). Forma IV → de FATHA a KASRA (يَجْلِسُ). En las 4 se usan los mismos prefijos y sufijos de persona — abre cada pestaña para la explicación detallada de esa forma en concreto. La pestaña «Forma V (derivada)» es distinta: recoge verbos derivados como تَكَلَّمَ → يَتَكَلَّمُ.",
   formas: {
     "Forma I": {
       disponible: true,
@@ -3936,6 +4242,25 @@ const PATRONES_C = {
         ],
       },
     },
+    "Forma V (derivada)": {
+      disponible: true,
+      nota: "Esta pestaña NO es un quinto modelo de vocal como las Formas I-IV (que son todas verbos básicos de 3 consonantes). Aquí van los verbos DERIVADOS de Forma V (patrón تَفَعَّلَ): llevan تَ delante de la raíz y šadda en la 2ª consonante. Ejemplo: raíz ك-ل-م → تَكَلَّمَ (hablar). En el presente se usan los mismos prefijos (أَ/تَ/يَ/نَ) y sufijos de siempre, y la vocal de la 2ª consonante se queda en FATHA: يَتَكَلَّمُ. Truco: 'Forma V = تَ + šadda, y fatha en todo'.",
+      verbos: {
+        "تَكَلَّمَ → يَتَكَلَّمُ (hablar)": [
+          {persona:"Yo", prefijo:"أَ", sufijo:"ـُ", forma:"أَتَكَلَّمُ", tr:"atakallamu", es:"yo hablo"},
+          {persona:"Tú (m.)", prefijo:"تَ", sufijo:"ـُ", forma:"تَتَكَلَّمُ", tr:"tatakallamu", es:"tú hablas (m.)"},
+          {persona:"Tú (f.)", prefijo:"تَ", sufijo:"ـِينَ", forma:"تَتَكَلَّمِينَ", tr:"tatakallamīna", es:"tú hablas (f.)"},
+          {persona:"Él", prefijo:"يَ", sufijo:"ـُ", forma:"يَتَكَلَّمُ", tr:"yatakallamu", es:"él habla"},
+          {persona:"Ella", prefijo:"تَ", sufijo:"ـُ", forma:"تَتَكَلَّمُ", tr:"tatakallamu", es:"ella habla"},
+          {persona:"Nosotros", prefijo:"نَ", sufijo:"ـُ", forma:"نَتَكَلَّمُ", tr:"natakallamu", es:"nosotros hablamos"},
+          {persona:"Vosotros", prefijo:"تَ", sufijo:"ـُونَ", forma:"تَتَكَلَّمُونَ", tr:"tatakallamūna", es:"vosotros habláis"},
+          {persona:"Vosotras", prefijo:"تَ", sufijo:"ـْنَ", forma:"تَتَكَلَّمْنَ", tr:"tatakallamna", es:"vosotras habláis"},
+          {persona:"Ellos", prefijo:"يَ", sufijo:"ـُونَ", forma:"يَتَكَلَّمُونَ", tr:"yatakallamūna", es:"ellos hablan"},
+          {persona:"Ellas", prefijo:"يَ", sufijo:"ـْنَ", forma:"يَتَكَلَّمْنَ", tr:"yatakallamna", es:"ellas hablan"},
+        ],
+      },
+      extra: "Pregunta típica: مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟ (masc.) / تَتَكَلَّمِينَهَا؟ (fem.) → أَتَكَلَّمُ الْعَرَبِيَّةَ."
+    },
   }
 };
 
@@ -4063,12 +4388,13 @@ function setPatVerbo(v) {
 // AUDIO
 // ══════════════════════════════════════
 let currentAudio = null;
-function speak(text) {
+function speak(text, rate) {
   // Try Web Speech API first (best mobile support)
   if ('speechSynthesis' in window) {
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'ar-SA'; u.rate = 0.75; u.pitch = 1;
+    u.lang = 'ar-SA'; u.rate = rate || 0.75; u.pitch = 1;
+    const _v = (typeof arVoice === 'function') ? arVoice() : null; if (_v) u.voice = _v;
     u.onerror = () => tryGoogleTTS(text);
     speechSynthesis.speak(u);
     // If no voice fires in 1s, try Google TTS
@@ -4269,11 +4595,12 @@ function showPage(name, btn) {
   document.getElementById('page-' + name).classList.remove('hidden');
   if (btn) btn.classList.add('active');
   if (!pageInits[name]) { pageInits[name] = true; initPage(name); }
-  if (name === 'stats') renderStats();
+  if (name === 'stats') { renderStats(); renderHablaStats(); }
 }
 
 function initPage(name) {
   if (name === 'checklist') initChecklist();
+  if (name === 'habla') initHabla();
   if (name === 'quiz') initQuiz();
   if (name === 'escucha') initEscucha();
   if (name === 'escribe') initEscribe();
@@ -4286,9 +4613,772 @@ function initPage(name) {
 }
 
 // ══════════════════════════════════════
+// HABLA — práctica oral (diálogo, comprensión, entrevista, monólogo, roles, dilo, repite)
+// Reconocimiento de voz del navegador si existe (Chrome/Android: bien; Safari: irregular).
+// Si no hay o falla: se graba con el micro y te autoevalúas comparando con el modelo.
+// Estadísticas propias en 'arabic_habla' (clave nueva; no toca las existentes).
+// ══════════════════════════════════════
+let hbMode = 'dialogo', hbFiltro = 'ult';
+let hbQueue = [], hbIdx = 0, hbC = 0, hbW = 0, hbTotal = 0;
+let hbItem = null;            // lo que se está practicando ahora: {eval:'frase'|'clave', ar|m, clave, key...}
+let hbStage = 'pick';         // pick | rol | run | listen | done
+let hbSrc = null, hbRole = 0, hbT = 0, hbHideText = true;
+let hbRec = null, hbRecChunks = [], hbRecUrl = null, hbRecognizer = null, hbBusy = false;
+let hbTimer = null, hbTimeLeft = 0, hbSecs = 60, hbMonoText = '', hbMonoOn = false, hbChecks = {};
+let hbStats = JSON.parse(safeGetItem('arabic_habla', '{"rondas":0,"modos":{},"fallos":{}}'));
+const HB_SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+const HB_CANREC = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+
+function hbSave() { safeSetItem('arabic_habla', JSON.stringify(hbStats)); }
+function hbEsc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function hbLecNum(l) { const m = /L(\d+)/.exec(l || ''); return m ? +m[1] : 0; }
+function hbUltLec() {
+  let best = '';
+  ['responde','dilo','dialogos','comprension','monologo','roles'].forEach(k => (HABLA[k] || []).forEach(x => { if (hbLecNum(x.lec) >= hbLecNum(best)) best = x.lec; }));
+  return best;
+}
+function hbF(x) { return hbFiltro !== 'ult' || x.lec === hbUltLec(); }
+function hbList(k) { return (HABLA[k] || []).filter(hbF); }
+
+function setHablaMode(m) {
+  hbMode = m;
+  ['dialogo','comprension','responde','monologo','roles','dilo','repite','rapida','libre'].forEach(k => document.getElementById('hbm-' + k).classList.toggle('active', k === m));
+  initHabla();
+}
+function setHablaFiltro(f) {
+  hbFiltro = f;
+  ['ult','a2','todo'].forEach(k => document.getElementById('hbf-' + k).classList.toggle('active', k === f));
+  initHabla();
+}
+function initHabla() {
+  hbStopAll();
+  hbIdx = 0; hbC = 0; hbW = 0; hbTotal = 0; hbT = 0; hbItem = null; hbSrc = null; hbStage = 'pick';
+  document.getElementById('hb-card').style.display = '';
+  document.getElementById('hb-result').style.display = 'none';
+  const ult = hbUltLec();
+  document.getElementById('hbf-ult').textContent = ult ? ult.replace(/^A2 · /, '') : 'Lección actual';
+  document.getElementById('hb-micinfo').textContent = HB_SR
+    ? '🎙️ Reconocimiento de voz disponible: la app transcribe lo que dices. Si falla, usa ⏺️ Grabarme y compara tú.'
+    : (HB_CANREC ? '🎙️ Tu navegador no transcribe árabe: grábate y compárate con el modelo.' : '⚠️ Sin micrófono: dilo en voz alta y compárate con el modelo.');
+  if (hbMode === 'responde' || hbMode === 'dilo' || hbMode === 'repite') return hbStartList();
+  if (hbMode === 'rapida') return hbRapidaStart();
+  if (hbMode === 'libre') return hbLibreScreen();
+  hbRender();
+}
+function hbBar(show) {
+  document.getElementById('hb-bar').style.display = show ? '' : 'none';
+  document.getElementById('hb-c').textContent = hbC;
+  document.getElementById('hb-w').textContent = hbW;
+  document.getElementById('hb-r').textContent = Math.max(0, hbTotal - hbIdx);
+}
+function hbSet(html) { document.getElementById('hb-content').innerHTML = html; }
+function hbEmpty(msg) { hbBar(false); hbSet(`<div class="hb-box">${msg}</div>`); }
+
+// ── Bloques de interfaz comunes ──
+function hbMicRow(label) {
+  return `<div class="hb-row">${HB_SR ? `<button class="hb-btn mic" id="hb-micbtn" onclick="hbListen()">🎙️ ${label}</button>` : ''}${HB_CANREC ? `<button class="hb-btn" id="hb-recbtn" onclick="hbToggleRecord()">⏺️ Grabarme</button>` : ''}</div>
+    <div id="hb-out"></div>`;
+}
+function hbAssessRow(okTxt) {
+  return `<div class="self-assess show" style="margin-top:12px;">
+    <button class="sa-btn sa-no" onclick="hbMark(false)">🔁 A repasar</button>
+    <button class="sa-btn sa-yes" onclick="hbMark(true)">${okTxt || '👍 Bien'}</button></div>`;
+}
+function hbModelText() { return hbItem ? (hbItem.eval === 'clave' ? hbItem.m : hbItem.ar) : ''; }
+function hbSpeakModel(rate) { speak(hbModelText().replace(/\.\.\./g, ' ').trim(), rate); }
+function hbReveal() {
+  const it = hbItem; if (!it) return;
+  const ar = it.eval === 'clave' ? it.m : it.ar, tr = it.eval === 'clave' ? it.m_tr : it.tr, es = it.eval === 'clave' ? it.m_es : (it.esModel || '');
+  const el = document.getElementById('hb-model'); if (!el) return;
+  el.innerHTML = `<div class="hb-box" style="text-align:center;">
+      <div class="hb-ar sm">${ar}</div><div class="hb-tr">${tr || ''}</div>${es ? `<div style="margin-top:4px;">${es}</div>` : ''}
+      ${it.eval === 'clave' && /\.\.\./.test(ar) ? '<div style="font-size:11px;margin-top:6px;">Los «...» los completas con tus datos.</div>' : ''}
+      ${it.genero ? '<div style="font-size:11px;margin-top:6px;color:var(--gold2);">⚠️ Fíjate en la vocal final (ـكَ / ـكِ, أَنْتَ / أَنْتِ): la transcripción no la distingue, compruébala tú.</div>' : ''}
+      <div class="hb-row"><button class="hb-btn" onclick="hbSpeakModel()">🔊 Modelo</button><button class="hb-btn" onclick="hbSpeakModel(0.5)">🐢 Lento</button>
+      ${hbRecUrl ? '<button class="hb-btn" onclick="hbPlayMine()">▶️ Mi grabación</button>' : ''}</div></div>`;
+}
+
+// ══ MODOS EN LISTA: Entrevista, Dilo, Repite (y preguntas de Comprensión) ══
+function hbStartList() {
+  let pool = [];
+  const vocab = hbFiltro === 'todo' ? VOCAB.filter(w => w.es && !/(pasado|presente)/.test(w.es)) : [];
+  if (hbMode === 'responde') pool = hbList('responde').map(x => ({eval:'clave', key:x.q, ...hbPersonal(x)}));
+  if (hbMode === 'dilo') {
+    pool = hbList('dilo').map(x => ({eval:'frase', key:x.ar, ...x}));
+    pool = pool.concat(shuffle(vocab).slice(0, Math.max(pool.length, 10)).map(w => ({eval:'frase', key:w.ar, es:'Di en árabe: «' + w.es + '»', ar:w.ar, tr:w.tr})));
+  }
+  if (hbMode === 'repite') {
+    pool = hbList('dilo').map(x => ({eval:'frase', key:x.ar, ar:x.ar, tr:x.tr, es:x.es}));
+    hbList('dialogos').forEach(d => d.turnos.forEach(t => pool.push({eval:'frase', key:t.ar, ar:t.ar, tr:t.tr, es:t.es})));
+    if (hbFiltro === 'todo') {
+      pool = pool.concat(FRASES.map(x => ({eval:'frase', key:x.ar, ar:x.ar, tr:x.tr, es:x.es})));
+      pool = pool.concat(shuffle(vocab.filter(w => w.ctx)).slice(0, 20).map(w => ({eval:'frase', key:w.ctx, ar:w.ctx, tr:'', es:'Frase con «' + w.es + '»'})));
+    }
+  }
+  const sh = shuffle(pool).sort((a, b) => (hbStats.fallos[b.key] || 0) - (hbStats.fallos[a.key] || 0));
+  hbQueue = sh.slice(0, hbMode === 'repite' ? 8 : 10);
+  hbTotal = hbQueue.length; hbIdx = 0; hbStage = 'run';
+  if (!hbTotal) return hbEmpty('Todavía no hay frases para este filtro.');
+  hbRenderListItem();
+}
+function hbRenderListItem() {
+  if (hbMode === 'rapida') return hbRapidaItem();
+  hbBar(true);
+  const it = hbItem = hbQueue[hbIdx];
+  if (hbMode === 'responde' || hbMode === 'comprension') {
+    const extra = hbMode === 'comprension' ? '<button class="hb-btn" onclick="hbSpeakText()">📄 Texto otra vez</button>' : '';
+    hbSet(`<div class="hb-lbl">${hbMode === 'comprension' ? 'Pregunta sobre lo que has oído — contesta en voz alta' : 'Entrevista — escucha la pregunta y contesta'}</div>
+      <div class="hb-row"><button class="hb-btn" onclick="speak(hbItem.q)">🔊 Pregunta</button><button class="hb-btn" onclick="speak(hbItem.q,0.5)">🐢 Lenta</button>${extra}</div>
+      <div id="hb-qtext" class="hb-box" style="text-align:center;cursor:pointer;" onclick="hbShowQ()">👁️ Toca para ver la pregunta escrita</div>
+      ${hbMicRow('Responder')}
+      <div class="hb-row"><button class="hb-btn" onclick="hbReveal()">💡 Respuesta modelo</button></div>
+      <div id="hb-model"></div>${hbAssessRow()}`);
+    setTimeout(() => speak(it.q), 250);
+  } else if (hbMode === 'dilo') {
+    hbSet(`<div class="hb-lbl">Dilo en árabe, en voz alta</div>
+      <div class="hb-es" style="font-size:19px;margin:16px 0;">${it.es}</div>
+      ${hbMicRow('Decirlo')}
+      <div class="hb-row"><button class="hb-btn" onclick="hbReveal()">💡 Ver solución</button></div>
+      <div id="hb-model"></div>${hbAssessRow()}`);
+  } else {
+    hbSet(`<div class="hb-lbl">Escucha, repite igual y compárate</div>
+      <div class="hb-ar sm" style="margin-top:12px;">${it.ar}</div><div class="hb-tr">${it.tr || ''}</div>
+      <div class="hb-es" style="font-size:14px;color:var(--cream2);font-weight:400;">${it.es}</div>
+      <div class="hb-row"><button class="hb-btn" onclick="speak(hbItem.ar)">🔊 Normal</button><button class="hb-btn" onclick="speak(hbItem.ar,0.5)">🐢 Lenta</button></div>
+      ${hbMicRow('Comprobar')}<div id="hb-model"></div>${hbAssessRow()}`);
+    setTimeout(() => speak(it.ar), 250);
+  }
+}
+function hbShowQ() {
+  const el = document.getElementById('hb-qtext');
+  el.outerHTML = `<div class="hb-ar sm">${hbItem.q}</div><div class="hb-tr">${hbItem.q_tr}</div><div class="hb-es" style="font-size:14px;">${hbItem.q_es}</div>`;
+}
+
+// ── Marcar y avanzar (todos los modos) ──
+function hbMark(ok) {
+  const it = hbItem; if (!it) return;
+  hbStopAll();
+  if (ok) { hbC++; playCorrect(); if (hbStats.fallos[it.key]) hbStats.fallos[it.key]--; }
+  else { hbW++; playWrong(); hbStats.fallos[it.key] = (hbStats.fallos[it.key] || 0) + 1; }
+  const m = hbStats.modos[hbMode] || (hbStats.modos[hbMode] = {c:0, t:0});
+  m.t++; if (ok) m.c++;
+  hbSave();
+  if (hbRecUrl) { URL.revokeObjectURL(hbRecUrl); hbRecUrl = null; }
+  hbIdx++;
+  if (hbMode === 'dialogo' || hbMode === 'roles') { hbT++; return hbRunTurn(); }
+  if (hbMode === 'monologo') return hbFinish('Monólogo terminado');
+  if (hbIdx >= hbTotal) return hbFinish('bien de ' + hbTotal);
+  hbRenderListItem();
+}
+function hbFinish(sub) {
+  hbStopAll(); hbBar(true);
+  hbStats.rondas++; hbSave();
+  clMarkDone('habla');
+  document.getElementById('hb-card').style.display = 'none';
+  document.getElementById('hb-result').style.display = 'block';
+  document.getElementById('hb-score').textContent = hbMode === 'monologo' ? '🎤' : hbMode === 'libre' ? '🚗' : hbC + ' / ' + hbTotal;
+  if (hbMode === 'rapida' && hbRapTimes.length) sub += ' · media ' + (hbRapTimes.reduce((a, b) => a + b, 0) / hbRapTimes.length).toFixed(1) + ' s';
+  let extra = '';
+  if ((hbMode === 'dialogo' || hbMode === 'roles') && hbSrc) extra = ` <button class="result-btn" style="margin-left:6px;background:var(--teal);color:#fff;" onclick="hbSwapRole()">🔄 Cambiar de papel</button>`;
+  document.getElementById('hb-sub').innerHTML = hbEsc(sub) + ' · queda marcado en tu Rutina' + extra;
+}
+
+// ══ RENDER SEGÚN MODO (pantallas de elección) ══
+function hbRender() {
+  hbBar(false);
+  if (hbMode === 'dialogo' || hbMode === 'roles') {
+    const list = hbList(hbMode === 'dialogo' ? 'dialogos' : 'roles');
+    if (!list.length) return hbEmpty(hbMode === 'roles'
+      ? '🎭 Las situaciones de Roles (comprar un billete, en el médico…) llegan con las lecciones del libro que las traen. La lección 1 no tiene.'
+      : 'Todavía no hay diálogos para este filtro.');
+    if (list.length === 1 && hbStage === 'pick') return hbPickSrc(0);
+    hbSet(`<div class="hb-lbl">Elige ${hbMode === 'dialogo' ? 'diálogo' : 'situación'}</div><div class="hb-pick">` +
+      list.map((d, i) => `<button onclick="hbPickSrc(${i})">${hbEsc(d.titulo)}<small>${hbEsc(d.personajes_es.join(' · '))}${d.consigna ? ' — ' + hbEsc(d.consigna) : ''}</small></button>`).join('') + '</div>');
+  } else if (hbMode === 'comprension') {
+    const list = hbList('comprension');
+    if (!list.length) return hbEmpty('Todavía no hay textos para este filtro.');
+    hbSet(`<div class="hb-lbl">Elige un texto para escuchar</div><div class="hb-pick">` +
+      list.map((d, i) => `<button onclick="hbPickText(${i})">${hbEsc(d.titulo)}<small>${d.preguntas.length} preguntas</small></button>`).join('') + '</div>');
+  } else if (hbMode === 'monologo') {
+    const list = hbList('monologo');
+    if (!list.length) return hbEmpty('Todavía no hay monólogos para este filtro.');
+    if (list.length === 1) return hbPickMono(0);
+    hbSet(`<div class="hb-lbl">Elige el tema</div><div class="hb-pick">` +
+      list.map((d, i) => `<button onclick="hbPickMono(${i})">${hbEsc(d.titulo)}<small>${hbEsc(d.consigna)}</small></button>`).join('') + '</div>');
+  }
+}
+
+// ══ DIÁLOGO / ROLES: la app hace un papel y tú el otro ══
+function hbPickSrc(i) {
+  hbSrc = hbList(hbMode === 'dialogo' ? 'dialogos' : 'roles')[i];
+  hbStage = 'rol';
+  const d = hbSrc;
+  hbSet(`<div class="hb-lbl">${hbEsc(d.titulo)}</div>
+    ${d.consigna ? `<div class="hb-box">${hbEsc(d.consigna)}</div>` : ''}
+    <div class="hb-row"><button class="hb-btn" onclick="hbPlayAll()">▶️ Escuchar entero</button><button class="hb-btn" onclick="hbStopAll()">⏹️</button></div>
+    <div class="hb-box" style="text-align:center;">¿Qué papel haces tú?</div>
+    <div class="hb-row">${d.personajes_es.map((p, k) => `<button class="hb-btn go" onclick="hbStartDialog(${k})">Soy ${hbEsc(p)}</button>`).join('')}</div>
+    <div class="hb-row"><label style="font-size:13px;color:var(--cream2);"><input type="checkbox" id="hb-hide" ${hbHideText ? 'checked' : ''} onchange="hbHideText=this.checked"> Ocultar el texto de la otra persona (solo oído)</label></div>`);
+}
+function hbPlayAll() {
+  const lines = hbSrc.turnos.map(t => t.ar);
+  let i = 0;
+  const next = () => { if (i < lines.length) hbSay(lines[i++], 0.75, () => setTimeout(next, 350)); };
+  next();
+}
+function hbStartDialog(k) {
+  hbRole = k; hbT = 0; hbC = 0; hbW = 0; hbIdx = 0; hbStage = 'run';
+  hbTotal = hbSrc.turnos.filter(t => t.p === k).length;
+  hbRunTurn();
+}
+function hbSwapRole() {
+  document.getElementById('hb-card').style.display = '';
+  document.getElementById('hb-result').style.display = 'none';
+  hbStartDialog(hbSrc.personajes.length > 1 ? 1 - hbRole : 0);
+}
+function hbChatHtml(upto) {
+  return hbSrc.turnos.slice(0, upto).map(t => {
+    const me = t.p === hbRole;
+    return `<div class="hb-bub ${me ? 'me' : 'them'}"><div class="who">${hbEsc(hbSrc.personajes_es[t.p])}${me ? ' (tú)' : ''}</div><div class="hb-said">${t.ar}</div><div class="es">${hbEsc(t.es)}</div></div>`;
+  }).join('');
+}
+function hbRunTurn() {
+  if (hbT >= hbSrc.turnos.length) return hbFinish('turnos bien de ' + hbTotal + ' como ' + hbSrc.personajes_es[hbRole]);
+  hbBar(true);
+  const t = hbSrc.turnos[hbT], who = hbSrc.personajes_es[t.p];
+  if (t.p !== hbRole) {
+    hbItem = null;
+    const txt = hbHideText ? `<div id="hb-them" style="cursor:pointer;" onclick="this.innerHTML=hbThemHtml()">🔊 … <span style="font-size:11px;color:var(--cream2);">(toca para ver el texto)</span></div>` : hbThemHtml();
+    hbSet(`<div class="hb-chat" id="hb-chat">${hbChatHtml(hbT)}<div class="hb-bub them"><div class="who">${hbEsc(who)}</div>${txt}</div></div>
+      <div class="hb-row"><button class="hb-btn" onclick="speak(hbSrc.turnos[hbT].ar)">🔊 Otra vez</button><button class="hb-btn" onclick="speak(hbSrc.turnos[hbT].ar,0.5)">🐢 Lento</button>
+      <button class="hb-btn go" onclick="hbT++;hbRunTurn()">Continuar ▶</button></div>`);
+    setTimeout(() => speak(t.ar), 250);
+  } else {
+    hbItem = {eval:'frase', key:t.ar, ar:t.ar, tr:t.tr, esModel:t.es};
+    hbSet(`<div class="hb-chat" id="hb-chat">${hbChatHtml(hbT)}<div class="hb-bub me"><div class="who">${hbEsc(who)} (tú) — tu turno</div><div class="es" style="font-size:14px;color:var(--gold2);">Di: «${hbEsc(t.es)}»</div></div></div>
+      ${hbMicRow('Decirlo')}
+      <div class="hb-row"><button class="hb-btn" onclick="hbReveal()">💡 Ver frase</button></div>
+      <div id="hb-model"></div>${hbAssessRow()}`);
+  }
+  const c = document.getElementById('hb-chat'); if (c) c.scrollTop = c.scrollHeight;
+}
+function hbThemHtml() { const t = hbSrc.turnos[hbT]; return `<div class="hb-said">${t.ar}</div><div class="es">${hbEsc(t.tr)} — ${hbEsc(t.es)}</div>`; }
+
+// ══ COMPRENSIÓN: escucha el texto y contesta las preguntas en voz alta ══
+function hbPickText(i) {
+  hbSrc = hbList('comprension')[i];
+  hbSet(`<div class="hb-lbl">${hbEsc(hbSrc.titulo)}</div>
+    <div class="hb-box" style="text-align:center;">1) Escucha el texto sin leerlo (las veces que necesites).<br>2) Después contesta las preguntas en voz alta.</div>
+    <div class="hb-row"><button class="hb-btn" onclick="hbSpeakText()">🔊 Escuchar</button><button class="hb-btn" onclick="hbSpeakText(0.5)">🐢 Lento</button><button class="hb-btn" onclick="hbStopAll()">⏹️</button></div>
+    <div id="hb-txt" class="hb-box" style="text-align:center;cursor:pointer;" onclick="this.innerHTML='<div class=hb-said>'+hbSrc.texto+'</div>'">👁️ Ver el texto (mejor al final)</div>
+    <div class="hb-row"><button class="hb-btn go" onclick="hbStartQuestions()">Empezar preguntas →</button></div>`);
+  setTimeout(() => hbSpeakText(), 300);
+}
+function hbSpeakText(rate) {
+  const parts = hbSrc.texto.split(' — ');
+  let i = 0;
+  const next = () => { if (i < parts.length) hbSay(parts[i++], rate || 0.75, () => setTimeout(next, 300)); };
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  next();
+}
+function hbStartQuestions() {
+  hbQueue = hbSrc.preguntas.map(q => ({eval:'clave', key:q.q, ...q}));
+  hbTotal = hbQueue.length; hbIdx = 0; hbC = 0; hbW = 0; hbStage = 'run';
+  hbRenderListItem();
+}
+
+// ══ MONÓLOGO: 30–60 s con cronómetro y estructuras ══
+function hbPickMono(i) {
+  hbSrc = hbList('monologo')[i];
+  hbSecs = hbSrc.segundos || 60; hbChecks = {}; hbMonoText = ''; hbTotal = 1; hbIdx = 0; hbC = 0; hbW = 0;
+  const mio = hbMonoModel();
+  hbItem = {eval:'frase', key:'mono:' + hbSrc.titulo, ar:mio || hbSrc.modelo, tr:'', esModel: mio ? 'Tu presentación (de «Mi ficha»)' : 'Modelo de ejemplo — rellena «Mi ficha» para ver la tuya'};
+  hbSet(`<div class="hb-lbl">${hbEsc(hbSrc.titulo)}</div>
+    <div class="hb-box">${hbEsc(hbSrc.consigna)}</div>
+    <div style="margin-top:10px;" id="hb-checks">${hbChecksHtml()}</div>
+    <div class="cat-filter" style="justify-content:center;margin-top:10px;padding:0;">
+      <button class="cat-chip ${hbSecs === 30 ? 'active' : ''}" onclick="hbSetSecs(30)">30 s</button>
+      <button class="cat-chip ${hbSecs === 60 ? 'active' : ''}" onclick="hbSetSecs(60)">60 s</button>
+      <button class="cat-chip ${hbSecs === 90 ? 'active' : ''}" onclick="hbSetSecs(90)">90 s</button></div>
+    <div class="hb-timer" id="hb-timer">${hbFmt(hbSecs)}</div>
+    <div class="hb-row">
+      ${HB_SR ? '<button class="hb-btn mic" id="hb-monobtn" onclick="hbMonoStart(\'sr\')">🎙️ Hablar (transcribe)</button>' : ''}
+      ${HB_CANREC ? '<button class="hb-btn" id="hb-monorec" onclick="hbMonoStart(\'rec\')">⏺️ Grabarme</button>' : ''}
+      <button class="hb-btn" id="hb-mononone" onclick="hbMonoStart(\'none\')">⏱️ Solo cronómetro</button></div>
+    <div id="hb-out"></div>
+    <div class="hb-row"><button class="hb-btn" onclick="hbReveal()">💡 Ver un modelo</button></div>
+    <div id="hb-model"></div>
+    <div id="hb-assess"></div>`);
+}
+function hbChecksHtml() {
+  return hbSrc.estructuras.map((e, k) => `<div class="hb-check ${hbChecks[k] ? 'on' : ''}" onclick="hbChecks[${k}]=!hbChecks[${k}];document.getElementById('hb-checks').innerHTML=hbChecksHtml()">
+    <div class="bx">${hbChecks[k] ? '✓' : ''}</div><div style="flex:1;"><div class="ar">${e.ar}</div><div class="es">${hbEsc(e.es)} · ${hbEsc(e.tr)}</div></div></div>`).join('');
+}
+function hbSetSecs(s) {
+  if (hbMonoOn) return;
+  hbSecs = s;
+  document.getElementById('hb-timer').textContent = hbFmt(hbSecs);
+  document.querySelectorAll('#hb-content .cat-chip').forEach(b => b.classList.toggle('active', parseInt(b.textContent) === hbSecs));
+}
+function hbFmt(s) { return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+function hbMonoStart(how) {
+  if (hbMonoOn) return hbMonoStop();
+  hbMonoOn = true; hbMonoText = ''; hbTimeLeft = hbSecs;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  document.getElementById('hb-out').innerHTML = '';
+  const btn = document.getElementById({sr:'hb-monobtn', rec:'hb-monorec', none:'hb-mononone'}[how]);
+  if (btn) { btn.classList.add('rec'); btn.textContent = '⏹️ Terminar'; }
+  if (how === 'sr') hbMonoSR();
+  if (how === 'rec') hbToggleRecord(true);
+  hbTimer = setInterval(() => {
+    hbTimeLeft--;
+    const el = document.getElementById('hb-timer'); if (el) el.textContent = hbFmt(Math.max(0, hbTimeLeft));
+    if (hbTimeLeft <= 0) hbMonoStop();
+  }, 1000);
+}
+function hbMonoSR() {
+  const r = new HB_SR();
+  r.lang = 'ar-SA'; r.continuous = true; r.interimResults = false;
+  hbRecognizer = r;
+  r.onresult = e => {
+    for (let i = e.resultIndex; i < e.results.length; i++) if (e.results[i].isFinal) hbMonoText += ' ' + e.results[i][0].transcript;
+    hbAutoChecks();
+  };
+  r.onerror = () => {};
+  r.onend = () => { if (hbMonoOn && hbRecognizer === r) { try { r.start(); } catch (e) {} } };  // Android corta solo: se reanuda
+  try { r.start(); } catch (e) {}
+}
+function hbAutoChecks() {
+  const sw = hbNorm(hbMonoText).split(' ').filter(Boolean);
+  hbSrc.estructuras.forEach((e, k) => { if (e.clave.some(w => hbWordHit(w, sw))) hbChecks[k] = true; });
+  const el = document.getElementById('hb-checks'); if (el) el.innerHTML = hbChecksHtml();
+}
+function hbMonoStop() {
+  hbMonoOn = false;
+  clearInterval(hbTimer); hbTimer = null;
+  const r = hbRecognizer; hbRecognizer = null;
+  try { if (r) r.stop(); } catch (e) {}
+  if (hbRec && hbRec.state === 'recording') hbRec.stop();
+  const lbl = {'hb-monobtn':'🎙️ Otra vez', 'hb-monorec':'⏺️ Grabar otra vez', 'hb-mononone':'⏱️ Otra vez'};
+  Object.keys(lbl).forEach(id => { const b = document.getElementById(id); if (b) { b.classList.remove('rec'); b.textContent = lbl[id]; } });
+  setTimeout(() => {
+    hbAutoChecks();
+    const done = hbSrc.estructuras.filter((e, k) => hbChecks[k]).length;
+    const out = document.getElementById('hb-out');
+    if (out) out.innerHTML = (hbMonoText ? `<div class="hb-box"><div>Lo que he entendido:</div><div class="hb-said">${hbEsc(hbMonoText.trim())}</div></div>` : (out.innerHTML || ''))
+      + `<div class="hb-box ${done === hbSrc.estructuras.length ? 'ok' : ''}">Has usado <b>${done} de ${hbSrc.estructuras.length}</b> estructuras. ${HB_SR ? 'Si he fallado al detectar alguna, márcala tú tocándola.' : 'Márcalas tú tocándolas.'}</div>`;
+    document.getElementById('hb-assess').innerHTML = hbAssessRow('👍 Terminado');
+  }, 600);
+}
+
+// ── Normalización y comparación (la transcripción no trae harakat) ──
+function hbNorm(s) {
+  return hbDigits(String(s))
+    .replace(/[ً-ْٰـ]/g, '')
+    .replace(/[أإآٱ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/ؤ/g, 'و').replace(/ئ/g, 'ي')
+    .replace(/[؟?،,.!:؛"«»()\-—…]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+function hbDigits(s) {
+  const u = ['صفر','واحد','اثنان','ثلاثه','اربعه','خمسه','سته','سبعه','ثمانيه','تسعه','عشره'];
+  const t = {2:'عشرون',3:'ثلاثون',4:'اربعون',5:'خمسون',6:'ستون',7:'سبعون',8:'ثمانون',9:'تسعون'};
+  s = s.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+  return s.replace(/\d+/g, d => {
+    const n = parseInt(d, 10);
+    if (n <= 10) return u[n];
+    if (n < 20) return u[n - 10] + ' عشر';
+    if (n < 100) return (n % 10 ? u[n % 10] + ' و' : '') + t[Math.floor(n / 10)];
+    return d;
+  });
+}
+function hbLev(a, b) {
+  const m = a.length, n = b.length; if (!m) return n; if (!n) return m;
+  let p = Array.from({length: n + 1}, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const c = [i];
+    for (let j = 1; j <= n; j++) c[j] = Math.min(p[j] + 1, c[j - 1] + 1, p[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    p = c;
+  }
+  return p[n];
+}
+function hbSim(a, b) {
+  const strip = w => w.replace(/^(و|ف)(?=..)/, '').replace(/^ال(?=..)/, '');
+  const x = strip(a), y = strip(b);
+  return 1 - hbLev(x, y) / Math.max(x.length, y.length, 1);
+}
+function hbWordHit(target, saidWords) { const t = hbNorm(target); return saidWords.some(w => hbSim(t, w) >= 0.7); }
+function hbCompare(target, said) {
+  const tw = hbNorm(target).split(' ').filter(Boolean);
+  const sw = hbNorm(said).split(' ').filter(Boolean);
+  const hits = tw.map(w => hbWordHit(w, sw));
+  return {score: hits.filter(Boolean).length / Math.max(tw.length, 1), tw, hits};
+}
+function hbClave(clave, said) {
+  const sw = hbNorm(said).split(' ').filter(Boolean);
+  return clave.map(g => g.some(w => hbWordHit(w, sw)));
+}
+
+// ── Reconocimiento de voz (frase corta) ──
+function hbListen() {
+  if (!HB_SR || hbBusy || !hbItem) return;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  const r = new HB_SR();
+  r.lang = 'ar-SA'; r.interimResults = false; r.maxAlternatives = 5; r.continuous = false;
+  const btn = document.getElementById('hb-micbtn');
+  hbBusy = true; hbRecognizer = r;
+  if (btn) { btn.classList.add('rec'); btn.textContent = '🎙️ Escuchando…'; }
+  let got = false;
+  const out = document.getElementById('hb-out'); if (out) out.innerHTML = '';
+  r.onresult = e => { got = true; hbEvaluate(Array.from(e.results[0]).map(a => a.transcript)); };
+  r.onerror = e => {
+    const msg = e.error === 'not-allowed' ? 'Permiso de micrófono denegado.' : (e.error === 'no-speech' ? 'No te he oído. Prueba otra vez, más cerca del micro.' : 'El reconocimiento ha fallado (' + e.error + '). Usa ⏺️ Grabarme.');
+    const o = document.getElementById('hb-out'); if (o) o.innerHTML = `<div class="hb-box no">${msg}</div>`;
+  };
+  r.onend = () => {
+    hbBusy = false; hbRecognizer = null;
+    const b = document.getElementById('hb-micbtn');
+    if (b) { b.classList.remove('rec'); b.textContent = '🎙️ Otra vez'; }
+    const o = document.getElementById('hb-out');
+    if (!got && o && !o.innerHTML) o.innerHTML = '<div class="hb-box no">No te he oído. Prueba otra vez.</div>';
+  };
+  try { r.start(); } catch (err) { hbBusy = false; }
+}
+function hbEvaluate(alts) {
+  const it = hbItem, out = document.getElementById('hb-out');
+  if (!it || !out) return;
+  if (it.eval === 'clave') {
+    let best = alts[0], bh = hbClave(it.clave, alts[0]);
+    alts.forEach(a => { const h2 = hbClave(it.clave, a); if (h2.filter(Boolean).length > bh.filter(Boolean).length) { best = a; bh = h2; } });
+    const ok = bh.every(Boolean);
+    out.innerHTML = `<div class="hb-box ${ok ? 'ok' : 'no'}"><div>Has dicho:</div><div class="hb-said">${hbEsc(best)}</div>
+      <div style="margin-top:6px;">${ok ? '✓ La respuesta tiene lo que hace falta.' : '✗ Falta: <b>' + it.clave.filter((g, i) => !bh[i]).map(g => g[0]).join(', ') + '</b>. Mira el modelo.'}</div></div>`;
+    if (ok) playCorrect();
+    hbReveal();
+  } else {
+    let best = alts[0], bc = hbCompare(it.ar, alts[0]);
+    alts.forEach(a => { const c = hbCompare(it.ar, a); if (c.score > bc.score) { best = a; bc = c; } });
+    const ok = bc.score >= 0.8;
+    const words = bc.tw.map((w, i) => `<span class="${bc.hits[i] ? 'hb-w-ok' : 'hb-w-no'}">${w}</span>`).join(' ');
+    out.innerHTML = `<div class="hb-box ${ok ? 'ok' : 'no'}"><div>Has dicho:</div><div class="hb-said">${hbEsc(best)}</div>
+      <div style="margin-top:6px;">Coincidencia: <b>${Math.round(bc.score * 100)}%</b> ${ok ? '✓' : ''}</div>
+      <div class="hb-said" style="font-size:18px;margin-top:4px;">${words}</div><div style="font-size:11px;">En rojo, lo que no he reconocido.</div></div>`;
+    if (ok) playCorrect();
+    if (hbMode !== 'repite') hbReveal();
+  }
+}
+
+// ── Grabación (vale en todos los navegadores) ──
+async function hbToggleRecord(mono) {
+  if (hbRec && hbRec.state === 'recording') { hbRec.stop(); return; }
+  try {
+    if ('speechSynthesis' in window) speechSynthesis.cancel();
+    const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+    hbRecChunks = [];
+    hbRec = new MediaRecorder(stream);
+    hbRec.ondataavailable = e => { if (e.data.size) hbRecChunks.push(e.data); };
+    hbRec.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      if (hbRecUrl) URL.revokeObjectURL(hbRecUrl);
+      hbRecUrl = URL.createObjectURL(new Blob(hbRecChunks, {type: hbRec.mimeType || 'audio/webm'}));
+      const b = document.getElementById('hb-recbtn');
+      if (b) { b.classList.remove('rec'); b.textContent = '⏺️ Grabar otra vez'; }
+      const o = document.getElementById('hb-out');
+      if (o) o.innerHTML = `<div class="hb-box" style="text-align:center;">Escúchate y compárate con el modelo:
+        <div class="hb-row"><button class="hb-btn" onclick="hbPlayMine()">▶️ Mi grabación</button>
+        ${mono === true ? '' : '<button class="hb-btn" onclick="hbPlayBoth()">🔁 Modelo + yo</button>'}</div></div>`;
+      if (mono !== true && hbMode !== 'repite') hbReveal();
+    };
+    hbRec.start();
+    const b = document.getElementById('hb-recbtn');
+    if (b && mono !== true) { b.classList.add('rec'); b.textContent = '⏹️ Parar'; }
+  } catch (e) {
+    const o = document.getElementById('hb-out');
+    if (o) o.innerHTML = '<div class="hb-box no">No puedo acceder al micrófono. Revisa el permiso del navegador.</div>';
+  }
+}
+function hbPlayMine(cb) {
+  if (!hbRecUrl) return;
+  const a = new Audio(hbRecUrl);
+  if (cb) a.onended = cb;
+  a.play().catch(() => {});
+}
+function hbPlayBoth() { hbSay(hbModelText().replace(/\.\.\./g, ' ').trim(), 0.75, () => setTimeout(() => hbPlayMine(), 400)); }
+// Habla y avisa al terminar (con plan B por si el navegador no avisa)
+function hbSay(text, rate, cb) {
+  let done = false;
+  const fin = () => { if (!done) { done = true; if (cb) cb(); } };
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'ar-SA'; u.rate = rate || 0.75;
+    const _v = arVoice(); if (_v) u.voice = _v;
+    u.onend = fin; u.onerror = fin;
+    speechSynthesis.speak(u);
+    setTimeout(fin, (1500 + text.length * 110) / (rate || 0.75) * 0.75);
+  } else { speak(text, rate); setTimeout(fin, 1500 + text.length * 110); }
+}
+function hbStopAll() {
+  if (typeof hbRapTm !== 'undefined' && hbRapTm) { clearInterval(hbRapTm); hbRapTm = null; }
+  if (typeof hbLibre !== 'undefined') { hbLibre.on = false; clearInterval(hbLibre.tm); }
+  try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch (e) {}
+  const r = hbRecognizer; hbRecognizer = null; hbMonoOn = false;
+  try { if (r) r.abort(); } catch (e) {}
+  if (hbTimer) { clearInterval(hbTimer); hbTimer = null; }
+  try { if (hbRec && hbRec.state === 'recording') { hbRec.onstop = null; hbRec.stop(); if (hbRec.stream) hbRec.stream.getTracks().forEach(t => t.stop()); } } catch (e) {}
+  hbBusy = false;
+}
+function clMarkDone(id) {
+  const state = clLoadState();
+  if (state.done[id]) return;
+  state.done[id] = true;
+  clSaveState(state);
+  renderChecklist();
+  showToast('✓ Rutina: bloque «Habla» completado');
+}
+
+// ══════════════════════════════════════
+// HABLA — extras: Mi ficha, voz árabe, Manos libres, Ronda rápida
+// Claves nuevas: 'arabic_ficha', 'arabic_voz' (no tocan las existentes)
+// ══════════════════════════════════════
+let hbFicha = JSON.parse(safeGetItem('arabic_ficha', '{}'));
+const HB_IDIOMAS = [
+  {k:'es', es:'español', ar:'الْإِسْبَانِيَّةَ'}, {k:'en', es:'inglés', ar:'الْإِنْجِلِيزِيَّةَ'},
+  {k:'fr', es:'francés', ar:'الْفَرَنْسِيَّةَ'}, {k:'de', es:'alemán', ar:'الْأَلْمَانِيَّةَ'}, {k:'ar', es:'árabe', ar:'الْعَرَبِيَّةَ'},
+];
+function hbFichaOK() { return !!(hbFicha && hbFicha.nombre); }
+function hbFem(m) { return m.replace(/ّ$/, '').replace(/ي$/, 'يَّة'); }
+function hbNac() { if (!hbFicha.nac) return ''; return hbFicha.genero === 'f' ? hbFem(hbFicha.nac) : hbFicha.nac; }
+// Edad en palabras con harakat (20-99). Fuera de ese rango, en cifras.
+function hbNumAr(n) {
+  const u = ['', 'وَاحِدٌ', 'اِثْنَانِ', 'ثَلَاثَةٌ', 'أَرْبَعَةٌ', 'خَمْسَةٌ', 'سِتَّةٌ', 'سَبْعَةٌ', 'ثَمَانِيَةٌ', 'تِسْعَةٌ'];
+  const t = {2:'عِشْرُونَ', 3:'ثَلَاثُونَ', 4:'أَرْبَعُونَ', 5:'خَمْسُونَ', 6:'سِتُّونَ', 7:'سَبْعُونَ', 8:'ثَمَانُونَ', 9:'تِسْعُونَ'};
+  n = parseInt(n, 10);
+  if (!(n >= 20 && n <= 99)) return String(n || '');
+  return (n % 10 ? u[n % 10] + ' وَ' : '') + t[Math.floor(n / 10)];
+}
+function hbIdiomasAr() {
+  const sel = HB_IDIOMAS.filter(x => (hbFicha.idiomas || []).includes(x.k));
+  let s = sel.length ? 'أَتَكَلَّمُ ' + sel.map((x, i) => i ? 'وَ' + x.ar : x.ar).join(' ') : '';
+  if (hbFicha.poco_ar && !sel.some(x => x.k === 'ar')) s += (s ? '، وَ' : '') + 'أَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ';
+  return s;
+}
+// Respuesta modelo personal para cada pregunta de la Entrevista (campo fk)
+function hbPersonal(x) {
+  if (!hbFichaOK() || !x.fk) return x;
+  const F = hbFicha, prof = F.prof || '', y = {...x, m_es: 'Tu respuesta (de «Mi ficha»)', m_tr: ''};
+  const n = hbNorm;
+  switch (x.fk) {
+    case 'nombre': y.m = 'اِسْمِي ' + F.nombre; break;
+    case 'edad': if (!F.edad) return x; y.m = 'عُمْرِي ' + hbNumAr(F.edad) + ' عَامًا';
+      y.clave = [['عمري']].concat(n(hbNumAr(F.edad)).split(' ').filter(w => w.length > 1).map(w => [w])); break;
+    case 'pais': if (!F.pais) return x; y.m = 'أَنَا مِنْ ' + F.pais; y.clave = [['من'], [F.pais]]; break;
+    case 'nac': if (!F.nac) return x; y.m = 'أَنَا ' + hbNac(); y.clave = [[F.nac, hbFem(F.nac)]]; break;
+    case 'ciudad': if (!F.ciudad) return x; y.m = 'أَسْكُنُ فِي ' + F.ciudad; break;
+    case 'prof': if (!prof) return x; y.m = 'أَنَا ' + prof; y.clave = [[prof]]; break;
+    case 'trabajo': if (!(F.trabajo || F.ciudad)) return x; y.m = 'أَعْمَلُ فِي ' + (F.trabajo || F.ciudad); break;
+    case 'idiomas': { const s = hbIdiomasAr(); if (!s) return x; y.m = s;
+      y.clave = [['اتكلم']].concat(HB_IDIOMAS.filter(i => (F.idiomas || []).includes(i.k)).map(i => [i.ar])); break; }
+    case 'estudiante': if (!prof) return x; {
+      const est = /^طَالِب/.test(prof);
+      y.m = est ? 'نَعَمْ، أَنَا ' + prof : 'لَا، أَنَا ' + prof; y.clave = [[est ? 'نعم' : 'لا'], [prof]]; break; }
+    default: return x;
+  }
+  return y;
+}
+function hbMonoModel() {
+  if (!hbFichaOK()) return null;
+  const F = hbFicha, p = ['اِسْمِي ' + F.nombre + '.'];
+  if (F.edad) p.push('عُمْرِي ' + hbNumAr(F.edad) + ' عَامًا.');
+  if (F.pais) p.push('أَنَا مِنْ ' + F.pais + (F.nac ? ' وَأَنَا ' + hbNac() : '') + '.');
+  if (F.ciudad) p.push('أَسْكُنُ فِي ' + F.ciudad + '.');
+  if (F.prof) p.push('أَنَا ' + F.prof + (F.trabajo ? ' وَأَعْمَلُ فِي ' + F.trabajo : '') + '.');
+  const id = hbIdiomasAr(); if (id) p.push(id + '.');
+  return p.join(' ');
+}
+
+// ── Pantalla de ajustes: Mi ficha + voz ──
+function hbAjustes() {
+  hbStopAll(); hbBar(false);
+  const F = hbFicha;
+  const V = VOCAB;
+  const paises = V.filter(w => w.cat === 'Países');
+  const nacs = V.filter(w => (w.cat === 'Gentilicios' || w.cat === 'Países y nacionalidades') && /ّ$/.test(w.ar) && !/fem/.test(w.es));
+  const profs = V.filter(w => w.cat === 'Profesiones');
+  const opt = (list, cur) => '<option value="">—</option>' + list.map(w => `<option value="${hbEsc(w.ar)}" ${w.ar === cur ? 'selected' : ''}>${hbEsc(w.es)} · ${w.ar}</option>`).join('');
+  const inp = 'width:100%;margin-top:4px;padding:10px 12px;border-radius:10px;border:1px solid rgba(201,168,76,.25);background:rgba(255,255,255,.06);color:var(--cream);font-size:15px;font-family:inherit;';
+  const lbl = t => `<div style="font-size:11px;color:var(--cream2);margin-top:12px;letter-spacing:.06em;text-transform:uppercase;">${t}</div>`;
+  hbSet(`<div class="hb-lbl">👤 Mi ficha — tus respuestas modelo</div>
+    <div class="hb-box">Con estos datos, la Entrevista y el Monólogo te enseñan TU respuesta y comprueban que la dices. Escribe nombre y ciudad en árabe (con harakat si puedes).</div>
+    ${lbl('Nombre en árabe')}<input id="hbf-nombre" dir="rtl" style="${inp}" placeholder="آرُون" value="${hbEsc(F.nombre || '')}">
+    ${lbl('Soy')}<select id="hbf-genero" style="${inp}"><option value="m" ${F.genero !== 'f' ? 'selected' : ''}>Hombre (أَنْتَ)</option><option value="f" ${F.genero === 'f' ? 'selected' : ''}>Mujer (أَنْتِ)</option></select>
+    ${lbl('Edad')}<input id="hbf-edad" type="number" min="20" max="99" style="${inp}" value="${hbEsc(F.edad || '')}">
+    ${lbl('País')}<select id="hbf-pais" style="${inp}">${opt(paises, F.pais)}</select>
+    ${lbl('Nacionalidad (forma masculina; si eres mujer la app la pasa a femenino)')}<select id="hbf-nac" style="${inp}">${opt(nacs, F.nac)}</select>
+    ${lbl('Ciudad donde vives (árabe)')}<input id="hbf-ciudad" dir="rtl" style="${inp}" placeholder="مَدْرِيد" value="${hbEsc(F.ciudad || '')}">
+    ${lbl('Profesión')}<select id="hbf-prof" style="${inp}">${opt(profs, F.prof)}</select>
+    ${lbl('Dónde trabajas (árabe, opcional)')}<input id="hbf-trabajo" dir="rtl" style="${inp}" placeholder="مَدْرِيد" value="${hbEsc(F.trabajo || '')}">
+    ${lbl('Idiomas que hablas')}
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;font-size:14px;">${HB_IDIOMAS.map(x => `<label><input type="checkbox" class="hbf-id" value="${x.k}" ${(F.idiomas || []).includes(x.k) ? 'checked' : ''}> ${x.es}</label>`).join('')}</div>
+    <label style="display:block;margin-top:8px;font-size:14px;"><input type="checkbox" id="hbf-poco" ${F.poco_ar !== false ? 'checked' : ''}> y «un poco de árabe» (قَلِيلًا مِنَ الْعَرَبِيَّةِ)</label>
+    <div id="hbf-prev" class="hb-box" style="text-align:center;"></div>
+    <div class="hb-row"><button class="hb-btn" onclick="hbFichaGuardar(true)">👁️ Vista previa</button><button class="hb-btn go" onclick="hbFichaGuardar()">💾 Guardar</button></div>
+    <div class="hb-lbl" style="margin-top:22px;">🔊 Voz árabe</div>
+    <select id="hb-voz" style="${inp}" onchange="hbVozSet(this.value)"></select>
+    <div class="hb-row"><button class="hb-btn" onclick="speak('مَرْحَبًا! مَا اسْمُكَ؟ أَسْكُنُ فِي مَدْرِيدَ.')">▶️ Probar voz</button></div>
+    <div class="hb-meta">Si no aparece ninguna, instala una voz árabe en los ajustes del móvil (Texto a voz / Contenido hablado).</div>
+    <div class="hb-row"><button class="hb-btn" onclick="initHabla()">← Volver</button></div>`);
+  hbVozFill();
+  if (hbFichaOK()) document.getElementById('hbf-prev').innerHTML = `<div class="hb-said">${hbMonoModel()}</div>`;
+  else document.getElementById('hbf-prev').style.display = 'none';
+}
+function hbFichaGuardar(soloPrev) {
+  const g = id => document.getElementById(id).value.trim();
+  hbFicha = {nombre: g('hbf-nombre'), genero: g('hbf-genero'), edad: g('hbf-edad'), pais: g('hbf-pais'), nac: g('hbf-nac'),
+    ciudad: g('hbf-ciudad'), prof: g('hbf-prof'), trabajo: g('hbf-trabajo'),
+    idiomas: Array.from(document.querySelectorAll('.hbf-id:checked')).map(c => c.value), poco_ar: document.getElementById('hbf-poco').checked};
+  const prev = document.getElementById('hbf-prev');
+  prev.style.display = ''; prev.innerHTML = hbFichaOK() ? `<div class="hb-said">${hbMonoModel()}</div><div class="hb-row"><button class="hb-btn" onclick="speak(hbMonoModel())">🔊 Escuchar</button></div>` : 'Pon al menos tu nombre en árabe.';
+  if (soloPrev) return;
+  safeSetItem('arabic_ficha', JSON.stringify(hbFicha));
+  showToast('✓ Ficha guardada');
+}
+function hbVozFill() {
+  const sel = document.getElementById('hb-voz'); if (!sel || !('speechSynthesis' in window)) return;
+  const cur = safeGetItem('arabic_voz', '');
+  const vs = speechSynthesis.getVoices().filter(v => /^ar/i.test(v.lang));
+  sel.innerHTML = '<option value="">Automática (la del sistema)</option>' + vs.map(v => `<option value="${hbEsc(v.voiceURI)}" ${v.voiceURI === cur ? 'selected' : ''}>${hbEsc(v.name)} (${v.lang})</option>`).join('');
+  if (!vs.length) setTimeout(hbVozFill, 600);   // las voces cargan tarde en algunos navegadores
+}
+function hbVozSet(uri) { safeSetItem('arabic_voz', uri); showToast(uri ? '✓ Voz guardada' : 'Voz automática'); }
+function arVoice() {
+  if (!('speechSynthesis' in window)) return null;
+  const uri = safeGetItem('arabic_voz', '');
+  return uri ? (speechSynthesis.getVoices().find(v => v.voiceURI === uri) || null) : null;
+}
+if ('speechSynthesis' in window) { try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => hbVozFill(); } catch (e) {} }
+function hbSayEs(text, cb) {
+  let done = false; const fin = () => { if (!done) { done = true; if (cb) cb(); } };
+  if (!('speechSynthesis' in window)) return setTimeout(fin, 800);
+  const u = new SpeechSynthesisUtterance(text); u.lang = 'es-ES'; u.rate = 1;
+  u.onend = fin; u.onerror = fin; speechSynthesis.speak(u);
+  setTimeout(fin, 1200 + text.length * 80);
+}
+
+// ══ 🚗 MANOS LIBRES: pregunta → silencio para contestar → modelo → siguiente ══
+let hbLibre = {on:false, secs:8, src:'mix', wake:null, tm:null};
+function hbLibreScreen() {
+  hbBar(false);
+  hbSet(`<div class="hb-lbl">🚗 Manos libres — para el coche o andando</div>
+    <div class="hb-box">La app dice una pregunta (o una situación en español), te deja unos segundos para contestar EN VOZ ALTA y luego dice la respuesta modelo. Sin tocar la pantalla.</div>
+    <div class="hb-lbl" style="margin-top:12px;">Qué practicar</div>
+    <div class="cat-filter" style="justify-content:center;padding:6px 0;">
+      <button class="cat-chip ${hbLibre.src === 'mix' ? 'active' : ''}" onclick="hbLibre.src='mix';hbLibreScreen()">Todo</button>
+      <button class="cat-chip ${hbLibre.src === 'responde' ? 'active' : ''}" onclick="hbLibre.src='responde';hbLibreScreen()">Entrevista</button>
+      <button class="cat-chip ${hbLibre.src === 'dilo' ? 'active' : ''}" onclick="hbLibre.src='dilo';hbLibreScreen()">Dilo</button></div>
+    <div class="hb-lbl">Tiempo para contestar</div>
+    <div class="cat-filter" style="justify-content:center;padding:6px 0;">${[5, 8, 12].map(s => `<button class="cat-chip ${hbLibre.secs === s ? 'active' : ''}" onclick="hbLibre.secs=${s};hbLibreScreen()">${s} s</button>`).join('')}</div>
+    <div class="hb-row"><button class="hb-btn go" style="font-size:17px;padding:16px;" onclick="hbLibreStart()">▶️ Empezar (12 frases)</button></div>
+    <div id="hb-libre"></div>`);
+}
+function hbLibrePool() {
+  let p = [];
+  if (hbLibre.src !== 'dilo') p = p.concat(hbList('responde').map(x => ({t:'q', ...hbPersonal(x)})));
+  if (hbLibre.src !== 'responde') p = p.concat(hbList('dilo').map(x => ({t:'d', ...x})));
+  return shuffle(p).slice(0, 12);
+}
+async function hbLibreStart() {
+  hbQueue = hbLibrePool(); hbTotal = hbQueue.length; hbIdx = 0; hbC = 0; hbW = 0;
+  if (!hbTotal) return;
+  hbLibre.on = true;
+  try { if (navigator.wakeLock) hbLibre.wake = await navigator.wakeLock.request('screen'); } catch (e) {}
+  hbSet(`<div class="hb-lbl">🚗 Manos libres</div>
+    <div class="hb-timer" id="hbl-n">1 / ${hbTotal}</div>
+    <div id="hbl-show" class="hb-box" style="text-align:center;min-height:120px;"></div>
+    <div class="hb-row"><button class="hb-btn" onclick="hbLibreStop()">⏹️ Parar</button></div>`);
+  hbLibreStep();
+}
+function hbLibreStep() {
+  if (!hbLibre.on) return;
+  if (hbIdx >= hbTotal) { hbC = hbTotal; return hbLibreEnd(); }
+  const it = hbQueue[hbIdx], show = document.getElementById('hbl-show');
+  document.getElementById('hbl-n').textContent = (hbIdx + 1) + ' / ' + hbTotal;
+  const ans = it.t === 'q' ? it.m.replace(/\.\.\./g, ' ').trim() : it.ar;
+  const ansHtml = it.t === 'q' ? it.m : it.ar;
+  const wait = () => {
+    let s = hbLibre.secs;
+    show.innerHTML += `<div style="font-size:30px;color:var(--gold);margin-top:8px;" id="hbl-cd">🎙️ ${s}</div>`;
+    hbLibre.tm = setInterval(() => {
+      if (!hbLibre.on) return clearInterval(hbLibre.tm);
+      s--; const cd = document.getElementById('hbl-cd'); if (cd) cd.textContent = '🎙️ ' + s;
+      if (s <= 0) {
+        clearInterval(hbLibre.tm);
+        show.innerHTML = `<div class="hb-said" style="font-size:26px;">${ansHtml}</div>`;
+        hbSay(ans, 0.75, () => setTimeout(() => { hbIdx++; hbLibreStep(); }, 1500));
+      }
+    }, 1000);
+  };
+  if (it.t === 'q') { show.innerHTML = `<div class="hb-said" style="font-size:26px;">${it.q}</div><div class="es">${hbEsc(it.q_es)}</div>`; hbSay(it.q, 0.75, () => setTimeout(wait, 300)); }
+  else { show.innerHTML = `<div class="hb-es">${hbEsc(it.es)}</div>`; hbSayEs(it.es, () => setTimeout(wait, 300)); }
+}
+function hbLibreStop() { hbLibre.on = false; clearInterval(hbLibre.tm); hbStopAll(); try { if (hbLibre.wake) hbLibre.wake.release(); } catch (e) {} hbLibreScreen(); }
+function hbLibreEnd() { const m = hbStats.modos.libre || (hbStats.modos.libre = {c:0, t:0}); m.c += hbTotal; m.t += hbTotal; hbSave(); hbLibre.on = false; try { if (hbLibre.wake) hbLibre.wake.release(); } catch (e) {} hbFinish(hbTotal + ' frases contestadas en voz alta'); }
+
+// ══ ⚡ RONDA RÁPIDA: masculino / femenino contra reloj ══
+let hbRapSecs = 5, hbRapT0 = 0, hbRapTm = null, hbRapTimes = [];
+function hbRapidaStart() {
+  const pool = hbList('dilo').filter(x => /^Pregúntale a (un hombre|una mujer)|^Di que (él|ella) /.test(x.es));
+  hbQueue = shuffle(pool).slice(0, 12).map(x => ({eval:'frase', key:'rap:' + x.ar, ...x}));
+  hbTotal = hbQueue.length; hbIdx = 0; hbC = 0; hbW = 0; hbRapTimes = [];
+  if (!hbTotal) return hbEmpty('Todavía no hay frases de masculino/femenino para este filtro.');
+  hbRapidaItem();
+}
+function hbRapidaItem() {
+  hbBar(true);
+  const it = hbItem = hbQueue[hbIdx];
+  const es = it.es.replace(/(un hombre|él)/, '<b style="color:#7FB3FF;">$1</b>').replace(/(una mujer|ella)/, '<b style="color:#FF9FC2;">$1</b>');
+  hbSet(`<div class="hb-lbl">⚡ Ronda rápida — dilo antes de que acabe el tiempo</div>
+    <div class="cat-filter" style="justify-content:center;padding:8px 0 0;">${[3, 5, 7].map(s => `<button class="cat-chip ${hbRapSecs === s ? 'active' : ''}" onclick="hbRapSecs=${s};hbRapidaItem()">${s} s</button>`).join('')}</div>
+    <div class="hb-es" style="font-size:20px;margin:18px 0 10px;">${es}</div>
+    <div class="fc-bar"><div class="fc-bar-fill" id="hbr-bar" style="width:100%;transition:none;"></div></div>
+    <div class="hb-row"><button class="hb-btn go" id="hbr-ya" onclick="hbRapidaReveal(true)">✋ ¡Ya lo he dicho!</button></div>
+    <div id="hb-model"></div><div id="hb-assess"></div>`);
+  clearInterval(hbRapTm);
+  hbRapT0 = Date.now();
+  hbRapTm = setInterval(() => {
+    const left = Math.max(0, 1 - (Date.now() - hbRapT0) / (hbRapSecs * 1000));
+    const b = document.getElementById('hbr-bar'); if (b) { b.style.width = (left * 100) + '%'; b.style.background = left < .3 ? 'var(--red)' : 'var(--gold)'; }
+    if (left <= 0) hbRapidaReveal(false);
+  }, 50);
+}
+function hbRapidaReveal(aTiempo) {
+  if (!hbRapTm) return;
+  clearInterval(hbRapTm); hbRapTm = null;
+  const secs = (Date.now() - hbRapT0) / 1000;
+  if (aTiempo) hbRapTimes.push(secs);
+  const ya = document.getElementById('hbr-ya'); if (ya) ya.outerHTML = `<div class="hb-box" style="text-align:center;flex:1;">${aTiempo ? '⏱️ ' + secs.toFixed(1) + ' s' : '⌛ Se acabó el tiempo'}</div>`;
+  hbReveal();
+  hbSpeakModel();
+  document.getElementById('hb-assess').innerHTML = hbAssessRow('✓ Lo dije bien');
+}
+
+// ══ Estadísticas de Habla (pestaña Stats) ══
+function renderHablaStats() {
+  const el = document.getElementById('st-habla'); if (!el) return;
+  const N = {dialogo:'💬 Diálogo', comprension:'👂 Comprensión', responde:'🤝 Entrevista', monologo:'🎤 Monólogo', roles:'🎭 Roles', dilo:'🗣️ Dilo', repite:'🔁 Repite', rapida:'⚡ Rápida', libre:'🚗 Manos libres'};
+  const modos = Object.entries(hbStats.modos || {}).filter(([k, v]) => v.t);
+  if (!hbStats.rondas && !modos.length) { el.innerHTML = 'Aún no has hecho ninguna ronda de Habla.'; return; }
+  let html = `<div style="margin-bottom:8px;">Rondas completadas: <b style="color:var(--gold);">${hbStats.rondas || 0}</b></div>`;
+  html += modos.map(([k, v]) => { const p = Math.round(v.c / v.t * 100);
+    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06);"><span>${N[k] || k}</span><span style="color:${p >= 75 ? 'var(--green)' : p >= 50 ? 'var(--gold)' : 'var(--red)'};font-weight:700;">${p}% <span style="color:var(--cream2);font-weight:400;font-size:11px;">(${v.c}/${v.t})</span></span></div>`; }).join('');
+  const fallos = Object.entries(hbStats.fallos || {}).filter(([k, n]) => n > 0).sort((a, b) => b[1] - a[1]).slice(0, 6);
+  if (fallos.length) html += `<div style="margin-top:12px;font-size:12px;">🔻 Lo que más te cuesta decir:</div>` +
+    fallos.map(([k, n]) => `<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;"><span class="hb-said" style="font-size:19px;">${hbEsc(k.replace(/^(rap|mono):/, ''))}</span><span style="font-size:11px;">×${n}</span></div>`).join('');
+  el.innerHTML = html;
+}
+
+// ══════════════════════════════════════
 // RUTINA DIARIA (CHECKLIST)
 // ══════════════════════════════════════
 const CL_ITEMS = [
+  {id:'habla', label:'Habla — una ronda en voz alta (diálogo, entrevista, monólogo…)', tiempo:'10 min', pagina:'habla'},
   {id:'deberes', label:'Deberes de hoy — sesión completa', tiempo:'20-30 min', pagina:'deberes'},
   {id:'tarjetas', label:'Tarjetas — repasa al menos 15', tiempo:'5-10 min', pagina:'tarjetas'},
   {id:'escribe', label:'Escribe — 8 palabras en árabe real (con harakat)', tiempo:'5 min', pagina:'escribe'},
