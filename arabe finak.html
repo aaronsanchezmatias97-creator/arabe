@@ -561,8 +561,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <!-- HABLA (práctica oral) -->
   <div id="page-habla" class="page hidden">
     <div class="section-label">Habla — conversación en voz alta</div>
-    <div class="fr-mode-bar">
-      <button class="fr-mode-btn active" id="hbm-dialogo" onclick="setHablaMode('dialogo')">💬 Diálogo</button>
+    <div class="cat-nav-wrap">
+    <button class="cat-arrow" title="Modo anterior" onclick="hbModeNav(-1)">&#8249;</button>
+    <div class="fr-mode-bar" id="hb-modebar" style="flex:1;min-width:0;padding:0;">
+      <button class="fr-mode-btn active" id="hbm-hoy" onclick="setHablaMode('hoy')">🧭 Hoy</button>
+      <button class="fr-mode-btn" id="hbm-dialogo" onclick="setHablaMode('dialogo')">💬 Diálogo</button>
       <button class="fr-mode-btn" id="hbm-comprension" onclick="setHablaMode('comprension')">👂 Comprensión</button>
       <button class="fr-mode-btn" id="hbm-responde" onclick="setHablaMode('responde')">🤝 Entrevista</button>
       <button class="fr-mode-btn" id="hbm-monologo" onclick="setHablaMode('monologo')">🎤 Monólogo</button>
@@ -571,6 +574,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <button class="fr-mode-btn" id="hbm-repite" onclick="setHablaMode('repite')">🔁 Repite</button>
       <button class="fr-mode-btn" id="hbm-rapida" onclick="setHablaMode('rapida')">⚡ Rápida</button>
       <button class="fr-mode-btn" id="hbm-libre" onclick="setHablaMode('libre')">🚗 Manos libres</button>
+    </div>
+    <button class="cat-arrow" title="Modo siguiente" onclick="hbModeNav(1)">&#8250;</button>
     </div>
     <div class="hb-filter">
       <button class="cat-chip active" id="hbf-ult" onclick="setHablaFiltro('ult')">Lección actual</button>
@@ -4618,7 +4623,7 @@ function initPage(name) {
 // Si no hay o falla: se graba con el micro y te autoevalúas comparando con el modelo.
 // Estadísticas propias en 'arabic_habla' (clave nueva; no toca las existentes).
 // ══════════════════════════════════════
-let hbMode = 'dialogo', hbFiltro = 'ult';
+let hbMode = 'hoy', hbFiltro = 'ult';
 let hbQueue = [], hbIdx = 0, hbC = 0, hbW = 0, hbTotal = 0;
 let hbItem = null;            // lo que se está practicando ahora: {eval:'frase'|'clave', ar|m, clave, key...}
 let hbStage = 'pick';         // pick | rol | run | listen | done
@@ -4640,9 +4645,17 @@ function hbUltLec() {
 function hbF(x) { return hbFiltro !== 'ult' || x.lec === hbUltLec(); }
 function hbList(k) { return (HABLA[k] || []).filter(hbF); }
 
+const HB_MODOS = ['hoy','dialogo','comprension','responde','monologo','roles','dilo','repite','rapida','libre'];
+// Flechas ‹ › del índice de modos: pasan al modo anterior / siguiente (en bucle)
+function hbModeNav(d) {
+  const i = HB_MODOS.indexOf(hbMode);
+  setHablaMode(HB_MODOS[(i + d + HB_MODOS.length) % HB_MODOS.length]);
+}
 function setHablaMode(m) {
   hbMode = m;
-  ['dialogo','comprension','responde','monologo','roles','dilo','repite','rapida','libre'].forEach(k => document.getElementById('hbm-' + k).classList.toggle('active', k === m));
+  HB_MODOS.forEach(k => document.getElementById('hbm-' + k).classList.toggle('active', k === m));
+  const chip = document.getElementById('hbm-' + m), bar = document.getElementById('hb-modebar');
+  if (chip && bar) bar.scrollTo({left: chip.offsetLeft - bar.offsetLeft - (bar.clientWidth - chip.offsetWidth) / 2, behavior: 'smooth'});
   initHabla();
 }
 function setHablaFiltro(f) {
@@ -4660,6 +4673,7 @@ function initHabla() {
   document.getElementById('hb-micinfo').textContent = HB_SR
     ? '🎙️ Reconocimiento de voz disponible: la app transcribe lo que dices. Si falla, usa ⏺️ Grabarme y compara tú.'
     : (HB_CANREC ? '🎙️ Tu navegador no transcribe árabe: grábate y compárate con el modelo.' : '⚠️ Sin micrófono: dilo en voz alta y compárate con el modelo.');
+  if (hbMode === 'hoy') return hbHoyScreen();
   if (hbMode === 'responde' || hbMode === 'dilo' || hbMode === 'repite') return hbStartList();
   if (hbMode === 'rapida') return hbRapidaStart();
   if (hbMode === 'libre') return hbLibreScreen();
@@ -4780,7 +4794,12 @@ function hbFinish(sub) {
   if (hbMode === 'rapida' && hbRapTimes.length) sub += ' · media ' + (hbRapTimes.reduce((a, b) => a + b, 0) / hbRapTimes.length).toFixed(1) + ' s';
   let extra = '';
   if ((hbMode === 'dialogo' || hbMode === 'roles') && hbSrc) extra = ` <button class="result-btn" style="margin-left:6px;background:var(--teal);color:#fff;" onclick="hbSwapRole()">🔄 Cambiar de papel</button>`;
-  document.getElementById('hb-sub').innerHTML = hbEsc(sub) + ' · queda marcado en tu Rutina' + extra;
+  const ruta = hbRutaCheck();
+  const guia = hbGuia
+    ? `<div style="margin-top:14px;"><button class="result-btn" style="background:var(--green);color:#fff;" onclick="hbGuiaNext()">${hbGuia.i + 1 < hbGuia.pasos.length ? 'Siguiente paso de hoy →' : '✓ Terminar sesión de hoy'}</button></div>`
+    : `<div style="margin-top:10px;"><button class="result-btn" style="background:transparent;color:var(--gold);border:1px solid var(--gold);" onclick="hbIrHoy()">🧭 Ver mi progreso</button></div>`;
+  document.getElementById('hb-sub').innerHTML = hbEsc(sub) + ' · queda marcado en tu Rutina' + extra
+    + (ruta ? `<div class="hb-box ok" style="margin-top:12px;text-align:center;color:var(--cream);">${ruta}</div>` : '') + guia;
 }
 
 // ══ RENDER SEGÚN MODO (pantallas de elección) ══
@@ -5372,6 +5391,136 @@ function renderHablaStats() {
   if (fallos.length) html += `<div style="margin-top:12px;font-size:12px;">🔻 Lo que más te cuesta decir:</div>` +
     fallos.map(([k, n]) => `<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;"><span class="hb-said" style="font-size:19px;">${hbEsc(k.replace(/^(rap|mono):/, ''))}</span><span style="font-size:11px;">×${n}</span></div>`).join('');
   el.innerHTML = html;
+}
+
+// ══════════════════════════════════════
+// 🧭 HOY — ruta guiada con progresión por lección
+// 7 pasos de menos a más difícil. Cada paso se supera con un criterio y desbloquea el siguiente.
+// Al añadir una lección nueva, su ruta empieza de cero; las anteriores quedan guardadas.
+// Se guarda dentro de 'arabic_habla' (hbStats.ruta).
+// ══════════════════════════════════════
+const HB_RUTA = [
+  {modo:'repite', ico:'🔁', nom:'Escucha y repite', que:'Copia el sonido de las frases nuevas.', crit:'1 ronda con 80 % «Bien»', min:6},
+  {modo:'dilo', ico:'🗣️', nom:'Dilo en árabe', que:'Construye tú las frases desde el español.', crit:'1 ronda con 80 % «Bien»', min:7},
+  {modo:'rapida', ico:'⚡', nom:'Ronda rápida', que:'Masculino / femenino sin pensar.', crit:'80 % «Bien» y media ≤ 3,5 s', min:4},
+  {modo:'dialogo', ico:'💬', nom:'Diálogo', que:'Usa las frases en una conversación. Haz los dos papeles.', crit:'2 rondas con 80 % (un papel y el otro)', min:8},
+  {modo:'responde', ico:'🤝', nom:'Entrevista', que:'Contesta con tus datos reales (rellena «Mi ficha»).', crit:'1 ronda con 80 % «Bien»', min:6},
+  {modo:'comprension', ico:'👂', nom:'Comprensión', que:'Entiende a otro y responde de oído.', crit:'1 texto con 80 % «Bien»', min:6},
+  {modo:'monologo', ico:'🎤', nom:'Monólogo', que:'Habla 1 minuto seguido sin ayuda.', crit:'usar casi todas las estructuras (todas menos 1) y marcar «Terminado»', min:5},
+];
+const HB_NIVELES = [[0, '—'], [3, '🥉 Bronce'], [5, '🥈 Plata'], [7, '🥇 Oro']];
+let hbGuia = null;  // sesión guiada en curso: {pasos:[modo, modo], i}
+
+function hbRuta(lec) {
+  hbStats.ruta = hbStats.ruta || {};
+  const k = lec || hbUltLec();
+  return hbStats.ruta[k] || (hbStats.ruta[k] = {done:{}, cuenta:{}});
+}
+function hbRutaPasoDisponible(p) {  // ¿hay contenido para este paso en la lección actual?
+  const k = {repite:'dilo', dilo:'dilo', rapida:'dilo', dialogo:'dialogos', responde:'responde', comprension:'comprension', monologo:'monologo'}[p.modo];
+  return (HABLA[k] || []).some(x => x.lec === hbUltLec());
+}
+function hbRutaPasos() { return HB_RUTA.filter(hbRutaPasoDisponible); }
+function hbNivel(n, total) {
+  const pct = total ? n / total * 7 : 0;
+  let lv = HB_NIVELES[0][1];
+  HB_NIVELES.forEach(([m, name]) => { if (pct >= m && m > 0) lv = name; });
+  return lv;
+}
+// Pasos de hoy: los 2 primeros sin superar. Si ya están todos → mantenimiento.
+function hbHoyPasos() {
+  const r = hbRuta(), pend = hbRutaPasos().filter(p => !r.done[p.modo]);
+  if (pend.length) return {tipo:'avance', pasos: pend.slice(0, 2)};
+  const mant = [HB_RUTA[2], HB_RUTA[3], HB_RUTA[6]];   // rápida, diálogo, monólogo
+  const d = new Date().getDate();
+  return {tipo:'mantener', pasos: [mant[d % 3], {modo:'libre', ico:'🚗', nom:'Manos libres', que:'Repaso de todo el libro, sin pantalla.', crit:'1 ronda', min:5}]};
+}
+
+function hbHoyScreen() {
+  hbStopAll(); hbBar(false);
+  const lec = hbUltLec(), r = hbRuta(), pasos = hbRutaPasos();
+  const hechos = pasos.filter(p => r.done[p.modo]).length;
+  const sig = pasos.find(p => !r.done[p.modo]);
+  const hoy = hbHoyPasos();
+  const mins = hoy.pasos.reduce((a, p) => a + p.min, 0);
+  const pct = pasos.length ? Math.round(hechos / pasos.length * 100) : 0;
+  const fila = p => {
+    const ok = !!r.done[p.modo], next = sig && sig.modo === p.modo;
+    const est = ok ? '<div class="bx" style="background:var(--green);border-color:var(--green);">✓</div>'
+      : next ? '<div class="bx" style="border-color:var(--gold);color:var(--gold);">▶</div>'
+      : '<div class="bx" style="opacity:.5;">·</div>';
+    const cnt = p.modo === 'dialogo' && !ok && (r.cuenta.dialogo || 0) ? ` · llevas ${r.cuenta.dialogo}/2` : '';
+    return `<div class="hb-check" style="${!ok && !next ? 'opacity:.6;' : ''}" onclick="hbIrPaso('${p.modo}')">${est}
+      <div style="flex:1;"><div style="font-size:14px;color:var(--cream);font-weight:600;">${p.ico} ${p.nom}</div>
+      <div class="es">${p.que}</div><div class="es" style="color:var(--gold2);">Superar: ${p.crit}${cnt}${ok ? ' · ✓ ' + r.done[p.modo] : ''}</div></div></div>`;
+  };
+  // historial de lecciones anteriores
+  const otras = Object.entries(hbStats.ruta || {}).filter(([k]) => k !== lec && k);
+  hbSet(`<div class="hb-lbl">🧭 ¿Por dónde empiezo hoy?</div>
+    <div class="hb-box" style="text-align:center;">
+      <div style="font-size:12px;">Lección actual</div>
+      <div style="font-size:17px;color:var(--cream);font-weight:700;">${hbEsc(lec.replace(/^A2 · /, ''))}</div>
+      <div style="margin-top:6px;">Nivel: <b style="color:var(--gold);">${hbNivel(hechos, pasos.length)}</b> · ${hechos}/${pasos.length} pasos</div>
+      <div class="fc-bar" style="margin-top:8px;"><div class="fc-bar-fill" style="width:${pct}%;"></div></div>
+    </div>
+    <div class="hb-box ok" style="margin-top:12px;">
+      <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);">${hoy.tipo === 'avance' ? 'Hoy toca' : '🏅 Lección dominada — hoy, mantenimiento'}</div>
+      ${hoy.pasos.map((p, i) => `<div style="margin-top:6px;color:var(--cream);font-size:15px;">${i + 1}. ${p.ico} <b>${p.nom}</b> <span style="color:var(--cream2);font-size:12px;">(~${p.min} min)</span></div>`).join('')}
+      <div class="hb-row"><button class="hb-btn go" style="font-size:16px;" onclick="hbGuiaStart()">▶️ Empezar sesión de hoy (~${mins} min)</button></div>
+    </div>
+    <div class="hb-lbl" style="margin-top:16px;">Tu progresión en esta lección</div>
+    <div>${pasos.map(fila).join('')}</div>
+    ${otras.length ? `<div class="hb-lbl" style="margin-top:16px;">Lecciones anteriores</div>` + otras.map(([k, v]) => `<div class="hb-meta" style="text-align:left;">${hbEsc(k.replace(/^A2 · /, ''))}: ${Object.keys(v.done || {}).length}/7 · ${hbNivel(Object.keys(v.done || {}).length, 7)}</div>`).join('') : ''}
+    <details class="hb-box" style="margin-top:14px;"><summary style="cursor:pointer;color:var(--cream);">📌 Reglas para que funcione</summary>
+      <div style="margin-top:8px;">• <b>Siempre en voz alta.</b> Pensarlo no cuenta.<br>
+      • <b>Primero sin mirar</b> el texto; 💡 / 👁️ solo después de intentarlo.<br>
+      • <b>Sé estricto con «Bien»:</b> si dudaste o fallaste ـكَ / ـكِ, «A repasar». La app te lo volverá a sacar.<br>
+      • <b>Cada semana graba el Monólogo</b> y compáralo con el anterior.<br>
+      • <b>Solo 5 minutos:</b> una Ronda rápida o Manos libres en el coche.<br>
+      • <b>Domingo:</b> mira Stats → Habla y refuerza lo que más fallas.</div></details>
+    ${!hbFichaOK() ? '<div class="hb-box no" style="margin-top:10px;">👤 Rellena «⚙️ Mi ficha y voz» antes de la Entrevista y el Monólogo: así practicas TUS respuestas.</div>' : ''}`);
+}
+function hbIrPaso(modo) { hbGuia = null; hbFiltro = 'ult'; ['ult','a2','todo'].forEach(k => document.getElementById('hbf-' + k).classList.toggle('active', k === 'ult')); setHablaMode(modo); }
+function hbGuiaStart() {
+  const hoy = hbHoyPasos();
+  hbGuia = {pasos: hoy.pasos.map(p => p.modo), i: 0};
+  hbFiltro = hoy.tipo === 'mantener' && hoy.pasos[0].modo !== 'monologo' ? 'a2' : 'ult';
+  ['ult','a2','todo'].forEach(k => document.getElementById('hbf-' + k).classList.toggle('active', k === hbFiltro));
+  const g = hbGuia; setHablaMode(g.pasos[0]); hbGuia = g;
+  showToast('Paso 1 de ' + g.pasos.length + ': ' + (HB_RUTA.find(p => p.modo === g.pasos[0]) || {nom:'Manos libres'}).nom);
+}
+function hbGuiaNext() {
+  const g = hbGuia; if (!g) return hbIrHoy();
+  g.i++;
+  if (g.i >= g.pasos.length) { hbGuia = null; showToast('✓ Sesión de hoy terminada'); return hbIrHoy(); }
+  setHablaMode(g.pasos[g.i]); hbGuia = g;
+  showToast('Paso ' + (g.i + 1) + ' de ' + g.pasos.length + ': ' + (HB_RUTA.find(p => p.modo === g.pasos[g.i]) || {nom:'Manos libres'}).nom);
+}
+function hbIrHoy() { hbGuia = null; setHablaMode('hoy'); }
+
+// Se llama al terminar cualquier ronda: comprueba si supera el paso de la ruta
+function hbRutaCheck() {
+  if (hbFiltro === 'todo') return '';
+  const paso = HB_RUTA.find(p => p.modo === hbMode); if (!paso) return '';
+  const r = hbRuta(); if (r.done[hbMode]) return '';
+  const ratio = hbTotal ? hbC / hbTotal : 0;
+  let ok = false;
+  if (hbMode === 'rapida') {
+    const avg = hbRapTimes.length ? hbRapTimes.reduce((a, b) => a + b, 0) / hbRapTimes.length : 99;
+    ok = ratio >= 0.8 && avg <= 3.5;
+  } else if (hbMode === 'dialogo') {
+    if (ratio >= 0.8) { r.cuenta.dialogo = (r.cuenta.dialogo || 0) + 1; }
+    ok = (r.cuenta.dialogo || 0) >= 2;
+    if (!ok && ratio >= 0.8) { hbSave(); return '💬 Diálogo: 1 de 2 — ahora haz el otro papel.'; }
+  } else if (hbMode === 'monologo') {
+    const n = hbSrc ? hbSrc.estructuras.filter((e, k) => hbChecks[k]).length : 0;
+    ok = hbC > 0 && hbSrc && n >= hbSrc.estructuras.length - 1;
+  } else ok = ratio >= 0.8;
+  if (!ok) return '';
+  r.done[hbMode] = new Date().toLocaleDateString('es-ES', {day:'numeric', month:'short'});
+  hbSave();
+  const sig = hbRutaPasos().find(p => !r.done[p.modo]);
+  return '🧭 ¡Paso superado: ' + paso.nom + '!' + (sig ? ' Siguiente: ' + sig.ico + ' ' + sig.nom + '.' : ' 🏅 Lección dominada.');
 }
 
 // ══════════════════════════════════════
