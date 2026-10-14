@@ -4670,7 +4670,10 @@ function initHabla() {
   document.getElementById('hb-result').style.display = 'none';
   const ult = hbUltLec();
   document.getElementById('hbf-ult').textContent = ult ? ult.replace(/^A2 · /, '') : 'Lección actual';
-  document.getElementById('hb-micinfo').textContent = HB_SR
+  const iosOtro = /CriOS|FxiOS|EdgiOS/.test(navigator.userAgent);
+  document.getElementById('hb-micinfo').textContent = iosOtro
+    ? '📱 En iPhone, la corrección por voz funciona mejor en Safari que en Chrome. Si 🎙️ falla aquí, abre la app en Safari o usa ⏺️ Grabarme.'
+    : HB_SR
     ? '🎙️ Reconocimiento de voz disponible: la app transcribe lo que dices. Si falla, usa ⏺️ Grabarme y compara tú.'
     : (HB_CANREC ? '🎙️ Tu navegador no transcribe árabe: grábate y compárate con el modelo.' : '⚠️ Sin micrófono: dilo en voz alta y compárate con el modelo.');
   if (hbMode === 'hoy') return hbHoyScreen();
@@ -4691,6 +4694,7 @@ function hbEmpty(msg) { hbBar(false); hbSet(`<div class="hb-box">${msg}</div>`);
 // ── Bloques de interfaz comunes ──
 function hbMicRow(label) {
   return `<div class="hb-row">${HB_SR ? `<button class="hb-btn mic" id="hb-micbtn" onclick="hbListen()">🎙️ ${label}</button>` : ''}${HB_CANREC ? `<button class="hb-btn" id="hb-recbtn" onclick="hbToggleRecord()">⏺️ Grabarme</button>` : ''}</div>
+    ${HB_SR && HB_CANREC ? '<div class="hb-meta" style="margin-top:6px;">🎙️ te escucha y te corrige · ⏺️ solo te graba para que te escuches</div>' : ''}
     <div id="hb-out"></div>`;
 }
 function hbAssessRow(okTxt) {
@@ -4957,7 +4961,7 @@ function hbMonoStart(how) {
 }
 function hbMonoSR() {
   const r = new HB_SR();
-  r.lang = 'ar-SA'; r.continuous = true; r.interimResults = false;
+  r.lang = hbLang; r.continuous = true; r.interimResults = false;
   hbRecognizer = r;
   r.onresult = e => {
     for (let i = e.resultIndex; i < e.results.length; i++) if (e.results[i].isFinal) hbMonoText += ' ' + e.results[i][0].transcript;
@@ -5037,29 +5041,74 @@ function hbClave(clave, said) {
 }
 
 // ── Reconocimiento de voz (frase corta) ──
-function hbListen() {
-  if (!HB_SR || hbBusy || !hbItem) return;
-  if ('speechSynthesis' in window) speechSynthesis.cancel();
-  const r = new HB_SR();
-  r.lang = 'ar-SA'; r.interimResults = false; r.maxAlternatives = 5; r.continuous = false;
-  const btn = document.getElementById('hb-micbtn');
-  hbBusy = true; hbRecognizer = r;
-  if (btn) { btn.classList.add('rec'); btn.textContent = '🎙️ Escuchando…'; }
-  let got = false;
-  const out = document.getElementById('hb-out'); if (out) out.innerHTML = '';
-  r.onresult = e => { got = true; hbEvaluate(Array.from(e.results[0]).map(a => a.transcript)); };
-  r.onerror = e => {
-    const msg = e.error === 'not-allowed' ? 'Permiso de micrófono denegado.' : (e.error === 'no-speech' ? 'No te he oído. Prueba otra vez, más cerca del micro.' : 'El reconocimiento ha fallado (' + e.error + '). Usa ⏺️ Grabarme.');
-    const o = document.getElementById('hb-out'); if (o) o.innerHTML = `<div class="hb-box no">${msg}</div>`;
+// ── Reconocimiento de voz: toca para empezar, toca para terminar ──
+// Escucha en continuo (no corta en la primera pausa), enseña lo que va oyendo y corrige al terminar.
+// Termina sola tras ~2,5 s de silencio después de hablar, o a los 20 s.
+const HB_LANGS = ['ar-SA', 'ar-EG', 'ar-MA', 'ar'];
+let hbLang = safeGetItem('arabic_srlang', 'ar-SA');
+const HB_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function hbSRHelp(code) {
+  const ios = HB_IOS
+    ? '<br><b>En iPhone:</b> Ajustes → General → Teclado → activa <b>Dictado</b> y añade el teclado <b>Árabe</b>. Y en Ajustes → Safari → Micrófono → Permitir. Si aun así no va, usa ⏺️ Grabarme.'
+    : '<br><b>En Android/Chrome:</b> permite el micrófono para esta web (candado de la barra de direcciones) y comprueba que la app de Google tiene el idioma Árabe en «Voz».';
+  const m = {
+    'no-speech': 'No me ha llegado tu voz. Toca 🎙️, <b>espera a que se ponga rojo</b> y habla seguido, cerca del micro.',
+    'not-allowed': 'El navegador no deja usar el micrófono.',
+    'service-not-allowed': 'El navegador no deja usar el reconocimiento de voz.',
+    'audio-capture': 'No encuentro ningún micrófono (¿lo está usando otra app?).',
+    'network': 'El reconocimiento de voz necesita internet y no hay conexión.',
+    'language-not-supported': 'Tu dispositivo no reconoce árabe por voz.',
+    'nada': 'No ha llegado nada de audio al reconocimiento.',
   };
+  return (m[code] || 'El reconocimiento ha fallado (' + code + ').') + (code === 'network' ? '' : ios);
+}
+function hbListen() {
+  if (!HB_SR || !hbItem) return;
+  if (hbRecognizer) { try { hbRecognizer.stop(); } catch (e) {} return; }   // 2º toque = terminar
+  if (hbRec && hbRec.state === 'recording') { try { hbRec.stop(); } catch (e) {} }  // no grabar y transcribir a la vez
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  hbListenWith(hbLang, 0);
+}
+function hbListenWith(lang, intento) {
+  const r = new HB_SR();
+  r.lang = lang; r.continuous = true; r.interimResults = true; r.maxAlternatives = 3;
+  hbRecognizer = r; hbBusy = true;
+  let finales = '', alts = [], parcial = '', err = null, silencio = null;
+  const tope = setTimeout(() => { try { r.stop(); } catch (e) {} }, 20000);
+  const btn = document.getElementById('hb-micbtn');
+  if (btn) { btn.classList.add('rec'); btn.textContent = '⏹️ Terminar'; }
+  const out = document.getElementById('hb-out');
+  if (out) out.innerHTML = '<div class="hb-box">🎙️ Habla ahora… (toca ⏹️ al acabar)<div class="hb-said" id="hb-live"></div></div>';
+  r.onresult = e => {
+    parcial = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const res = e.results[i];
+      if (res.isFinal) { finales += ' ' + res[0].transcript; alts = Array.from(res).map(a => a.transcript); }
+      else parcial += res[0].transcript;
+    }
+    const live = document.getElementById('hb-live'); if (live) live.textContent = (finales + ' ' + parcial).trim();
+    clearTimeout(silencio);
+    silencio = setTimeout(() => { try { r.stop(); } catch (e) {} }, 2500);
+  };
+  r.onerror = e => { err = e.error; };
   r.onend = () => {
-    hbBusy = false; hbRecognizer = null;
+    clearTimeout(tope); clearTimeout(silencio);
+    hbBusy = false; if (hbRecognizer === r) hbRecognizer = null;
     const b = document.getElementById('hb-micbtn');
     if (b) { b.classList.remove('rec'); b.textContent = '🎙️ Otra vez'; }
     const o = document.getElementById('hb-out');
-    if (!got && o && !o.innerHTML) o.innerHTML = '<div class="hb-box no">No te he oído. Prueba otra vez.</div>';
+    if (err === 'language-not-supported' && intento + 1 < HB_LANGS.length) return hbListenWith(HB_LANGS[intento + 1], intento + 1);
+    if (err === 'aborted') return;
+    const txt = (finales + ' ' + parcial).trim();
+    if (txt) {
+      if (lang !== hbLang) { hbLang = lang; safeSetItem('arabic_srlang', lang); }
+      const extra = alts.length > 1 ? alts.map(a => (finales.replace(alts[0], '') + ' ' + a).trim()) : [];
+      return hbEvaluate([txt].concat(extra));
+    }
+    if (o) o.innerHTML = `<div class="hb-box no">${hbSRHelp(err || 'nada')}</div>`;
   };
-  try { r.start(); } catch (err) { hbBusy = false; }
+  try { r.start(); }
+  catch (e) { hbBusy = false; hbRecognizer = null; if (out) out.innerHTML = `<div class="hb-box no">${hbSRHelp('service-not-allowed')}</div>`; }
 }
 function hbEvaluate(alts) {
   const it = hbItem, out = document.getElementById('hb-out');
@@ -5101,7 +5150,7 @@ async function hbToggleRecord(mono) {
       const b = document.getElementById('hb-recbtn');
       if (b) { b.classList.remove('rec'); b.textContent = '⏺️ Grabar otra vez'; }
       const o = document.getElementById('hb-out');
-      if (o) o.innerHTML = `<div class="hb-box" style="text-align:center;">Escúchate y compárate con el modelo:
+      if (o) o.innerHTML = `<div class="hb-box" style="text-align:center;">Escúchate y compárate con el modelo${HB_SR ? ' (la grabación no se corrige sola: para eso usa 🎙️)' : ''}:
         <div class="hb-row"><button class="hb-btn" onclick="hbPlayMine()">▶️ Mi grabación</button>
         ${mono === true ? '' : '<button class="hb-btn" onclick="hbPlayBoth()">🔁 Modelo + yo</button>'}</div></div>`;
       if (mono !== true && hbMode !== 'repite') hbReveal();
