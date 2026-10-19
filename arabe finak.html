@@ -441,6 +441,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <!-- TARJETAS -->
   <div id="page-checklist" class="page">
     <div class="section-label">Rutina diaria</div>
+    <div class="game-card" style="text-align:left;margin-bottom:14px;" id="plan-hoy"></div>
     <div class="game-card" style="text-align:left;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
         <div style="font-size:11px;color:var(--cream2);letter-spacing:.1em;text-transform:uppercase;" id="cl-date"></div>
@@ -456,16 +457,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div style="font-size:13px;font-weight:700;color:var(--cream);margin-bottom:8px;">📌 Tu punto más flojo ahora mismo</div>
       <div id="cl-weakpoint" style="font-size:13px;color:var(--cream2);line-height:1.6;"></div>
     </div>
-    <div class="game-card" style="text-align:left;margin-top:14px;">
-      <div style="font-size:13px;font-weight:700;color:var(--cream);margin-bottom:6px;">🖨️ Workbook en papel</div>
-      <div style="font-size:12px;color:var(--cream2);margin-bottom:10px;line-height:1.5;">Genera una hoja de ejercicios nueva y aleatoria cada vez, lista para imprimir o guardar como PDF. Nunca se repite.</div>
-      <div class="cat-filter" style="margin-bottom:10px;">
-        <button class="cat-chip active" id="wbsize-20" onclick="setWbSize(20)">Corto (20)</button>
-        <button class="cat-chip" id="wbsize-35" onclick="setWbSize(35)">Medio (35)</button>
-        <button class="cat-chip" id="wbsize-60" onclick="setWbSize(60)">Largo (60)</button>
-      </div>
-      <button class="write-submit" style="width:100%;" onclick="generatePrintWorkbook()">🖨️ Generar workbook (PDF)</button>
-    </div>
+    <div class="game-card" style="text-align:left;margin-top:14px;" id="wb-card"></div>
   </div>
   <div id="page-tarjetas" class="page hidden">
     <div class="section-label">Tarjetas — toca para voltear</div>
@@ -561,6 +553,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <!-- HABLA (práctica oral) -->
   <div id="page-habla" class="page hidden">
     <div class="section-label">Habla — conversación en voz alta</div>
+    <div style="margin:0 16px 10px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);border-radius:10px;padding:7px 12px;font-size:12.5px;color:var(--gold2);">🗣️ <b>Regla 6 — Siempre en voz alta.</b> Pensar la respuesta no cuenta: dila, aunque sea despacio.</div>
     <div class="cat-nav-wrap">
     <button class="cat-arrow" title="Modo anterior" onclick="hbModeNav(-1)">&#8249;</button>
     <div class="fr-mode-bar" id="hb-modebar" style="flex:1;min-width:0;padding:0;">
@@ -599,6 +592,37 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <button class="result-btn" onclick="initHabla()">Otra vez</button>
       </div>
       <div class="hb-meta" id="hb-micinfo"></div>
+    </div>
+  </div>
+
+  <!-- VERBOS (método del profesor: pareja pasado–presente) -->
+  <div id="page-verbos" class="page hidden">
+    <div class="section-label">Verbos — aprende la pareja y conjuga desde ahí</div>
+    <div style="margin:0 16px 10px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);border-radius:10px;padding:8px 12px;font-size:12.5px;color:var(--gold2);line-height:1.5;">
+      📌 <b>Método del profe:</b> cada verbo se aprende como pareja <b>pasado (él) – presente (él)</b>, p. ej. <span style="font-family:'Traditional Arabic',serif;font-size:18px;">كَتَبَ – يَكْتُبُ</span>. La vocal del presente te dice el modelo; desde la pareja se conjuga todo. <span style="opacity:.8;">(<span id="vb-total-v">0</span> verbos)</span></div>
+    <div class="fr-mode-bar">
+      <button class="fr-mode-btn active" id="vbm-pareja" onclick="setVbMode('pareja')">🔗 1. Pareja</button>
+      <button class="fr-mode-btn" id="vbm-conjugar" onclick="setVbMode('conjugar')">🧩 2. Conjugar</button>
+      <button class="fr-mode-btn" id="vbm-pregunta" onclick="setVbMode('pregunta')">❓ 3. Pregunta</button>
+      <button class="fr-mode-btn" id="vbm-particulas" onclick="setVbMode('particulas')">📋 Partículas</button>
+      <label style="font-size:12px;color:var(--cream2);align-self:center;white-space:nowrap;"><input type="checkbox" onchange="vbSoloProfe=this.checked;if(vbMode==='pregunta')initVerbos()"> solo del profe</label>
+    </div>
+    <div class="fr-wrap">
+      <div class="fr-card" id="vb-card">
+        <div class="fr-score-bar">
+          <div><div class="sc-n" id="vb-c">0</div><div class="sc-l">bien</div></div>
+          <div><div class="sc-n" id="vb-w">0</div><div class="sc-l">a repasar</div></div>
+          <div><div class="sc-n" id="vb-r">0</div><div class="sc-l">quedan</div></div>
+        </div>
+        <div id="vb-content"></div>
+      </div>
+      <div id="vb-result" class="result" style="display:none;">
+        <div class="result-arabic">أَحْسَنْتَ!</div>
+        <div class="result-score" id="vb-score"></div>
+        <div class="result-sub" id="vb-sub"></div>
+        <button class="result-btn" onclick="initVerbos()">Otra ronda</button>
+      </div>
+      <div class="hb-meta">Escribe con el teclado árabe (sin vocales también vale) o usa 🎙️. Las vocales las compruebas tú al ver la solución.</div>
     </div>
   </div>
 
@@ -815,6 +839,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <button class="nav-btn" onclick="showPage('vocab',this)"><span class="nav-icon">📖</span>Vocab</button>
   <button class="nav-btn" onclick="showPage('gram',this)"><span class="nav-icon">📚</span>Gram.</button>
   <button class="nav-btn" onclick="showPage('patrones',this)"><span class="nav-icon">🧩</span>Patrones</button>
+  <button class="nav-btn" onclick="showPage('verbos',this)"><span class="nav-icon">🔤</span>Verbos</button>
   <button class="nav-btn" onclick="showPage('deberes',this)"><span class="nav-icon">📝</span>Deberes</button>
 </div>
 <div class="toast" id="toast"></div>
@@ -1644,6 +1669,22 @@ const VOCAB = [
   {ar:"حِوَار",tr:"ḥiwār",es:"Diálogo",cat:"Conceptos",ctx:"حِوَار: أَحْمَد وَسَامِي"},
   {ar:"فَهْم",tr:"fahm",es:"Comprensión",cat:"Conceptos",ctx:"فَهْمُ الْحِوَارِ"},
   {ar:"فَهْمُ الْحِوَارِ",tr:"fahmu l-ḥiwāri",es:"Comprensión del diálogo",cat:"Conceptos",ctx:""},
+  // ── A2 · 19/10/2026 — Partículas interrogativas con cada verbo (clase, sin página nueva) ──
+  {ar:"أَيْنَ",tr:"ayna",es:"¿Dónde? (partícula)",cat:"Preguntas",ctx:"أَيْنَ تَسْكُنُ؟"},
+  {ar:"مَاذَا",tr:"māḏā",es:"¿Qué? (+ verbo)",cat:"Preguntas",ctx:"مَاذَا تَدْرُسُ؟"},
+  {ar:"مَا",tr:"mā",es:"¿Qué? / ¿Cuál? (+ sustantivo o verbo)",cat:"Preguntas",ctx:"مَا اسْمُكَ؟ · مَا تَدْرُسُ؟"},
+  {ar:"هَلْ تَسْكُنُ فِي مَدْرِيدَ؟",tr:"hal taskunu fī madrīd?",es:"¿Vives en Madrid? (masc.)",cat:"Preguntas",ctx:""},
+  {ar:"هَلْ تَسْكُنِينَ فِي مَدْرِيدَ؟",tr:"hal taskunīna fī madrīd?",es:"¿Vives en Madrid? (fem.)",cat:"Preguntas",ctx:""},
+  {ar:"أَيْنَ تَعْمَلُ؟",tr:"ayna taʿmalu?",es:"¿Dónde trabajas? (masc.)",cat:"Preguntas",ctx:"أَيْنَ تَعْمَلُ؟ أَعْمَلُ فِي مَدْرِيدَ"},
+  {ar:"أَيْنَ تَعْمَلِينَ؟",tr:"ayna taʿmalīna?",es:"¿Dónde trabajas? (fem.)",cat:"Preguntas",ctx:""},
+  {ar:"أَيْنَ تَدْرُسُ؟",tr:"ayna tadrusu?",es:"¿Dónde estudias? (masc.)",cat:"Preguntas",ctx:"أَيْنَ تَدْرُسُ؟ أَدْرُسُ فِي الْجَامِعَةِ"},
+  {ar:"أَيْنَ تَدْرُسِينَ؟",tr:"ayna tadrusīna?",es:"¿Dónde estudias? (fem.)",cat:"Preguntas",ctx:""},
+  {ar:"مَاذَا تَدْرُسُ؟",tr:"māḏā tadrusu?",es:"¿Qué estudias? (masc.)",cat:"Preguntas",ctx:"مَاذَا تَدْرُسُ؟ أَدْرُسُ الْعَرَبِيَّةَ"},
+  {ar:"مَاذَا تَدْرُسِينَ؟",tr:"māḏā tadrusīna?",es:"¿Qué estudias? (fem.)",cat:"Preguntas",ctx:""},
+  {ar:"مَا تَدْرُسُ؟",tr:"mā tadrusu?",es:"¿Qué estudias? (masc., con مَا)",cat:"Preguntas",ctx:""},
+  {ar:"مَا تَدْرُسِينَ؟",tr:"mā tadrusīna?",es:"¿Qué estudias? (fem., con مَا)",cat:"Preguntas",ctx:""},
+  {ar:"هَلْ تَدْرُسُ الْعَرَبِيَّةَ؟",tr:"hal tadrusu l-ʿarabiyyata?",es:"¿Estudias árabe? (masc.)",cat:"Preguntas",ctx:"هَلْ تَدْرُسُ الْعَرَبِيَّةَ؟ نَعَمْ، أَدْرُسُ الْعَرَبِيَّةَ"},
+  {ar:"هَلْ تَدْرُسِينَ الْعَرَبِيَّةَ؟",tr:"hal tadrusīna l-ʿarabiyyata?",es:"¿Estudias árabe? (fem.)",cat:"Preguntas",ctx:""},
 
 ];
 
@@ -2078,7 +2119,7 @@ const GRAMMAR = [
     {ar:"طَعَامِي الْمُفَضَّلُ هُوَ الْكُسْكُس",tr:"ṭaʿāmī l-mufaḍḍalu huwa l-kuskus",es:"Mi comida favorita es el cuscús",note:""},
     {ar:"لَوْنِي الْمُفَضَّلُ هُوَ الْأَزْرَقُ",tr:"lawnī l-mufaḍḍalu huwa l-azraqu",es:"Mi color favorito es el azul",note:""},
   ]},
-  {title:"مَا o مَاذَا — '¿qué?'",desc:"Las dos significan 'qué'. مَا va delante de un SUSTANTIVO (مَا اسْمُكَ؟, مَا مِهْنَتُكَ؟). مَاذَا va delante de un VERBO (مَاذَا تَعْمَلُ؟, مَاذَا تُحِبُّ؟).",examples:[
+  {title:"مَا o مَاذَا — '¿qué?'",desc:"Las dos significan 'qué'. مَاذَا va SIEMPRE delante de un VERBO (مَاذَا تَعْمَلُ؟, مَاذَا تُحِبُّ؟). مَا va delante de un SUSTANTIVO (مَا اسْمُكَ؟, مَا مِهْنَتُكَ؟) y TAMBIÉN puede ir delante de un verbo (مَا تَدْرُسُ؟ = مَاذَا تَدْرُسُ؟). [Corregido el 19/10 según el profesor]",examples:[
     {ar:"مَا مِهْنَتُكَ؟",tr:"mā mihnatuka?",es:"¿Cuál es tu profesión?",note:"مَا + sustantivo"},
     {ar:"مَاذَا تَعْمَلُ؟ / مَاذَا تَعْمَلِينَ؟",tr:"māḏā taʿmalu? / māḏā taʿmalīna?",es:"¿Qué haces?",note:"مَاذَا + verbo"},
   ]},
@@ -2097,6 +2138,22 @@ const GRAMMAR = [
     {ar:"تُحِبِّينَ",tr:"tuḥibbīna",es:"te gusta (fem.)",note:"presente tú f."},
     {ar:"يُحِبُّونَ",tr:"yuḥibbūna",es:"les gusta (a ellos)",note:"presente ellos"},
     {ar:"أَحْبَبْتُ",tr:"aḥbabtu",es:"me gustó / quise",note:"pasado yo"},
+  ]},
+  // ── A2 · 19/10/2026 ──
+  {title:"Método del profesor: el verbo se aprende en PAREJA",desc:"Cada verbo se memoriza como pareja: pasado (él) – presente (él). Ej.: كَتَبَ – يَكْتُبُ. El pasado 'él' hace de infinitivo; la vocal del presente te dice el modelo (I damma, II/III fatha, IV kasra). A partir de la pareja se conjuga todo: pasado = base + sufijo (كَتَبْتُ), presente = prefijo + raíz del presente + sufijo (تَكْتُبِينَ). Practícalo en la pestaña 🔤 Verbos.",examples:[
+    {ar:"كَتَبَ – يَكْتُبُ",tr:"kataba – yaktubu",es:"escribir",note:"Modelo I"},
+    {ar:"شَرِبَ – يَشْرَبُ",tr:"šariba – yašrabu",es:"beber",note:"Modelo II"},
+    {ar:"ذَهَبَ – يَذْهَبُ",tr:"ḏahaba – yaḏhabu",es:"ir",note:"Modelo III"},
+    {ar:"جَلَسَ – يَجْلِسُ",tr:"ŷalasa – yaŷlisu",es:"sentarse",note:"Modelo IV"},
+  ]},
+  {title:"Partículas interrogativas que van con cada verbo",desc:"Según el profesor: سَكَنَ / يَسْكُنُ (vivir) → أَيْنَ, هَلْ · عَمِلَ / يَعْمَلُ (trabajar) → أَيْنَ, مَاذَا · دَرَسَ / يَدْرُسُ (estudiar) → أَيْنَ, مَاذَا, مَا, هَلْ. La pregunta se forma: partícula + verbo en presente 'tú' (masc. تَـ…ـُ / fem. تَـ…ـِينَ). هَلْ convierte en pregunta de sí/no.",examples:[
+    {ar:"أَيْنَ تَسْكُنُ؟ / أَيْنَ تَسْكُنِينَ؟",tr:"ayna taskunu? / ayna taskunīna?",es:"¿Dónde vives?",note:"vivir + أَيْنَ"},
+    {ar:"هَلْ تَسْكُنُ فِي مَدْرِيدَ؟",tr:"hal taskunu fī madrīd?",es:"¿Vives en Madrid?",note:"vivir + هَلْ"},
+    {ar:"أَيْنَ تَعْمَلُ؟",tr:"ayna taʿmalu?",es:"¿Dónde trabajas?",note:"trabajar + أَيْنَ"},
+    {ar:"مَاذَا تَعْمَلِينَ؟",tr:"māḏā taʿmalīna?",es:"¿Qué haces? (fem.)",note:"trabajar + مَاذَا"},
+    {ar:"أَيْنَ تَدْرُسُ؟",tr:"ayna tadrusu?",es:"¿Dónde estudias?",note:"estudiar + أَيْنَ"},
+    {ar:"مَاذَا تَدْرُسُ؟ / مَا تَدْرُسُ؟",tr:"māḏā tadrusu? / mā tadrusu?",es:"¿Qué estudias?",note:"estudiar + مَاذَا / مَا"},
+    {ar:"هَلْ تَدْرُسِينَ الْعَرَبِيَّةَ؟",tr:"hal tadrusīna l-ʿarabiyyata?",es:"¿Estudias árabe? (fem.)",note:"estudiar + هَلْ"},
   ]},
 ];
 const FRASES = [
@@ -2291,7 +2348,22 @@ const FRASES = [
    palabras:["مَاذَا", "تَعْمَلِينَ؟", "أَنَا", "مُدَرِّسَة"],
    hueco:{frase:"مَاذَا _____ أَنَا مُدَرِّسَة",blank:"تَعْمَلِينَ؟",distractores:["تَعْمَلُ؟", "أَعْمَلُ؟", "يَعْمَلُ؟"]},
    piezas:{pregunta:["مَاذَا", "مَا"],verbo:["تَعْمَلِينَ؟", "تَسْكُنِينَ؟"],respuesta:["أَنَا مُدَرِّسَة", "أَنَا مِنْ إِسْبَانِيَا"]},sol_piezas:"مَاذَا تَعْمَلِينَ؟ أَنَا مُدَرِّسَة"},
+  // A2 · 19/10/2026 — Partículas con verbos
+  {ar:"مَاذَا تَدْرُسُ؟ أَدْرُسُ الْعَرَبِيَّةَ",tr:"māḏā tadrusu? adrusu l-ʿarabiyyata",es:"¿Qué estudias? — Estudio árabe",
+   palabras:["مَاذَا", "تَدْرُسُ؟", "أَدْرُسُ", "الْعَرَبِيَّةَ"],
+   hueco:{frase:"_____ تَدْرُسُ؟ أَدْرُسُ الْعَرَبِيَّةَ",blank:"مَاذَا",distractores:["أَيْنَ", "كَمْ", "مِنْ"]},
+   piezas:{particula:["مَاذَا", "أَيْنَ"],verbo:["تَدْرُسُ؟", "تَسْكُنُ؟"],respuesta:["أَدْرُسُ الْعَرَبِيَّةَ", "أَسْكُنُ فِي مَدْرِيدَ"]},sol_piezas:"مَاذَا تَدْرُسُ؟ أَدْرُسُ الْعَرَبِيَّةَ"},
+  {ar:"أَيْنَ تَعْمَلِينَ؟ أَعْمَلُ فِي مَدْرِيدَ",tr:"ayna taʿmalīna? aʿmalu fī madrīd",es:"¿Dónde trabajas? (fem.) — Trabajo en Madrid",
+   palabras:["أَيْنَ", "تَعْمَلِينَ؟", "أَعْمَلُ", "فِي", "مَدْرِيدَ"],
+   hueco:{frase:"أَيْنَ _____ أَعْمَلُ فِي مَدْرِيدَ",blank:"تَعْمَلِينَ؟",distractores:["تَعْمَلُ؟", "أَعْمَلُ؟", "يَعْمَلُ؟"]},
+   piezas:{particula:["أَيْنَ", "مَاذَا"],verbo:["تَعْمَلِينَ؟", "تَدْرُسِينَ؟"],respuesta:["أَعْمَلُ فِي مَدْرِيدَ", "أَدْرُسُ الْعَرَبِيَّةَ"]},sol_piezas:"أَيْنَ تَعْمَلِينَ؟ أَعْمَلُ فِي مَدْرِيدَ"},
+  {ar:"هَلْ تَسْكُنُ فِي مَدْرِيدَ؟ نَعَمْ، أَسْكُنُ فِي مَدْرِيدَ",tr:"hal taskunu fī madrīd? naʿam, askunu fī madrīd",es:"¿Vives en Madrid? — Sí, vivo en Madrid",
+   palabras:["هَلْ", "تَسْكُنُ", "فِي", "مَدْرِيدَ؟", "نَعَمْ،", "أَسْكُنُ", "فِي", "مَدْرِيدَ"],
+   hueco:{frase:"_____ تَسْكُنُ فِي مَدْرِيدَ؟ نَعَمْ، أَسْكُنُ فِي مَدْرِيدَ",blank:"هَلْ",distractores:["مَا", "مَاذَا", "كَمْ"]},
+   piezas:{particula:["هَلْ", "أَيْنَ"],verbo:["تَسْكُنُ فِي مَدْرِيدَ؟", "تَدْرُسُ الْعَرَبِيَّةَ؟"],respuesta:["نَعَمْ، أَسْكُنُ فِي مَدْرِيدَ", "لَا، أَعْمَلُ فِي مَدْرِيدَ"]},sol_piezas:"هَلْ تَسْكُنُ فِي مَدْرِيدَ؟ نَعَمْ، أَسْكُنُ فِي مَدْرِيدَ"},
 ];
+
+const CLASES = [{"fecha": "05/10", "iso": "2026-10-05", "titulo": "Lección 1: Presentarse (págs. 3-5)", "ar": ["لَقَبُ الْعَائِلَةِ", "جِنْسِيَّة", "بَلَد", "مَدِينَة", "مِهْنَة", "لُغَة", "أَنَا اسْمِي فَاطِمَة", "عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا", "أَنَا إِسْبَانِيّ / أَنَا إِسْبَانِيَّة", "أَنَا مِنْ إِسْبَانِيَا", "أَسْكُنُ فِي مَدْرِيدَ", "أَنَا طَالِب / أَنَا طَالِبَة", "أَعْمَلُ فِي مَدْرِيدَ", "عِشْرُونَ", "عَام", "مَا اسْمُكِ؟", "كَمْ عُمْرُكَ؟", "كَمْ عُمْرُكِ؟", "مِنْ أَيْنَ أَنْتِ؟", "أَيْنَ تَسْكُنُ؟", "أَيْنَ تَسْكُنِينَ؟", "مَا مِهْنَتُكَ؟", "مَا مِهْنَتُكِ؟", "مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟", "مَا اللُّغَاتُ الَّتِي تَتَكَلَّمِينَهَا؟", "الَّتِي", "إِيطَالِيّ", "إِيطَالِيَّة", "طَبِيبَة", "مُهَنْدِسَة", "مُوَظَّفَة", "صَحَفِيّ", "صَحَفِيَّة", "نَادِل", "نَادِلَة", "فَنَّان", "فَنَّانَة", "اَلْفَرَنْسِيَّة", "اَلْإِنْجِلِيزِيَّة", "اَلْإِسْبَانِيَّة", "اَلْعَرَبِيَّة", "اَلْأَلْمَانِيَّة", "أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْإِنْجِلِيزِيَّةَ وَأَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ", "قَلِيلًا", "تَكَلَّمَ", "يَتَكَلَّمُ", "مَا اسْمُكَ؟ اِسْمِي سَامِي", "كَمْ عُمْرُكِ؟ عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا", "مِنْ أَيْنَ أَنْتَ؟ أَنَا مِنْ إِسْبَانِيَا", "أَيْنَ تَسْكُنِينَ؟ أَسْكُنُ فِي مَدْرِيدَ", "مَا مِهْنَتُكَ؟ أَنَا طَالِبٌ", "مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟ أَتَكَلَّمُ الْإِسْبَانِيَّةَ وَالْإِنْجِلِيزِيَّةَ", "مَا اسْمُكَ؟ / مَا اسْمُكِ؟", "كَمْ عُمْرُكَ؟ / كَمْ عُمْرُكِ؟", "مِنْ أَيْنَ أَنْتَ؟ / مِنْ أَيْنَ أَنْتِ؟", "أَيْنَ تَسْكُنُ؟ / أَيْنَ تَسْكُنِينَ؟", "مَا مِهْنَتُكَ؟ / مَا مِهْنَتُكِ؟", "مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟", "مَا اسْمُكَ؟ — اِسْمِي سَامِي", "كَمْ عُمْرُكَ؟ — عُمْرِي عِشْرُونَ عَامًا", "أَيْنَ تَسْكُنُ؟ — أَسْكُنُ فِي مَدْرِيدَ", "مِنْ أَيْنَ أَنْتَ؟ — أَنَا مِنَ الْمَغْرِبِ", "عُمْرِي خَمْسَةٌ وَعِشْرُونَ عَامًا", "عُمْرِي عِشْرُونَ عَامًا", "مُهَنْدِس / مُهَنْدِسَة", "فَنَّان / فَنَّانَة", "صَحَفِيّ / صَحَفِيَّة", "إِيطَالِيّ / إِيطَالِيَّة", "أَنَا إِسْبَانِيَّة", "أَتَكَلَّمُ الْإِسْبَانِيَّةَ", "أَتَكَلَّمُ قَلِيلًا مِنَ الْعَرَبِيَّةِ", "مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟", "تَكَلَّمْتُ", "أَتَكَلَّمُ", "تَتَكَلَّمِينَ", "يَتَكَلَّمُونَ"], "gram": ["Preguntas personales — masculino y femenino", "Partículas interrogativas para presentarse", "Decir la edad — عُمْرِي + número + عَامًا", "Profesiones y nacionalidades — masculino y femenino", "Idiomas — el nombre lleva artículo اَلْ", "الَّتِي — relativo 'que / la cual'", "تَكَلَّمَ / يَتَكَلَّمُ — verbo de forma derivada (Forma V)"]}, {"fecha": "14/10", "iso": "2026-10-14", "titulo": "Lección 1: títulos de los apartados (págs. 3-5)", "ar": ["الدَّرْسُ الْأَوَّلُ", "أَوَّل", "مَعْلُومَات شَخْصِيَّة", "مَعْلُومَات", "شَخْصِيّ", "شَخْصِيَّة", "عِبَارَات أَسَاسِيَّة", "عِبَارَة", "عِبَارَات", "أَسَاسِيّ", "أَسَاسِيَّة", "سُؤَال", "أَسْئِلَة", "بُلْدَان", "جِنْسِيَّات", "مِهَن", "عِبَارَة → عِبَارَات", "سُؤَال → أَسْئِلَة", "بَلَد → بُلْدَان", "مِهْنَة → مِهَن", "مَعْلُومَات شَخْصِيَّة", "الدَّرْسُ الْأَوَّلُ"], "gram": ["Plurales y adjetivos de los títulos de la lección 1"]}, {"fecha": "15/10", "iso": "2026-10-15", "titulo": "Lección 1: puntos 7-15 — gustos, diálogo, comprensión, entrevista (págs. 5-7)", "ar": ["أُحِبُّ الْقَهْوَةَ", "لَا أُحِبُّ الشَّايَ", "أُحِبُّ الْمُوسِيقَى", "أُحِبُّ الْقِرَاءَةَ", "أُحِبُّ السَّفَرَ", "أُحِبُّ الرِّيَاضَةَ", "طَعَامِي الْمُفَضَّلُ هُوَ الْكُسْكُس", "لَوْنِي الْمُفَضَّلُ هُوَ الْأَزْرَقُ", "قِرَاءَة", "سَفَر", "رِيَاضَة", "مُفَضَّل", "كُسْكُس", "مَاذَا تَعْمَلُ؟", "مَاذَا تَعْمَلِينَ؟", "مَاذَا تُحِبُّ؟", "مَاذَا تُحِبِّينَ؟", "مُقَابَلَة", "ثَلَاثُونَ", "سَبْعَةٌ وَعِشْرُونَ", "أَحَبَّ", "يُحِبُّ", "وَأَنْتَ؟ / وَأَنْتِ؟", "نَمُوذَج", "حِوَار", "فَهْم", "فَهْمُ الْحِوَارِ", "مَاذَا تُحِبُّ؟ أُحِبُّ الْقِرَاءَةَ وَالسَّفَرَ", "لَا أُحِبُّ الشَّايَ", "طَعَامِي الْمُفَضَّلُ هُوَ الْكُسْكُس", "مَاذَا تَعْمَلِينَ؟ أَنَا مُدَرِّسَة", "أُحِبُّ الْقَهْوَةَ", "لَا أُحِبُّ الشَّايَ", "أُحِبُّ الْقِرَاءَةَ وَالسَّفَرَ", "مَاذَا تُحِبِّينَ؟", "طَعَامِي الْمُفَضَّلُ هُوَ الْكُسْكُس", "لَوْنِي الْمُفَضَّلُ هُوَ الْأَزْرَقُ", "مَا مِهْنَتُكَ؟", "مَاذَا تَعْمَلُ؟ / مَاذَا تَعْمَلِينَ؟", "كَمْ عُمْرُ سَامِي؟ — عُمْرُهُ خَمْسَةٌ وَعِشْرُونَ عَامًا", "مَا اسْمُهَا؟ — اِسْمُهَا لَورَا", "أَيْنَ يَسْكُنُ؟ — يَسْكُنُ فِي مَدْرِيدَ", "مَاذَا يُحِبُّ أَحْمَد؟ — يُحِبُّ الرِّيَاضَةَ", "سَبْعَةٌ وَعِشْرُونَ", "عُمْرِي ثَلَاثُونَ عَامًا", "أُحِبُّ", "تُحِبِّينَ", "يُحِبُّونَ", "أَحْبَبْتُ"], "gram": ["Hablar de gustos — أُحِبُّ / لَا أُحِبُّ", "Mi … favorito — X + ي + الْمُفَضَّلُ هُوَ …", "مَا o مَاذَا — '¿qué?'", "Hablar de otra persona — 3ª persona", "Números 21-99 — unidades + وَ + decenas", "أَحَبَّ / يُحِبُّ — verbo derivado (patrón أَفْعَلَ, raíz ح-ب-ب)"]}, {"fecha": "19/10", "iso": "2026-10-19", "titulo": "Partículas interrogativas con cada verbo (clase, sin página nueva)", "ar": ["أَيْنَ", "مَاذَا", "مَا", "هَلْ تَسْكُنُ فِي مَدْرِيدَ؟", "هَلْ تَسْكُنِينَ فِي مَدْرِيدَ؟", "أَيْنَ تَعْمَلُ؟", "أَيْنَ تَعْمَلِينَ؟", "أَيْنَ تَدْرُسُ؟", "أَيْنَ تَدْرُسِينَ؟", "مَاذَا تَدْرُسُ؟", "مَاذَا تَدْرُسِينَ؟", "مَا تَدْرُسُ؟", "مَا تَدْرُسِينَ؟", "هَلْ تَدْرُسُ الْعَرَبِيَّةَ؟", "هَلْ تَدْرُسِينَ الْعَرَبِيَّةَ؟", "مَاذَا تَدْرُسُ؟ أَدْرُسُ الْعَرَبِيَّةَ", "أَيْنَ تَعْمَلِينَ؟ أَعْمَلُ فِي مَدْرِيدَ", "هَلْ تَسْكُنُ فِي مَدْرِيدَ؟ نَعَمْ، أَسْكُنُ فِي مَدْرِيدَ", "كَتَبَ – يَكْتُبُ", "شَرِبَ – يَشْرَبُ", "ذَهَبَ – يَذْهَبُ", "جَلَسَ – يَجْلِسُ", "أَيْنَ تَسْكُنُ؟ / أَيْنَ تَسْكُنِينَ؟", "هَلْ تَسْكُنُ فِي مَدْرِيدَ؟", "أَيْنَ تَعْمَلُ؟", "مَاذَا تَعْمَلِينَ؟", "أَيْنَ تَدْرُسُ؟", "مَاذَا تَدْرُسُ؟ / مَا تَدْرُسُ؟", "هَلْ تَدْرُسِينَ الْعَرَبِيَّةَ؟"], "gram": ["Método del profesor: el verbo se aprende en PAREJA", "Partículas interrogativas que van con cada verbo"]}];
 
 const HABLA = {
   // Práctica oral, al ritmo de las clases del libro A2. Cada bloque lleva su lección en "lec".
@@ -2312,6 +2384,11 @@ const HABLA = {
     {lec:"A2 · L1 Presentarse",q:"هَلْ تُحِبُّ الشَّايَ؟",q_tr:"hal tuḥibbu š-šāya?",q_es:"¿Te gusta el té?",m:"نَعَمْ، أُحِبُّ الشَّايَ / لَا، لَا أُحِبُّ الشَّايَ",m_tr:"naʿam, uḥibbu š-šāya / lā, lā uḥibbu š-šāya",m_es:"Sí, me gusta el té / No, no me gusta el té",clave:[["نعم", "لا"], ["احب"]]},
     {lec:"A2 · L1 Presentarse",q:"مَا طَعَامُكَ الْمُفَضَّلُ؟",q_tr:"mā ṭaʿāmuka l-mufaḍḍalu?",q_es:"¿Cuál es tu comida favorita?",m:"طَعَامِي الْمُفَضَّلُ هُوَ ...",m_tr:"ṭaʿāmī l-mufaḍḍalu huwa ...",m_es:"Mi comida favorita es ...",clave:[["طعامي"], ["المفضل"]]},
     {lec:"A2 · L1 Presentarse",q:"مَا لَوْنُكَ الْمُفَضَّلُ؟",q_tr:"mā lawnuka l-mufaḍḍalu?",q_es:"¿Cuál es tu color favorito?",m:"لَوْنِي الْمُفَضَّلُ هُوَ ...",m_tr:"lawnī l-mufaḍḍalu huwa ...",m_es:"Mi color favorito es ...",clave:[["لوني"], ["المفضل"]]},
+    {lec:"A2 · L1 Presentarse",q:"أَيْنَ تَدْرُسُ؟",q_tr:"ayna tadrusu?",q_es:"¿Dónde estudias?",m:"أَدْرُسُ فِي ...",m_tr:"adrusu fī ...",m_es:"Estudio en ...",clave:[["ادرس"], ["في"]]},
+    {lec:"A2 · L1 Presentarse",q:"مَاذَا تَدْرُسُ؟",q_tr:"māḏā tadrusu?",q_es:"¿Qué estudias?",m:"أَدْرُسُ الْعَرَبِيَّةَ",m_tr:"adrusu l-ʿarabiyyata",m_es:"Estudio árabe",clave:[["ادرس"]]},
+    {lec:"A2 · L1 Presentarse",q:"مَا تَدْرُسُ؟",q_tr:"mā tadrusu?",q_es:"¿Qué estudias? (con مَا)",m:"أَدْرُسُ الْعَرَبِيَّةَ",m_tr:"adrusu l-ʿarabiyyata",m_es:"Estudio árabe",clave:[["ادرس"]]},
+    {lec:"A2 · L1 Presentarse",q:"هَلْ تَدْرُسُ الْعَرَبِيَّةَ؟",q_tr:"hal tadrusu l-ʿarabiyyata?",q_es:"¿Estudias árabe?",m:"نَعَمْ، أَدْرُسُ الْعَرَبِيَّةَ",m_tr:"naʿam, adrusu l-ʿarabiyyata",m_es:"Sí, estudio árabe",clave:[["نعم", "لا"], ["ادرس"]]},
+    {lec:"A2 · L1 Presentarse",q:"هَلْ تَسْكُنُ فِي مَدْرِيدَ؟",q_tr:"hal taskunu fī madrīd?",q_es:"¿Vives en Madrid?",m:"نَعَمْ، أَسْكُنُ فِي مَدْرِيدَ / لَا، أَسْكُنُ فِي ...",m_tr:"naʿam, askunu fī madrīd / lā, askunu fī ...",m_es:"Sí, vivo en Madrid / No, vivo en ...",clave:[["نعم", "لا"], ["اسكن"]]},
   ],
   dilo: [
     {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre cómo se llama",ar:"مَا اسْمُكَ؟",tr:"mā ismuka?",genero:true},
@@ -2358,6 +2435,19 @@ const HABLA = {
     {lec:"A2 · L1 Presentarse",es:"Di que tu color favorito es el azul",ar:"لَوْنِي الْمُفَضَّلُ هُوَ الْأَزْرَقُ",tr:"lawnī l-mufaḍḍalu huwa l-azraqu",genero:false},
     {lec:"A2 · L1 Presentarse",es:"Di que a Ahmed le gusta el deporte",ar:"أَحْمَد يُحِبُّ الرِّيَاضَةَ",tr:"Aḥmad yuḥibbu r-riyāḍata",genero:false},
     {lec:"A2 · L1 Presentarse",es:"Di que ella vive en Madrid",ar:"هِيَ تَسْكُنُ فِي مَدْرِيدَ",tr:"hiya taskunu fī madrīd",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre si vive en Madrid",ar:"هَلْ تَسْكُنُ فِي مَدْرِيدَ؟",tr:"hal taskunu fī madrīd?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer si vive en Madrid",ar:"هَلْ تَسْكُنِينَ فِي مَدْرِيدَ؟",tr:"hal taskunīna fī madrīd?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre dónde trabaja",ar:"أَيْنَ تَعْمَلُ؟",tr:"ayna taʿmalu?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer dónde trabaja",ar:"أَيْنَ تَعْمَلِينَ؟",tr:"ayna taʿmalīna?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre dónde estudia",ar:"أَيْنَ تَدْرُسُ؟",tr:"ayna tadrusu?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer dónde estudia",ar:"أَيْنَ تَدْرُسِينَ؟",tr:"ayna tadrusīna?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre qué estudia (con مَاذَا)",ar:"مَاذَا تَدْرُسُ؟",tr:"māḏā tadrusu?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer qué estudia (con مَاذَا)",ar:"مَاذَا تَدْرُسِينَ؟",tr:"māḏā tadrusīna?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre qué estudia (con مَا)",ar:"مَا تَدْرُسُ؟",tr:"mā tadrusu?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer qué estudia (con مَا)",ar:"مَا تَدْرُسِينَ؟",tr:"mā tadrusīna?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre si estudia árabe",ar:"هَلْ تَدْرُسُ الْعَرَبِيَّةَ؟",tr:"hal tadrusu l-ʿarabiyyata?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer si estudia árabe",ar:"هَلْ تَدْرُسِينَ الْعَرَبِيَّةَ؟",tr:"hal tadrusīna l-ʿarabiyyata?",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que estudias árabe",ar:"أَدْرُسُ الْعَرَبِيَّةَ",tr:"adrusu l-ʿarabiyyata",genero:false},
   ],
   dialogos: [
     {lec:"A2 · L1 Presentarse",titulo:"Diálogo del libro: Ahmed y Sami (p. 6)",personajes:["أَحْمَد", "سَامِي"],personajes_es:["Ahmed", "Sami"],turnos:[
@@ -4803,6 +4893,7 @@ function initPage(name) {
   if (name === 'detecta') initDetect();
   if (name === 'frases') initFrases();
   if (name === 'patrones') renderPatrones();
+  if (name === 'verbos') initVerbos();
   if (name === 'vocab') buildVocab();
   if (name === 'gram') buildGram();
   if (name === 'deberes') loadDeberes(false);
@@ -5779,9 +5870,547 @@ function hbRutaCheck() {
 }
 
 // ══════════════════════════════════════
+// 📅 PLAN DE HOY — tu planning semanal (plan_estudio.xlsx) dentro de la app
+// Claves nuevas: 'arabic_plan_dia' (¿hoy es día libre?) y 'arabic_plan_hecho' (pasos marcados hoy)
+// Si cambias el Excel, pásamelo y actualizo PLAN_SEMANA.
+// ══════════════════════════════════════
+const PLAN_REGLAS = [
+  'Los apuntes del máster se procesan siempre el lunes. Si se acumulan dos semanas, el sistema se cae.',
+  'Las páginas de árabe se pasan el mismo día de clase, para tener el workbook preparado al día siguiente.',
+  'Las flashcards nunca bajan de 15 minutos en los días de estudio.',
+  'Días de trabajo: siesta hasta las 16:30, nada de estudio antes.',
+  'Sábado por la tarde y domingo: sin estudio.',
+  'Siempre en voz alta: en la parte de Habla, pensar la respuesta no cuenta.',
+  'Días de trabajo: 🚗 Manos libres en el coche (salida 05:00), solo audio. Arrancarlo antes de salir y no mirar la pantalla al conducir.',
+];
+// tipo: ar = estudio de árabe (se puede marcar) · clase · master · libre
+const PLAN_SEMANA = {
+  1: [{h:'16:30–17:30', tipo:'master', txt:'Máster: pasar el docx del viernes y el sábado, montar apuntes y leerlos'},
+      {h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'}],
+  2: [{h:'16:30', min:15, tipo:'ar', txt:'Tarjetas', go:'tarjetas'},
+      {min:30, tipo:'ar', txt:'📘 Workbook del lunes (sin mirar; corrige con las soluciones)', go:'wb:ultima'},
+      {min:15, tipo:'ar', txt:'Habla → 🧭 Hoy (Repite + Dilo con lo nuevo)', go:'habla:hoy'},
+      {h:'17:30–19:30', tipo:'master', txt:'Máster: estudiar los apuntes del lunes (esquema y repaso activo)'}],
+  3: [{h:'16:30', min:15, tipo:'ar', txt:'Tarjetas', go:'tarjetas'},
+      {min:30, tipo:'ar', txt:'Habla → 🧭 Hoy (Rápida + Diálogo, los dos papeles)', go:'habla:hoy'},
+      {min:15, tipo:'ar', txt:'🎤 Monólogo de 1 min en voz alta (llegar a clase hablando)', go:'habla:monologo'},
+      {h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'}],
+  4: [{h:'16:30', min:15, tipo:'ar', txt:'Tarjetas', go:'tarjetas'},
+      {min:30, tipo:'ar', txt:'📘 Workbook del miércoles', go:'wb:ultima'},
+      {min:15, tipo:'ar', txt:'Habla → 🧭 Hoy con lo nuevo', go:'habla:hoy'},
+      {h:'17:30', min:45, tipo:'ar', txt:'📚 Workbook semanal grande (todo lo acumulado)', go:'wb:semanal'},
+      {min:15, tipo:'ar', txt:'Stats → Habla y ronda ⚡ Rápida con lo que más fallas', go:'habla:rapida'},
+      {h:'18:30–19:30', tipo:'master', txt:'Máster: lecturas o preparación de la clase del viernes'}],
+  5: [{h:'16:00–21:00', tipo:'master', txt:'Clase del máster'}],
+  6: [{h:'09:00–14:00', tipo:'master', txt:'Clase del máster'}, {h:'Tarde', tipo:'libre', txt:'Sin estudio'}],
+  0: [{h:'Todo el día', tipo:'libre', txt:'Descanso'}],
+};
+const PLAN_LIBRE = [
+  {h:'09:30–13:30', tipo:'master', txt:'Máster: lecturas, trabajos y entregas, repaso profundo'},
+  {h:'16:00', min:20, tipo:'ar', txt:'Tarjetas atrasadas', go:'tarjetas'},
+  {min:30, tipo:'ar', txt:'Habla → 🧭 Hoy (sesión completa)', go:'habla:hoy'},
+  {min:20, tipo:'ar', txt:'🎤 Monólogo grabado (compáralo con el de la semana anterior)', go:'habla:monologo'},
+  {min:20, tipo:'ar', txt:'Entrevista + Comprensión con filtro «A2 + mi vocabulario»', go:'habla:responde:todo'},
+  {min:30, tipo:'ar', txt:'Rápida + Repite con filtro «A2 + mi vocabulario» (lunes/miércoles: corta a las 17:30)', go:'habla:repite:todo'},
+];
+// Semana de vacaciones (plan_estudio_vacaciones.xlsx): estudio solo por la mañana; no aplican las reglas 4 y 7
+const PLAN_VAC = {
+  1: [{h:'09:30–12:00', tipo:'master', txt:'Máster: pasar el docx del viernes y el sábado, montar apuntes y leerlos; si sobra, lecturas'},
+      {h:'12:00', min:15, tipo:'ar', txt:'Tarjetas', go:'tarjetas'},
+      {min:30, tipo:'ar', txt:'Habla → 🧭 Hoy (Rápida + Diálogo, los dos papeles)', go:'habla:hoy'},
+      {min:15, tipo:'ar', txt:'🎤 Monólogo de 1 min en voz alta', go:'habla:monologo'},
+      {min:30, tipo:'ar', txt:'Rápida + Repite con filtro «A2 + mi vocabulario»', go:'habla:rapida:todo'},
+      {h:'Tarde', tipo:'libre', txt:'Descanso o lectura libre'},
+      {h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'}],
+  2: [{h:'09:30–12:00', tipo:'master', txt:'Máster: apuntes del lunes con esquema y repaso activo; después, trabajos y entregas'},
+      {h:'12:00', min:15, tipo:'ar', txt:'Tarjetas', go:'tarjetas'},
+      {min:45, tipo:'ar', txt:'📘 Workbook del lunes (sin mirar; corrige con las soluciones)', go:'wb:ultima'},
+      {min:30, tipo:'ar', txt:'Habla → 🧭 Hoy (Repite + Dilo con lo nuevo)', go:'habla:hoy'},
+      {h:'Tarde', tipo:'libre', txt:'Descanso o lectura libre'}],
+  3: [{h:'09:30–12:00', tipo:'master', txt:'Máster: repaso profundo del temario y avance de trabajos'},
+      {h:'12:00', min:15, tipo:'ar', txt:'Tarjetas', go:'tarjetas'},
+      {min:30, tipo:'ar', txt:'Habla → 🧭 Hoy (Rápida + Diálogo, los dos papeles)', go:'habla:hoy'},
+      {min:20, tipo:'ar', txt:'🎤 Monólogo grabado', go:'habla:monologo'},
+      {min:25, tipo:'ar', txt:'Entrevista + Comprensión con filtro «A2 + mi vocabulario»', go:'habla:responde:todo'},
+      {h:'Tarde', tipo:'libre', txt:'Descanso o lectura libre'},
+      {h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'}],
+  4: [{h:'09:30–11:30', tipo:'master', txt:'Máster: lecturas y preparación de la clase del viernes'},
+      {h:'11:30', min:15, tipo:'ar', txt:'Tarjetas', go:'tarjetas'},
+      {min:30, tipo:'ar', txt:'📘 Workbook del miércoles', go:'wb:ultima'},
+      {min:60, tipo:'ar', txt:'📚 Workbook semanal grande (todo lo acumulado)', go:'wb:semanal'},
+      {min:15, tipo:'ar', txt:'Stats → Habla y ronda ⚡ Rápida con lo que más fallas', go:'habla:rapida'},
+      {h:'Tarde', tipo:'libre', txt:'Descanso o lectura libre'}],
+  5: [{h:'09:30–11:30', tipo:'master', txt:'Máster: repaso de la semana y lista de dudas para la clase'},
+      {h:'11:30', min:20, tipo:'ar', txt:'Tarjetas', go:'tarjetas'},
+      {min:20, tipo:'ar', txt:'🎤 Monólogo grabado (compáralo con el de la semana anterior)', go:'habla:monologo'},
+      {min:20, tipo:'ar', txt:'Entrevista + Comprensión', go:'habla:responde'},
+      {h:'16:00–21:00', tipo:'master', txt:'Clase del máster'}],
+  6: [{h:'09:00–14:00', tipo:'master', txt:'Clase del máster'}, {h:'Tarde', tipo:'libre', txt:'Sin estudio'}],
+  0: [{h:'Todo el día', tipo:'libre', txt:'Descanso'}],
+};
+function planVacaciones() { try { return JSON.parse(safeGetItem('arabic_plan_modo', '{}')).modo === 'vac'; } catch (e) { return false; } }
+function planSetVac(v) { safeSetItem('arabic_plan_modo', JSON.stringify({modo: v ? 'vac' : 'normal'})); renderPlanHoy(); }
+const PLAN_DIAS = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+
+function planLibreHoy() {
+  try { const d = JSON.parse(safeGetItem('arabic_plan_dia', '{}')); return d.date === clToday() && !!d.libre; } catch (e) { return false; }
+}
+function planSetLibre(v) { safeSetItem('arabic_plan_dia', JSON.stringify({date: clToday(), libre: v})); renderPlanHoy(); }
+function planHecho() {
+  try { const d = JSON.parse(safeGetItem('arabic_plan_hecho', '{}')); return d.date === clToday() ? d : {date: clToday(), done: {}}; } catch (e) { return {date: clToday(), done: {}}; }
+}
+function planToggle(i) { const d = planHecho(); d.done[i] = !d.done[i]; safeSetItem('arabic_plan_hecho', JSON.stringify(d)); renderPlanHoy(); }
+function planGo(go) {
+  const [pag, modo, filtro] = go.split(':');
+  if (pag === 'wb') {   // workbook del plan: abre la tarjeta de workbook con el tipo elegido y lo genera
+    const d = new Date().getDay();
+    setWbOpcion(modo === 'semanal' ? 'jue2' : (d === 4 ? 'jue1' : 'mar')); const c = document.getElementById('wb-card'); if (c) c.scrollIntoView({behavior:'smooth', block:'center'});
+    return generarWorkbookDia();
+  }
+  clGoTo(pag);
+  if (pag === 'habla' && modo) {
+    if (filtro) { hbFiltro = filtro; ['ult','a2','todo'].forEach(k => document.getElementById('hbf-' + k).classList.toggle('active', k === filtro)); }
+    hbGuia = null; setHablaMode(modo);
+  }
+}
+function renderPlanHoy() {
+  const el = document.getElementById('plan-hoy'); if (!el) return;
+  const dow = new Date().getDay(), vac = planVacaciones(), libre = !vac && planLibreHoy();
+  let items = vac ? (PLAN_VAC[dow] || []).slice() : libre ? PLAN_LIBRE.slice() : (PLAN_SEMANA[dow] || []).slice();
+  if (libre && (dow === 1 || dow === 3)) items.push({h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'});
+  const trabajo = !vac && !libre && dow >= 1 && dow <= 5;
+  if (trabajo) items.unshift({h:'05:00', tipo:'ar', min:15, txt:'🚗 Manos libres en el coche (solo audio; arráncalo antes de salir)', go:'habla:libre'});
+  const hecho = planHecho();
+  const ar = items.map((it, i) => ({...it, i})).filter(it => it.tipo === 'ar');
+  const nHechos = ar.filter(it => hecho.done[it.i]).length;
+  const mins = ar.reduce((a, it) => a + (it.min || 0), 0);
+  const col = {ar:'var(--gold)', clase:'var(--teal2)', master:'var(--cream2)', libre:'var(--cream2)'};
+  const fila = it => {
+    const ok = !!hecho.done[it.i], esAr = it.tipo === 'ar';
+    return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);${it.tipo === 'master' || it.tipo === 'libre' ? 'opacity:.55;' : ''}">
+      ${esAr ? `<div onclick="planToggle(${it.i})" style="width:22px;height:22px;border-radius:6px;flex-shrink:0;cursor:pointer;border:2px solid ${ok ? 'var(--green)' : 'rgba(255,255,255,.25)'};background:${ok ? 'var(--green)' : 'transparent'};color:#fff;text-align:center;line-height:18px;font-size:13px;">${ok ? '✓' : ''}</div>`
+             : `<div style="width:22px;flex-shrink:0;text-align:center;">${it.tipo === 'clase' ? '🎓' : it.tipo === 'master' ? '📘' : '🌙'}</div>`}
+      <div style="flex:1;${it.go ? 'cursor:pointer;' : ''}" ${it.go ? `onclick="planGo('${it.go}')"` : ''}>
+        <div style="font-size:13.5px;color:${ok ? 'var(--cream2)' : 'var(--cream)'};text-decoration:${ok ? 'line-through' : 'none'};">${it.txt}</div>
+        <div style="font-size:11px;color:${col[it.tipo]};margin-top:1px;">${it.h ? it.h + ' · ' : ''}${it.min ? it.min + ' min' : ''}${it.go ? ' · toca para ir' : ''}</div>
+      </div></div>`;
+  };
+  el.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <div style="font-size:15px;font-weight:700;color:var(--cream);">📅 Tu plan de hoy — ${PLAN_DIAS[dow]}</div>
+      ${ar.length ? `<div style="font-size:12px;color:var(--gold);font-weight:700;">${nHechos}/${ar.length}</div>` : ''}
+    </div>
+    <div class="cat-filter" style="padding:4px 0 2px;">
+      <button class="cat-chip ${!vac ? 'active' : ''}" onclick="planSetVac(false)">Semana normal</button>
+      <button class="cat-chip ${vac ? 'active' : ''}" onclick="planSetVac(true)">🏖️ Vacaciones</button></div>
+    ${vac ? '<div style="font-size:11px;color:var(--cream2);margin-bottom:6px;">Vacaciones: estudio solo por la mañana; no aplican las reglas 4 y 7. Vuelve a «Semana normal» al acabar.</div>' : ''}
+    ${!vac && dow >= 1 && dow <= 5 ? `<div class="cat-filter" style="padding:4px 0 8px;">
+      <button class="cat-chip ${!libre ? 'active' : ''}" onclick="planSetLibre(false)">Hoy trabajo (06–14)</button>
+      <button class="cat-chip ${libre ? 'active' : ''}" onclick="planSetLibre(true)">Hoy es día libre</button></div>` : ''}
+    <div style="background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);border-radius:10px;padding:8px 12px;font-size:13px;color:var(--gold2);margin-bottom:6px;">
+      🗣️ <b>Regla 6 — Siempre en voz alta.</b> En Habla, pensar la respuesta no cuenta.</div>
+    ${items.map((it, i) => fila({...it, i})).join('')}
+    ${ar.length ? `<div style="font-size:11px;color:var(--cream2);margin-top:8px;">Árabe hoy: ~${mins} min${nHechos === ar.length ? ' · <b style="color:var(--green);">✓ hecho</b>' : ''}</div>` : ''}
+    <details style="margin-top:10px;"><summary style="cursor:pointer;font-size:12px;color:var(--cream2);">📌 Reglas del plan</summary>
+      <ol style="margin:8px 0 0 18px;font-size:12px;color:var(--cream2);line-height:1.6;">${PLAN_REGLAS.map((r, k) => `<li style="${k === 5 ? 'color:var(--gold2);font-weight:600;' : ''}">${r}</li>`).join('')}</ol></details>`;
+}
+
+// ══════════════════════════════════════
+// 🔤 VERBOS — método del profesor: aprender la PAREJA (pasado él → presente él) y conjugar desde ahí
+// Lee los verbos de PATRONES_B (pasado) y PATRONES_C (presente): cada verbo nuevo entra solo.
+// Estadísticas propias en 'arabic_verbos' (clave nueva).
+// ══════════════════════════════════════
+const VB_MODELO = {
+  'Forma I': 'Modelo I · fatha → DAMMA (يَفْعُلُ)', 'Forma II': 'Modelo II · kasra → FATHA (يَفْعَلُ)',
+  'Forma III': 'Modelo III · no cambia, fatha (يَفْعَلُ)', 'Forma IV': 'Modelo IV · fatha → KASRA (يَفْعِلُ)',
+  'Forma V (derivada)': 'Derivado Forma V (تَفَعَّلَ → يَتَفَعَّلُ)', 'Derivada أَفْعَلَ (أَحَبَّ)': 'Derivado أَفْعَلَ (prefijos con damma)',
+};
+let vbMode = 'pareja', vbQueue = [], vbIdx = 0, vbC = 0, vbW = 0, vbTotal = 0, vbCur = null, vbShown = false;
+let vbStats = JSON.parse(safeGetItem('arabic_verbos', '{"rondas":0,"modos":{},"fallos":{}}'));
+function vbSave() { safeSetItem('arabic_verbos', JSON.stringify(vbStats)); }
+
+// Lista de verbos con pareja + conjugaciones
+function vbVerbos() {
+  const out = [], pastKeys = Object.keys(PATRONES_B.verbos);
+  const vIdx = {}; VOCAB.forEach((w, i) => { vIdx[w.ar] = i; });
+  Object.entries(PATRONES_C.formas).forEach(([forma, fv]) => {
+    Object.entries(fv.verbos || {}).forEach(([key, pres]) => {
+      const m = /^(.+?)\s*→\s*(.+?)\s*\((.+)\)\s*$/.exec(key); if (!m) return;
+      const pasado = m[1].trim(), presente = m[2].trim(), es = m[3].trim();
+      const bk = pastKeys.find(x => x.split(' (')[0].trim() === pasado);
+      out.push({pasado, presente, es, forma, modelo: VB_MODELO[forma] || forma,
+        pres, past: bk ? PATRONES_B.verbos[bk] : [], reciente: vIdx[pasado] || 0});
+    });
+  });
+  return out;
+}
+function setVbMode(m) {
+  vbMode = m;
+  ['pareja', 'conjugar', 'pregunta', 'particulas'].forEach(k => document.getElementById('vbm-' + k).classList.toggle('active', k === m));
+  initVerbos();
+}
+function initVerbos() {
+  if (vbMode === 'particulas') { document.getElementById('vb-card').style.display = ''; document.getElementById('vb-result').style.display = 'none'; ptVista = 'chuleta'; return ptRender(); }
+  const sb = document.getElementById('vb-card').querySelector('.fr-score-bar'); if (sb) sb.style.display = '';
+  const all = vbVerbos();
+  // mitad: los 15 más recientes (lo último de clase); resto al azar; los más fallados primero
+  const recientes = all.slice().sort((a, b) => b.reciente - a.reciente).slice(0, 15);
+  const pool = shuffle(recientes).slice(0, 5).concat(shuffle(all.filter(v => !recientes.includes(v))).slice(0, 5));
+  const key = v => vbMode + ':' + v.pasado;
+  pool.sort((a, b) => (vbStats.fallos[key(b)] || 0) - (vbStats.fallos[key(a)] || 0));
+  vbQueue = vbMode === 'pregunta' ? vbPreguntaItems() : pool.map(v => vbMode === 'pareja' ? {v, k: key(v)} : vbConjItem(v));
+  vbIdx = 0; vbC = 0; vbW = 0; vbTotal = vbQueue.length;
+  document.getElementById('vb-card').style.display = '';
+  document.getElementById('vb-result').style.display = 'none';
+  document.getElementById('vb-total-v').textContent = all.length;
+  vbRender();
+}
+function vbConjItem(v) {
+  const usePast = v.past.length && Math.random() < 0.5;
+  const lista = usePast ? v.past : v.pres;
+  const f = lista[Math.floor(Math.random() * lista.length)];
+  return {v, k: 'conjugar:' + v.pasado, tiempo: usePast ? 'pasado' : 'presente', p: f};
+}
+function vbBar() {
+  document.getElementById('vb-c').textContent = vbC;
+  document.getElementById('vb-w').textContent = vbW;
+  document.getElementById('vb-r').textContent = Math.max(0, vbTotal - vbIdx);
+}
+function vbRender() {
+  vbBar(); vbShown = false;
+  const it = vbCur = vbQueue[vbIdx], el = document.getElementById('vb-content');
+  const inp = 'width:100%;margin-top:12px;padding:12px 14px;border-radius:12px;border:1px solid rgba(201,168,76,.3);background:rgba(255,255,255,.06);color:var(--cream);font-size:24px;font-family:inherit;text-align:center;';
+  const mic = HB_SR ? '<button class="hb-btn mic" id="vb-micbtn" onclick="vbListen()">🎙️ Decirlo</button>' : '';
+  if (vbMode === 'pareja') {
+    el.innerHTML = `<div class="hb-lbl">Di o escribe la pareja: pasado (él) – presente (él)</div>
+      <div class="hb-es" style="font-size:22px;margin:16px 0 4px;">«${hbEsc(it.v.es)}»</div>
+      <div class="hb-meta" style="margin-top:0;">ej.: كَتَبَ – يَكْتُبُ</div>
+      <input id="vb-in" dir="rtl" style="${inp}" placeholder="pasado – presente" autocomplete="off" onkeydown="if(event.key==='Enter')vbCheck()">
+      <div class="hb-row"><button class="hb-btn go" onclick="vbCheck()">Comprobar</button>${mic}<button class="hb-btn" onclick="vbReveal()">💡 Ver</button></div>
+      <div id="vb-out"></div>`;
+  } else if (vbMode === 'pregunta') {
+    const quien = it.g === 'm' ? '<b style="color:#7FB3FF;">a un hombre</b>' : '<b style="color:#FF9FC2;">a una mujer</b>';
+    el.innerHTML = `<div class="hb-lbl">Forma la pregunta: partícula + verbo</div>
+      <div style="text-align:center;margin-top:8px;"><span class="cat-chip ${it.profe ? 'active' : ''}" style="cursor:default;font-size:11px;padding:3px 10px;">${it.profe ? '🎓 del profe' : '💡 propuesta'}</span></div>
+      <div class="hb-es" style="font-size:19px;margin:12px 0 4px;">Pregúntale ${quien} ${hbEsc(it.u.es)}</div>
+      <div class="hb-box" style="text-align:center;margin-top:8px;">Verbo: <span class="hb-said" style="font-size:20px;">${it.v.par}</span> (${hbEsc(it.v.es)})
+        <div id="vb-pista" style="margin-top:4px;"><a href="#" onclick="document.getElementById('vb-pista').innerHTML='Partículas con este verbo: <span class=hb-said style=font-size:20px>'+vbCur.v.usos.map(x=>x.p).join(' · ')+'</span>';return false;" style="color:var(--gold);font-size:12px;">🔎 pista: ¿qué partículas van con este verbo?</a></div></div>
+      <input id="vb-in" dir="rtl" style="${inp}" placeholder="pregunta" autocomplete="off" onkeydown="if(event.key==='Enter')vbCheck()">
+      <div class="hb-row"><button class="hb-btn go" onclick="vbCheck()">Comprobar</button>${mic}<button class="hb-btn" onclick="vbReveal()">💡 Ver</button></div>
+      <div id="vb-out"></div>`;
+  } else {
+    const t = it.tiempo === 'pasado';
+    el.innerHTML = `<div class="hb-lbl">Conjuga desde la pareja</div>
+      <div class="hb-box" style="text-align:center;margin-top:10px;"><div class="hb-ar sm">${it.v.pasado} – ${it.v.presente}</div><div style="font-size:12px;">${hbEsc(it.v.es)} · ${hbEsc(it.v.modelo)}</div></div>
+      <div class="hb-es" style="font-size:20px;margin:14px 0 0;">${hbEsc(it.p.persona)} · <span style="color:${t ? '#FF9FC2' : '#7FB3FF'};">${t ? 'PASADO' : 'PRESENTE'}</span></div>
+      <input id="vb-in" dir="rtl" style="${inp}" placeholder="forma" autocomplete="off" onkeydown="if(event.key==='Enter')vbCheck()">
+      <div class="hb-row"><button class="hb-btn go" onclick="vbCheck()">Comprobar</button>${mic}<button class="hb-btn" onclick="vbReveal()">💡 Ver</button></div>
+      <div id="vb-out"></div>`;
+  }
+  setTimeout(() => { const i = document.getElementById('vb-in'); if (i && !('ontouchstart' in window)) i.focus(); }, 50);
+}
+function vbTarget() { const it = vbCur; return vbMode === 'pareja' ? [it.v.pasado, it.v.presente] : vbMode === 'pregunta' ? vbSkel(it.u[it.g]).split(' ') : [it.p.forma]; }
+function vbSkel(s) { return hbNorm(s).replace(/[-–—]/g, ' ').replace(/\s+/g, ' ').trim(); }
+function vbCheck(dicho) {
+  if (vbShown) return;
+  const txt = dicho != null ? dicho : (document.getElementById('vb-in').value || '');
+  if (!txt.trim()) return vbReveal();
+  const target = vbTarget(), said = vbSkel(txt).split(' ');
+  const ok = target.every(t => said.some(w => w === vbSkel(t) || (dicho != null && hbSim(vbSkel(t), w) >= 0.8)));
+  vbReveal(ok ? 'ok' : 'no', txt);
+}
+function vbReveal(res, txt) {
+  if (vbShown) return; vbShown = true;
+  const it = vbCur, out = document.getElementById('vb-out');
+  let sol, cons = '';
+  if (vbMode === 'pareja') {
+    sol = `${it.v.pasado} – ${it.v.presente}`;
+    cons = `${hbEsc(it.v.modelo)}`;
+  } else if (vbMode === 'pregunta') {
+    sol = it.u[it.g];
+    cons = `Partícula <b>${it.u.p}</b> + verbo en presente «tú» ${it.g === 'm' ? '(masc. تَـ…ـُ)' : '(fem. تَـ…ـِينَ)'}`
+      + `<div style="margin-top:4px;">Con <span class="hb-said" style="font-size:18px;">${it.v.par}</span> van: <b>${it.v.usos.map(x => x.p).join(' · ')}</b>${it.profe ? '' : ' <i>(propuesta)</i>'}</div>`
+      + (it.g === 'f' ? '<div style="font-size:11px;">⚠️ Fem.: la terminación ـِينَ sí se oye y se escribe.</div>' : '');
+  } else {
+    sol = it.p.forma;
+    cons = it.tiempo === 'pasado'
+      ? `Pasado: ${it.v.pasado} → quita la vocal final y añade <b>${it.p.sufijo === '—' ? 'nada (es la forma base)' : it.p.sufijo}</b>`
+      : `Presente: <b>${it.p.prefijo}</b> + raíz de ${it.v.presente} + <b>${it.p.sufijo}</b>`;
+  }
+  const harakat = res === 'ok' ? '<div style="font-size:11px;margin-top:4px;">✓ Letras correctas. Comprueba tú las vocales (sobre todo la del medio en el presente).</div>' : '';
+  out.innerHTML = `<div class="hb-box ${res || ''}" style="text-align:center;">
+      ${txt ? `<div style="font-size:12px;">Tu respuesta: <span class="hb-said" style="font-size:20px;">${hbEsc(txt)}</span> ${res === 'ok' ? '✓' : res === 'no' ? '✗' : ''}</div>` : ''}
+      <div class="hb-ar sm" style="margin-top:6px;">${sol}</div>
+      <div style="font-size:12px;margin-top:4px;">${cons}</div>${harakat}
+      <div class="hb-row"><button class="hb-btn" onclick="speak(${JSON.stringify(sol.replace(' – ', '، ')).replace(/"/g, '&quot;')})">🔊 Escuchar</button></div></div>
+    <div class="self-assess show" style="margin-top:12px;">
+      <button class="sa-btn sa-no" onclick="vbMark(false)">🔁 A repasar</button>
+      <button class="sa-btn sa-yes" onclick="vbMark(true)">👍 Bien</button></div>`;
+  if (res === 'ok') playCorrect(); else if (res === 'no') playWrong();
+}
+function vbMark(ok) {
+  const it = vbCur;
+  if (ok) { vbC++; if (vbStats.fallos[it.k]) vbStats.fallos[it.k]--; }
+  else { vbW++; vbStats.fallos[it.k] = (vbStats.fallos[it.k] || 0) + 1; }
+  const m = vbStats.modos[vbMode] || (vbStats.modos[vbMode] = {c:0, t:0}); m.t++; if (ok) m.c++;
+  vbSave();
+  vbIdx++;
+  if (vbIdx >= vbTotal) return vbFinish();
+  vbRender();
+}
+function vbFinish() {
+  vbBar(); vbStats.rondas++; vbSave();
+  clMarkDoneV();
+  document.getElementById('vb-card').style.display = 'none';
+  document.getElementById('vb-result').style.display = 'block';
+  document.getElementById('vb-score').textContent = vbC + ' / ' + vbTotal;
+  const peor = Object.entries(vbStats.fallos).filter(([k, n]) => n > 0 && k.startsWith(vbMode)).sort((a, b) => b[1] - a[1]).slice(0, 4);
+  document.getElementById('vb-sub').innerHTML = (vbMode === 'pareja' ? 'parejas bien' : vbMode === 'pregunta' ? 'preguntas bien' : 'formas bien') + ' · queda marcado en tu Rutina'
+    + (peor.length ? `<div class="hb-box" style="margin-top:12px;text-align:center;">🔻 Te cuestan: <span class="hb-said" style="font-size:19px;">${peor.map(([k]) => k.split(':')[1]).join(' · ')}</span></div>` : '')
+    + (vbMode !== 'pregunta' ? `<div style="margin-top:10px;"><button class="result-btn" style="background:var(--teal);color:#fff;" onclick="setVbMode('${vbMode === 'pareja' ? 'conjugar' : 'pregunta'}')">Siguiente: ${vbMode === 'pareja' ? '🧩 Conjugar' : '❓ Pregunta'} →</button></div>` : '');
+}
+function clMarkDoneV() {
+  const state = clLoadState();
+  if (state.done.verbos) return;
+  state.done.verbos = true; clSaveState(state); renderChecklist();
+  showToast('✓ Rutina: bloque «Verbos» completado');
+}
+// Decirlo en voz alta (frase corta)
+function vbListen() {
+  if (!HB_SR || vbShown) return;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  const r = new HB_SR(); r.lang = hbLang; r.interimResults = false; r.maxAlternatives = 5; r.continuous = false;
+  const b = document.getElementById('vb-micbtn'); if (b) { b.classList.add('rec'); b.textContent = '🎙️ Escuchando…'; }
+  let got = false;
+  r.onresult = e => { got = true; const alts = Array.from(e.results[0]).map(a => a.transcript);
+    const target = vbTarget().map(vbSkel);
+    const best = alts.find(a => target.every(t => vbSkel(a).split(' ').some(w => hbSim(t, w) >= 0.8))) || alts[0];
+    vbCheck(best); };
+  r.onerror = e => { const o = document.getElementById('vb-out'); if (o) o.innerHTML = `<div class="hb-box no">${hbSRHelp(e.error)}</div>`; };
+  r.onend = () => { const bb = document.getElementById('vb-micbtn'); if (bb) { bb.classList.remove('rec'); bb.textContent = '🎙️ Otra vez'; } };
+  try { r.start(); } catch (e) {}
+}
+
+// ══ 3. PREGUNTA: partícula + verbo (qué partícula va con cada verbo) ══
+// fuente 'profe' = lo explicado en clase (19/10) · 'propuesta' = sugerencia mía para practicar
+const VB_PREGUNTAS = [
+  {par:'سَكَنَ – يَسْكُنُ', es:'vivir', fuente:'profe', usos:[
+    {p:'أَيْنَ', es:'dónde vive', m:'أَيْنَ تَسْكُنُ؟', f:'أَيْنَ تَسْكُنِينَ؟'},
+    {p:'هَلْ', es:'si vive en Madrid', m:'هَلْ تَسْكُنُ فِي مَدْرِيدَ؟', f:'هَلْ تَسْكُنِينَ فِي مَدْرِيدَ؟'}]},
+  {par:'عَمِلَ – يَعْمَلُ', es:'trabajar', fuente:'profe', usos:[
+    {p:'أَيْنَ', es:'dónde trabaja', m:'أَيْنَ تَعْمَلُ؟', f:'أَيْنَ تَعْمَلِينَ؟'},
+    {p:'مَاذَا', es:'qué hace (a qué se dedica)', m:'مَاذَا تَعْمَلُ؟', f:'مَاذَا تَعْمَلِينَ؟'}]},
+  {par:'دَرَسَ – يَدْرُسُ', es:'estudiar', fuente:'profe', usos:[
+    {p:'أَيْنَ', es:'dónde estudia', m:'أَيْنَ تَدْرُسُ؟', f:'أَيْنَ تَدْرُسِينَ؟'},
+    {p:'مَاذَا', es:'qué estudia (con مَاذَا)', m:'مَاذَا تَدْرُسُ؟', f:'مَاذَا تَدْرُسِينَ؟'},
+    {p:'مَا', es:'qué estudia (con مَا)', m:'مَا تَدْرُسُ؟', f:'مَا تَدْرُسِينَ؟'},
+    {p:'هَلْ', es:'si estudia árabe', m:'هَلْ تَدْرُسُ الْعَرَبِيَّةَ؟', f:'هَلْ تَدْرُسِينَ الْعَرَبِيَّةَ؟'}]},
+  {par:'ذَهَبَ – يَذْهَبُ', es:'ir', fuente:'propuesta', usos:[
+    {p:'أَيْنَ', es:'adónde va', m:'أَيْنَ تَذْهَبُ؟', f:'أَيْنَ تَذْهَبِينَ؟'},
+    {p:'هَلْ', es:'si va a la escuela', m:'هَلْ تَذْهَبُ إِلَى الْمَدْرَسَةِ؟', f:'هَلْ تَذْهَبِينَ إِلَى الْمَدْرَسَةِ؟'},
+    {p:'لِمَاذَا', es:'por qué va a Marruecos', m:'لِمَاذَا تَذْهَبُ إِلَى الْمَغْرِبِ؟', f:'لِمَاذَا تَذْهَبِينَ إِلَى الْمَغْرِبِ؟'}]},
+  {par:'أَكَلَ – يَأْكُلُ', es:'comer', fuente:'propuesta', usos:[
+    {p:'مَاذَا', es:'qué come', m:'مَاذَا تَأْكُلُ؟', f:'مَاذَا تَأْكُلِينَ؟'},
+    {p:'هَلْ', es:'si come carne', m:'هَلْ تَأْكُلُ اللَّحْمَ؟', f:'هَلْ تَأْكُلِينَ اللَّحْمَ؟'},
+    {p:'أَيْنَ', es:'dónde come', m:'أَيْنَ تَأْكُلُ؟', f:'أَيْنَ تَأْكُلِينَ؟'}]},
+  {par:'شَرِبَ – يَشْرَبُ', es:'beber', fuente:'propuesta', usos:[
+    {p:'مَاذَا', es:'qué bebe', m:'مَاذَا تَشْرَبُ؟', f:'مَاذَا تَشْرَبِينَ؟'},
+    {p:'هَلْ', es:'si bebe café', m:'هَلْ تَشْرَبُ الْقَهْوَةَ؟', f:'هَلْ تَشْرَبِينَ الْقَهْوَةَ؟'}]},
+  {par:'أَحَبَّ – يُحِبُّ', es:'gustar', fuente:'propuesta', usos:[
+    {p:'مَاذَا', es:'qué le gusta', m:'مَاذَا تُحِبُّ؟', f:'مَاذَا تُحِبِّينَ؟'},
+    {p:'هَلْ', es:'si le gusta el té', m:'هَلْ تُحِبُّ الشَّايَ؟', f:'هَلْ تُحِبِّينَ الشَّايَ؟'}]},
+  {par:'تَكَلَّمَ – يَتَكَلَّمُ', es:'hablar', fuente:'propuesta', usos:[
+    {p:'هَلْ', es:'si habla árabe', m:'هَلْ تَتَكَلَّمُ الْعَرَبِيَّةَ؟', f:'هَلْ تَتَكَلَّمِينَ الْعَرَبِيَّةَ؟'},
+    {p:'مَا', es:'qué idiomas habla', m:'مَا اللُّغَاتُ الَّتِي تَتَكَلَّمُهَا؟', f:'مَا اللُّغَاتُ الَّتِي تَتَكَلَّمِينَهَا؟'}]},
+  {par:'كَتَبَ – يَكْتُبُ', es:'escribir', fuente:'propuesta', usos:[
+    {p:'مَاذَا', es:'qué escribe', m:'مَاذَا تَكْتُبُ؟', f:'مَاذَا تَكْتُبِينَ؟'}]},
+  {par:'لَبِسَ – يَلْبَسُ', es:'vestirse / ponerse', fuente:'propuesta', usos:[
+    {p:'مَاذَا', es:'qué se pone', m:'مَاذَا تَلْبَسُ؟', f:'مَاذَا تَلْبَسِينَ؟'}]},
+];
+let vbSoloProfe = false;
+function vbPreguntaItems() {
+  const items = [];
+  VB_PREGUNTAS.filter(v => !vbSoloProfe || v.fuente === 'profe').forEach(v => v.usos.forEach(u => ['m', 'f'].forEach(g =>
+    items.push({v, u, g, k: 'pregunta:' + u[g], profe: v.fuente === 'profe'}))));
+  // primero lo del profe (2 de cada 3), luego propuestas
+  const pr = shuffle(items.filter(i => i.profe)), pp = shuffle(items.filter(i => !i.profe));
+  const out = pr.slice(0, 7).concat(pp.slice(0, 10 - Math.min(7, pr.length)));
+  return out.sort((a, b) => (vbStats.fallos[b.k] || 0) - (vbStats.fallos[a.k] || 0));
+}
+// ══ 📋 PARTÍCULAS DE INTERROGACIÓN: chuleta + práctica ══
+// Solo las que ya has visto en clase o en tus archivos.
+const PARTICULAS = [
+  {p:'مَا', tr:'mā', es:'¿qué? / ¿cuál?', va:'+ sustantivo (y también + verbo)', ej:[['مَا اسْمُكَ؟','¿Cómo te llamas? (lit. ¿cuál es tu nombre?)','اِسْمِي ...'],['مَا مِهْنَتُكِ؟','¿Cuál es tu profesión? (f.)','أَنَا مُدَرِّسَة'],['مَا تَدْرُسُ؟','¿Qué estudias?','أَدْرُسُ الْعَرَبِيَّةَ']], ojo:'مَا + sustantivo = «cuál es…». Con verbo vale igual que مَاذَا.'},
+  {p:'مَاذَا', tr:'māḏā', es:'¿qué?', va:'+ verbo, siempre', ej:[['مَاذَا تَعْمَلُ؟','¿Qué haces? / ¿A qué te dedicas?','أَنَا شُرْطِيّ'],['مَاذَا تُحِبُّ؟','¿Qué te gusta?','أُحِبُّ الرِّيَاضَةَ'],['مَاذَا تَدْرُسِينَ؟','¿Qué estudias? (f.)','أَدْرُسُ الْعَرَبِيَّةَ']], ojo:'Nunca delante de sustantivo: ✗ مَاذَا اسْمُكَ → ✓ مَا اسْمُكَ.'},
+  {p:'مَنْ', tr:'man', es:'¿quién?', va:'personas', ej:[['مَنْ أَنْتِ؟','¿Quién eres? (f.)','أَنَا فَاطِمَة'],['مَنْ فِي مَدْرِيد؟','¿Quién está en Madrid?','أَحْمَد فِي مَدْرِيد']], ojo:'مَنْ (man, quién) ≠ مِنْ (min, de/desde): se escriben igual, cambia la vocal.'},
+  {p:'أَيْنَ', tr:'ayna', es:'¿dónde? / ¿adónde?', va:'lugar', ej:[['أَيْنَ تَسْكُنُ؟','¿Dónde vives?','أَسْكُنُ فِي مَدْرِيدَ'],['أَيْنَ تَعْمَلِينَ؟','¿Dónde trabajas? (f.)','أَعْمَلُ فِي مَدْرِيدَ'],['أَيْنَ الْبَيْتُ؟','¿Dónde está la casa?','الْبَيْتُ هُنَا']], ojo:'Va con vivir, trabajar y estudiar (profe). La respuesta suele llevar فِي.'},
+  {p:'مِنْ أَيْنَ', tr:'min ayna', es:'¿de dónde?', va:'origen', ej:[['مِنْ أَيْنَ أَنْتَ؟','¿De dónde eres?','أَنَا مِنْ إِسْبَانِيَا']], ojo:'أَيْنَ = dónde estás / vives · مِنْ أَيْنَ = de dónde eres. La respuesta lleva مِنْ.'},
+  {p:'كَمْ', tr:'kam', es:'¿cuánto/s?', va:'cantidad, edad', ej:[['كَمْ عُمْرُكَ؟','¿Cuántos años tienes?','عُمْرِي ... عَامًا']], ojo:'La respuesta lleva un número.'},
+  {p:'هَلْ', tr:'hal', es:'¿…? (sí / no)', va:'pregunta de sí o no', ej:[['هَلْ تَدْرُسُ الْعَرَبِيَّةَ؟','¿Estudias árabe?','نَعَمْ، أَدْرُسُ الْعَرَبِيَّةَ'],['هَلْ تَسْكُنِينَ فِي مَدْرِيدَ؟','¿Vives en Madrid? (f.)','لَا، أَسْكُنُ فِي ...'],['هَلْ أَنْتَ طَالِب؟','¿Eres estudiante?','نَعَمْ، أَنَا طَالِب']], ojo:'No se traduce: solo convierte la frase en pregunta. Se responde con نَعَمْ / لَا.'},
+  {p:'أَ', tr:'a-', es:'¿…? (sí / no)', va:'igual que هَلْ, pegada a la palabra', ej:[['أَأَنْتَ طَالِب؟','¿Eres estudiante?','نَعَمْ']], ojo:'Hace lo mismo que هَلْ; es más corta y va unida.'},
+  {p:'لِمَاذَا', tr:'limāḏā', es:'¿por qué?', va:'causa', ej:[['لِمَاذَا تَذْهَبُ إِلَى الْمَغْرِبِ؟','¿Por qué vas a Marruecos?','']], ojo:'لِ (para) + مَاذَا.'},
+  {p:'بِمَاذَا', tr:'bimāḏā', es:'¿con qué?', va:'instrumento', ej:[['بِمَاذَا تَكْتُبُ؟','¿Con qué escribes?','بِالْقَلَمِ']], ojo:'بِ (con) + مَاذَا. La respuesta lleva بِـ.'},
+  {p:'كَيْفَ', tr:'kayfa', es:'¿cómo?', va:'estado, manera', ej:[['كَيْفَ الْحَالُ؟','¿Qué tal? (¿cómo está la situación?)','أَنَا بِخَيْر']], ojo:''},
+];
+let ptVista = 'chuleta', ptQueue = [], ptIdx = 0, ptC = 0, ptCur = null;
+function ptRender() {
+  const el = document.getElementById('vb-content');
+  document.getElementById('vb-card').querySelector('.fr-score-bar').style.display = ptVista === 'chuleta' ? 'none' : '';
+  const tabs = `<div class="cat-filter" style="justify-content:center;padding:0 0 10px;">
+    <button class="cat-chip ${ptVista === 'chuleta' ? 'active' : ''}" onclick="ptVista='chuleta';ptRender()">📋 Chuleta</button>
+    <button class="cat-chip ${ptVista !== 'chuleta' ? 'active' : ''}" onclick="ptStart()">🎯 Practicar</button></div>`;
+  if (ptVista === 'chuleta') {
+    el.innerHTML = tabs + `<div class="hb-box" style="margin-top:0;">Pregunta = <b>partícula + verbo/sustantivo</b>. Con «tú»: verbo masc. <span class="hb-said" style="font-size:18px;">تَـ…ـُ</span> · fem. <span class="hb-said" style="font-size:18px;">تَـ…ـِينَ</span>.</div>` +
+      PARTICULAS.map(x => `<details class="hb-box" style="margin-top:8px;"><summary style="cursor:pointer;display:flex;align-items:center;gap:10px;list-style:none;">
+          <span class="hb-said" style="font-size:26px;min-width:84px;text-align:center;color:var(--gold2);">${x.p}</span>
+          <span style="flex:1;"><b style="color:var(--cream);">${x.es}</b><br><span style="font-size:11px;">${x.tr} · ${x.va}</span></span><span>▾</span></summary>
+        <div style="margin-top:8px;">${x.ej.map(e => `<div style="padding:4px 0;border-top:1px solid rgba(255,255,255,.06);"><span class="hb-said" style="font-size:20px;cursor:pointer;" onclick="speak(this.textContent)">${e[0]}</span> 🔊<br><span style="font-size:12px;">${e[1]}</span>${e[2] ? `<br><span style="font-size:12px;color:var(--teal2);">→ <span class="hb-said" style="font-size:17px;">${e[2]}</span></span>` : ''}</div>`).join('')}
+        ${x.ojo ? `<div style="margin-top:6px;font-size:12px;color:var(--gold2);">⚠️ ${x.ojo}</div>` : ''}</div></details>`).join('') +
+      `<div class="hb-box" style="margin-top:12px;"><b style="color:var(--cream);">Con cada verbo (profe):</b><br>${VB_PREGUNTAS.filter(v => v.fuente === 'profe').map(v => `<span class="hb-said" style="font-size:18px;">${v.par}</span> → <b>${v.usos.map(u => u.p).join(' · ')}</b>`).join('<br>')}</div>`;
+    return;
+  }
+  ptCur = ptQueue[ptIdx];
+  document.getElementById('vb-c').textContent = ptC; document.getElementById('vb-w').textContent = ptIdx - ptC; document.getElementById('vb-r').textContent = ptQueue.length - ptIdx;
+  if (!ptCur) {
+    const m = vbStats.modos.particulas || (vbStats.modos.particulas = {c:0, t:0}); m.c += ptC; m.t += ptQueue.length; vbStats.rondas++; vbSave(); clMarkDoneV();
+    el.innerHTML = tabs + `<div class="result-score" style="text-align:center;">${ptC} / ${ptQueue.length}</div><div class="hb-row"><button class="hb-btn go" onclick="ptStart()">Otra ronda</button><button class="hb-btn" onclick="ptVista='chuleta';ptRender()">📋 Ver chuleta</button></div>`;
+    return;
+  }
+  el.innerHTML = tabs + `<div class="hb-lbl">${ptCur.lbl}</div>
+    <div class="${ptCur.arQ ? 'hb-ar sm' : 'hb-es'}" style="margin:14px 0;${ptCur.arQ ? '' : 'font-size:19px;'}">${ptCur.q}</div>${ptCur.sub ? `<div style="font-size:13px;color:var(--cream2);text-align:center;margin-top:-8px;margin-bottom:10px;">${ptCur.sub}</div>` : ''}
+    <div class="opts">${ptCur.ops.map((o, i) => `<button class="opt opt-arabic" onclick="ptAns(this,${i})">${o}</button>`).join('')}</div>
+    <div id="pt-fb" class="g-feedback"></div>`;
+}
+function ptStart() {
+  ptVista = 'practicar';
+  const items = [];
+  PARTICULAS.forEach(x => x.ej.forEach(e => {
+    items.push({lbl:'¿Qué partícula usas para preguntar esto?', q: hbEsc(e[1]), ok: x.p, ex: e[0]});
+    if (e[2] && !/\.\.\./.test(e[2]) && x.p !== 'أَ') items.push({lbl:'¿Qué partícula pregunta por esta respuesta?', q: e[2], arQ: true, ok: x.p, ex: e[0]});
+    const resto = e[0].startsWith(x.p + ' ') ? e[0].slice(x.p.length + 1) : null;
+    if (resto) items.push({lbl:'Completa la pregunta', q: '____ ' + resto, sub: hbEsc(e[1]), arQ: true, ok: x.p, ex: e[0]});
+  }));
+  ptQueue = shuffle(items).slice(0, 12).map(it => {
+    const otras = shuffle(PARTICULAS.map(x => x.p).filter(p => p !== it.ok && p !== 'أَ')).slice(0, 3);
+    return {...it, ops: shuffle([it.ok, ...otras])};
+  });
+  ptIdx = 0; ptC = 0; ptRender();
+}
+function ptAns(btn, i) {
+  if (btn.parentNode.dataset.done) return; btn.parentNode.dataset.done = 1;
+  const ok = ptCur.ops[i] === ptCur.ok;
+  btn.classList.add(ok ? 'correct' : 'wrong');
+  btn.parentNode.querySelectorAll('.opt').forEach((b, k) => { b.classList.add('locked'); if (ptCur.ops[k] === ptCur.ok) b.classList.add('correct'); });
+  if (ok) { ptC++; playCorrect(); } else { playWrong(); vbStats.fallos['particula:' + ptCur.ok] = (vbStats.fallos['particula:' + ptCur.ok] || 0) + 1; vbSave(); }
+  const info = PARTICULAS.find(x => x.p === ptCur.ok);
+  document.getElementById('pt-fb').innerHTML = `<div style="font-size:13px;color:var(--cream2);margin-top:6px;"><span class="hb-said" style="font-size:20px;">${ptCur.ex}</span><br>${info.es} · ${info.va}${info.ojo ? '<br><span style="color:var(--gold2);">⚠️ ' + info.ojo + '</span>' : ''}</div>
+    <button class="g-next" style="display:inline-block;" onclick="ptIdx++;ptRender()">Siguiente →</button>`;
+  speak(ptCur.ex);
+}
+// ══════════════════════════════════════
+// 🖨️ WORKBOOK SEGÚN EL DÍA DEL PLAN
+// 📘 Última clase (martes/jueves: lo nuevo de la clase anterior) · 📚 Semanal grande (jueves) · 🎲 Repaso libre
+// CLASES se genera al montar la app a partir de las marcas «A2 · dd/mm/aaaa» de VOCAB, GRAMMAR y FRASES.
+// ══════════════════════════════════════
+let wbTipo = null, wbClase = null;
+function wbTipoSugerido() {
+  const d = new Date().getDay();
+  return (d === 2 || d === 4) ? 'ultima' : 'libre';
+}
+function wbClasesOrden() { return (typeof CLASES !== 'undefined' ? CLASES : []).slice().sort((a, b) => b.iso.localeCompare(a.iso)); }
+function setWbTipo(t) { wbTipo = t; renderWbCard(); }
+function setWbClase(iso) { wbClase = iso; renderWbCard(); }
+// Opciones del desplegable: una por cada workbook de tu plan de estudio
+const WB_OPCIONES = [
+  {id:'mar', tipo:'ultima', txt:'Martes — 📘 Workbook del lunes'},
+  {id:'jue1', tipo:'ultima', txt:'Jueves — 📘 Workbook del miércoles'},
+  {id:'jue2', tipo:'semanal', txt:'Jueves — 📚 Semanal grande'},
+  {id:'libre', tipo:'libre', txt:'Otro día — 🎲 Repaso libre'},
+];
+let wbOpcion = null;
+function wbOpcionHoy() { const d = new Date().getDay(); return d === 2 ? 'mar' : d === 4 ? 'jue1' : 'libre'; }
+function setWbOpcion(id) {
+  wbOpcion = id; wbTipo = WB_OPCIONES.find(o => o.id === id).tipo;
+  const cl = wbClasesOrden(); if (wbTipo === 'ultima' && cl.length) wbClase = cl[0].iso;
+  renderWbCard();
+}
+function renderWbCard() {
+  const el = document.getElementById('wb-card'); if (!el) return;
+  if (!wbOpcion) setWbOpcion(wbOpcionHoy());
+  const hoyId = wbOpcionHoy();
+  const clases = wbClasesOrden();
+  if (!wbClase && clases.length) wbClase = clases[0].iso;
+  const cl = clases.find(c => c.iso === wbClase);
+  const sel = 'width:100%;padding:11px 12px;border-radius:10px;border:1px solid rgba(201,168,76,.35);background:var(--bg2);color:var(--cream);font-size:14px;font-family:inherit;';
+  let det = '';
+  if (wbTipo === 'ultima') det = `<div style="font-size:12px;color:var(--cream2);margin:8px 0;line-height:1.5;">Solo lo nuevo de la clase (unos 30 ejercicios).<br>Clase: <b>${cl ? cl.fecha + ' — ' + hbEsc(cl.titulo) : '—'}</b>
+      <details style="margin-top:4px;"><summary style="cursor:pointer;color:var(--gold);">cambiar de clase</summary>
+      <select style="${sel}margin-top:6px;" onchange="wbClase=this.value;renderWbCard()">${clases.map(c => `<option value="${c.iso}" ${c.iso === wbClase ? 'selected' : ''}>${c.fecha} — ${hbEsc(c.titulo)}</option>`).join('')}</select></details></div>`;
+  if (wbTipo === 'semanal') det = `<div style="font-size:12px;color:var(--cream2);margin:8px 0;line-height:1.5;">Unos 80 ejercicios: primero lo dado en clase los últimos 7 días y después todo lo acumulado desde el 06/07.</div>`;
+  if (wbTipo === 'libre') det = `<div style="font-size:12px;color:var(--cream2);margin:8px 0 4px;">Tamaño:</div>
+      <select style="${sel}" onchange="wbSize=+this.value">${[20, 35, 60].map(n => `<option value="${n}" ${wbSize === n ? 'selected' : ''}>${n === 20 ? 'Corto' : n === 35 ? 'Medio' : 'Largo'} (${n})</option>`).join('')}</select>`;
+  el.innerHTML = `
+    <div style="font-size:13px;font-weight:700;color:var(--cream);margin-bottom:8px;">🖨️ Workbook en papel</div>
+    <div style="font-size:12px;color:var(--cream2);margin-bottom:6px;">¿Qué workbook de tu plan quieres?</div>
+    <select style="${sel}" onchange="setWbOpcion(this.value)">${WB_OPCIONES.map(o => `<option value="${o.id}" ${o.id === wbOpcion ? 'selected' : ''}>${o.txt}${o.id === hoyId ? '  ← hoy' : ''}</option>`).join('')}</select>
+    ${det}
+    <button class="write-submit" style="width:100%;margin-top:8px;" onclick="generarWorkbookDia()">🖨️ Generar workbook (PDF)</button>`;
+}
+// Ejercicios del pool que tratan sobre lo dado en las clases indicadas
+function wbPoolDeClases(lista) {
+  const claves = new Set(), titulos = new Set();
+  lista.forEach(c => { c.ar.forEach(a => claves.add(a)); c.gram.forEach(t => titulos.add(t)); });
+  const sinH = s => String(s || '').replace(/[ً-ْٰ]/g, '');
+  const clavesSinH = [...claves].map(sinH).filter(k => k.length >= 2);
+  const pool = getFullPool();
+  // solo tipos de ejercicio que tienen sentido para lo nuevo (fuera «solar/lunar», «¿masc. o fem.?»… aplicados a frases)
+  const UTIL = /^(Vocabulario|Escribe la traducción|Transcripción|Escribe la transcripción|Completa la frase|Construye|Empareja|Corrige el error|Lectura|Verdadero\/Falso|Conjugación)/;
+  const limpia = c => c.replace(/[؟?،,.!:«»()]/g, ' ').replace(/\s+/g, ' ').trim();
+  const multi = clavesSinH.map(limpia).filter(k => k.includes(' ')), sueltas = new Set(clavesSinH.map(limpia).filter(k => !k.includes(' ')));
+  return pool.filter(ex => {
+    if (/^Gramática — /.test(ex.tipo)) return titulos.has(ex.tipo.replace(/^Gramática — /, ''));
+    if (!UTIL.test(ex.tipo)) return false;
+    const campos = [ex.arabic, ex.ok, ex.pregunta, ex.frase, ex.sol, ex.respuesta].filter(x => typeof x === 'string').map(x => limpia(sinH(x)));
+    return campos.some(c => multi.some(k => c.includes(k)) || (sueltas.has(c)) || (c.split(' ').length <= 3 && c.split(' ').some(w => w.length >= 3 && sueltas.has(w))));
+  });
+}
+function wbVariado(pool, n, seed) {
+  // como mucho 4 del mismo tipo, mezclado
+  const porTipo = {}; const out = [];
+  shuffleSeeded(pool, seed).forEach(ex => { porTipo[ex.tipo] = (porTipo[ex.tipo] || 0) + 1; if (porTipo[ex.tipo] <= 4 && out.length < n) out.push(ex); });
+  if (out.length < n) { const usados = new Set(out); shuffleSeeded(pool.filter(e => !usados.has(e)), seed + 7).forEach(e => { if (out.length < n) out.push(e); }); }
+  return out;
+}
+function generarWorkbookDia() {
+  const seed = Date.now() + Math.floor(Math.random() * 99999);
+  const clases = wbClasesOrden();
+  window.__wbSession = null; window.__wbTitulo = null; window.__wbSub = null;
+  if (wbTipo === 'ultima') {
+    const cl = clases.find(c => c.iso === wbClase); if (!cl) return showToast('No hay clases registradas todavía');
+    const pool = wbPoolDeClases([cl]);
+    if (pool.length < 5) return showToast('Esa clase tiene muy poco contenido para un workbook');
+    window.__wbSession = wbVariado(pool, 30, seed);
+    window.__wbTitulo = 'Workbook — clase del ' + cl.fecha;
+    window.__wbSub = cl.titulo + ' · solo lo nuevo de esa clase';
+  } else if (wbTipo === 'semanal') {
+    const hace7 = new Date(); hace7.setDate(hace7.getDate() - 7);
+    const iso7 = hace7.getFullYear() + '-' + String(hace7.getMonth() + 1).padStart(2, '0') + '-' + String(hace7.getDate()).padStart(2, '0');
+    const semana = clases.filter(c => c.iso >= iso7);
+    const parte1 = semana.length ? wbVariado(wbPoolDeClases(semana), 30, seed) : [];
+    const usados = new Set(parte1);
+    const parte2 = buildBalancedSession(getFullPool().filter(e => !usados.has(e)), 80 - parte1.length, seed + 1);
+    window.__wbSession = parte1.concat(parte2);
+    window.__wbTitulo = 'Workbook semanal grande';
+    window.__wbSub = (semana.length ? 'Ejercicios 1-' + parte1.length + ': clases de esta semana (' + semana.map(c => c.fecha).join(', ') + ') · resto: ' : '') + 'todo lo acumulado desde el 06/07, mezclado';
+  }
+  try { generatePrintWorkbook(); } finally { window.__wbSession = null; window.__wbTitulo = null; window.__wbSub = null; }
+}
+
+// ══════════════════════════════════════
 // RUTINA DIARIA (CHECKLIST)
 // ══════════════════════════════════════
 const CL_ITEMS = [
+  {id:'verbos', label:'Verbos — una ronda de parejas pasado–presente o de conjugar', tiempo:'5 min', pagina:'verbos'},
   {id:'habla', label:'Habla — una ronda en voz alta (diálogo, entrevista, monólogo…)', tiempo:'10 min', pagina:'habla'},
   {id:'deberes', label:'Deberes de hoy — sesión completa', tiempo:'20-30 min', pagina:'deberes'},
   {id:'tarjetas', label:'Tarjetas — repasa al menos 15', tiempo:'5-10 min', pagina:'tarjetas'},
@@ -5822,6 +6451,8 @@ function clGoTo(pagina) {
 }
 
 function initChecklist() {
+  renderPlanHoy();
+  renderWbCard();
   renderChecklist();
 }
 
@@ -5951,7 +6582,7 @@ function generatePrintWorkbook() {
   showToast('Generando workbook...');
   const pool = getFullPool();
   const seed = Date.now() + Math.floor(Math.random() * 999999);
-  const session = buildBalancedSession(pool, wbSize, seed);
+  const session = window.__wbSession || buildBalancedSession(pool, wbSize, seed);
   const fecha = new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
 
   const exerciseHTML = session.map((ex,i) => printExerciseHTML(ex, i+1)).join('\n');
@@ -5994,8 +6625,8 @@ function generatePrintWorkbook() {
     <button onclick="window.print()" style="background:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;">🖨️ Imprimir / Guardar PDF</button>
   </div>
   <div class="pw-header">
-    <div class="pw-title">Workbook de árabe — ${session.length} ejercicios</div>
-    <div class="pw-sub">${fecha} · Vocabulario + Pasado + Presente + Gramática, mezclados</div>
+    <div class="pw-title">${window.__wbTitulo || 'Workbook de árabe'} — ${session.length} ejercicios</div>
+    <div class="pw-sub">${fecha} · ${window.__wbSub || 'Vocabulario + Pasado + Presente + Gramática, mezclados'}</div>
   </div>
   ${exerciseHTML}
   <div class="pw-sol-page">
