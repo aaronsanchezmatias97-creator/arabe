@@ -6384,12 +6384,13 @@ function wbVariado(pool, n, seed) {
 function generarWorkbookDia() {
   const seed = Date.now() + Math.floor(Math.random() * 99999);
   const clases = wbClasesOrden();
-  window.__wbSession = null; window.__wbTitulo = null; window.__wbSub = null;
+  window.__wbSession = null; window.__wbTitulo = null; window.__wbSub = null; window.__wbClaves = null;
+  const clavesDe = lista => new Set([].concat(...lista.map(c => c.ar)).map(a => String(a).replace(/[\u064B-\u0652\u0670]/g, '')));
   if (wbTipo === 'ultima') {
     const cl = clases.find(c => c.iso === wbClase); if (!cl) return showToast('No hay clases registradas todavía');
     const pool = wbPoolDeClases([cl]);
     if (pool.length < 5) return showToast('Esa clase tiene muy poco contenido para un workbook');
-    window.__wbSession = wbVariado(pool, 30, seed);
+    window.__wbSession = wbVariado(pool, 30, seed); window.__wbClaves = clavesDe([cl]);
     window.__wbTitulo = 'Workbook — clase del ' + cl.fecha;
     window.__wbSub = cl.titulo + ' · solo lo nuevo de esa clase';
   } else if (wbTipo === 'semanal') {
@@ -6399,11 +6400,11 @@ function generarWorkbookDia() {
     const parte1 = semana.length ? wbVariado(wbPoolDeClases(semana), 30, seed) : [];
     const usados = new Set(parte1);
     const parte2 = buildBalancedSession(getFullPool().filter(e => !usados.has(e)), 80 - parte1.length, seed + 1);
-    window.__wbSession = parte1.concat(parte2);
+    window.__wbSession = parte1.concat(parte2); if (semana.length) window.__wbClaves = clavesDe(semana);
     window.__wbTitulo = 'Workbook semanal grande';
     window.__wbSub = (semana.length ? 'Ejercicios 1-' + parte1.length + ': clases de esta semana (' + semana.map(c => c.fecha).join(', ') + ') · resto: ' : '') + 'todo lo acumulado desde el 06/07, mezclado';
   }
-  try { generatePrintWorkbook(); } finally { window.__wbSession = null; window.__wbTitulo = null; window.__wbSub = null; }
+  try { generatePrintWorkbook(); } finally { window.__wbSession = null; window.__wbTitulo = null; window.__wbSub = null; window.__wbClaves = null; }
 }
 
 // ══════════════════════════════════════
@@ -6541,8 +6542,8 @@ function printExerciseHTML(ex, num) {
     const sentence = ex.sentence ? `<div class="pw-sentence">${pwEsc(ex.sentence)}</div>` : '';
     const question = ex.question ? `<div class="pw-q">${pwEsc(ex.question)}</div>` : '';
     const letras = ['a','b','c','d'];
-    const opts = (ex.ops||[]).map((o,j) => `<div class="pw-opt"><span class="pw-circle"></span>${letras[j]}) <span class="pw-ar-inline">${pwEsc(o)}</span></div>`).join('');
-    body = sentence + question + `<div class="pw-opts">${opts}</div>`;
+    const opts = (ex.ops||[]).map((o,j) => `<div class="pw-opt"><span class="pw-circle"></span>${letras[j]}) <span class="${/^[\s(«"]*[\u0600-\u06FF]/.test(o) ? 'pw-ar-inline' : ''}">${pwEsc(o)}</span></div>`).join('');
+    body = sentence + question + `<div class="pw-opts pw-opts-grid">${opts}</div>`;
   } else if (ex.fmt === 'tf') {
     body = `<div class="pw-opts"><div class="pw-opt"><span class="pw-circle"></span>Verdadero</div><div class="pw-opt"><span class="pw-circle"></span>Falso</div></div>`;
   } else if (ex.fmt === 'fill') {
@@ -6551,7 +6552,7 @@ function printExerciseHTML(ex, num) {
     const opts = (ex.ops||[]).map((o,j) => `<div class="pw-opt"><span class="pw-circle"></span>${letras[j]}) <span class="pw-ar-inline">${pwEsc(o)}</span></div>`).join('');
     body = `<div class="pw-sentence">${sentence}</div><div class="pw-opts">${opts}</div>`;
   } else if (ex.fmt === 'type') {
-    body = `<div class="pw-blank-line"></div>`;
+    body = `<div class="pw-blank-line"></div><div class="pw-blank-line"></div>`;
   } else if (ex.fmt === 'gender') {
     body = `<div class="pw-opts"><div class="pw-opt"><span class="pw-circle"></span>Masculino ♂</div><div class="pw-opt"><span class="pw-circle"></span>Femenino ♀</div></div>`;
   } else if (ex.fmt === 'match') {
@@ -6574,6 +6575,21 @@ function printExerciseHTML(ex, num) {
   </div>`;
 }
 
+// Producción: frases para traducir al árabe y preguntas para responder (de la clase si se indica, si no de todo)
+function pwProduccion(claves, n) {
+  const sinH = s => String(s || '').replace(/[\u064B-\u0652\u0670]/g, '');
+  const enClase = a => !claves || claves.has(sinH(a));
+  const fr = shuffle(FRASES.filter(f => f.es && enClase(f.ar)));
+  const dl = typeof HABLA !== 'undefined' ? shuffle(HABLA.dilo.filter(d => enClase(d.ar))) : [];
+  const rs = typeof HABLA !== 'undefined' ? shuffle(HABLA.responde.filter(r => enClase(r.q))) : [];
+  const out = [];
+  dl.slice(0, Math.ceil(n * 0.4)).forEach(d => out.push({tipo:'Traduce al árabe', pregunta: pwEsc(d.es), sol: `<span class="pw-ar-inline">${pwEsc(d.ar)}</span> (${pwEsc(d.tr)})`, lineas: 1}));
+  fr.slice(0, Math.ceil(n * 0.3)).forEach(f => out.push({tipo:'Traduce al árabe', pregunta: '«' + pwEsc(f.es) + '»', sol: `<span class="pw-ar-inline">${pwEsc(f.ar)}</span>`, lineas: 2}));
+  rs.slice(0, Math.max(1, n - out.length - 1)).forEach(r => out.push({tipo:'Responde en árabe (frase completa)', pregunta: pwEsc(r.q_es), arabic: r.q, sol: `Modelo: <span class="pw-ar-inline">${pwEsc(r.m)}</span> — ${pwEsc(r.m_es)}`, lineas: 2}));
+  out.push({tipo:'Redacción', pregunta: claves ? 'Escribe 4-5 frases tuyas usando lo nuevo de esta clase.' : 'Escribe 5-6 frases sobre ti (nombre, edad, de dónde eres, dónde vives, trabajo, idiomas y gustos).', sol: 'Respuesta libre: revisa harakat, género (ـكَ / ـكِ) y la partícula de cada pregunta.', lineas: 5});
+  return out;
+}
+
 function printSolutionHTML(ex, num) {
   return `<div class="pw-sol"><b>${num}.</b> ${pwEsc(ex.exp)}</div>`;
 }
@@ -6585,8 +6601,19 @@ function generatePrintWorkbook() {
   const session = window.__wbSession || buildBalancedSession(pool, wbSize, seed);
   const fecha = new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
 
-  const exerciseHTML = session.map((ex,i) => printExerciseHTML(ex, i+1)).join('\n');
-  const solutionHTML = session.map((ex,i) => printSolutionHTML(ex, i+1)).join('\n');
+  const ORDEN_B = ['vocab','conj_pasado','conj_presente','gramatica'];
+  const NOMBRE_B = {vocab:'Vocabulario y frases', conj_pasado:'Verbos — pasado', conj_presente:'Verbos — presente', gramatica:'Gramática'};
+  const ordenada = session.slice().sort((a, b) => ORDEN_B.indexOf(clasificarBloque(a)) - ORDEN_B.indexOf(clasificarBloque(b)));
+  let _blq = null, _sec = 0;
+  const exParts = ordenada.map((ex, i) => {
+    const b = clasificarBloque(ex); let head = '';
+    if (b !== _blq) { _blq = b; head = `<div class="pw-sec">${String.fromCharCode(65 + _sec++)} · ${NOMBRE_B[b]}</div>`; }
+    return head + printExerciseHTML(ex, i + 1);
+  });
+  const prod = pwProduccion(window.__wbClaves || null, Math.max(4, Math.round(ordenada.length / 5)));
+  const nBase = ordenada.length;
+  const exerciseHTML = exParts.join('\n') + (prod.length ? `<div class="pw-sec">${String.fromCharCode(65 + _sec)} · Producción: escribe tú en árabe</div>` + prod.map((p, i) => `<div class="pw-ex"><div class="pw-ex-head"><span class="pw-num">${nBase + i + 1}.</span> <span class="pw-tipo">${pwEsc(p.tipo)}</span></div><div class="pw-pregunta">${p.pregunta}</div>${p.arabic ? `<div class="pw-arabic" style="font-size:24px;">${pwEsc(p.arabic)}</div>` : ''}${'<div class="pw-blank-line"></div>'.repeat(p.lineas || 2)}</div>`).join('\n') : '');
+  const solutionHTML = `<div class="pw-sol-grid">` + ordenada.map((ex,i) => printSolutionHTML(ex, i+1)).join('\n') + prod.map((p, i) => `<div class="pw-sol"><b>${nBase + i + 1}.</b> ${p.sol}</div>`).join('\n') + `</div>`;
 
   const doc = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Workbook árabe — ${fecha}</title>
   <style>
@@ -6616,6 +6643,11 @@ function generatePrintWorkbook() {
     .pw-tiles { margin: 8px 0; font-family:'Traditional Arabic','Arabic Typesetting',serif; direction: rtl; font-size: 17px; }
     .pw-tile { display:inline-block; border:1px solid #999; border-radius:8px; padding:3px 10px; margin:3px; }
     .pw-sol-page { page-break-before: always; }
+    .pw-sec { background:#1B4332; color:#fff; font-size:13px; font-weight:700; padding:5px 10px; margin:18px 0 10px; border-radius:4px; page-break-after: avoid; }
+    .pw-opts-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 2px 18px; }
+    .pw-sol-grid { columns: 2; column-gap: 24px; }
+    .pw-sol-grid .pw-sol { break-inside: avoid; }
+    .pw-ar-inline { font-size: 18px; }
     .pw-sol { font-size: 12px; margin-bottom: 6px; }
     .pw-sol b { color:#1B4332; }
     .pw-footer { margin-top: 24px; font-size: 10px; color:#888; text-align:center; }
@@ -7200,13 +7232,14 @@ function generateDynamicPool() {
 
   // MC: ¿Cómo se dice en árabe? (español → árabe)
   VOCAB.filter(w => w.cat !== 'Frases').forEach(word => {
-    const pool = VOCAB.filter(w => w.ar !== word.ar && w.cat !== 'Frases');
+    const mismaCat = VOCAB.filter(w => w.ar !== word.ar && w.cat === word.cat);   // distractores de la misma categoría
+    const pool = mismaCat.length >= 3 ? mismaCat : VOCAB.filter(w => w.ar !== word.ar && w.cat !== 'Frases');
     const distractors = shuffle(pool).slice(0, 3).map(w => w.ar);
     if (distractors.length < 3) return;
     const ops = shuffle([word.ar, ...distractors]);
     auto.push({
       fmt:"mc", tipo:"Vocabulario",
-      pregunta:"¿Cómo se dice en árabe?",
+      pregunta:`¿Cómo se dice en árabe «${word.es}»?`,
       arabic: "",
       ops, ok: word.ar,
       exp: `${word.es} = ${word.ar} (${word.tr})`
@@ -7604,10 +7637,31 @@ const EJERCICIOS_POOL = [
   {fmt:"build",tipo:"Construye",pregunta:"Forma: '¿Quién es este?'",tiles:["مَنْ","مَا","هَذَا","هَذِهِ"],correct:["مَنْ","هَذَا"],exp:"مَنْ هَذَا؟ — مَنْ para personas + هَذَا para masculino."},
 ];
 
+// Solo palabras sueltas que son sustantivos/adjetivos tienen sentido en solar/lunar, artículo, género y detecta.
+const CATS_NO_NOMBRE = new Set(['Saludos','Verbos','Adverbios','Frases','Preguntas','Posesivos','Pronombres','Frases básicas','Gustos','Idiomas','Números','Días','Respuestas']);
+const TIPOS_SOLO_NOMBRE = /^(Solar \/ Lunar|Artículo — ¿cómo suena\?|¿Masculino o femenino\?|Detecta)/;
+let _catPorAr = null;
+function limpiarPool(pool) {
+  if (!_catPorAr) { _catPorAr = {}; VOCAB.forEach(w => { _catPorAr[w.ar] = w.cat; }); }
+  const sinH = s => String(s || '').replace(/[\u064B-\u0652\u0670]/g, '');
+  return pool.filter(ex => {
+    if (!TIPOS_SOLO_NOMBRE.test(ex.tipo)) return true;
+    const a = ex.arabic || '';
+    if (!a || /[\s؟?،]/.test(a.trim())) return false;              // frases o vacío
+    if (/^(ال|ٱل)/.test(sinH(a).replace(/^ا(?=ل)/, 'ال'))) return ex.tipo.startsWith('Detecta'); // ya lleva artículo
+    const cat = _catPorAr[a];
+    return !cat || !CATS_NO_NOMBRE.has(cat);
+  }).map(ex => {
+    // comillas convertidas por error en ʿ…ʿ → '…'
+    ['pregunta', 'exp', 'question'].forEach(f => { if (typeof ex[f] === 'string' && ex[f].indexOf('ʿ') >= 0) ex[f] = ex[f].replace(/(^|[\s(“"])ʿ([^ʿ\n]{1,40}?)ʿ(?=[\s.,;:)!?"”]|$)/g, "$1'$2'"); });
+    return ex;
+  });
+}
+
 function getFullPool() {
   try {
     const dynamic = generateDynamicPool();
-    return [...EJERCICIOS_POOL, ...dynamic];
+    return limpiarPool([...EJERCICIOS_POOL, ...dynamic]);
   } catch(e) {
     console.warn('getFullPool error:', e);
     return [...EJERCICIOS_POOL];
