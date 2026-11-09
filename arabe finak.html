@@ -5348,19 +5348,47 @@ function setPatVerbo(v) {
 // ══════════════════════════════════════
 let currentAudio = null;
 function speak(text, rate) {
-  // Try Web Speech API first (best mobile support)
+  // Voz del sistema. Arreglo iOS (09/11/2026): no cancelar si no hay nada sonando (en iOS, cancel()+speak() seguidos
+  // se come la frase), elegir sola una voz árabe instalada y no lanzar el audio de Google si la voz ya ha empezado.
   if ('speechSynthesis' in window) {
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'ar-SA'; u.rate = rate || 0.75; u.pitch = 1;
-    const _v = (typeof arVoice === 'function') ? arVoice() : null; if (_v) u.voice = _v;
-    u.onerror = () => tryGoogleTTS(text);
-    speechSynthesis.speak(u);
-    // If no voice fires in 1s, try Google TTS
-    setTimeout(() => { if (speechSynthesis.speaking === false) tryGoogleTTS(text); }, 1000);
+    const go = () => {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'ar-SA'; u.rate = rate || 0.75; u.pitch = 1;
+      const _v = (typeof arVoice === 'function') ? arVoice() : null; if (_v) { u.voice = _v; u.lang = _v.lang; }
+      let started = false;
+      u.onstart = () => { started = true; };
+      u.onerror = (e) => { if (!started && e && e.error !== 'interrupted' && e.error !== 'canceled') tryGoogleTTS(text); };
+      try { speechSynthesis.resume(); } catch (e) {}
+      speechSynthesis.speak(u);
+      setTimeout(() => { if (!started && !speechSynthesis.speaking && !speechSynthesis.pending) tryGoogleTTS(text); }, 2500);
+    };
+    if (speechSynthesis.speaking || speechSynthesis.pending) { speechSynthesis.cancel(); setTimeout(go, 80); } else go();
   } else {
     tryGoogleTTS(text);
   }
+}
+// iOS: la primera voz tiene que salir de un toque del usuario; se «desbloquea» con el primer toque en la página.
+let _ttsUnlocked = false;
+function ttsUnlock() {
+  if (_ttsUnlocked || !('speechSynthesis' in window)) return; _ttsUnlocked = true;
+  try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; u.lang = 'ar-SA'; speechSynthesis.speak(u); } catch (e) {}
+}
+document.addEventListener('touchend', ttsUnlock, {passive: true}); document.addEventListener('click', ttsUnlock);
+// Prueba de voz (Habla → Mi ficha): dice qué pasa para poder diagnosticarlo
+function ttsProbar() {
+  const out = document.getElementById('hb-voz-test'); const log = t => { if (out) out.innerHTML += t + '<br>'; };
+  if (out) out.innerHTML = '';
+  if (!('speechSynthesis' in window)) return log('❌ Este navegador no tiene voz (speechSynthesis).');
+  const vs = speechSynthesis.getVoices(), ar = vs.filter(v => /^ar/i.test(v.lang)), v = arVoice();
+  log('Voces en total: ' + vs.length + ' · árabes: ' + ar.length + (ar.length ? ' (' + ar.map(x => x.name + ' ' + x.lang).join(', ') + ')' : ''));
+  log('Voz que usa la app: ' + (v ? v.name + ' (' + v.lang + ')' : 'ninguna árabe → el sistema elige'));
+  const u = new SpeechSynthesisUtterance('مَرْحَبًا، كَيْفَ حَالُكَ؟'); u.lang = 'ar-SA'; u.rate = 0.8; if (v) { u.voice = v; u.lang = v.lang; }
+  u.onstart = () => log('▶️ Empieza a sonar'); u.onend = () => log('✅ Terminado (si no lo has oído: volumen o modo silencio)');
+  u.onerror = e => log('❌ Error: ' + (e && e.error));
+  try { speechSynthesis.cancel(); } catch (e) {}
+  try { speechSynthesis.resume(); } catch (e) {}
+  speechSynthesis.speak(u);
+  setTimeout(() => { if (out && !/Empieza|Error/.test(out.innerHTML)) log('⏳ No ha empezado en 3 s.'); }, 3000);
 }
 function tryGoogleTTS(text) {
   try {
@@ -6132,8 +6160,9 @@ function hbSay(text, rate, cb) {
   if ('speechSynthesis' in window) {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'ar-SA'; u.rate = rate || 0.75;
-    const _v = arVoice(); if (_v) u.voice = _v;
+    const _v = arVoice(); if (_v) { u.voice = _v; u.lang = _v.lang; }
     u.onend = fin; u.onerror = fin;
+    try { speechSynthesis.resume(); } catch (e) {}
     speechSynthesis.speak(u);
     setTimeout(fin, (1500 + text.length * 110) / (rate || 0.75) * 0.75);
   } else { speak(text, rate); setTimeout(fin, 1500 + text.length * 110); }
@@ -6259,6 +6288,8 @@ function hbAjustes() {
     <div class="hb-row"><button class="hb-btn" onclick="hbFichaGuardar(true)">👁️ Vista previa</button><button class="hb-btn go" onclick="hbFichaGuardar()">💾 Guardar</button></div>
     <div class="hb-lbl" style="margin-top:22px;">🔊 Voz árabe</div>
     <select id="hb-voz" style="${inp}" onchange="hbVozSet(this.value)"></select>
+    <div class="hb-row"><button class="hb-btn go" onclick="ttsProbar()">🔊 Probar voz</button></div>
+    <div id="hb-voz-test" style="font-size:12px;color:var(--cream2);line-height:1.5;"></div>
     <div class="hb-row"><button class="hb-btn" onclick="speak('مَرْحَبًا! مَا اسْمُكَ؟ أَسْكُنُ فِي مَدْرِيدَ.')">▶️ Probar voz</button></div>
     <div class="hb-meta">Si no aparece ninguna, instala una voz árabe en los ajustes del móvil (Texto a voz / Contenido hablado).</div>
     <div class="hb-row"><button class="hb-btn" onclick="initHabla()">← Volver</button></div>`);
@@ -6289,7 +6320,11 @@ function hbVozSet(uri) { safeSetItem('arabic_voz', uri); showToast(uri ? '✓ Vo
 function arVoice() {
   if (!('speechSynthesis' in window)) return null;
   const uri = safeGetItem('arabic_voz', '');
-  return uri ? (speechSynthesis.getVoices().find(v => v.voiceURI === uri) || null) : null;
+  const vs = speechSynthesis.getVoices();
+  const elegida = uri ? vs.find(v => v.voiceURI === uri) : null;
+  if (elegida) return elegida;
+  const ar = vs.filter(v => /^ar/i.test(v.lang));
+  return ar.find(v => /ar[-_]SA/i.test(v.lang)) || ar[0] || null;
 }
 if ('speechSynthesis' in window) { try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => hbVozFill(); } catch (e) {} }
 function hbSayEs(text, cb) {
@@ -6625,47 +6660,60 @@ const PLAN_VAC = {
 // Semana 09–13/11/2026: solo árabe, reforzar el libro A2 (p. 3-12) y las horas. 2 h al día.
 const PLAN_FECHA = {
   '2026-11-09': [
-      {h:'Árabe', min:15, tipo:'ar', txt:'Tarjetas: «Datos personales», «Países y nacionalidades», «Profesiones», «Idiomas»', go:'tarjetas'},
+      {h:'Árabe', min:10, tipo:'ar', txt:'🔤 Verbos grupo 1 (ذَهَبَ, أَكَلَ, شَرِبَ, عَمِلَ): escribe el PRESENTE desde el pasado. Abre «📋 Tabla del grupo», dilo en voz alta y repite la ronda hasta 4/4', go:'verbos:pp:g1'},
+      {min:5, tipo:'ar', txt:'🔤 Verbos grupo 1 al revés: escribe el PASADO desde el presente', go:'verbos:pr:g1'},
+      {min:10, tipo:'ar', txt:'🔤 Verbos grupo 1: conjuga (yo, tú, él…) en pasado y presente', go:'verbos:conjugar:g1'},
+      {min:10, tipo:'ar', txt:'Tarjetas: «Datos personales», «Países y nacionalidades», «Profesiones», «Idiomas»', go:'tarjetas'},
       {min:20, tipo:'ar', txt:'L1 p. 3, puntos 1-2: datos personales y frases básicas, en voz alta y luego sin mirar', go:'vocab'},
       {min:20, tipo:'ar', txt:'L1 p. 4, punto 3: preguntas en masculino y femenino (اِسْمُكَ / اِسْمُكِ, تَسْكُنُ / تَسْكُنِينَ)', go:'habla:dilo:a2'},
       {min:25, tipo:'ar', txt:'L1 p. 4-5, puntos 4-6: nacionalidades y profesiones él / ella, idiomas', go:'habla:rapida:a2'},
-      {min:20, tipo:'ar', txt:'Habla → Dilo con filtro A2', go:'habla:dilo:a2'},
       {min:20, tipo:'ar', txt:'🕐 Horas: en punto de la 1 a las 12, con تَمَامًا y فِي السَّاعَةِ', go:'habla:dilo:a2'},
   ],
   '2026-11-10': [
-      {h:'Árabe', min:10, tipo:'ar', txt:'Tarjetas: «Gustos» y categorías de la L1', go:'tarjetas'},
+      {h:'Árabe', min:10, tipo:'ar', txt:'🔤 Verbos grupo 2 (دَرَسَ, كَتَبَ, سَكَنَ, قَرَأَ): escribe el PRESENTE desde el pasado (mira antes la tabla)', go:'verbos:pp:g2'},
+      {min:5, tipo:'ar', txt:'🔤 Grupos 1-2 al revés: escribe el PASADO desde el presente', go:'verbos:pr:g12'},
+      {min:10, tipo:'ar', txt:'🔤 Grupos 1-2: conjuga en pasado y presente', go:'verbos:conjugar:g12'},
+      {min:10, tipo:'ar', txt:'Tarjetas: «Gustos» y categorías de la L1', go:'tarjetas'},
       {min:15, tipo:'ar', txt:'L1 p. 5, punto 7: modelo de Laura (audio 1), frase a frase', go:'habla:comprension:a2'},
-      {min:10, tipo:'ar', txt:'L1 p. 5, punto 8: gustos, أُحِبُّ / لَا أُحِبُّ con 6 cosas tuyas', go:'habla:dilo:a2'},
-      {min:20, tipo:'ar', txt:'L1 p. 6, puntos 9-10: diálogo de Ahmed y Sami (los dos papeles) y comprensión', go:'habla:dialogo:a2'},
-      {min:20, tipo:'ar', txt:'L1 p. 6-7, puntos 11-12: completa tu presentación y entrevista con tus datos', go:'habla:responde:a2'},
-      {min:25, tipo:'ar', txt:'L1 p. 7, punto 15: presentación de 1 minuto, 3 veces grabándote', go:'habla:monologo:a2'},
+      {min:5, tipo:'ar', txt:'L1 p. 5, punto 8: gustos, أُحِبُّ / لَا أُحِبُّ con 6 cosas tuyas', go:'habla:dilo:a2'},
+      {min:15, tipo:'ar', txt:'L1 p. 6, puntos 9-10: diálogo de Ahmed y Sami (los dos papeles) y comprensión', go:'habla:dialogo:a2'},
+      {min:15, tipo:'ar', txt:'L1 p. 6-7, puntos 11-12: completa tu presentación y entrevista con tus datos', go:'habla:responde:a2'},
+      {min:15, tipo:'ar', txt:'L1 p. 7, punto 15: presentación de 1 minuto, 3 veces grabándote', go:'habla:monologo:a2'},
       {min:20, tipo:'ar', txt:'🕐 Horas: y cuarto (وَالرُّبْعُ) y y media (وَالنِّصْفُ)', go:'habla:dilo:a2'},
   ],
   '2026-11-11': [
-      {h:'Árabe', min:15, tipo:'ar', txt:'Tarjetas: «Mi día» y «Mi día — verbos»', go:'tarjetas'},
+      {h:'Árabe', min:10, tipo:'ar', txt:'🔤 Verbos grupo 3 (رَجَعَ, فَعَلَ, نَامَ, اِسْتَيْقَظَ): escribe el PRESENTE desde el pasado (mira antes la tabla)', go:'verbos:pp:g3'},
+      {min:5, tipo:'ar', txt:'🔤 Grupos 1-3 al revés: escribe el PASADO desde el presente', go:'verbos:pr:g123'},
+      {min:10, tipo:'ar', txt:'🔤 Grupos 1-3: conjuga en pasado y presente', go:'verbos:conjugar:g123'},
+      {min:15, tipo:'ar', txt:'Tarjetas: «Mi día» y «Mi día — verbos»', go:'tarjetas'},
       {min:15, tipo:'ar', txt:'L2 p. 8, punto 1: palabras importantes, sin mirar y con artículo', go:'vocab'},
-      {min:25, tipo:'ar', txt:'L2 p. 8, punto 2: verbos prácticos en pareja pasado–presente y conjugados en presente', go:'patrones'},
       {min:15, tipo:'ar', txt:'L2 p. 9, punto 3 (أَنَا): las 6 frases y las mismas con él / ella', go:'habla:rapida:a2'},
       {min:20, tipo:'ar', txt:'L2 p. 9, punto 4: mi horario con فِي السَّاعَةِ (tu horario real)', go:'habla:monologo:a2'},
       {min:20, tipo:'ar', txt:'🕐 Horas: y veinte (وَالثُّلْثُ), menos cuarto y menos veinte (hora siguiente + إِلَّا). Lee las fichas y dilas', go:'gram'},
       {min:10, tipo:'ar', txt:'Habla → Dilo de la L2', go:'habla:dilo:a2'},
   ],
   '2026-11-12': [
-      {h:'Árabe', min:10, tipo:'ar', txt:'Tarjetas: categorías de la L2 y «Las horas»', go:'tarjetas'},
-      {min:20, tipo:'ar', txt:'L2 p. 10, punto 5: texto «يَوْمِي» (audio 2), 3 lecturas y luego en 3ª persona (يَسْتَيْقِظُ…)', go:'habla:comprension:a2'},
-      {min:20, tipo:'ar', txt:'L2 p. 10, punto 6: preguntas del libro con frases completas', go:'habla:responde:a2'},
+      {h:'Árabe', min:10, tipo:'ar', txt:'🔤 Verbos grupo 4 (تَكَلَّمَ, أَحَبَّ) + los 14: escribe el PRESENTE desde el pasado', go:'verbos:pp:a2'},
+      {min:5, tipo:'ar', txt:'🔤 Los 14 al revés: escribe el PASADO desde el presente', go:'verbos:pr:a2'},
+      {min:10, tipo:'ar', txt:'🔤 Los 14: conjuga en pasado y presente', go:'verbos:conjugar:a2'},
+      {min:10, tipo:'ar', txt:'Tarjetas: categorías de la L2 y «Las horas»', go:'tarjetas'},
+      {min:15, tipo:'ar', txt:'L2 p. 10, punto 5: texto «يَوْمِي» (audio 2), 3 lecturas y luego en 3ª persona (يَسْتَيْقِظُ…)', go:'habla:comprension:a2'},
+      {min:15, tipo:'ar', txt:'L2 p. 10, punto 6: preguntas del libro con frases completas', go:'habla:responde:a2'},
       {min:15, tipo:'ar', txt:'Lo que añadió el profesor: ¿qué haces? (تَفْعَلُ / تَعْمَلُ) y partículas por verbo', go:'verbos'},
-      {min:25, tipo:'ar', txt:'L2 p. 11, punto 7: habla 30-60 s de tu día, 3 grabaciones', go:'habla:monologo:a2'},
+      {min:15, tipo:'ar', txt:'L2 p. 11, punto 7: habla 30-60 s de tu día, 3 grabaciones', go:'habla:monologo:a2'},
       {min:20, tipo:'ar', txt:'🕐 Horas: todas mezcladas, 11-19 y مِنْ … إِلَى …', go:'habla:rapida:a2'},
-      {min:10, tipo:'ar', txt:'🕐 Gram.: fichas de las horas en voz alta (y «a las…» con fracción)', go:'gram'},
+      {min:5, tipo:'ar', txt:'🕐 Gram.: fichas de las horas en voz alta (y «a las…» con fracción)', go:'gram'},
   ],
   '2026-11-13': [
-      {h:'Árabe', min:10, tipo:'ar', txt:'Tarjetas: «Mi familia» y «Mi familia — adjetivos»', go:'tarjetas'},
-      {min:20, tipo:'ar', txt:'L3 p. 12, punto 1: vocabulario y هَذَا / هَذِهِ con una foto real de tu familia', go:'habla:hoy'},
-      {min:20, tipo:'ar', txt:'L3 p. 12, punto 2: adjetivos m/f, describe a 5 personas (أُخْتِي طَوِيلَة…)', go:'habla:dilo:ult'},
-      {min:20, tipo:'ar', txt:'🕐 Horas: ronda rápida de todo y tu horario de corrido', go:'habla:rapida:a2'},
+      {h:'Árabe', min:8, tipo:'ar', txt:'🔤 Repaso de los 14: PRESENTE desde el pasado, sin mirar la tabla', go:'verbos:pp:a2'},
+      {min:7, tipo:'ar', txt:'🔤 Repaso de los 14: PASADO desde el presente, sin mirar la tabla', go:'verbos:pr:a2'},
+      {min:10, tipo:'ar', txt:'🔤 Repaso de los 14: conjuga en pasado y presente', go:'verbos:conjugar:a2'},
+      {min:10, tipo:'ar', txt:'Tarjetas: «Mi familia» y «Mi familia — adjetivos»', go:'tarjetas'},
+      {min:15, tipo:'ar', txt:'L3 p. 12, punto 1: vocabulario y هَذَا / هَذِهِ con una foto real de tu familia', go:'habla:hoy'},
+      {min:15, tipo:'ar', txt:'L3 p. 12, punto 2: adjetivos m/f, describe a 5 personas (أُخْتِي طَوِيلَة…)', go:'habla:dilo:ult'},
+      {min:15, tipo:'ar', txt:'🕐 Horas: ronda rápida de todo y tu horario de corrido', go:'habla:rapida:a2'},
       {min:30, tipo:'ar', txt:'Simulacro de 3 min grabado: presentación (L1) + mi día con horas (L2) + mi familia (L3)', go:'habla:monologo:a2'},
-      {min:20, tipo:'ar', txt:'Escucha la grabación, revisa Stats y apunta 3 fallos para la semana que viene', go:'stats'},
+      {min:10, tipo:'ar', txt:'Escucha la grabación, revisa Stats y apunta 3 fallos para la semana que viene', go:'stats'},
   ],
 };
 function planVacaciones() { try { return JSON.parse(safeGetItem('arabic_plan_modo', '{}')).modo === 'vac'; } catch (e) { return false; } }
@@ -6688,6 +6736,10 @@ function planGo(go) {
     return generarWorkbookDia();
   }
   clGoTo(pag);
+  if (pag === 'verbos' && filtro && VB_GRUPOS[filtro]) {
+    vbSolo = VB_GRUPOS[filtro]; vbSoloNom = VB_GRUPO_NOM[filtro] || filtro; vbDir = (modo === 'pp' || modo === 'pr') ? modo : null;
+    return setVbMode(modo === 'conjugar' ? 'conjugar' : 'pareja');
+  }
   if (pag === 'habla' && modo) {
     if (filtro) { hbFiltro = filtro; ['ult','a2','todo'].forEach(k => document.getElementById('hbf-' + k).classList.toggle('active', k === filtro)); }
     hbGuia = null; setHablaMode(modo);
@@ -6746,6 +6798,20 @@ const VB_MODELO = {
   'Forma III': 'Modelo III · no cambia, fatha (يَفْعَلُ)', 'Forma IV': 'Modelo IV · fatha → KASRA (يَفْعِلُ)',
   'Forma V (derivada)': 'Derivado Forma V (تَفَعَّلَ → يَتَفَعَّلُ)', 'Derivada أَفْعَلَ (أَحَبَّ)': 'Derivado أَفْعَلَ (prefijos con damma)',
 };
+// ── Verbos A2 por grupos (rutina de verbos, 09/11/2026) ──
+// vbSolo: lista de pasados a practicar (null = todos) · vbDir: 'pp' pasado→presente, 'pr' presente→pasado, null = la pareja entera
+const VB_GRUPOS = {
+  g1: ['ذَهَبَ', 'أَكَلَ', 'شَرِبَ', 'عَمِلَ'],
+  g2: ['دَرَسَ', 'كَتَبَ', 'سَكَنَ', 'قَرَأَ'],
+  g3: ['رَجَعَ', 'فَعَلَ', 'نَامَ', 'اِسْتَيْقَظَ'],
+  g4: ['تَكَلَّمَ', 'أَحَبَّ'],
+};
+VB_GRUPOS.g12 = VB_GRUPOS.g1.concat(VB_GRUPOS.g2);
+VB_GRUPOS.g123 = VB_GRUPOS.g12.concat(VB_GRUPOS.g3);
+VB_GRUPOS.a2 = VB_GRUPOS.g123.concat(VB_GRUPOS.g4);
+const VB_GRUPO_NOM = {g1:'grupo 1', g2:'grupo 2', g3:'grupo 3', g4:'grupo 4', g12:'grupos 1-2', g123:'grupos 1-3', a2:'los 14 del A2'};
+let vbSolo = null, vbSoloNom = '', vbDir = null;
+function vbQuitarFiltro() { vbSolo = null; vbDir = null; initVerbos(); }
 let vbMode = 'pareja', vbQueue = [], vbIdx = 0, vbC = 0, vbW = 0, vbTotal = 0, vbCur = null, vbShown = false;
 let vbStats = JSON.parse(safeGetItem('arabic_verbos', '{"rondas":0,"modos":{},"fallos":{}}'));
 function vbSave() { safeSetItem('arabic_verbos', JSON.stringify(vbStats)); }
@@ -6773,13 +6839,16 @@ function setVbMode(m) {
 function initVerbos() {
   if (vbMode === 'particulas') { document.getElementById('vb-card').style.display = ''; document.getElementById('vb-result').style.display = 'none'; ptVista = 'chuleta'; return ptRender(); }
   const sb = document.getElementById('vb-card').querySelector('.fr-score-bar'); if (sb) sb.style.display = '';
-  const all = vbVerbos();
+  let all = vbVerbos();
+  if (vbSolo) all = all.filter(v => vbSolo.includes(v.pasado));
   // mitad: los 15 más recientes (lo último de clase); resto al azar; los más fallados primero
   const recientes = all.slice().sort((a, b) => b.reciente - a.reciente).slice(0, 15);
   const pool = shuffle(recientes).slice(0, 5).concat(shuffle(all.filter(v => !recientes.includes(v))).slice(0, 5));
   const key = v => vbMode + ':' + v.pasado;
   pool.sort((a, b) => (vbStats.fallos[key(b)] || 0) - (vbStats.fallos[key(a)] || 0));
   vbQueue = vbMode === 'pregunta' ? vbPreguntaItems() : pool.map(v => vbMode === 'pareja' ? {v, k: key(v)} : vbConjItem(v));
+  if (vbSolo && vbMode === 'pareja') vbQueue = shuffle(all).map(v => ({v, k: key(v), dir: vbDir}));
+  if (vbSolo && vbMode === 'conjugar') vbQueue = shuffle(all.concat(all, all)).slice(0, Math.max(8, Math.min(12, all.length * 3))).map(vbConjItem);
   vbIdx = 0; vbC = 0; vbW = 0; vbTotal = vbQueue.length;
   document.getElementById('vb-card').style.display = '';
   document.getElementById('vb-result').style.display = 'none';
@@ -6802,8 +6871,21 @@ function vbRender() {
   const it = vbCur = vbQueue[vbIdx], el = document.getElementById('vb-content');
   const inp = 'width:100%;margin-top:12px;padding:12px 14px;border-radius:12px;border:1px solid rgba(201,168,76,.3);background:rgba(255,255,255,.06);color:var(--cream);font-size:24px;font-family:inherit;text-align:center;';
   const mic = HB_SR ? '<button class="hb-btn mic" id="vb-micbtn" onclick="vbListen()">🎙️ Decirlo</button>' : '';
-  if (vbMode === 'pareja') {
-    el.innerHTML = `<div class="hb-lbl">Di o escribe la pareja: pasado (él) – presente (él)</div>
+  const filtro = vbSolo ? `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;color:var(--gold2);">
+      <span>🎯 Solo ${hbEsc(vbSoloNom)}</span><a href="#" onclick="vbQuitarFiltro();return false;" style="color:var(--cream2);">✕ ver todos los verbos</a></div>
+      <details style="margin-bottom:8px;font-size:13px;"><summary style="cursor:pointer;color:var(--cream2);">📋 Tabla del grupo (míralo, dilo en voz alta y ciérralo)</summary>
+      <div style="margin-top:6px;">${vbVerbos().filter(v => vbSolo.includes(v.pasado)).map(v => `<div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.06);"><span>${hbEsc(v.es)}</span><span class="hb-said" style="font-size:19px;">${v.pasado} – ${v.presente}</span></div>`).join('')}</div></details>` : '';
+  if (vbMode === 'pareja' && it.dir) {
+    const pp = it.dir === 'pp';
+    el.innerHTML = filtro + `<div class="hb-lbl">${pp ? 'Escribe el PRESENTE (él) a partir del pasado' : 'Escribe el PASADO (él) a partir del presente'}</div>
+      <div class="hb-es" style="font-size:16px;margin:12px 0 2px;">«${hbEsc(it.v.es)}» · ${pp ? '<span style="color:#FF9FC2;">pasado</span>' : '<span style="color:#7FB3FF;">presente</span>'}</div>
+      <div class="hb-ar sm" style="text-align:center;margin:6px 0;">${pp ? it.v.pasado : it.v.presente}</div>
+      <div class="hb-meta" style="margin-top:0;">${pp ? 'Pon يَ delante, la 1ª letra sin vocal y cambia la vocal del medio según el modelo' : 'Quita el يَ y pon fatha en la 1ª letra'}</div>
+      <input id="vb-in" dir="rtl" style="${inp}" placeholder="${pp ? 'presente (él)' : 'pasado (él)'}" autocomplete="off" onkeydown="if(event.key==='Enter')vbCheck()">
+      <div class="hb-row"><button class="hb-btn go" onclick="vbCheck()">Comprobar</button>${mic}<button class="hb-btn" onclick="vbReveal()">💡 Ver</button></div>
+      <div id="vb-out"></div>`;
+  } else if (vbMode === 'pareja') {
+    el.innerHTML = filtro + `<div class="hb-lbl">Di o escribe la pareja: pasado (él) – presente (él)</div>
       <div class="hb-es" style="font-size:22px;margin:16px 0 4px;">«${hbEsc(it.v.es)}»</div>
       <div class="hb-meta" style="margin-top:0;">ej.: كَتَبَ – يَكْتُبُ</div>
       <input id="vb-in" dir="rtl" style="${inp}" placeholder="pasado – presente" autocomplete="off" onkeydown="if(event.key==='Enter')vbCheck()">
@@ -6821,7 +6903,7 @@ function vbRender() {
       <div id="vb-out"></div>`;
   } else {
     const t = it.tiempo === 'pasado';
-    el.innerHTML = `<div class="hb-lbl">Conjuga desde la pareja</div>
+    el.innerHTML = filtro + `<div class="hb-lbl">Conjuga desde la pareja</div>
       <div class="hb-box" style="text-align:center;margin-top:10px;"><div class="hb-ar sm">${it.v.pasado} – ${it.v.presente}</div><div style="font-size:12px;">${hbEsc(it.v.es)} · ${hbEsc(it.v.modelo)}</div></div>
       <div class="hb-es" style="font-size:20px;margin:14px 0 0;">${hbEsc(it.p.persona)} · <span style="color:${t ? '#FF9FC2' : '#7FB3FF'};">${t ? 'PASADO' : 'PRESENTE'}</span></div>
       <input id="vb-in" dir="rtl" style="${inp}" placeholder="forma" autocomplete="off" onkeydown="if(event.key==='Enter')vbCheck()">
@@ -6830,7 +6912,7 @@ function vbRender() {
   }
   setTimeout(() => { const i = document.getElementById('vb-in'); if (i && !('ontouchstart' in window)) i.focus(); }, 50);
 }
-function vbTarget() { const it = vbCur; return vbMode === 'pareja' ? [it.v.pasado, it.v.presente] : vbMode === 'pregunta' ? vbSkel(it.u[it.g]).split(' ') : [it.p.forma]; }
+function vbTarget() { const it = vbCur; return vbMode === 'pareja' ? (it.dir === 'pp' ? [it.v.presente] : it.dir === 'pr' ? [it.v.pasado] : [it.v.pasado, it.v.presente]) : vbMode === 'pregunta' ? vbSkel(it.u[it.g]).split(' ') : [it.p.forma]; }
 function vbSkel(s) { return hbNorm(s).replace(/[-–—]/g, ' ').replace(/\s+/g, ' ').trim(); }
 function vbCheck(dicho) {
   if (vbShown) return;
