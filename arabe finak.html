@@ -2371,6 +2371,14 @@ const GRAMMAR = [
     {ar:"السَّاعَةُ الْعَاشِرَةُ وَالرُّبْعُ",tr:"as-sāʿatu l-ʿāširatu wa-r-rubʿu",es:"Son las diez y cuarto",note:""},
     {ar:"السَّاعَةُ الْوَاحِدَةُ تَمَامًا",tr:"as-sāʿatu l-wāḥidatu tamāman",es:"Es la una en punto",note:""},
   ]},
+  // ── A2 · refuerzo 09/11/2026 (propuesta: no explicado así en clase) ──
+  {title:"«A las…» con fracción — فِي السَّاعَةِ + genitivo (propuesta)",desc:"Detrás de فِي todo pasa a genitivo (-i): السَّاعَةُ → فِي السَّاعَةِ, y también el ordinal y la fracción con وَ: وَالرُّبْعُ → وَالرُّبْعِ, وَالنِّصْفُ → وَالنِّصْفِ, وَالثُّلْثُ → وَالثُّلْثِ. إِلَّا رُبْعًا / إِلَّا ثُلْثًا NO cambian. La 11 y la 12 tampoco: الْحَادِيَةَ عَشْرَةَ. Para «de… a…»: مِنَ السَّاعَةِ … إِلَى السَّاعَةِ …",examples:[
+    {ar:"أَسْتَيْقِظُ فِي السَّاعَةِ السَّابِعَةِ وَالنِّصْفِ",tr:"astayqiẓu fī s-sāʿati s-sābiʿati wa-n-niṣfi",es:"Me despierto a las siete y media",note:"-i"},
+    {ar:"أَنَامُ فِي السَّاعَةِ الْعَاشِرَةِ وَالرُّبْعِ",tr:"anāmu fī s-sāʿati l-ʿāširati wa-r-rubʿi",es:"Duermo a las diez y cuarto",note:"-i"},
+    {ar:"أَرْجِعُ فِي السَّاعَةِ الثَّالِثَةِ إِلَّا رُبْعًا",tr:"arŷiʿu fī s-sāʿati ṯ-ṯāliṯati illā rubʿan",es:"Vuelvo a las tres menos cuarto",note:"إِلَّا no cambia"},
+    {ar:"أَعْمَلُ مِنَ السَّاعَةِ السَّادِسَةِ إِلَى السَّاعَةِ الثَّانِيَةِ",tr:"aʿmalu mina s-sāʿati s-sādisati ilā s-sāʿati ṯ-ṯāniyati",es:"Trabajo de seis a dos",note:""},
+    {ar:"يَنَامُ فِي السَّاعَةِ الْحَادِيَةَ عَشْرَةَ وَالنِّصْفِ",tr:"yanāmu fī s-sāʿati l-ḥādiyata ʿašrata wa-n-niṣfi",es:"Duerme a las once y media",note:"11 no cambia"},
+  ]},
 ];
 const FRASES = [
   // Frases simples con demostrativo
@@ -2673,6 +2681,10 @@ const HABLA = {
     {lec:"A2 · L2 Mi día",q:"مَاذَا تَشْرَبُ؟",q_tr:"māḏā tašrabu?",q_es:"¿Qué bebes? (libro p. 10)",m:"أَشْرَبُ الْقَهْوَةَ",m_tr:"ašrabu l-qahwata",m_es:"Bebo café",clave:[["اشرب"]]},
     {lec:"A2 · L2 Mi día",q:"مَتَى تَذْهَبُ إِلَى الْعَمَلِ؟",q_tr:"matā taḏhabu ilā l-ʿamali?",q_es:"¿Cuándo vas al trabajo? (libro p. 10)",m:"أَذْهَبُ إِلَى الْعَمَلِ فِي السَّاعَةِ الثَّامِنَةِ",m_tr:"aḏhabu ilā l-ʿamali fī s-sāʿati ṯ-ṯāminati",m_es:"Voy al trabajo a las ocho",clave:[["اذهب"], ["الساعه"]]},
     {lec:"A2 · L2 Mi día",q:"مِنْ مَتَى إِلَى مَتَى تَعْمَلُ؟",q_tr:"min matā ilā matā taʿmalu?",q_es:"¿De qué hora a qué hora trabajas?",m:"أَعْمَلُ مِنَ السَّاعَةِ ... إِلَى السَّاعَةِ ...",m_tr:"aʿmalu mina s-sāʿati ... ilā s-sāʿati ...",m_es:"Trabajo de las ... a las ...",clave:[["اعمل"], ["من"], ["الى"]]},
+    {lec:"A2 · L2 Mi día",q:"مَتَى تَأْكُلُ الْغَدَاءَ؟",q_tr:"matā taʾkulu l-ġadāʾa?",q_es:"¿Cuándo almuerzas?",m:"آكُلُ الْغَدَاءَ فِي السَّاعَةِ ...",m_tr:"ākulu l-ġadāʾa fī s-sāʿati ...",m_es:"Almuerzo a las ...",clave:[["اكل"], ["الساعه"]]},
+    {lec:"A2 · L2 Mi día",q:"مَتَى تَشْرَبُ الْقَهْوَةَ؟",q_tr:"matā tašrabu l-qahwata?",q_es:"¿Cuándo bebes café?",m:"أَشْرَبُ الْقَهْوَةَ فِي السَّاعَةِ ...",m_tr:"ašrabu l-qahwata fī s-sāʿati ...",m_es:"Bebo café a las ...",clave:[["اشرب"], ["الساعه"]]},
+    {lec:"A2 · L2 Mi día",q:"مَتَى تَقْرَأُ؟",q_tr:"matā taqraʾu?",q_es:"¿Cuándo lees?",m:"أَقْرَأُ فِي الْمَسَاءِ، فِي السَّاعَةِ ...",m_tr:"aqraʾu fī l-masāʾi, fī s-sāʿati ...",m_es:"Leo por la tarde, a las ...",clave:[["اقرا"]]},
+    {lec:"A2 · L2 Mi día",q:"مِنْ مَتَى إِلَى مَتَى تَدْرُسُ؟",q_tr:"min matā ilā matā tadrusu?",q_es:"¿De qué hora a qué hora estudias?",m:"أَدْرُسُ مِنَ السَّاعَةِ ... إِلَى السَّاعَةِ ...",m_tr:"adrusu mina s-sāʿati ... ilā s-sāʿati ...",m_es:"Estudio de las ... a las ...",clave:[["ادرس"], ["من"], ["الى"]]},
     {lec:"A2 · L3 Mi familia",q:"مَنْ هَذَا؟",q_tr:"man hāḏā?",q_es:"¿Quién es este? (enseñando una foto)",m:"هَذَا أَبِي",m_tr:"hāḏā abī",m_es:"Este es mi padre",clave:[["هذا"]]},
     {lec:"A2 · L3 Mi familia",q:"مَنْ هَذِهِ؟",q_tr:"man hāḏihi?",q_es:"¿Quién es esta? (enseñando una foto)",m:"هَذِهِ أُمِّي",m_tr:"hāḏihi ummī",m_es:"Esta es mi madre",clave:[["هذه"]]},
     {lec:"A2 · L3 Mi familia",q:"مَا اسْمُ أُمِّكَ؟",q_tr:"mā ismu ummika?",q_es:"¿Cómo se llama tu madre?",m:"اِسْمُ أُمِّي ...",m_tr:"ismu ummī ...",m_es:"Mi madre se llama ...",clave:[["امي"]]},
@@ -2742,6 +2754,26 @@ const HABLA = {
     {lec:"A2 · L1 Presentarse",es:"Pregúntale a un hombre si estudia árabe",ar:"هَلْ تَدْرُسُ الْعَرَبِيَّةَ؟",tr:"hal tadrusu l-ʿarabiyyata?",genero:false},
     {lec:"A2 · L1 Presentarse",es:"Pregúntale a una mujer si estudia árabe",ar:"هَلْ تَدْرُسِينَ الْعَرَبِيَّةَ؟",tr:"hal tadrusīna l-ʿarabiyyata?",genero:false},
     {lec:"A2 · L1 Presentarse",es:"Di que estudias árabe",ar:"أَدْرُسُ الْعَرَبِيَّةَ",tr:"adrusu l-ʿarabiyyata",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es profesor (libro p. 4)",ar:"هُوَ مُدَرِّس",tr:"huwa mudarris",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es profesora (libro p. 4)",ar:"هِيَ مُدَرِّسَة",tr:"hiya mudarrisa",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es médico (libro p. 4)",ar:"هُوَ طَبِيب",tr:"huwa ṭabīb",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es médica (libro p. 4)",ar:"هِيَ طَبِيبَة",tr:"hiya ṭabība",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es ingeniero (libro p. 4)",ar:"هُوَ مُهَنْدِس",tr:"huwa muhandis",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es ingeniera (libro p. 4)",ar:"هِيَ مُهَنْدِسَة",tr:"hiya muhandisa",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es estudiante (libro p. 4)",ar:"هُوَ طَالِب",tr:"huwa ṭālib",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es estudiante (libro p. 4)",ar:"هِيَ طَالِبَة",tr:"hiya ṭāliba",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es empleado (libro p. 4)",ar:"هُوَ مُوَظَّف",tr:"huwa muwaẓẓaf",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es empleada (libro p. 4)",ar:"هِيَ مُوَظَّفَة",tr:"hiya muwaẓẓafa",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es periodista (libro p. 4)",ar:"هُوَ صَحَفِيّ",tr:"huwa ṣaḥafī",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es camarera (libro p. 4)",ar:"هِيَ نَادِلَة",tr:"hiya nādila",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es artista (libro p. 4)",ar:"هِيَ فَنَّانَة",tr:"hiya fannāna",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es español (libro p. 4)",ar:"هُوَ إِسْبَانِيّ",tr:"huwa isbānī",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es española (libro p. 4)",ar:"هِيَ إِسْبَانِيَّة",tr:"hiya isbāniyya",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es francés (libro p. 4)",ar:"هُوَ فَرَنْسِيّ",tr:"huwa faransī",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es francesa (libro p. 4)",ar:"هِيَ فَرَنْسِيَّة",tr:"hiya faransiyya",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es marroquí (libro p. 4)",ar:"هُوَ مَغْرِبِيّ",tr:"huwa maġribī",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que ella es marroquí (libro p. 4)",ar:"هِيَ مَغْرِبِيَّة",tr:"hiya maġribiyya",genero:false},
+    {lec:"A2 · L1 Presentarse",es:"Di que él es italiano (libro p. 4)",ar:"هُوَ إِيطَالِيّ",tr:"huwa īṭālī",genero:false},
     {lec:"A2 · L2 Mi día",es:"Di que te despiertas por la mañana",ar:"أَسْتَيْقِظُ فِي الصَّبَاحِ",tr:"astayqiẓu fī ṣ-ṣabāḥi",genero:false},
     {lec:"A2 · L2 Mi día",es:"Di que bebes té por la tarde",ar:"أَشْرَبُ الشَّايَ فِي الْمَسَاءِ",tr:"ašrabu š-šāya fī l-masāʾi",genero:false},
     {lec:"A2 · L2 Mi día",es:"Di que desayunas en casa",ar:"آكُلُ الْفُطُورَ فِي الْبَيْتِ",tr:"ākulu l-fuṭūra fī l-bayti",genero:false},
@@ -2801,6 +2833,59 @@ const HABLA = {
     {lec:"A2 · L2 Mi día",es:"Di la hora: 3:45 (las cuatro menos cuarto)",ar:"السَّاعَةُ الرَّابِعَةُ إِلَّا رُبْعًا",tr:"as-sāʿatu r-rābiʿatu illā rubʿan",genero:false},
     {lec:"A2 · L2 Mi día",es:"Di la hora: 1:20 (y veinte)",ar:"السَّاعَةُ الْوَاحِدَةُ وَالثُّلْثُ",tr:"as-sāʿatu l-wāḥidatu wa-ṯ-ṯulṯu",genero:false},
     {lec:"A2 · L2 Mi día",es:"Pregunta qué hora es (propuesta)",ar:"كَمِ السَّاعَةُ؟",tr:"kami s-sāʿatu?",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di el número 14",ar:"أَرْبَعَةَ عَشَرَ",tr:"arbaʿata ʿašara",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di el número 16",ar:"سِتَّةَ عَشَرَ",tr:"sittata ʿašara",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di el número 18",ar:"ثَمَانِيَةَ عَشَرَ",tr:"ṯamāniyata ʿašara",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 2:00 (las dos en punto)",ar:"السَّاعَةُ الثَّانِيَةُ تَمَامًا",tr:"as-sāʿatu ṯ-ṯāniyatu tamāman",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 9:00 (las nueve en punto)",ar:"السَّاعَةُ التَّاسِعَةُ تَمَامًا",tr:"as-sāʿatu t-tāsiʿatu tamāman",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 2:15 (las dos y cuarto)",ar:"السَّاعَةُ الثَّانِيَةُ وَالرُّبْعُ",tr:"as-sāʿatu ṯ-ṯāniyatu wa-r-rubʿu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 4:15 (las cuatro y cuarto)",ar:"السَّاعَةُ الرَّابِعَةُ وَالرُّبْعُ",tr:"as-sāʿatu r-rābiʿatu wa-r-rubʿu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 10:15 (las diez y cuarto)",ar:"السَّاعَةُ الْعَاشِرَةُ وَالرُّبْعُ",tr:"as-sāʿatu l-ʿāširatu wa-r-rubʿu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 12:15 (las doce y cuarto)",ar:"السَّاعَةُ الثَّانِيَةَ عَشْرَةَ وَالرُّبْعُ",tr:"as-sāʿatu ṯ-ṯāniyata ʿašrata wa-r-rubʿu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 7:20 (las siete y veinte)",ar:"السَّاعَةُ السَّابِعَةُ وَالثُّلْثُ",tr:"as-sāʿatu s-sābiʿatu wa-ṯ-ṯulṯu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 9:20 (las nueve y veinte)",ar:"السَّاعَةُ التَّاسِعَةُ وَالثُّلْثُ",tr:"as-sāʿatu t-tāsiʿatu wa-ṯ-ṯulṯu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 11:20 (las once y veinte)",ar:"السَّاعَةُ الْحَادِيَةَ عَشْرَةَ وَالثُّلْثُ",tr:"as-sāʿatu l-ḥādiyata ʿašrata wa-ṯ-ṯulṯu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 4:20 (las cuatro y veinte)",ar:"السَّاعَةُ الرَّابِعَةُ وَالثُّلْثُ",tr:"as-sāʿatu r-rābiʿatu wa-ṯ-ṯulṯu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 1:30 (la una y media)",ar:"السَّاعَةُ الْوَاحِدَةُ وَالنِّصْفُ",tr:"as-sāʿatu l-wāḥidatu wa-n-niṣfu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 6:30 (las seis y media)",ar:"السَّاعَةُ السَّادِسَةُ وَالنِّصْفُ",tr:"as-sāʿatu s-sādisatu wa-n-niṣfu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 10:30 (las diez y media)",ar:"السَّاعَةُ الْعَاشِرَةُ وَالنِّصْفُ",tr:"as-sāʿatu l-ʿāširatu wa-n-niṣfu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 12:30 (las doce y media)",ar:"السَّاعَةُ الثَّانِيَةَ عَشْرَةَ وَالنِّصْفُ",tr:"as-sāʿatu ṯ-ṯāniyata ʿašrata wa-n-niṣfu",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 1:40 (las dos menos veinte)",ar:"السَّاعَةُ الثَّانِيَةُ إِلَّا ثُلْثًا",tr:"as-sāʿatu ṯ-ṯāniyatu illā ṯulṯan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 5:40 (las seis menos veinte)",ar:"السَّاعَةُ السَّادِسَةُ إِلَّا ثُلْثًا",tr:"as-sāʿatu s-sādisatu illā ṯulṯan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 7:40 (las ocho menos veinte)",ar:"السَّاعَةُ الثَّامِنَةُ إِلَّا ثُلْثًا",tr:"as-sāʿatu ṯ-ṯāminatu illā ṯulṯan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 10:40 (las once menos veinte)",ar:"السَّاعَةُ الْحَادِيَةَ عَشْرَةَ إِلَّا ثُلْثًا",tr:"as-sāʿatu l-ḥādiyata ʿašrata illā ṯulṯan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 4:45 (las cinco menos cuarto)",ar:"السَّاعَةُ الْخَامِسَةُ إِلَّا رُبْعًا",tr:"as-sāʿatu l-jāmisatu illā rubʿan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 6:45 (las siete menos cuarto)",ar:"السَّاعَةُ السَّابِعَةُ إِلَّا رُبْعًا",tr:"as-sāʿatu s-sābiʿatu illā rubʿan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 8:45 (las nueve menos cuarto)",ar:"السَّاعَةُ التَّاسِعَةُ إِلَّا رُبْعًا",tr:"as-sāʿatu t-tāsiʿatu illā rubʿan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di la hora: 11:45 (las doce menos cuarto)",ar:"السَّاعَةُ الثَّانِيَةَ عَشْرَةَ إِلَّا رُبْعًا",tr:"as-sāʿatu ṯ-ṯāniyata ʿašrata illā rubʿan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que te despiertas a las cuatro y veinte",ar:"أَسْتَيْقِظُ فِي السَّاعَةِ الرَّابِعَةِ وَالثُّلْثِ",tr:"astayqiẓu fī s-sāʿati r-rābiʿati wa-ṯ-ṯulṯi",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que vas al trabajo a las cinco",ar:"أَذْهَبُ إِلَى الْعَمَلِ فِي السَّاعَةِ الْخَامِسَةِ",tr:"aḏhabu ilā l-ʿamali fī s-sāʿati l-jāmisati",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que trabajas de las seis a las dos",ar:"أَعْمَلُ مِنَ السَّاعَةِ السَّادِسَةِ إِلَى السَّاعَةِ الثَّانِيَةِ",tr:"aʿmalu mina s-sāʿati s-sādisati ilā s-sāʿati ṯ-ṯāniyati",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que vuelves a casa a las tres menos cuarto",ar:"أَرْجِعُ إِلَى الْبَيْتِ فِي السَّاعَةِ الثَّالِثَةِ إِلَّا رُبْعًا",tr:"arŷiʿu ilā l-bayti fī s-sāʿati ṯ-ṯāliṯati illā rubʿan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que almuerzas a las tres y media",ar:"آكُلُ الْغَدَاءَ فِي السَّاعَةِ الثَّالِثَةِ وَالنِّصْفِ",tr:"ākulu l-ġadāʾa fī s-sāʿati ṯ-ṯāliṯati wa-n-niṣfi",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que duermes a las diez y cuarto",ar:"أَنَامُ فِي السَّاعَةِ الْعَاشِرَةِ وَالرُّبْعِ",tr:"anāmu fī s-sāʿati l-ʿāširati wa-r-rubʿi",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que bebes té a las seis menos veinte",ar:"أَشْرَبُ الشَّايَ فِي السَّاعَةِ السَّادِسَةِ إِلَّا ثُلْثًا",tr:"ašrabu š-šāya fī s-sāʿati s-sādisati illā ṯulṯan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que lees de las nueve a las diez",ar:"أَقْرَأُ مِنَ السَّاعَةِ التَّاسِعَةِ إِلَى السَّاعَةِ الْعَاشِرَةِ",tr:"aqraʾu mina s-sāʿati t-tāsiʿati ilā s-sāʿati l-ʿāširati",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que él se despierta a las siete y media",ar:"يَسْتَيْقِظُ فِي السَّاعَةِ السَّابِعَةِ وَالنِّصْفِ",tr:"yastayqiẓu fī s-sāʿati s-sābiʿati wa-n-niṣfi",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que ella se despierta a las siete y media",ar:"تَسْتَيْقِظُ فِي السَّاعَةِ السَّابِعَةِ وَالنِّصْفِ",tr:"tastayqiẓu fī s-sāʿati s-sābiʿati wa-n-niṣfi",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que él va al trabajo a las ocho y cuarto",ar:"يَذْهَبُ إِلَى الْعَمَلِ فِي السَّاعَةِ الثَّامِنَةِ وَالرُّبْعِ",tr:"yaḏhabu ilā l-ʿamali fī s-sāʿati ṯ-ṯāminati wa-r-rubʿi",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que ella va al trabajo a las ocho y cuarto",ar:"تَذْهَبُ إِلَى الْعَمَلِ فِي السَّاعَةِ الثَّامِنَةِ وَالرُّبْعِ",tr:"taḏhabu ilā l-ʿamali fī s-sāʿati ṯ-ṯāminati wa-r-rubʿi",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que él vuelve a casa a las cinco menos veinte",ar:"يَرْجِعُ إِلَى الْبَيْتِ فِي السَّاعَةِ الْخَامِسَةِ إِلَّا ثُلْثًا",tr:"yarŷiʿu ilā l-bayti fī s-sāʿati l-jāmisati illā ṯulṯan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que ella vuelve a casa a las cinco menos veinte",ar:"تَرْجِعُ إِلَى الْبَيْتِ فِي السَّاعَةِ الْخَامِسَةِ إِلَّا ثُلْثًا",tr:"tarŷiʿu ilā l-bayti fī s-sāʿati l-jāmisati illā ṯulṯan",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que él duerme a las once y media",ar:"يَنَامُ فِي السَّاعَةِ الْحَادِيَةَ عَشْرَةَ وَالنِّصْفِ",tr:"yanāmu fī s-sāʿati l-ḥādiyata ʿašrata wa-n-niṣfi",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que ella duerme a las once y media",ar:"تَنَامُ فِي السَّاعَةِ الْحَادِيَةَ عَشْرَةَ وَالنِّصْفِ",tr:"tanāmu fī s-sāʿati l-ḥādiyata ʿašrata wa-n-niṣfi",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que él trabaja de las nueve a las tres",ar:"يَعْمَلُ مِنَ السَّاعَةِ التَّاسِعَةِ إِلَى السَّاعَةِ الثَّالِثَةِ",tr:"yaʿmalu mina s-sāʿati t-tāsiʿati ilā s-sāʿati ṯ-ṯāliṯati",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que ella trabaja de las nueve a las tres",ar:"تَعْمَلُ مِنَ السَّاعَةِ التَّاسِعَةِ إِلَى السَّاعَةِ الثَّالِثَةِ",tr:"taʿmalu mina s-sāʿati t-tāsiʿati ilā s-sāʿati ṯ-ṯāliṯati",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que él estudia en la universidad (libro p. 9)",ar:"يَدْرُسُ فِي الْجَامِعَةِ",tr:"yadrusu fī l-ŷāmiʿati",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que ella estudia en la universidad (libro p. 9)",ar:"تَدْرُسُ فِي الْجَامِعَةِ",tr:"tadrusu fī l-ŷāmiʿati",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que él trabaja en Madrid (libro p. 9)",ar:"يَعْمَلُ فِي مَدْرِيد",tr:"yaʿmalu fī madrīd",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que ella trabaja en Madrid (libro p. 9)",ar:"تَعْمَلُ فِي مَدْرِيد",tr:"taʿmalu fī madrīd",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que él desayuna (libro p. 9)",ar:"يَأْكُلُ الْفُطُورَ",tr:"yaʾkulu l-fuṭūra",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que ella desayuna (libro p. 9)",ar:"تَأْكُلُ الْفُطُورَ",tr:"taʾkulu l-fuṭūra",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que él bebe café (libro p. 9)",ar:"يَشْرَبُ الْقَهْوَةَ",tr:"yašrabu l-qahwata",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que ella bebe café (libro p. 9)",ar:"تَشْرَبُ الْقَهْوَةَ",tr:"tašrabu l-qahwata",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que él lee un libro (libro p. 9)",ar:"يَقْرَأُ كِتَابًا",tr:"yaqraʾu kitāban",genero:false},
+    {lec:"A2 · L2 Mi día",es:"Di que ella lee un libro (libro p. 9)",ar:"تَقْرَأُ كِتَابًا",tr:"taqraʾu kitāban",genero:false},
     {lec:"A2 · L3 Mi familia",es:"Di «este es mi padre»",ar:"هَذَا أَبِي",tr:"hāḏā abī",genero:false},
     {lec:"A2 · L3 Mi familia",es:"Di «esta es mi madre»",ar:"هَذِهِ أُمِّي",tr:"hāḏihi ummī",genero:false},
     {lec:"A2 · L3 Mi familia",es:"Di «este es mi hermano»",ar:"هَذَا أَخِي",tr:"hāḏā ajī",genero:false},
@@ -2865,6 +2950,17 @@ const HABLA = {
       {p:1,ar:"مَا جِنْسِيَّتُكَ؟",tr:"mā ŷinsiyyatuka?",es:"¿Cuál es tu nacionalidad?"},
       {p:0,ar:"أَنَا إِيطَالِيّ.",tr:"anā iṭālī.",es:"Soy italiano."},
     ]},
+    {lec:"A2 · L2 Mi día",titulo:"Práctica: Leila y Yusuf hablan de su horario (horas con fracciones)",personajes:["لَيْلَى", "يُوسُف"],personajes_es:["Leila", "Yusuf"],turnos:[
+      {p:0,ar:"مَتَى تَسْتَيْقِظُ يَا يُوسُفُ؟",tr:"matā tastayqiẓu yā Yūsufu?",es:"¿Cuándo te despiertas, Yusuf?"},
+      {p:1,ar:"أَسْتَيْقِظُ فِي السَّاعَةِ السَّادِسَةِ وَالنِّصْفِ. وَأَنْتِ؟",tr:"astayqiẓu fī s-sāʿati s-sādisati wa-n-niṣfi. wa-anti?",es:"Me despierto a las seis y media. ¿Y tú?"},
+      {p:0,ar:"أَسْتَيْقِظُ فِي السَّاعَةِ السَّابِعَةِ إِلَّا رُبْعًا. مَتَى تَذْهَبُ إِلَى الْعَمَلِ؟",tr:"astayqiẓu fī s-sāʿati s-sābiʿati illā rubʿan. matā taḏhabu ilā l-ʿamali?",es:"Me despierto a las siete menos cuarto. ¿Cuándo vas al trabajo?"},
+      {p:1,ar:"أَذْهَبُ إِلَى الْعَمَلِ فِي السَّاعَةِ السَّابِعَةِ وَالثُّلْثِ.",tr:"aḏhabu ilā l-ʿamali fī s-sāʿati s-sābiʿati wa-ṯ-ṯulṯi.",es:"Voy al trabajo a las siete y veinte."},
+      {p:0,ar:"مِنْ مَتَى إِلَى مَتَى تَعْمَلُ؟",tr:"min matā ilā matā taʿmalu?",es:"¿De qué hora a qué hora trabajas?"},
+      {p:1,ar:"أَعْمَلُ مِنَ السَّاعَةِ الثَّامِنَةِ إِلَى السَّاعَةِ الثَّالِثَةِ. وَأَنْتِ، مَاذَا تَعْمَلِينَ؟",tr:"aʿmalu mina s-sāʿati ṯ-ṯāminati ilā s-sāʿati ṯ-ṯāliṯati. wa-anti, māḏā taʿmalīna?",es:"Trabajo de ocho a tres. Y tú, ¿a qué te dedicas?"},
+      {p:0,ar:"أَنَا طَالِبَة. أَدْرُسُ فِي الْجَامِعَةِ مِنَ السَّاعَةِ التَّاسِعَةِ إِلَى السَّاعَةِ الثَّانِيَةِ.",tr:"anā ṭāliba. adrusu fī l-ŷāmiʿati mina s-sāʿati t-tāsiʿati ilā s-sāʿati ṯ-ṯāniyati.",es:"Soy estudiante. Estudio en la universidad de nueve a dos."},
+      {p:1,ar:"مَتَى تَنَامِينَ؟",tr:"matā tanāmīna?",es:"¿Cuándo te duermes?"},
+      {p:0,ar:"أَنَامُ فِي السَّاعَةِ الْحَادِيَةَ عَشْرَةَ وَالرُّبْعِ.",tr:"anāmu fī s-sāʿati l-ḥādiyata ʿašrata wa-r-rubʿi.",es:"Me duermo a las once y cuarto."},
+    ]},
     {lec:"A2 · L3 Mi familia",titulo:"Práctica: Sami mira la foto de la familia de Leila",personajes:["سَامِي", "لَيْلَى"],personajes_es:["Sami", "Leila"],turnos:[
       {p:0,ar:"مَنْ هَذَا؟",tr:"man hāḏā?",es:"¿Quién es este?"},
       {p:1,ar:"هَذَا أَبِي.",tr:"hāḏā abī.",es:"Este es mi padre."},
@@ -2916,6 +3012,14 @@ const HABLA = {
       {q:"مِنْ مَتَى إِلَى مَتَى يَعْمَلُ؟",q_tr:"min matā ilā matā yaʿmalu?",q_es:"¿De qué hora a qué hora trabaja?",m:"يَعْمَلُ مِنَ السَّاعَةِ الثَّامِنَةِ إِلَى السَّاعَةِ الرَّابِعَةِ",m_tr:"yaʿmalu mina s-sāʿati ṯ-ṯāminati ilā s-sāʿati r-rābiʿati",m_es:"De las ocho a las cuatro",clave:[["الثامنه"], ["الرابعه"]]},
       {q:"مَاذَا يَفْعَلُ فِي الْمَسَاءِ؟",q_tr:"māḏā yafʿalu fī l-masāʾi?",q_es:"¿Qué hace por la tarde?",m:"يَقْرَأُ كِتَابًا وَيَشْرَبُ الشَّايَ",m_tr:"yaqraʾu kitāban wa-yašrabu š-šāya",m_es:"Lee un libro y bebe té",clave:[["يقرا", "يقرأ", "كتابا", "كتاب"], ["الشاي", "شاي"]]},
       {q:"مَتَى يَنَامُ؟",q_tr:"matā yanāmu?",q_es:"¿Cuándo duerme?",m:"يَنَامُ فِي السَّاعَةِ الْحَادِيَةَ عَشْرَةَ",m_tr:"yanāmu fī s-sāʿati l-ḥādiyata ʿašrata",m_es:"A las once",clave:[["الحاديه"]]},
+    ]},
+    {lec:"A2 · L2 Mi día",titulo:"Práctica: el día de Samir (horas con fracciones)",texto:"سَمِير يَسْتَيْقِظُ فِي السَّاعَةِ السَّادِسَةِ وَالنِّصْفِ. يَأْكُلُ الْفُطُورَ وَيَشْرَبُ الشَّايَ. فِي السَّاعَةِ السَّابِعَةِ وَالرُّبْعِ، يَذْهَبُ إِلَى الْعَمَلِ. يَعْمَلُ مِنَ السَّاعَةِ الثَّامِنَةِ إِلَى السَّاعَةِ الثَّالِثَةِ. يَرْجِعُ إِلَى الْبَيْتِ فِي السَّاعَةِ الرَّابِعَةِ إِلَّا رُبْعًا. فِي الْمَسَاءِ، يَقْرَأُ كِتَابًا. يَنَامُ فِي السَّاعَةِ الْعَاشِرَةِ وَالثُّلْثِ.",preguntas:[
+      {q:"مَتَى يَسْتَيْقِظُ سَمِير؟",q_tr:"matā yastayqiẓu Samīr?",q_es:"¿Cuándo se despierta Samir?",m:"فِي السَّاعَةِ السَّادِسَةِ وَالنِّصْفِ",m_tr:"fī s-sāʿati s-sādisati wa-n-niṣfi",m_es:"A las seis y media",clave:[["السادسه"], ["النصف"]]},
+      {q:"مَاذَا يَشْرَبُ؟",q_tr:"māḏā yašrabu?",q_es:"¿Qué bebe?",m:"يَشْرَبُ الشَّايَ",m_tr:"yašrabu š-šāya",m_es:"Bebe té",clave:[["الشاي", "شاي"]]},
+      {q:"مَتَى يَذْهَبُ إِلَى الْعَمَلِ؟",q_tr:"matā yaḏhabu ilā l-ʿamali?",q_es:"¿Cuándo va al trabajo?",m:"فِي السَّاعَةِ السَّابِعَةِ وَالرُّبْعِ",m_tr:"fī s-sāʿati s-sābiʿati wa-r-rubʿi",m_es:"A las siete y cuarto",clave:[["السابعه"], ["الربع"]]},
+      {q:"مِنْ مَتَى إِلَى مَتَى يَعْمَلُ؟",q_tr:"min matā ilā matā yaʿmalu?",q_es:"¿De qué hora a qué hora trabaja?",m:"مِنَ السَّاعَةِ الثَّامِنَةِ إِلَى السَّاعَةِ الثَّالِثَةِ",m_tr:"mina s-sāʿati ṯ-ṯāminati ilā s-sāʿati ṯ-ṯāliṯati",m_es:"De ocho a tres",clave:[["الثامنه"], ["الثالثه"]]},
+      {q:"مَتَى يَرْجِعُ إِلَى الْبَيْتِ؟",q_tr:"matā yarŷiʿu ilā l-bayti?",q_es:"¿Cuándo vuelve a casa?",m:"فِي السَّاعَةِ الرَّابِعَةِ إِلَّا رُبْعًا",m_tr:"fī s-sāʿati r-rābiʿati illā rubʿan",m_es:"A las cuatro menos cuarto",clave:[["الرابعه"], ["ربعا"]]},
+      {q:"مَتَى يَنَامُ؟",q_tr:"matā yanāmu?",q_es:"¿Cuándo se duerme?",m:"فِي السَّاعَةِ الْعَاشِرَةِ وَالثُّلْثِ",m_tr:"fī s-sāʿati l-ʿāširati wa-ṯ-ṯulṯi",m_es:"A las diez y veinte",clave:[["العاشره"], ["الثلث"]]},
     ]},
     {lec:"A2 · L3 Mi familia",titulo:"Práctica: «عَائِلَتِي» (con el vocabulario de la p. 12)",texto:"هَذِهِ عَائِلَتِي. هَذَا أَبِي، اِسْمُهُ أَحْمَد. هُوَ طَوِيل وَلَطِيف. هَذِهِ أُمِّي، اِسْمُهَا فَاطِمَة. هِيَ جَمِيلَة. هَذَا أَخِي سَامِي، هُوَ شَابّ. هَذِهِ أُخْتِي لَيْلَى، هِيَ صَغِيرَة. هَذَا جَدِّي، هُوَ مُسِنّ. وَهَذِهِ جَدَّتِي، هِيَ لَطِيفَة.",preguntas:[
       {q:"مَا اسْمُ الْأَبِ؟",q_tr:"mā ismu l-abi?",q_es:"¿Cómo se llama el padre?",m:"اِسْمُهُ أَحْمَد",m_tr:"ismuhu Aḥmad",m_es:"Se llama Ahmed",clave:[["احمد"]]},
@@ -2969,6 +3073,23 @@ const HABLA = {
       {ar:"أَرْجِعُ إِلَى ...",tr:"arŷiʿu ilā ...",es:"vuelvo a ...",clave:["ارجع"]},
       {ar:"أَنَامُ فِي ...",tr:"anāmu fī ...",es:"duermo a ...",clave:["انام"]},
     ]},
+    {lec:"A2 · L2 Mi día",titulo:"Libro: cuenta el texto «يَوْمِي» en 3ª persona (p. 10)",consigna:"Cuenta el texto de la p. 10 como si hablaras de otro: هُوَ يَسْتَيْقِظُ… (يَ en vez de أَ).",segundos:60,modelo:"هُوَ يَسْتَيْقِظُ فِي السَّاعَةِ السَّابِعَةِ صَبَاحًا. يَأْكُلُ الْفُطُورَ وَيَشْرَبُ الْقَهْوَةَ. فِي السَّاعَةِ الثَّامِنَةِ، يَذْهَبُ إِلَى الْعَمَلِ. يَعْمَلُ مِنَ السَّاعَةِ الثَّامِنَةِ إِلَى السَّاعَةِ الرَّابِعَةِ. بَعْدَ الْعَمَلِ، يَرْجِعُ إِلَى الْبَيْتِ. فِي الْمَسَاءِ، يَقْرَأُ كِتَابًا وَيَشْرَبُ الشَّايَ. فِي السَّاعَةِ الْحَادِيَةَ عَشْرَةَ، يَنَامُ.",estructuras:[
+      {ar:"يَسْتَيْقِظُ فِي ...",tr:"yastayqiẓu fī ...",es:"se despierta a ...",clave:["يستيقظ"]},
+      {ar:"يَأْكُلُ ...",tr:"yaʾkulu ...",es:"come ...",clave:["ياكل"]},
+      {ar:"يَشْرَبُ ...",tr:"yašrabu ...",es:"bebe ...",clave:["يشرب"]},
+      {ar:"يَذْهَبُ إِلَى ...",tr:"yaḏhabu ilā ...",es:"va a ...",clave:["يذهب"]},
+      {ar:"يَعْمَلُ مِنْ ... إِلَى ...",tr:"yaʿmalu min ... ilā ...",es:"trabaja de ... a ...",clave:["يعمل"]},
+      {ar:"يَرْجِعُ إِلَى ...",tr:"yarŷiʿu ilā ...",es:"vuelve a ...",clave:["يرجع"]},
+      {ar:"يَقْرَأُ ...",tr:"yaqraʾu ...",es:"lee ...",clave:["يقرا"]},
+      {ar:"يَنَامُ ...",tr:"yanāmu ...",es:"duerme ...",clave:["ينام"]},
+    ]},
+    {lec:"A2 · L2 Mi día",titulo:"Práctica: tu horario con fracciones (y cuarto, y veinte, y media, menos…)",consigna:"Cuenta tu día usando al menos 4 horas con fracción distinta.",segundos:60,modelo:"أَسْتَيْقِظُ فِي السَّاعَةِ الرَّابِعَةِ وَالثُّلْثِ. أَذْهَبُ إِلَى الْعَمَلِ فِي السَّاعَةِ الْخَامِسَةِ. أَعْمَلُ مِنَ السَّاعَةِ السَّادِسَةِ إِلَى السَّاعَةِ الثَّانِيَةِ. أَرْجِعُ إِلَى الْبَيْتِ فِي السَّاعَةِ الثَّالِثَةِ إِلَّا رُبْعًا. آكُلُ الْغَدَاءَ فِي السَّاعَةِ الثَّالِثَةِ وَالنِّصْفِ. أَنَامُ فِي السَّاعَةِ الْعَاشِرَةِ وَالرُّبْعِ.",estructuras:[
+      {ar:"... وَالرُّبْعِ",tr:"wa-r-rubʿi",es:"y cuarto",clave:["الربع"]},
+      {ar:"... وَالثُّلْثِ",tr:"wa-ṯ-ṯulṯi",es:"y veinte",clave:["الثلث"]},
+      {ar:"... وَالنِّصْفِ",tr:"wa-n-niṣfi",es:"y media",clave:["النصف"]},
+      {ar:"... إِلَّا رُبْعًا / إِلَّا ثُلْثًا",tr:"illā rubʿan / illā ṯulṯan",es:"menos cuarto / menos veinte",clave:["الا"]},
+      {ar:"مِنَ السَّاعَةِ ... إِلَى السَّاعَةِ ...",tr:"mina s-sāʿati ... ilā s-sāʿati ...",es:"de ... a ...",clave:["من", "الى"]},
+    ]},
     {lec:"A2 · L3 Mi familia",titulo:"Presenta a tu familia (1 minuto)",consigna:"Enseña (o imagina) una foto de tu familia: di quién es cada uno con هَذَا / هَذِهِ y añade un adjetivo con هُوَ / هِيَ.",segundos:60,modelo:"هَذِهِ عَائِلَتِي. هَذَا أَبِي، هُوَ طَوِيل وَلَطِيف. هَذِهِ أُمِّي، هِيَ جَمِيلَة. هَذَا أَخِي، هُوَ شَابّ. هَذِهِ أُخْتِي، هِيَ صَغِيرَة. هَذَا جَدِّي، هُوَ مُسِنّ.",estructuras:[
       {ar:"هَذِهِ عَائِلَتِي",tr:"hāḏihi ʿāʾilatī",es:"esta es mi familia",clave:["عائلتي"]},
       {ar:"هَذَا أَبِي / هَذِهِ أُمِّي",tr:"hāḏā abī / hāḏihi ummī",es:"padre y madre",clave:["ابي", "امي"]},
@@ -2978,6 +3099,20 @@ const HABLA = {
     ]},
   ],
   roles: [
+    {lec:"A2 · L2 Mi día",titulo:"Rol: un compañero te pregunta tu horario",consigna:"Responde con tu horario real y horas con fracción.",personajes:["زَمِيل", "أَنَا"],personajes_es:["Compañero (pregunta)", "Tú"],turnos:[
+      {p:0,ar:"مَتَى تَسْتَيْقِظُ؟",tr:"matā tastayqiẓu?",es:"¿Cuándo te despiertas?"},
+      {p:1,ar:"أَسْتَيْقِظُ فِي السَّاعَةِ الرَّابِعَةِ وَالثُّلْثِ.",tr:"astayqiẓu fī s-sāʿati r-rābiʿati wa-ṯ-ṯulṯi.",es:"Me despierto a las cuatro y veinte."},
+      {p:0,ar:"مَاذَا تَشْرَبُ فِي الصَّبَاحِ؟",tr:"māḏā tašrabu fī ṣ-ṣabāḥi?",es:"¿Qué bebes por la mañana?"},
+      {p:1,ar:"أَشْرَبُ الْقَهْوَةَ.",tr:"ašrabu l-qahwata.",es:"Bebo café."},
+      {p:0,ar:"مِنْ مَتَى إِلَى مَتَى تَعْمَلُ؟",tr:"min matā ilā matā taʿmalu?",es:"¿De qué hora a qué hora trabajas?"},
+      {p:1,ar:"أَعْمَلُ مِنَ السَّاعَةِ السَّادِسَةِ إِلَى السَّاعَةِ الثَّانِيَةِ.",tr:"aʿmalu mina s-sāʿati s-sādisati ilā s-sāʿati ṯ-ṯāniyati.",es:"Trabajo de seis a dos."},
+      {p:0,ar:"مَتَى تَرْجِعُ إِلَى الْبَيْتِ؟",tr:"matā tarŷiʿu ilā l-bayti?",es:"¿Cuándo vuelves a casa?"},
+      {p:1,ar:"أَرْجِعُ فِي السَّاعَةِ الثَّالِثَةِ إِلَّا رُبْعًا.",tr:"arŷiʿu fī s-sāʿati ṯ-ṯāliṯati illā rubʿan.",es:"Vuelvo a las tres menos cuarto."},
+      {p:0,ar:"مَاذَا تَفْعَلُ فِي الْمَسَاءِ؟",tr:"māḏā tafʿalu fī l-masāʾi?",es:"¿Qué haces por la tarde?"},
+      {p:1,ar:"أَدْرُسُ الْعَرَبِيَّةَ وَأَقْرَأُ كِتَابًا.",tr:"adrusu l-ʿarabiyyata wa-aqraʾu kitāban.",es:"Estudio árabe y leo un libro."},
+      {p:0,ar:"مَتَى تَنَامُ؟",tr:"matā tanāmu?",es:"¿Cuándo duermes?"},
+      {p:1,ar:"أَنَامُ فِي السَّاعَةِ الْعَاشِرَةِ وَالرُّبْعِ.",tr:"anāmu fī s-sāʿati l-ʿāširati wa-r-rubʿi.",es:"Duermo a las diez y cuarto."},
+    ]},
     // {lec, titulo, consigna, personajes:[A,B], personajes_es, turnos:[{p,ar,tr,es}]} — llegan con las lecciones que los traen
     {lec:"A2 · L3 Mi familia",titulo:"Rol: enseñas una foto de tu familia",consigna:"Tu compañero te pregunta quién es cada persona de la foto. Responde con هَذَا / هَذِهِ + familiar y un adjetivo.",personajes:["يُوسُف", "أَنَا"],personajes_es:["Yusuf (pregunta)", "Tú"],turnos:[
       {p:0,ar:"مَنْ هَذَا؟",tr:"man hāḏā?",es:"¿Quién es este?"},
@@ -6486,6 +6621,53 @@ const PLAN_VAC = {
   6: [{h:'09:00–14:00', tipo:'master', txt:'Clase del máster'}, {h:'Tarde', tipo:'libre', txt:'Sin estudio'}],
   0: [{h:'Todo el día', tipo:'libre', txt:'Descanso'}],
 };
+// Plan especial por FECHA (manda sobre PLAN_SEMANA y PLAN_LIBRE ese día; no se aplica en modo vacaciones).
+// Semana 09–13/11/2026: solo árabe, reforzar el libro A2 (p. 3-12) y las horas. 2 h al día.
+const PLAN_FECHA = {
+  '2026-11-09': [
+      {h:'Árabe', min:15, tipo:'ar', txt:'Tarjetas: «Datos personales», «Países y nacionalidades», «Profesiones», «Idiomas»', go:'tarjetas'},
+      {min:20, tipo:'ar', txt:'L1 p. 3, puntos 1-2: datos personales y frases básicas, en voz alta y luego sin mirar', go:'vocab'},
+      {min:20, tipo:'ar', txt:'L1 p. 4, punto 3: preguntas en masculino y femenino (اِسْمُكَ / اِسْمُكِ, تَسْكُنُ / تَسْكُنِينَ)', go:'habla:dilo:a2'},
+      {min:25, tipo:'ar', txt:'L1 p. 4-5, puntos 4-6: nacionalidades y profesiones él / ella, idiomas', go:'habla:rapida:a2'},
+      {min:20, tipo:'ar', txt:'Habla → Dilo con filtro A2', go:'habla:dilo:a2'},
+      {min:20, tipo:'ar', txt:'🕐 Horas: en punto de la 1 a las 12, con تَمَامًا y فِي السَّاعَةِ', go:'habla:dilo:a2'},
+  ],
+  '2026-11-10': [
+      {h:'Árabe', min:10, tipo:'ar', txt:'Tarjetas: «Gustos» y categorías de la L1', go:'tarjetas'},
+      {min:15, tipo:'ar', txt:'L1 p. 5, punto 7: modelo de Laura (audio 1), frase a frase', go:'habla:comprension:a2'},
+      {min:10, tipo:'ar', txt:'L1 p. 5, punto 8: gustos, أُحِبُّ / لَا أُحِبُّ con 6 cosas tuyas', go:'habla:dilo:a2'},
+      {min:20, tipo:'ar', txt:'L1 p. 6, puntos 9-10: diálogo de Ahmed y Sami (los dos papeles) y comprensión', go:'habla:dialogo:a2'},
+      {min:20, tipo:'ar', txt:'L1 p. 6-7, puntos 11-12: completa tu presentación y entrevista con tus datos', go:'habla:responde:a2'},
+      {min:25, tipo:'ar', txt:'L1 p. 7, punto 15: presentación de 1 minuto, 3 veces grabándote', go:'habla:monologo:a2'},
+      {min:20, tipo:'ar', txt:'🕐 Horas: y cuarto (وَالرُّبْعُ) y y media (وَالنِّصْفُ)', go:'habla:dilo:a2'},
+  ],
+  '2026-11-11': [
+      {h:'Árabe', min:15, tipo:'ar', txt:'Tarjetas: «Mi día» y «Mi día — verbos»', go:'tarjetas'},
+      {min:15, tipo:'ar', txt:'L2 p. 8, punto 1: palabras importantes, sin mirar y con artículo', go:'vocab'},
+      {min:25, tipo:'ar', txt:'L2 p. 8, punto 2: verbos prácticos en pareja pasado–presente y conjugados en presente', go:'patrones'},
+      {min:15, tipo:'ar', txt:'L2 p. 9, punto 3 (أَنَا): las 6 frases y las mismas con él / ella', go:'habla:rapida:a2'},
+      {min:20, tipo:'ar', txt:'L2 p. 9, punto 4: mi horario con فِي السَّاعَةِ (tu horario real)', go:'habla:monologo:a2'},
+      {min:20, tipo:'ar', txt:'🕐 Horas: y veinte (وَالثُّلْثُ), menos cuarto y menos veinte (hora siguiente + إِلَّا). Lee las fichas y dilas', go:'gram'},
+      {min:10, tipo:'ar', txt:'Habla → Dilo de la L2', go:'habla:dilo:a2'},
+  ],
+  '2026-11-12': [
+      {h:'Árabe', min:10, tipo:'ar', txt:'Tarjetas: categorías de la L2 y «Las horas»', go:'tarjetas'},
+      {min:20, tipo:'ar', txt:'L2 p. 10, punto 5: texto «يَوْمِي» (audio 2), 3 lecturas y luego en 3ª persona (يَسْتَيْقِظُ…)', go:'habla:comprension:a2'},
+      {min:20, tipo:'ar', txt:'L2 p. 10, punto 6: preguntas del libro con frases completas', go:'habla:responde:a2'},
+      {min:15, tipo:'ar', txt:'Lo que añadió el profesor: ¿qué haces? (تَفْعَلُ / تَعْمَلُ) y partículas por verbo', go:'verbos'},
+      {min:25, tipo:'ar', txt:'L2 p. 11, punto 7: habla 30-60 s de tu día, 3 grabaciones', go:'habla:monologo:a2'},
+      {min:20, tipo:'ar', txt:'🕐 Horas: todas mezcladas, 11-19 y مِنْ … إِلَى …', go:'habla:rapida:a2'},
+      {min:10, tipo:'ar', txt:'🕐 Gram.: fichas de las horas en voz alta (y «a las…» con fracción)', go:'gram'},
+  ],
+  '2026-11-13': [
+      {h:'Árabe', min:10, tipo:'ar', txt:'Tarjetas: «Mi familia» y «Mi familia — adjetivos»', go:'tarjetas'},
+      {min:20, tipo:'ar', txt:'L3 p. 12, punto 1: vocabulario y هَذَا / هَذِهِ con una foto real de tu familia', go:'habla:hoy'},
+      {min:20, tipo:'ar', txt:'L3 p. 12, punto 2: adjetivos m/f, describe a 5 personas (أُخْتِي طَوِيلَة…)', go:'habla:dilo:ult'},
+      {min:20, tipo:'ar', txt:'🕐 Horas: ronda rápida de todo y tu horario de corrido', go:'habla:rapida:a2'},
+      {min:30, tipo:'ar', txt:'Simulacro de 3 min grabado: presentación (L1) + mi día con horas (L2) + mi familia (L3)', go:'habla:monologo:a2'},
+      {min:20, tipo:'ar', txt:'Escucha la grabación, revisa Stats y apunta 3 fallos para la semana que viene', go:'stats'},
+  ],
+};
 function planVacaciones() { try { return JSON.parse(safeGetItem('arabic_plan_modo', '{}')).modo === 'vac'; } catch (e) { return false; } }
 function planSetVac(v) { safeSetItem('arabic_plan_modo', JSON.stringify({modo: v ? 'vac' : 'normal'})); renderPlanHoy(); }
 const PLAN_DIAS = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
@@ -6514,9 +6696,10 @@ function planGo(go) {
 function renderPlanHoy() {
   const el = document.getElementById('plan-hoy'); if (!el) return;
   const dow = new Date().getDay(), vac = planVacaciones(), libre = !vac && planLibreHoy();
-  let items = vac ? (PLAN_VAC[dow] || []).slice() : libre ? PLAN_LIBRE.slice() : (PLAN_SEMANA[dow] || []).slice();
-  if (libre && (dow === 1 || dow === 3)) items.push({h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'});
-  const trabajo = !vac && !libre && dow >= 1 && dow <= 5;
+  const especial = !vac && PLAN_FECHA[clToday()];
+  let items = vac ? (PLAN_VAC[dow] || []).slice() : especial ? especial.slice() : libre ? PLAN_LIBRE.slice() : (PLAN_SEMANA[dow] || []).slice();
+  if (!especial && libre && (dow === 1 || dow === 3)) items.push({h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'});
+  const trabajo = !vac && !libre && !especial && dow >= 1 && dow <= 5;
   if (trabajo) items.unshift({h:'05:00', tipo:'ar', min:15, txt:'🚗 Manos libres en el coche (solo audio; arráncalo antes de salir)', go:'habla:libre'});
   const hecho = planHecho();
   const ar = items.map((it, i) => ({...it, i})).filter(it => it.tipo === 'ar');
@@ -6535,14 +6718,14 @@ function renderPlanHoy() {
   };
   el.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-      <div style="font-size:15px;font-weight:700;color:var(--cream);">📅 Tu plan de hoy — ${PLAN_DIAS[dow]}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--cream);">📅 Tu plan de hoy — ${PLAN_DIAS[dow]}${especial ? ' <span style="font-size:11px;color:var(--gold);">· semana A2 + horas</span>' : ''}</div>
       ${ar.length ? `<div style="font-size:12px;color:var(--gold);font-weight:700;">${nHechos}/${ar.length}</div>` : ''}
     </div>
     <div class="cat-filter" style="padding:4px 0 2px;">
       <button class="cat-chip ${!vac ? 'active' : ''}" onclick="planSetVac(false)">Semana normal</button>
       <button class="cat-chip ${vac ? 'active' : ''}" onclick="planSetVac(true)">🏖️ Vacaciones</button></div>
     ${vac ? '<div style="font-size:11px;color:var(--cream2);margin-bottom:6px;">Vacaciones: estudio solo por la mañana; no aplican las reglas 4 y 7. Vuelve a «Semana normal» al acabar.</div>' : ''}
-    ${!vac && dow >= 1 && dow <= 5 ? `<div class="cat-filter" style="padding:4px 0 8px;">
+    ${!vac && !especial && dow >= 1 && dow <= 5 ? `<div class="cat-filter" style="padding:4px 0 8px;">
       <button class="cat-chip ${!libre ? 'active' : ''}" onclick="planSetLibre(false)">Hoy trabajo (06–14)</button>
       <button class="cat-chip ${libre ? 'active' : ''}" onclick="planSetLibre(true)">Hoy es día libre</button></div>` : ''}
     <div style="background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);border-radius:10px;padding:8px 12px;font-size:13px;color:var(--gold2);margin-bottom:6px;">
