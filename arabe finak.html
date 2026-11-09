@@ -6657,63 +6657,42 @@ const PLAN_VAC = {
   0: [{h:'Todo el día', tipo:'libre', txt:'Descanso'}],
 };
 // Plan especial por FECHA (manda sobre PLAN_SEMANA y PLAN_LIBRE ese día; no se aplica en modo vacaciones).
-// Semana 09–13/11/2026: solo árabe, reforzar el libro A2 (p. 3-12) y las horas. 2 h al día.
+// RUTINA ESPECIAL 09–13/11/2026: solo el libro A2 (p. 3-12), recuadro a recuadro con 5 pasos + 4 verbos al día + horas + hablar 1 min.
 const PLAN_FECHA = {
   '2026-11-09': [
-      {h:'Árabe', min:10, tipo:'ar', txt:'🔤 Verbos grupo 1 (ذَهَبَ, أَكَلَ, شَرِبَ, عَمِلَ): escribe el PRESENTE desde el pasado. Abre «📋 Tabla del grupo», dilo en voz alta y repite la ronda hasta 4/4', go:'verbos:pp:g1'},
-      {min:5, tipo:'ar', txt:'🔤 Verbos grupo 1 al revés: escribe el PASADO desde el presente', go:'verbos:pr:g1'},
-      {min:10, tipo:'ar', txt:'🔤 Verbos grupo 1: conjuga (yo, tú, él…) en pasado y presente', go:'verbos:conjugar:g1'},
-      {min:10, tipo:'ar', txt:'Tarjetas: «Datos personales», «Países y nacionalidades», «Profesiones», «Idiomas»', go:'tarjetas'},
-      {min:20, tipo:'ar', txt:'L1 p. 3, puntos 1-2: datos personales y frases básicas, en voz alta y luego sin mirar', go:'vocab'},
-      {min:20, tipo:'ar', txt:'L1 p. 4, punto 3: preguntas en masculino y femenino (اِسْمُكَ / اِسْمُكِ, تَسْكُنُ / تَسْكُنِينَ)', go:'habla:dilo:a2'},
-      {min:25, tipo:'ar', txt:'L1 p. 4-5, puntos 4-6: nacionalidades y profesiones él / ella, idiomas', go:'habla:rapida:a2'},
-      {min:20, tipo:'ar', txt:'🕐 Horas: en punto de la 1 a las 12, con تَمَامًا y فِي السَّاعَةِ', go:'habla:dilo:a2'},
+      {h:'Árabe', min:10, tipo:'ar', txt:'Prepara la libreta. Método (5 pasos por recuadro): 1 leer en voz alta · 2 repetir ×3 · 3 tapar el árabe y decirlo · 4 escribirlo de memoria en la libreta · 5 inventar 2-3 frases tuyas. Marca con rayita lo que falles.'},
+      {min:40, tipo:'ar', txt:'📖 Libro L1 p. 3-4: datos personales, frases básicas y preguntas (m/f), con los 5 pasos', go:'vocab'},
+      {min:15, tipo:'ar', txt:'🔤 4 verbos: ذَهَبَ – يَذْهَبُ, أَكَلَ – يَأْكُلُ, شَرِبَ – يَشْرَبُ, عَمِلَ – يَعْمَلُ. A mano ×3 en voz alta y luego aquí (abre «📋 Tabla del grupo»)', go:'verbos:pp:g1'},
+      {min:10, tipo:'ar', txt:'🕐 Horas: en punto (1-12). Di la hora de tu día real', go:'habla:dilo:a2'},
+      {min:10, tipo:'ar', txt:'🎤 Habla 1 min grabándote con lo de hoy. Anota en la libreta 3 cosas que ya dices sin mirar', go:'habla:monologo:a2'},
   ],
   '2026-11-10': [
-      {h:'Árabe', min:10, tipo:'ar', txt:'🔤 Verbos grupo 2 (دَرَسَ, كَتَبَ, سَكَنَ, قَرَأَ): escribe el PRESENTE desde el pasado (mira antes la tabla)', go:'verbos:pp:g2'},
-      {min:5, tipo:'ar', txt:'🔤 Grupos 1-2 al revés: escribe el PASADO desde el presente', go:'verbos:pr:g12'},
-      {min:10, tipo:'ar', txt:'🔤 Grupos 1-2: conjuga en pasado y presente', go:'verbos:conjugar:g12'},
-      {min:10, tipo:'ar', txt:'Tarjetas: «Gustos» y categorías de la L1', go:'tarjetas'},
-      {min:15, tipo:'ar', txt:'L1 p. 5, punto 7: modelo de Laura (audio 1), frase a frase', go:'habla:comprension:a2'},
-      {min:5, tipo:'ar', txt:'L1 p. 5, punto 8: gustos, أُحِبُّ / لَا أُحِبُّ con 6 cosas tuyas', go:'habla:dilo:a2'},
-      {min:15, tipo:'ar', txt:'L1 p. 6, puntos 9-10: diálogo de Ahmed y Sami (los dos papeles) y comprensión', go:'habla:dialogo:a2'},
-      {min:15, tipo:'ar', txt:'L1 p. 6-7, puntos 11-12: completa tu presentación y entrevista con tus datos', go:'habla:responde:a2'},
-      {min:15, tipo:'ar', txt:'L1 p. 7, punto 15: presentación de 1 minuto, 3 veces grabándote', go:'habla:monologo:a2'},
-      {min:20, tipo:'ar', txt:'🕐 Horas: y cuarto (وَالرُّبْعُ) y y media (وَالنِّصْفُ)', go:'habla:dilo:a2'},
+      {h:'Árabe', min:10, tipo:'ar', txt:'🔁 Repaso de ayer: tapa y di lo de las rayitas. Si sacas un 80 % o más, sigues; si no, repites ese recuadro', go:'tarjetas'},
+      {min:40, tipo:'ar', txt:'📖 Libro L1 p. 4-5: países y nacionalidades, profesiones, idiomas, modelo de Laura (audio 1) y gustos, con los 5 pasos', go:'vocab'},
+      {min:15, tipo:'ar', txt:'🔤 4 verbos: دَرَسَ – يَدْرُسُ, كَتَبَ – يَكْتُبُ, سَكَنَ – يَسْكُنُ, قَرَأَ – يَقْرَأُ. A mano ×3 y luego aquí', go:'verbos:pp:g2'},
+      {min:10, tipo:'ar', txt:'🕐 Horas: y cuarto (وَالرُّبْعُ) y y media (وَالنِّصْفُ)', go:'habla:dilo:a2'},
+      {min:10, tipo:'ar', txt:'🎤 Habla 1 min grabándote con lo de hoy. Anota 3 cosas que ya dices sin mirar', go:'habla:monologo:a2'},
   ],
   '2026-11-11': [
-      {h:'Árabe', min:10, tipo:'ar', txt:'🔤 Verbos grupo 3 (رَجَعَ, فَعَلَ, نَامَ, اِسْتَيْقَظَ): escribe el PRESENTE desde el pasado (mira antes la tabla)', go:'verbos:pp:g3'},
-      {min:5, tipo:'ar', txt:'🔤 Grupos 1-3 al revés: escribe el PASADO desde el presente', go:'verbos:pr:g123'},
-      {min:10, tipo:'ar', txt:'🔤 Grupos 1-3: conjuga en pasado y presente', go:'verbos:conjugar:g123'},
-      {min:15, tipo:'ar', txt:'Tarjetas: «Mi día» y «Mi día — verbos»', go:'tarjetas'},
-      {min:15, tipo:'ar', txt:'L2 p. 8, punto 1: palabras importantes, sin mirar y con artículo', go:'vocab'},
-      {min:15, tipo:'ar', txt:'L2 p. 9, punto 3 (أَنَا): las 6 frases y las mismas con él / ella', go:'habla:rapida:a2'},
-      {min:20, tipo:'ar', txt:'L2 p. 9, punto 4: mi horario con فِي السَّاعَةِ (tu horario real)', go:'habla:monologo:a2'},
-      {min:20, tipo:'ar', txt:'🕐 Horas: y veinte (وَالثُّلْثُ), menos cuarto y menos veinte (hora siguiente + إِلَّا). Lee las fichas y dilas', go:'gram'},
-      {min:10, tipo:'ar', txt:'Habla → Dilo de la L2', go:'habla:dilo:a2'},
+      {h:'Árabe', min:10, tipo:'ar', txt:'🔁 Repaso de ayer: tapa y di lo de las rayitas (80 % o más → sigues)', go:'tarjetas'},
+      {min:40, tipo:'ar', txt:'📖 Libro L1 p. 6-7: diálogo de Ahmed y Sami, comprensión, completa tu presentación, entrevista y presentación de 1 min', go:'habla:dialogo:a2'},
+      {min:15, tipo:'ar', txt:'🔤 4 verbos: رَجَعَ – يَرْجِعُ, فَعَلَ – يَفْعَلُ, نَامَ – يَنَامُ, اِسْتَيْقَظَ – يَسْتَيْقِظُ. A mano ×3 y luego aquí', go:'verbos:pp:g3'},
+      {min:10, tipo:'ar', txt:'🕐 Horas: y veinte (وَالثُّلْثُ), menos cuarto y menos veinte (hora siguiente + إِلَّا)', go:'habla:dilo:a2'},
+      {min:10, tipo:'ar', txt:'🎤 Habla 1 min grabándote con lo de hoy. Anota 3 cosas que ya dices sin mirar', go:'habla:monologo:a2'},
   ],
   '2026-11-12': [
-      {h:'Árabe', min:10, tipo:'ar', txt:'🔤 Verbos grupo 4 (تَكَلَّمَ, أَحَبَّ) + los 14: escribe el PRESENTE desde el pasado', go:'verbos:pp:a2'},
-      {min:5, tipo:'ar', txt:'🔤 Los 14 al revés: escribe el PASADO desde el presente', go:'verbos:pr:a2'},
-      {min:10, tipo:'ar', txt:'🔤 Los 14: conjuga en pasado y presente', go:'verbos:conjugar:a2'},
-      {min:10, tipo:'ar', txt:'Tarjetas: categorías de la L2 y «Las horas»', go:'tarjetas'},
-      {min:15, tipo:'ar', txt:'L2 p. 10, punto 5: texto «يَوْمِي» (audio 2), 3 lecturas y luego en 3ª persona (يَسْتَيْقِظُ…)', go:'habla:comprension:a2'},
-      {min:15, tipo:'ar', txt:'L2 p. 10, punto 6: preguntas del libro con frases completas', go:'habla:responde:a2'},
-      {min:15, tipo:'ar', txt:'Lo que añadió el profesor: ¿qué haces? (تَفْعَلُ / تَعْمَلُ) y partículas por verbo', go:'verbos'},
-      {min:15, tipo:'ar', txt:'L2 p. 11, punto 7: habla 30-60 s de tu día, 3 grabaciones', go:'habla:monologo:a2'},
-      {min:20, tipo:'ar', txt:'🕐 Horas: todas mezcladas, 11-19 y مِنْ … إِلَى …', go:'habla:rapida:a2'},
-      {min:5, tipo:'ar', txt:'🕐 Gram.: fichas de las horas en voz alta (y «a las…» con fracción)', go:'gram'},
+      {h:'Árabe', min:10, tipo:'ar', txt:'🔁 Repaso de ayer: tapa y di lo de las rayitas (80 % o más → sigues)', go:'tarjetas'},
+      {min:40, tipo:'ar', txt:'📖 Libro L2 p. 8-9: palabras importantes, verbos prácticos, أَنَا y mi horario, con los 5 pasos', go:'vocab'},
+      {min:15, tipo:'ar', txt:'🔤 2 verbos nuevos (تَكَلَّمَ – يَتَكَلَّمُ, أَحَبَّ – يُحِبُّ) y repaso de los 14', go:'verbos:pp:a2'},
+      {min:10, tipo:'ar', txt:'🕐 Horas: todas mezcladas', go:'habla:dilo:a2'},
+      {min:10, tipo:'ar', txt:'🎤 Habla 1 min grabándote con lo de hoy. Anota 3 cosas que ya dices sin mirar', go:'habla:monologo:a2'},
   ],
   '2026-11-13': [
-      {h:'Árabe', min:8, tipo:'ar', txt:'🔤 Repaso de los 14: PRESENTE desde el pasado, sin mirar la tabla', go:'verbos:pp:a2'},
-      {min:7, tipo:'ar', txt:'🔤 Repaso de los 14: PASADO desde el presente, sin mirar la tabla', go:'verbos:pr:a2'},
-      {min:10, tipo:'ar', txt:'🔤 Repaso de los 14: conjuga en pasado y presente', go:'verbos:conjugar:a2'},
-      {min:10, tipo:'ar', txt:'Tarjetas: «Mi familia» y «Mi familia — adjetivos»', go:'tarjetas'},
-      {min:15, tipo:'ar', txt:'L3 p. 12, punto 1: vocabulario y هَذَا / هَذِهِ con una foto real de tu familia', go:'habla:hoy'},
-      {min:15, tipo:'ar', txt:'L3 p. 12, punto 2: adjetivos m/f, describe a 5 personas (أُخْتِي طَوِيلَة…)', go:'habla:dilo:ult'},
-      {min:15, tipo:'ar', txt:'🕐 Horas: ronda rápida de todo y tu horario de corrido', go:'habla:rapida:a2'},
-      {min:30, tipo:'ar', txt:'Simulacro de 3 min grabado: presentación (L1) + mi día con horas (L2) + mi familia (L3)', go:'habla:monologo:a2'},
-      {min:10, tipo:'ar', txt:'Escucha la grabación, revisa Stats y apunta 3 fallos para la semana que viene', go:'stats'},
+      {h:'Árabe', min:10, tipo:'ar', txt:'🔁 Repaso de ayer: tapa y di lo de las rayitas (80 % o más → sigues)', go:'tarjetas'},
+      {min:40, tipo:'ar', txt:'📖 Libro L2 p. 10-11 (texto «يَوْمِي», preguntas, habla) y L3 p. 12 (familia y adjetivos), con los 5 pasos', go:'habla:comprension:a2'},
+      {min:15, tipo:'ar', txt:'🔤 Los 14 verbos sin mirar: el presente desde el pasado y al revés', go:'verbos:pr:a2'},
+      {min:10, tipo:'ar', txt:'🕐 Horas: tu horario real de corrido', go:'habla:dilo:a2'},
+      {min:10, tipo:'ar', txt:'🎤 PRUEBA: 3 min seguidos grabado (preséntate, tu día con horas y tu familia). Si lo consigues, el libro está asentado', go:'habla:monologo:a2'},
   ],
 };
 function planVacaciones() { try { return JSON.parse(safeGetItem('arabic_plan_modo', '{}')).modo === 'vac'; } catch (e) { return false; } }
@@ -6770,7 +6749,7 @@ function renderPlanHoy() {
   };
   el.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-      <div style="font-size:15px;font-weight:700;color:var(--cream);">📅 Tu plan de hoy — ${PLAN_DIAS[dow]}${especial ? ' <span style="font-size:11px;color:var(--gold);">· semana A2 + horas</span>' : ''}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--cream);">📅 Tu plan de hoy — ${PLAN_DIAS[dow]}${especial ? ' <span style="font-size:11px;color:var(--gold);">· rutina especial</span>' : ''}</div>
       ${ar.length ? `<div style="font-size:12px;color:var(--gold);font-weight:700;">${nHechos}/${ar.length}</div>` : ''}
     </div>
     <div class="cat-filter" style="padding:4px 0 2px;">
