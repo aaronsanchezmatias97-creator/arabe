@@ -6486,58 +6486,6 @@ const PLAN_VAC = {
   6: [{h:'09:00–14:00', tipo:'master', txt:'Clase del máster'}, {h:'Tarde', tipo:'libre', txt:'Sin estudio'}],
   0: [{h:'Todo el día', tipo:'libre', txt:'Descanso'}],
 };
-// Plan especial por FECHA (manda sobre PLAN_SEMANA y PLAN_LIBRE ese día; no se aplica en modo vacaciones).
-// Semana 09–13/11/2026: perfeccionar el A2 y reforzar la base del A1, 2 h de árabe al día.
-const PLAN_FECHA = {
-  '2026-11-09': [
-      {h:'16:30–17:30', tipo:'master', txt:'Máster: pasar el docx del viernes y el sábado (regla 1)'},
-      {h:'17:30', min:20, tipo:'ar', txt:'L3 Mi familia → 🧭 Hoy: Repite + Dilo (llegar a clase con la p. 12 ya dicha)', go:'habla:hoy'},
-      {h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'},
-      {h:'19:45', min:15, tipo:'ar', txt:'Dictar la clase a Claude y escribir «actualiza»'},
-      {min:15, tipo:'ar', txt:'Tarjetas (dejar el repaso a 0)', go:'tarjetas'},
-      {min:15, tipo:'ar', txt:'🤝 Entrevista de la L1 con tus datos de «Mi ficha»', go:'habla:responde:a2'},
-      {min:10, tipo:'ar', txt:'🎤 Monólogo de la p. 7 (presentarte), 3 veces de 1 minuto, grabándote', go:'habla:monologo:a2'},
-      {min:20, tipo:'ar', txt:'💬 Frases de la L1 (ordena y construye); luego Gram.: preguntas m/f, edad, profesiones e idiomas', go:'frases'},
-      {min:25, tipo:'ar', txt:'🔤 Verbos (modo pareja) + partículas: vivir → أَيْنَ, هَلْ · trabajar → أَيْنَ, مَاذَا · estudiar → أَيْنَ, مَاذَا, مَا, هَلْ', go:'verbos'}],
-  '2026-11-10': [
-      {h:'16:30', min:15, tipo:'ar', txt:'Tarjetas', go:'tarjetas'},
-      {min:20, tipo:'ar', txt:'🧩 Patrones B (pasado) y C (presente): قَرَأَ, نَامَ, اِسْتَيْقَظَ. Ojo con نِمْتُ, قَرَؤُوا, تَقْرَئِينَ', go:'patrones'},
-      {min:8, tipo:'ar', txt:'💬 Diálogo de la L2 (los dos papeles)', go:'habla:dialogo:a2'},
-      {min:8, tipo:'ar', txt:'🤝 Entrevista de la L2: preguntas del libro (p. 10)', go:'habla:responde:a2'},
-      {min:9, tipo:'ar', txt:'👂 Comprensión del texto «يَوْمِي» (p. 10)', go:'habla:comprension:a2'},
-      {min:20, tipo:'ar', txt:'✏️ Escribe (modo árabe), categorías «Mi día»; luego a mano tu día real: أَسْتَيْقِظُ فِي السَّاعَةِ الرَّابِعَةِ وَالثُّلْثِ…', go:'escribe'},
-      {min:20, tipo:'ar', txt:'🎤 Monólogo de la p. 11 (تَكَلَّمْ) con tu día real: 3 grabaciones, las 8 estructuras en menos de 60 s', go:'habla:monologo:a2'},
-      {min:10, tipo:'ar', txt:'🔍 Detecta: solares / lunares y masculino / femenino', go:'detecta'},
-      {min:10, tipo:'ar', txt:'❓ Quiz «Todas»: anota lo que falles', go:'quiz'},
-      {h:'18:30–20:30', tipo:'master', txt:'Máster: apuntes del lunes (esta semana, 1 h más tarde)'}],
-  '2026-11-11': [
-      {h:'16:30', min:15, tipo:'ar', txt:'Tarjetas (categorías «Las horas» y «Números»)', go:'tarjetas'},
-      {min:12, tipo:'ar', txt:'🗣️ Dilo: horas (y cuarto, y veinte, y media, menos…) y números 11-19 / 21-99', go:'habla:dilo:a2'},
-      {min:13, tipo:'ar', txt:'⚡ Rápida: horas y números, media de 3,5 s o menos', go:'habla:rapida:a2'},
-      {min:20, tipo:'ar', txt:'L3 Mi familia → 🧭 Hoy: Rápida, Diálogo y Entrevista (أُخْتِي طَوِيلَة)', go:'habla:hoy'},
-      {min:15, tipo:'ar', txt:'📚 Gram.: fichas de la L2 y la L3 en voz alta (ة → ت en جَدَّتِي)', go:'gram'},
-      {min:10, tipo:'ar', txt:'👂 Escucha', go:'escucha'},
-      {h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'},
-      {h:'19:45', min:20, tipo:'ar', txt:'Dictar la clase a Claude y escribir «actualiza»'},
-      {min:15, tipo:'ar', txt:'💬 Frases (modo traduce)', go:'frases'}],
-  '2026-11-12': [
-      {h:'16:30', min:15, tipo:'ar', txt:'Tarjetas', go:'tarjetas'},
-      {min:30, tipo:'ar', txt:'🧩 Patrones: 6 verbos (modelos I-IV, hueco نَامَ, Forma V تَكَلَّمَ) en pasado y presente, sin mirar', go:'patrones'},
-      {min:20, tipo:'ar', txt:'🔤 Verbos: pareja pasado–presente de todos, 80 % o más', go:'verbos'},
-      {min:20, tipo:'ar', txt:'✏️ Escribe: dictado de las categorías que más fallas (míralas en Stats)', go:'escribe'},
-      {min:20, tipo:'ar', txt:'Lo nuevo del lunes y el miércoles → 🧭 Hoy (Repite + Dilo)', go:'habla:hoy'},
-      {min:15, tipo:'ar', txt:'📊 Stats: apunta tus fallos y márcalos con ⭐ en Vocab', go:'stats'},
-      {h:'18:30–19:30', tipo:'master', txt:'Máster: lecturas o preparación de la clase del viernes'}],
-  '2026-11-13': [
-      {h:'09:30 (si trabajas: 21:15, solo Tarjetas + Monólogo)', min:15, tipo:'ar', txt:'Tarjetas, ⭐ incluidas', go:'tarjetas'},
-      {min:20, tipo:'ar', txt:'🎭 Roles de la L3: foto de la familia, los dos papeles', go:'habla:roles:ult'},
-      {min:25, tipo:'ar', txt:'🎤 Monólogo largo de 3 min: preséntate, tu día con horas y tu familia (grábalo)', go:'habla:monologo:a2'},
-      {min:20, tipo:'ar', txt:'🚗 Manos libres con todo el libro', go:'habla:libre:todo'},
-      {min:10, tipo:'ar', txt:'❓ Quiz «Todas», 85 % o más', go:'quiz'},
-      {min:10, tipo:'ar', txt:'💬 Frases (modo construye) de todas las clases', go:'frases'},
-      {min:20, tipo:'ar', txt:'✅ Comprueba: ruta de la L2 🥇, L3 🥈 o más, horas al instante. Escucha tus grabaciones del martes y de hoy y apunta 3 fallos', go:'habla:hoy'},
-      {h:'16:00–21:00', tipo:'master', txt:'Clase del máster'}],
-};
 function planVacaciones() { try { return JSON.parse(safeGetItem('arabic_plan_modo', '{}')).modo === 'vac'; } catch (e) { return false; } }
 function planSetVac(v) { safeSetItem('arabic_plan_modo', JSON.stringify({modo: v ? 'vac' : 'normal'})); renderPlanHoy(); }
 const PLAN_DIAS = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
@@ -6566,9 +6514,8 @@ function planGo(go) {
 function renderPlanHoy() {
   const el = document.getElementById('plan-hoy'); if (!el) return;
   const dow = new Date().getDay(), vac = planVacaciones(), libre = !vac && planLibreHoy();
-  const especial = !vac && PLAN_FECHA[clToday()];
-  let items = vac ? (PLAN_VAC[dow] || []).slice() : especial ? especial.slice() : libre ? PLAN_LIBRE.slice() : (PLAN_SEMANA[dow] || []).slice();
-  if (!especial && libre && (dow === 1 || dow === 3)) items.push({h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'});
+  let items = vac ? (PLAN_VAC[dow] || []).slice() : libre ? PLAN_LIBRE.slice() : (PLAN_SEMANA[dow] || []).slice();
+  if (libre && (dow === 1 || dow === 3)) items.push({h:'18:00–19:30', tipo:'clase', txt:'Clase de árabe. Al llegar: páginas dadas y «actualiza»'});
   const trabajo = !vac && !libre && dow >= 1 && dow <= 5;
   if (trabajo) items.unshift({h:'05:00', tipo:'ar', min:15, txt:'🚗 Manos libres en el coche (solo audio; arráncalo antes de salir)', go:'habla:libre'});
   const hecho = planHecho();
@@ -6588,7 +6535,7 @@ function renderPlanHoy() {
   };
   el.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-      <div style="font-size:15px;font-weight:700;color:var(--cream);">📅 Tu plan de hoy — ${PLAN_DIAS[dow]}${especial ? ' <span style="font-size:11px;color:var(--gold);">· semana especial A2</span>' : ''}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--cream);">📅 Tu plan de hoy — ${PLAN_DIAS[dow]}</div>
       ${ar.length ? `<div style="font-size:12px;color:var(--gold);font-weight:700;">${nHechos}/${ar.length}</div>` : ''}
     </div>
     <div class="cat-filter" style="padding:4px 0 2px;">
