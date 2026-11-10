@@ -6657,37 +6657,37 @@ const PLAN_VAC = {
   0: [{h:'Todo el día', tipo:'libre', txt:'Descanso'}],
 };
 // Plan especial por FECHA (manda sobre PLAN_SEMANA y PLAN_LIBRE ese día; no se aplica en modo vacaciones).
-// RUTINA ESPECIAL 09–13/11/2026: solo el libro A2 (p. 3-12), recuadro a recuadro con 5 pasos + 4 verbos al día + horas + hablar 1 min.
+// RUTINA ESPECIAL (empezada el martes 10/11; el lunes 9 no se hizo): días 1-4 = mar 10–vie 13, día 5 = lun 16: solo el libro A2 (p. 3-12), recuadro a recuadro con 5 pasos + 4 verbos al día + horas + hablar 1 min.
 const PLAN_FECHA = {
-  '2026-11-09': [
+  '2026-11-10': [
       {h:'Árabe', min:10, tipo:'ar', txt:'Prepara la libreta. Método (5 pasos por recuadro): 1 leer en voz alta · 2 repetir ×3 · 3 tapar el árabe y decirlo · 4 escribirlo de memoria en la libreta · 5 inventar 2-3 frases tuyas. Marca con rayita lo que falles.'},
       {min:40, tipo:'ar', txt:'📖 Libro L1 p. 3-4: datos personales, frases básicas y preguntas (m/f), con los 5 pasos', go:'vocab'},
       {min:15, tipo:'ar', txt:'🔤 4 verbos: ذَهَبَ – يَذْهَبُ, أَكَلَ – يَأْكُلُ, شَرِبَ – يَشْرَبُ, عَمِلَ – يَعْمَلُ. A mano ×3 en voz alta y luego aquí (abre «📋 Tabla del grupo»)', go:'verbos:pp:g1'},
       {min:10, tipo:'ar', txt:'🕐 Horas: en punto (1-12). Di la hora de tu día real', go:'habla:dilo:a2'},
       {min:10, tipo:'ar', txt:'🎤 Habla 1 min grabándote con lo de hoy. Anota en la libreta 3 cosas que ya dices sin mirar', go:'habla:monologo:a2'},
   ],
-  '2026-11-10': [
+  '2026-11-11': [
       {h:'Árabe', min:10, tipo:'ar', txt:'🔁 Repaso de ayer: tapa y di lo de las rayitas. Si sacas un 80 % o más, sigues; si no, repites ese recuadro', go:'tarjetas'},
       {min:40, tipo:'ar', txt:'📖 Libro L1 p. 4-5: países y nacionalidades, profesiones, idiomas, modelo de Laura (audio 1) y gustos, con los 5 pasos', go:'vocab'},
       {min:15, tipo:'ar', txt:'🔤 4 verbos: دَرَسَ – يَدْرُسُ, كَتَبَ – يَكْتُبُ, سَكَنَ – يَسْكُنُ, قَرَأَ – يَقْرَأُ. A mano ×3 y luego aquí', go:'verbos:pp:g2'},
       {min:10, tipo:'ar', txt:'🕐 Horas: y cuarto (وَالرُّبْعُ) y y media (وَالنِّصْفُ)', go:'habla:dilo:a2'},
       {min:10, tipo:'ar', txt:'🎤 Habla 1 min grabándote con lo de hoy. Anota 3 cosas que ya dices sin mirar', go:'habla:monologo:a2'},
   ],
-  '2026-11-11': [
+  '2026-11-12': [
       {h:'Árabe', min:10, tipo:'ar', txt:'🔁 Repaso de ayer: tapa y di lo de las rayitas (80 % o más → sigues)', go:'tarjetas'},
       {min:40, tipo:'ar', txt:'📖 Libro L1 p. 6-7: diálogo de Ahmed y Sami, comprensión, completa tu presentación, entrevista y presentación de 1 min', go:'habla:dialogo:a2'},
       {min:15, tipo:'ar', txt:'🔤 4 verbos: رَجَعَ – يَرْجِعُ, فَعَلَ – يَفْعَلُ, نَامَ – يَنَامُ, اِسْتَيْقَظَ – يَسْتَيْقِظُ. A mano ×3 y luego aquí', go:'verbos:pp:g3'},
       {min:10, tipo:'ar', txt:'🕐 Horas: y veinte (وَالثُّلْثُ), menos cuarto y menos veinte (hora siguiente + إِلَّا)', go:'habla:dilo:a2'},
       {min:10, tipo:'ar', txt:'🎤 Habla 1 min grabándote con lo de hoy. Anota 3 cosas que ya dices sin mirar', go:'habla:monologo:a2'},
   ],
-  '2026-11-12': [
+  '2026-11-13': [
       {h:'Árabe', min:10, tipo:'ar', txt:'🔁 Repaso de ayer: tapa y di lo de las rayitas (80 % o más → sigues)', go:'tarjetas'},
       {min:40, tipo:'ar', txt:'📖 Libro L2 p. 8-9: palabras importantes, verbos prácticos, أَنَا y mi horario, con los 5 pasos', go:'vocab'},
       {min:15, tipo:'ar', txt:'🔤 2 verbos nuevos (تَكَلَّمَ – يَتَكَلَّمُ, أَحَبَّ – يُحِبُّ) y repaso de los 14', go:'verbos:pp:a2'},
       {min:10, tipo:'ar', txt:'🕐 Horas: todas mezcladas', go:'habla:dilo:a2'},
       {min:10, tipo:'ar', txt:'🎤 Habla 1 min grabándote con lo de hoy. Anota 3 cosas que ya dices sin mirar', go:'habla:monologo:a2'},
   ],
-  '2026-11-13': [
+  '2026-11-16': [
       {h:'Árabe', min:10, tipo:'ar', txt:'🔁 Repaso de ayer: tapa y di lo de las rayitas (80 % o más → sigues)', go:'tarjetas'},
       {min:40, tipo:'ar', txt:'📖 Libro L2 p. 10-11 (texto «يَوْمِي», preguntas, habla) y L3 p. 12 (familia y adjetivos), con los 5 pasos', go:'habla:comprension:a2'},
       {min:15, tipo:'ar', txt:'🔤 Los 14 verbos sin mirar: el presente desde el pasado y al revés', go:'verbos:pr:a2'},
@@ -6705,6 +6705,37 @@ function planLibreHoy() {
 function planSetLibre(v) { safeSetItem('arabic_plan_dia', JSON.stringify({date: clToday(), libre: v})); renderPlanHoy(); }
 function planHecho() {
   try { const d = JSON.parse(safeGetItem('arabic_plan_hecho', '{}')); return d.date === clToday() ? d : {date: clToday(), done: {}}; } catch (e) { return {date: clToday(), done: {}}; }
+}
+// ── Pendientes de la rutina especial: lo que no se hace un día pasa a los siguientes (clave nueva 'arabic_plan_esp') ──
+function planEsp() { try { return JSON.parse(safeGetItem('arabic_plan_esp', '{}')) || {}; } catch (e) { return {}; } }
+function planEspSave(e) { safeSetItem('arabic_plan_esp', JSON.stringify(e)); }
+function planEspSyncHoy() {   // copia lo marcado hoy en el registro de la rutina especial
+  const hoy = clToday(); if (!PLAN_FECHA[hoy]) return;
+  const e = planEsp(); e.done = e.done || {}; e.done[hoy] = Object.assign({}, planHecho().done); planEspSave(e);
+}
+function planPendToggle(d, i) { const e = planEsp(); e.done = e.done || {}; e.done[d] = e.done[d] || {}; e.done[d][i] = !e.done[d][i]; planEspSave(e); renderPlanHoy(); }
+function planPendDescartar(d) { const e = planEsp(); e.desc = e.desc || {}; e.desc[d] = true; planEspSave(e); renderPlanHoy(); }
+function planPendientes() {
+  const hoy = clToday(), e = planEsp(), out = [];
+  Object.keys(PLAN_FECHA).sort().filter(d => d < hoy && !(e.desc && e.desc[d])).forEach(d => {
+    const hecho = (e.done && e.done[d]) || {};
+    const its = PLAN_FECHA[d].map((it, i) => ({...it, i})).filter(it => it.tipo === 'ar' && !hecho[it.i]);
+    if (its.length) out.push({d, its});
+  });
+  return out;
+}
+function planPendHtml() {
+  const p = planPendientes(); if (!p.length) return '';
+  const nom = d => { const x = new Date(d + 'T12:00:00'); return PLAN_DIAS[x.getDay()] + ' ' + x.getDate(); };
+  const mins = p.reduce((a, g) => a + g.its.reduce((b, it) => b + (it.min || 0), 0), 0);
+  return `<div style="background:rgba(255,159,194,.08);border:1px solid rgba(255,159,194,.35);border-radius:10px;padding:8px 12px;margin:6px 0 10px;">
+    <div style="font-size:13px;font-weight:700;color:var(--cream);">📌 Pendiente de días anteriores <span style="font-weight:400;font-size:11px;color:var(--cream2);">· ~${mins} min · hazlo antes que lo de hoy</span></div>
+    ${p.map(g => `<div style="margin-top:6px;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gold);"><span>${nom(g.d)}</span><a href="#" onclick="planPendDescartar('${g.d}');return false;" style="color:var(--cream2);">✕ descartar este día</a></div>
+      ${g.its.map(it => `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);">
+        <div onclick="planPendToggle('${g.d}',${it.i})" style="width:20px;height:20px;border-radius:6px;flex-shrink:0;cursor:pointer;border:2px solid rgba(255,255,255,.25);"></div>
+        <div style="flex:1;${it.go ? 'cursor:pointer;' : ''}" ${it.go ? `onclick="planGo('${it.go}')"` : ''}><div style="font-size:13px;color:var(--cream);">${it.txt}</div>
+        <div style="font-size:11px;color:var(--cream2);">${it.min ? it.min + ' min' : ''}${it.go ? ' · toca para ir' : ''}</div></div></div>`).join('')}</div>`).join('')}
+  </div>`;
 }
 function planToggle(i) { const d = planHecho(); d.done[i] = !d.done[i]; safeSetItem('arabic_plan_hecho', JSON.stringify(d)); renderPlanHoy(); }
 function planGo(go) {
@@ -6733,6 +6764,7 @@ function renderPlanHoy() {
   const trabajo = !vac && !libre && !especial && dow >= 1 && dow <= 5;
   if (trabajo) items.unshift({h:'05:00', tipo:'ar', min:15, txt:'🚗 Manos libres en el coche (solo audio; arráncalo antes de salir)', go:'habla:libre'});
   const hecho = planHecho();
+  if (especial) planEspSyncHoy();
   const ar = items.map((it, i) => ({...it, i})).filter(it => it.tipo === 'ar');
   const nHechos = ar.filter(it => hecho.done[it.i]).length;
   const mins = ar.reduce((a, it) => a + (it.min || 0), 0);
@@ -6761,6 +6793,7 @@ function renderPlanHoy() {
       <button class="cat-chip ${libre ? 'active' : ''}" onclick="planSetLibre(true)">Hoy es día libre</button></div>` : ''}
     <div style="background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);border-radius:10px;padding:8px 12px;font-size:13px;color:var(--gold2);margin-bottom:6px;">
       🗣️ <b>Regla 6 — Siempre en voz alta.</b> En Habla, pensar la respuesta no cuenta.</div>
+    ${!vac ? planPendHtml() : ''}
     ${items.map((it, i) => fila({...it, i})).join('')}
     ${ar.length ? `<div style="font-size:11px;color:var(--cream2);margin-top:8px;">Árabe hoy: ~${mins} min${nHechos === ar.length ? ' · <b style="color:var(--green);">✓ hecho</b>' : ''}</div>` : ''}
     <details style="margin-top:10px;"><summary style="cursor:pointer;font-size:12px;color:var(--cream2);">📌 Reglas del plan</summary>
